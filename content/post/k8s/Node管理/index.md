@@ -5,10 +5,10 @@ slug: K8S Node管理
 date: 2022-07-23 00:00:00+0000
 image: cover.jpg
 categories:
-    - K8S
+    - 云原生
 tags:
     - K8S
-weight: 1       # You can add weight to some posts to override the default sorting (date descending)
+weight: 10       # You can add weight to some posts to override the default sorting (date descending)
 ---
 
 ## worker node节点管理集群
