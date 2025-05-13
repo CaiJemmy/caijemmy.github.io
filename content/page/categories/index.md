@@ -8,7 +8,7 @@ menu:
     main:
         weight: 5
         params: 
-            icon: category
+            icon: categories
 # Badge style
 style:
     background: "#2a9d8f"
