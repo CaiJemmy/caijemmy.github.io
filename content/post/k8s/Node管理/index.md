@@ -13,7 +13,7 @@ weight: 10       # You can add weight to some posts to override the default sort
 
 # Kubernetes集群Node管理
 
-# 一、查看集群信息
+## 查看集群信息
 
 ```shell
 [root@k8s-master01 ~]# kubectl cluster-info
@@ -23,9 +23,9 @@ CoreDNS is running at https://192.168.52.129:6443/api/v1/namespaces/kube-system/
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-# 二、查看节点信息
+## 查看节点信息
 
-## 2.1 查看集群节点信息
+### 查看集群节点信息
 
 ```shell
 [root@k8s-master01 ~]# kubectl get nodes
@@ -37,7 +37,7 @@ k8s-worker02   Ready    <none>          31h   v1.28.15
 
 
 
-## 2.2 查看集群节点详细信息
+### 查看集群节点详细信息
 
 ```shell
 [root@k8s-master01 ~]# kubectl get nodes -o wide
@@ -49,7 +49,7 @@ k8s-worker02   Ready    <none>          31h   v1.28.15   192.168.52.141   <none>
 
 
 
-## 2.3 查看节点描述详细信息
+### 查看节点描述详细信息
 
 ```shell
 [root@k8s-master01 ~]# kubectl describe node k8s-master01
@@ -163,7 +163,7 @@ Events:
 
 
 
-# 三、worker node节点管理集群
+## worker node节点管理集群
 
 * **如果是kubeasz安装，所有节点(包括master与node)都已经可以对集群进行管理**
 
@@ -202,11 +202,11 @@ k8s-worker02   Ready    <none>          31h   v1.28.15
 
 
 
-# 四、节点标签(label)
+## 节点标签(label)
 
 * k8s集群如果由大量节点组成，可将节点打上对应的标签，然后通过标签进行筛选及查看,更好的进行资源对象的相关选择与匹配
 
-## 4.1 查看节点标签信息
+### 查看节点标签信息
 
 ```shell
 [root@k8s-master01 ~]# kubectl get node --show-labels
@@ -218,9 +218,9 @@ k8s-worker02   Ready    <none>          31h   v1.28.15   beta.kubernetes.io/arch
 
 
 
-## 4.2 设置节点标签信息
+### 设置节点标签信息
 
-### 4.2.1 设置节点标签
+#### 设置节点标签
 
 为节点`k8s-worker01`打一个`region=cainiao` 的标签
 
@@ -231,7 +231,7 @@ node/k8s-worker01 labeled
 
 
 
-### 4.2.2 查看所有节点标签
+#### 查看所有节点标签
 
 ```shell
 [root@k8s-master01 ~]# kubectl get node --show-labels
@@ -243,7 +243,7 @@ k8s-worker02   Ready    <none>          31h   v1.28.15   beta.kubernetes.io/arch
 
 
 
-### 4.2.3 查看所有节点带region的标签
+#### 查看所有节点带region的标签
 
 ```shell
 [root@k8s-master01 ~]# kubectl get nodes -L region
@@ -255,9 +255,9 @@ k8s-worker02   Ready    <none>          31h   v1.28.15
 
 
 
-## 4.3 多维度标签
+### 多维度标签
 
-### 4.3.1 设置多维度标签
+#### 设置多维度标签
 
 也可以加其它的多维度标签,用于不同的需要区分的场景
 
@@ -274,7 +274,7 @@ NAME           STATUS   ROLES    AGE   VERSION    LABELS
 k8s-worker02   Ready    <none>   31h   v1.28.15   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,bussiness=game,env=test,kubernetes.io/arch=amd64,kubernetes.io/hostname=k8s-worker02,kubernetes.io/os=linux,zone=A
 ```
 
-### 4.3.2 显示节点的相应标签
+#### 显示节点的相应标签
 
 ```shell
 [root@k8s-master01 ~]# kubectl get nodes -L region,zone
@@ -284,7 +284,7 @@ k8s-worker01   Ready    <none>          31h   v1.28.15   cainiao
 k8s-worker02   Ready    <none>          31h   v1.28.15             A
 ```
 
-### 4.3.3 查找`region=cainiao`的节点
+#### 查找`region=cainiao`的节点
 
 ```shell
 [root@k8s-master01 ~]# kubectl get nodes -l region=cainiao
@@ -294,7 +294,7 @@ k8s-worker01   Ready    <none>   31h   v1.28.15
 
 
 
-### 4.3.4 标签的修改
+#### 标签的修改
 
 ```shell
 [root@k8s-master01 ~]# kubectl label node k8s-worker02 bussiness=ad --overwrite=true
@@ -311,7 +311,7 @@ k8s-worker02   Ready    <none>   31h   v1.28.15   ad
 
 
 
-### 4.3.5  标签的删除
+#### 标签的删除
 
 使用key加一个减号的写法来取消标签
 
@@ -326,7 +326,7 @@ k8s-worker01   Ready    <none>   32h   v1.28.15   beta.kubernetes.io/arch=amd64,
 
 
 
-### 4.3.6  标签选择器
+#### 标签选择器
 
 标签选择器主要有2类:
 
