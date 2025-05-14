@@ -13,6 +13,8 @@ weight: 10       # You can add weight to some posts to override the default sort
 
 # Kubernetes集群Node管理
 
+![image-20250514100229617](./image-node管理.png)
+
 ## 查看集群信息
 
 ```shell
@@ -342,7 +344,7 @@ node/k8s-worker01 labeled
 ```
 
 ```shell
-[root@k8s-master01 ~]# kubectl get node -l "env in(test1,test2)"
+[root@k8s-master01 ~]# kubectl get node -l "env in (test1,test2)"
 NAME           STATUS   ROLES           AGE   VERSION
 k8s-master01   Ready    control-plane   35h   v1.28.15
 k8s-worker01   Ready    <none>          32h   v1.28.15
