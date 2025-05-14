@@ -13,7 +13,7 @@ weight: 10       # You can add weight to some posts to override the default sort
 
 # Kubernetes集群Node管理
 
-![image-20250514100229617](./image-node管理.jpg)
+![image-node管理](image-node管理.jpg)
 
 ## 查看集群信息
 
