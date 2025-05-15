@@ -1,7 +1,7 @@
 ---
-title: kubeadm部署单Master节点kubernetes集群
+title: 1.0 kubeadm部署单Master节点kubernetes集群
 description: kubeadm部署单Master节点kubernetes集群 1.28
-slug: kubeadm部署单Master节点kubernetes集群
+slug: 1.0 kubeadm部署单Master节点kubernetes集群
 date: 2024-07-22 00:00:00+0000
 image: cover.jpg
 categories:

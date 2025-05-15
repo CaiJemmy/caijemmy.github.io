@@ -1,7 +1,7 @@
 ---
-title: Kubernetes集群Node管理
+title: 2.0 Kubernetes集群Node管理
 description: Kubernetes集群Node管理，节点查看及标签相关内容
-slug: Kubernetes集群Node管理
+slug: 2.0 Kubernetes集群Node管理
 date: 2024-07-23 00:00:00+0000
 image: cover.jpg
 categories:
