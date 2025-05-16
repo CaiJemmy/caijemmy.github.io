@@ -179,14 +179,14 @@ spec:         #必选，Pod中容器的详细定义(期望)
 - k8s之前版本中, kubectl run命令用于创建deployment控制器
 - 在v1.18版本中, kubectl run命令改为创建pod
 
-### 创建一个名为pod-nginx的pod
+#### 创建一个名为pod-nginx的pod
 
 ```shell
 [root@k8s-master01 ~]# kubectl run nginx1 --image=nginx
 pod/nginx1 created
 ```
 
-### 验证
+#### 验证
 
 ```shell
 [root@k8s-master01 ~]# kubectl get pods
@@ -205,5 +205,230 @@ nginx1           1/1     Running   0          41s
 #     Unknown：无法获取 Pod 的状态（通常是由于与节点通信失败）。
 # RESTARTS：Pod 中容器的重启次数。
 # AGE：Pod 的存活时间。从 Pod 创建到当前时间的时间间隔。时间单位可以是秒（s）、分钟（m）、小时（h）或天（d）。
+```
+
+### YAML创建pod
+
+#### 准备yaml文件
+
+```shell
+[root@k8s-master01 ~]# vim pod1.yml
+apiVersion: v1					# api版本
+kind: Pod						# 资源类型为Pod
+metadata:						
+  name: pod-stress				# 自定义pod的名称
+spec:
+  containers:					# 定义pod里包含的容器
+  - name: c1					# 自定义pod中的容器名
+    image: polinux/stress		# 启动容器的镜像名
+    command: ["stress"]			# 自定义启动容器时要执行的命令(类似dockerfile里的CMD)
+    args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"] # 自定义启动容器执行命令的参数
+    
+# polinux/stress这个镜像用于压力测试,在启动容器时传命令与参数就是相当于分配容器运行时需要的压力
+
+[root@k8s-master01 ~]# kubectl apply -f pod1.yml
+pod/pod-stress created
+```
+
+#### 查看pod信息
+
+```shell
+[root@k8s-master01 ~/dashboard]# kubectl get pod
+NAME         READY   STATUS    RESTARTS   AGE
+pod-stress   1/1     Running   0          3m32s
+
+[root@k8s-master01 ~/dashboard]# kubectl get pod -o wide
+NAME         READY   STATUS    RESTARTS   AGE     IP              NODE           NOMINATED NODE   READINESS GATES
+pod-stress   1/1     Running   0          4m14s   10.244.69.215   k8s-worker02   <none>           <none>
+
+[root@k8s-master01 ~/dashboard]# kubectl describe pod pod-stress
+Name:             pod-stress
+Namespace:        default
+......
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  4m50s  default-scheduler  Successfully assigned default/pod-stress to k8s-worker02
+  Normal  Pulling    4m49s  kubelet            Pulling image "polinux/stress"
+  Normal  Pulled     4m38s  kubelet            Successfully pulled image "polinux/stress" in 11.549s (11.549s including waiting)
+  Normal  Created    4m38s  kubelet            Created container c1
+  Normal  Started    4m38s  kubelet            Started container c1
+```
+
+### 删除pod
+
+#### 单个pod删除
+
+```shell
+# 方式1
+[root@k8s-master01 ~/dashboard]# kubectl delete -f pod1.yml
+pod "pod-stress" deleted
+
+# 方式2
+[root@k8s-master01 ~/dashboard]# kubectl delete pod pod-stress
+```
+
+#### 多个pod删除
+
+```shell
+# 方法1: 后接多个pod名
+[root@k8s-master1 ~]# kubectl delete pod pod名1 pod名2 pod名3 ......
+
+# 方法2: 通过awk截取要删除的pod名称，然后管道给xargs
+[root@k8s-master1 ~]# kubectl get pods |awk 'NR>1 {print $1}' |xargs kubectl  delete pod
+
+# 方法3: 如果要删除的pod都在同一个非default的命名空间，则可直接删除命名空间
+[root@k8s-master1 ~]# kubectl delete ns xxxx
+```
+
+### 镜像拉取策略
+
+由imagePullPolicy参数控制
+
+- Always : 不管本地有没有镜像，都要从仓库中下载镜像
+- Never : 从来不从仓库下载镜像, 只用本地镜像,本地没有就算了
+- IfNotPresent: 如果本地存在就直接使用, 不存在才从仓库下载
+
+默认的策略是：
+
+- 当镜像标签版本是latest，默认策略就是Always
+- 如果指定特定版本默认拉取策略就是IfNotPresent。
+
+#### 将上面的pod删除再创建，使用下面命令查看信息
+
+```shell
+[root@k8s-master01 ~/dashboard]# kubectl delete -f pod1.yml
+pod "pod-stress" deleted
+[root@k8s-master01 ~/dashboard]# kubectl get pods
+No resources found in default namespace.
+[root@k8s-master01 ~/dashboard]# docker images | grep stress
+polinux/stress                                  latest     df58d15b053d   5 years ago    9.74MB
+[root@k8s-master01 ~/dashboard]# kubectl apply -f pod1.yml
+pod/pod-stress created
+[root@k8s-master01 ~/dashboard]# kubectl describe pod pod-stress
+......
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  26s   default-scheduler  Successfully assigned default/pod-stress to k8s-worker02
+  Normal  Pulling    25s   kubelet            Pulling image "polinux/stress"
+  Normal  Pulled     17s   kubelet            Successfully pulled image "polinux/stress" in 7.253s (7.253s including waiting)
+  Normal  Created    17s   kubelet            Created container c1
+  Normal  Started    17s   kubelet            Started container c1
+```
+
+**说明: 可以看到第二行信息还是`pulling image`下载镜像**
+
+#### 修改YAML
+
+```shell
+[root@k8s-master01 ~/dashboard]# cat pod1.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-stress
+spec:
+  containers:
+  - name: c1
+    image: polinux/stress
+    command: ["stress"]
+    args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"]
+    imagePullPolicy: IfNotPresent     # 增加了这一句
+```
+
+#### 再次删除再创建
+
+```shell
+[root@k8s-master01 ~/dashboard]# kubectl delete -f pod1.yml
+pod "pod-stress" deleted
+[root@k8s-master01 ~/dashboard]# kubectl apply -f pod1.yml
+pod/pod-stress created
+[root@k8s-master01 ~/dashboard]# kubectl describe pod pod-stress
+......
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  18s   default-scheduler  Successfully assigned default/pod-stress to k8s-worker02
+  Normal  Pulled     17s   kubelet            Container image "polinux/stress" already present on machine
+  Normal  Created    17s   kubelet            Created container c1
+  Normal  Started    17s   kubelet            Started container c1
+```
+
+**说明: 第二行信息是说镜像已经存在，直接使用了**
+
+### pod的标签
+
+* 为pod设置label,用于控制器通过label与pod关联
+* 语法与前面学的node标签几乎一致
+
+#### 通过命令管理Pod标签
+
+```shell
+[root@k8s-master01 ~]# kubectl get pod pod-stress --show-labels
+NAME         READY   STATUS    RESTARTS   AGE     LABELS
+pod-stress   1/1     Running   0          4m58s   <none>
+[root@k8s-master01 ~]# kubectl label pod pod-stress region=huanan zone=A env=test bussiness=game
+pod/pod-stress labeled
+[root@k8s-master01 ~]# kubectl get pod pod-stress --show-labels
+NAME         READY   STATUS    RESTARTS   AGE     LABELS
+pod-stress   1/1     Running   0          7m27s   bussiness=game,env=test,region=huanan,zone=A
+[root@k8s-master01 ~]# kubectl get pods -l zone=A
+NAME         READY   STATUS    RESTARTS   AGE
+pod-stress   1/1     Running   0          8m45s
+[root@k8s-master01 ~]# kubectl get pods -l "zone in (A,B,C)"
+NAME         READY   STATUS    RESTARTS   AGE
+pod-stress   1/1     Running   0          9m22s
+[root@k8s-master01 ~]# kubectl label pod pod-stress zone=B --overwrite=true
+pod/pod-stress labeled
+[root@k8s-master01 ~]# kubectl get pod pod-stress --show-labels
+NAME         READY   STATUS    RESTARTS   AGE   LABELS
+pod-stress   1/1     Running   0          11m   bussiness=game,env=test,region=huanan,zone=B
+[root@k8s-master01 ~]# kubectl label pod pod-stress bussiness- env- region- zone-
+pod/pod-stress unlabeled
+[root@k8s-master01 ~]# kubectl get pod pod-stress --show-labels
+NAME         READY   STATUS    RESTARTS   AGE   LABELS
+pod-stress   1/1     Running   0          12m   <none>
+```
+
+**小结:**
+
+* pod的label与node的label操作方式几乎相同
+* node的label用于pod调度到指定label的node节点
+* pod的label用于controller关联控制的pod
+
+#### 通过YAML创建Pod时添加标签
+
+修改yaml
+
+```shell
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-stress
+  labels:       # 增加多个标签
+    env: dev
+    app: nginx
+spec:
+  containers:
+  - name: c1
+    image: polinux/stress
+    command: ["stress"]
+    args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"]
+    imagePullPolicy: IfNotPresent
+```
+
+直接apply应用
+
+```shell
+[root@k8s-master01 ~/dashboard]# kubectl apply -f pod1.yml
+pod/pod-stress configured
+```
+
+验证
+
+```shell
+[root@k8s-master01 ~/dashboard]# kubectl get pod pod-stress --show-labels
+NAME         READY   STATUS    RESTARTS   AGE   LABELS
+pod-stress   1/1     Running   0          16m   app=nginx,env=dev
 ```
 
