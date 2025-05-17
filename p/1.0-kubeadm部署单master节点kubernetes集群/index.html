@@ -1,0 +1,960 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="kubeadm部署单Master节点kubernetes集群 1.28"><title>1.0 kubeadm部署单Master节点kubernetes集群</title>
+<link rel=canonical href=https://caijemmy.github.io/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/><link rel=stylesheet href=/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css><meta property='og:title' content="1.0 kubeadm部署单Master节点kubernetes集群"><meta property='og:description' content="kubeadm部署单Master节点kubernetes集群 1.28"><meta property='og:url' content='https://caijemmy.github.io/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/'><meta property='og:site_name' content='暮鼓晨钟'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='K8S'><meta property='article:published_time' content='2024-07-22T00:00:00+00:00'><meta property='article:modified_time' content='2024-07-22T00:00:00+00:00'><meta property='og:image' content='https://caijemmy.github.io/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/cover.jpg'><meta name=twitter:title content="1.0 kubeadm部署单Master节点kubernetes集群"><meta name=twitter:description content="kubeadm部署单Master节点kubernetes集群 1.28"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://caijemmy.github.io/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/cover.jpg'><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu_14da0899299e31c4.png width=300 height=330 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>暮鼓晨钟</a></h1><h2 class=site-description>生如蝼蚁不敢有鸿鹄之志，命似纸薄岂能生青云之心。</h2></div></header><ol class=menu-social><li><a href=https://github.com/CaiJemmy/CaiNiaoTool target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首页</span></a></li><li><a href=/category/><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg>
+<span>分类</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/%E9%93%BE%E6%8E%A5/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#kubernetes-12815-部署环境准备>kubernetes 1.28.15 部署环境准备</a><ol><li><a href=#主机操作系统说明>主机操作系统说明</a></li><li><a href=#主机硬件配置说明>主机硬件配置说明</a></li><li><a href=#主机配置>主机配置</a><ol><li><a href=#配置root-账号可以直接登录>配置root 账号可以直接登录</a></li><li><a href=#主机名配置>主机名配置</a></li><li><a href=#主机ip地址配置>主机IP地址配置</a></li><li><a href=#主机名与ip地址解析>主机名与IP地址解析</a></li><li><a href=#防火墙配置>防火墙配置</a></li><li><a href=#selinux配置>SELINUX配置</a></li><li><a href=#时间同步配置>时间同步配置</a></li><li><a href=#升级操作系统内核>升级操作系统内核</a></li><li><a href=#配置内核转发及网桥过滤>配置内核转发及网桥过滤</a></li><li><a href=#安装ipset及ipvsadm>安装ipset及ipvsadm</a></li><li><a href=#关闭swap分区>关闭SWAP分区</a></li></ol></li><li><a href=#docker准备>Docker准备</a><ol><li><a href=#卸载已安装decker>卸载已安装decker</a></li><li><a href=#安装docker>安装docker</a></li><li><a href=#修改cgroup方式>修改cgroup方式</a></li><li><a href=#安装cri-dockerd>安装cri-dockerd</a></li></ol></li><li><a href=#kubernetes-128x--集群部署>kubernetes 1.28.X 集群部署</a><ol><li><a href=#集群软件及版本说明>集群软件及版本说明</a></li><li><a href=#阿里源安装集群软件>阿里源安装集群软件</a></li><li><a href=#配置kubelet>配置kubelet</a></li><li><a href=#集群镜像准备>集群镜像准备</a></li><li><a href=#集群初始化>集群初始化</a></li><li><a href=#集群应用客户端管理集群文件准备>集群应用客户端管理集群文件准备</a></li><li><a href=#集群网络插件部署-calico>集群网络插件部署 calico</a></li><li><a href=#集群工作节点添加>集群工作节点添加</a></li></ol></li><li><a href=#验证集群可用性>验证集群可用性</a></li></ol></li><li><a href=#环境准备过程中问题排查>环境准备过程中问题排查</a><ol><li><a href=#ip地址配置的问题>IP地址配置的问题</a></li><li><a href=#虚机重启后ipvs和br_netfilter未被加载>虚机重启后，ipvs和br_netfilter未被加载</a></li><li><a href=#error-cri-container-runtime-is-not-running>[ERROR CRI]: container runtime is not running</a></li><li><a href=#kubectl-get-pods-状态未running>kubectl get pods 状态未Running</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/><img src=/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/cover_hu_c86b681f3fee94ff.jpg srcset="/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/cover_hu_c86b681f3fee94ff.jpg 800w, /p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/cover_hu_bea442a1395058f4.jpg 1600w" width=800 height=534 loading=lazy alt="Featured image of post 1.0 kubeadm部署单Master节点kubernetes集群"></a></div><div class=article-details><header class=article-category><a href=/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/>云原生</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/>1.0 kubeadm部署单Master节点kubernetes集群</a></h2><h3 class=article-subtitle>kubeadm部署单Master节点kubernetes集群 1.28</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jul 22, 2024</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 10 分钟</time></div></footer></div></header><section class=article-content><h1 id=kubeadm部署单master节点kubernetes集群>kubeadm部署单Master节点kubernetes集群</h1><h2 id=kubernetes-12815-部署环境准备>kubernetes 1.28.15 部署环境准备</h2><h3 id=主机操作系统说明>主机操作系统说明</h3><div class=table-wrapper><table><thead><tr><th style=text-align:center>序号</th><th style=text-align:center>操作系统及版本</th><th style=text-align:center>备注</th></tr></thead><tbody><tr><td style=text-align:center>1</td><td style=text-align:center>Debian GNU/Linux 12 (bookworm)</td><td style=text-align:center>Debian 6.1.135-1 (2025-04-25)</td></tr></tbody></table></div><h3 id=主机硬件配置说明>主机硬件配置说明</h3><div class=table-wrapper><table><thead><tr><th>需求</th><th>CPU</th><th>内存</th><th>硬盘</th><th>角色</th><th>主机名</th></tr></thead><tbody><tr><td>值</td><td>4C</td><td>4G</td><td>100GB</td><td>master</td><td>k8s-master01</td></tr><tr><td>值</td><td>4C</td><td>4G</td><td>100GB</td><td>worker(node)</td><td>k8s-worker01</td></tr><tr><td>值</td><td>4C</td><td>4G</td><td>100GB</td><td>worker(node)</td><td>k8s-worker02</td></tr></tbody></table></div><h3 id=主机配置>主机配置</h3><h4 id=配置root-账号可以直接登录>配置root 账号可以直接登录</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 虚机配置过程，已经提炼为shell脚本，参考 VM/init_vm.sh</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># vim /etc/ssh/sshd_config</span>
+</span></span><span class=line><span class=cl>PermitRootLogin yes
+</span></span><span class=line><span class=cl>systemctl restart ssh
+</span></span></code></pre></td></tr></table></div></div><h4 id=主机名配置>主机名配置</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># master节点,名称为k8s-master01</span>
+</span></span><span class=line><span class=cl>hostnamectl set-hostname k8s-master01
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># worker1节点,名称为k8s-worker01</span>
+</span></span><span class=line><span class=cl>hostnamectl set-hostname k8s-worker01
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># worker2节点,名称为k8s-worker02</span>
+</span></span><span class=line><span class=cl>hostnamectl set-hostname k8s-worker02
+</span></span></code></pre></td></tr></table></div></div><h4 id=主机ip地址配置>主机IP地址配置</h4><p>NetworkManager 的配置文件位于 /etc/NetworkManager/system-connections/ 目录下。可以通过编辑配置文件来设置静态 IP。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 方式1：修改以下部分：</span>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> /etc/NetworkManager/system-connections/
+</span></span><span class=line><span class=cl>mv <span class=s2>&#34;Wired connection 1&#34;</span> master01_ens33.nmconnection
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>ipv4<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>method</span><span class=o>=</span>manual
+</span></span><span class=line><span class=cl><span class=nv>address1</span><span class=o>=</span>192.168.52.129/24,192.168.52.2
+</span></span><span class=line><span class=cl><span class=nv>dns</span><span class=o>=</span>192.168.52.2<span class=p>;</span>8.8.8.8<span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 运行以下命令重新加载配置：</span>
+</span></span><span class=line><span class=cl>sudo nmcli connection reload
+</span></span><span class=line><span class=cl>sudo nmcli connection down master01_ens33
+</span></span><span class=line><span class=cl>sudo nmcli connection up master01_ens33
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 方式2：命令修改以下部分：</span>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> /etc/NetworkManager/system-connections/
+</span></span><span class=line><span class=cl>mv <span class=s2>&#34;Wired connection 1&#34;</span> master01_ens33.nmconnection
+</span></span><span class=line><span class=cl>sudo nmcli connection reload
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo nmcli connection modify master01_ens33 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    ipv4.method manual <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    ipv4.addresses 192.168.52.129/24 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    ipv4.gateway 192.168.52.2 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    ipv4.dns <span class=s2>&#34;192.168.52.2 8.8.8.8&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 激活连接</span>
+</span></span><span class=line><span class=cl>sudo nmcli connection down master01_ens33
+</span></span><span class=line><span class=cl>sudo nmcli connection up master01_ens33
+</span></span><span class=line><span class=cl>sudo nmcli connection down master01_ens33 <span class=o>&amp;&amp;</span> sudo nmcli connection up master01_ens33
+</span></span></code></pre></td></tr></table></div></div><h4 id=主机名与ip地址解析>主机名与IP地址解析</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 所有集群主机均需要进行配置。</span>
+</span></span><span class=line><span class=cl><span class=c1># cat /etc/hosts</span>
+</span></span><span class=line><span class=cl>127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+</span></span><span class=line><span class=cl>::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+</span></span><span class=line><span class=cl>192.168.52.129 k8s-master01
+</span></span><span class=line><span class=cl>192.168.52.140 k8s-worker01
+</span></span><span class=line><span class=cl>192.168.52.141 k8s-worker02
+</span></span><span class=line><span class=cl><span class=c1># 验证： ping -c 4 k8s-master01 &amp;&amp; ping -c 4 k8s-worker01 &amp;&amp; ping -c 4 k8s-worker02</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=防火墙配置>防火墙配置</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 所有主机均需要操作。</span>
+</span></span><span class=line><span class=cl><span class=c1># 在 Debian 12 中，默认的防火墙工具是 nftables（替代了之前的 iptables）。以下是关闭防火墙和查看防火墙状态的命令：</span>
+</span></span><span class=line><span class=cl><span class=c1># 检查 nftables 状态</span>
+</span></span><span class=line><span class=cl>sudo nft list ruleset
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 检查 firewalld 状态（如果安装了）</span>
+</span></span><span class=line><span class=cl>sudo firewall-cmd --state
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 检查 ufw 状态（如果安装了）</span>
+</span></span><span class=line><span class=cl>sudo ufw status
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>systemctl status nftables.service
+</span></span></code></pre></td></tr></table></div></div><h4 id=selinux配置>SELINUX配置</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 所有主机均需要操作。修改SELinux配置需要重启操作系统。</span>
+</span></span><span class=line><span class=cl><span class=c1># sed -ri &#39;s/SELINUX=enforcing/SELINUX=disabled/&#39; /etc/selinux/config</span>
+</span></span><span class=line><span class=cl><span class=c1># 在 Debian 系统中，默认不安装 SELinux。</span>
+</span></span><span class=line><span class=cl>sudo aa-status
+</span></span><span class=line><span class=cl><span class=c1># 如果输出显示 apparmor module is loaded，表示 AppArmor 正在运行。</span>
+</span></span><span class=line><span class=cl><span class=c1># 在 Debian 系统上安装 Kubernetes 时，通常不需要关闭 AppArmor。AppArmor 与 Kubernetes 和常见容器运行时兼容，</span>
+</span></span><span class=line><span class=cl><span class=c1># 并提供额外的安全性。只有在特定情况下（如配置不当或兼容性问题）才需要关闭 AppArmor。</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=时间同步配置>时间同步配置</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 所有主机均需要操作。最小化安装系统需要安装ntpdate软件。</span>
+</span></span><span class=line><span class=cl><span class=c1># apt -y install ntpdate</span>
+</span></span><span class=line><span class=cl>crontab -l
+</span></span><span class=line><span class=cl><span class=m>0</span> */1 * * * /usr/sbin/ntpdate time1.aliyun.com
+</span></span></code></pre></td></tr></table></div></div><h4 id=升级操作系统内核>升级操作系统内核</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 所有主机均需要操作。</span>
+</span></span><span class=line><span class=cl>sudo apt update
+</span></span><span class=line><span class=cl>sudo apt upgrade
+</span></span></code></pre></td></tr></table></div></div><h4 id=配置内核转发及网桥过滤>配置内核转发及网桥过滤</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 所有主机均需要操作。</span>
+</span></span><span class=line><span class=cl><span class=c1># 添加网桥过滤及内核转发配置文件</span>
+</span></span><span class=line><span class=cl><span class=c1># cat /etc/sysctl.d/k8s.conf</span>
+</span></span><span class=line><span class=cl>net.bridge.bridge-nf-call-ip6tables <span class=o>=</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl>net.bridge.bridge-nf-call-iptables <span class=o>=</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl>net.ipv4.ip_forward <span class=o>=</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl>vm.swappiness <span class=o>=</span> <span class=m>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 加载br_netfilter模块</span>
+</span></span><span class=line><span class=cl>modprobe br_netfilter
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 查看是否加载</span>
+</span></span><span class=line><span class=cl><span class=c1># lsmod | grep br_netfilter</span>
+</span></span><span class=line><span class=cl>br_netfilter           <span class=m>22256</span>  <span class=m>0</span>
+</span></span><span class=line><span class=cl>bridge                <span class=m>151336</span>  <span class=m>1</span> br_netfilter
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 加载网桥过滤及内核转发配置文件</span>
+</span></span><span class=line><span class=cl><span class=c1># sysctl -p /etc/sysctl.d/k8s.conf</span>
+</span></span><span class=line><span class=cl>net.bridge.bridge-nf-call-ip6tables <span class=o>=</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl>net.bridge.bridge-nf-call-iptables <span class=o>=</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl>net.ipv4.ip_forward <span class=o>=</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl>vm.swappiness <span class=o>=</span> <span class=m>0</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=安装ipset及ipvsadm>安装ipset及ipvsadm</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 所有主机均需要操作。主要用于实现service转发。</span>
+</span></span><span class=line><span class=cl><span class=c1># 安装ipset及ipvsadm</span>
+</span></span><span class=line><span class=cl>apt -y install ipset ipvsadm
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 配置ipvsadm模块加载方式</span>
+</span></span><span class=line><span class=cl><span class=c1># 添加需要加载的模块，这里需要把br_netfilter也加上，减少一个配置内核转发及网桥过滤的单独服务。</span>
+</span></span><span class=line><span class=cl>cat &gt; /etc/ipvsadm.rules <span class=s>&lt;&lt;EOF
+</span></span></span><span class=line><span class=cl><span class=s>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=s>modprobe -- br_netfilter
+</span></span></span><span class=line><span class=cl><span class=s>modprobe -- ip_vs
+</span></span></span><span class=line><span class=cl><span class=s>modprobe -- ip_vs_rr
+</span></span></span><span class=line><span class=cl><span class=s>modprobe -- ip_vs_wrr
+</span></span></span><span class=line><span class=cl><span class=s>modprobe -- ip_vs_sh
+</span></span></span><span class=line><span class=cl><span class=s>modprobe -- nf_conntrack
+</span></span></span><span class=line><span class=cl><span class=s>EOF</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 授权、运行、检查是否加载</span>
+</span></span><span class=line><span class=cl>chmod <span class=m>755</span> /etc/ipvsadm.rules <span class=o>&amp;&amp;</span> bash /etc/ipvsadm.rules <span class=o>&amp;&amp;</span> lsmod <span class=p>|</span> grep -e ip_vs -e nf_conntrack
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>vim /etc/systemd/system/ipvsadm.service
+</span></span><span class=line><span class=cl><span class=c1># 将启动内容拷贝</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>Unit<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>Description</span><span class=o>=</span>IPVS Load Balancer
+</span></span><span class=line><span class=cl><span class=nv>After</span><span class=o>=</span>network.target
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>Service<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>Type</span><span class=o>=</span>oneshot
+</span></span><span class=line><span class=cl><span class=nv>ExecStart</span><span class=o>=</span>/bin/bash /etc/ipvsadm.rules
+</span></span><span class=line><span class=cl><span class=nv>ExecStop</span><span class=o>=</span>/sbin/ipvsadm -C
+</span></span><span class=line><span class=cl><span class=nv>RemainAfterExit</span><span class=o>=</span>yes
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>Install<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>WantedBy</span><span class=o>=</span>multi-user.target
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> ipvsadm
+</span></span><span class=line><span class=cl>sudo systemctl start ipvsadm
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo systemctl status ipvsadm
+</span></span></code></pre></td></tr></table></div></div><h4 id=关闭swap分区>关闭SWAP分区</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 修改完成后需要重启操作系统，如不重启，可临时关闭，命令为swapoff -a</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 永远关闭swap分区，需要重启操作系统</span>
+</span></span><span class=line><span class=cl><span class=c1># cat /etc/fstab</span>
+</span></span><span class=line><span class=cl>......
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># /dev/mapper/centos-swap swap                    swap    defaults        0 0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 在上一行中行首添加#</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=docker准备>Docker准备</h3><p>所有集群主机均需操作。
+<a class=link href=https://docker.github.net.cn/engine/install/debian/#uninstall-docker-engine target=_blank rel=noopener>Debian安装docker官网参考</a></p><h4 id=卸载已安装decker>卸载已安装decker</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo apt-get purge docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-ce-rootless-extras
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo rm -rf /var/lib/docker
+</span></span><span class=line><span class=cl>sudo rm -rf /var/lib/containerd
+</span></span></code></pre></td></tr></table></div></div><h4 id=安装docker>安装docker</h4><p><a class=link href="https://developer.aliyun.com/mirror/docker-ce?spm=a2c6h.13651102.0.0.57e31b11LDVOCk" target=_blank rel=noopener>阿里云docker源及安装配置参考</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># step 1: 安装必要的一些系统工具</span>
+</span></span><span class=line><span class=cl>sudo apt-get update
+</span></span><span class=line><span class=cl>sudo apt-get -y install ca-certificates curl gnupg
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># step 2: 信任 Docker 的 GPG 公钥</span>
+</span></span><span class=line><span class=cl>sudo install -m <span class=m>0755</span> -d /etc/apt/keyrings
+</span></span><span class=line><span class=cl>curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/debian/gpg <span class=p>|</span> sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+</span></span><span class=line><span class=cl>sudo chmod a+r /etc/apt/keyrings/docker.gpg
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Step 3: 写入软件源信息</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  <span class=s2>&#34;deb [arch=</span><span class=k>$(</span>dpkg --print-architecture<span class=k>)</span><span class=s2> signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.aliyun.com/docker-ce/linux/debian \
+</span></span></span><span class=line><span class=cl><span class=s2>  &#34;</span><span class=k>$(</span>. /etc/os-release <span class=o>&amp;&amp;</span> <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$VERSION_CODENAME</span><span class=s2>&#34;</span><span class=k>)</span><span class=s2>&#34; stable&#34;</span> <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Step 4: 安装Docker</span>
+</span></span><span class=line><span class=cl>sudo apt-get update
+</span></span><span class=line><span class=cl>sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+</span></span></code></pre></td></tr></table></div></div><h4 id=修改cgroup方式>修改cgroup方式</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 在/etc/docker/daemon.json添加如下内容</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># cat /etc/docker/daemon.json</span>
+</span></span><span class=line><span class=cl><span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;exec-opts&#34;</span>: <span class=o>[</span><span class=s2>&#34;native.cgroupdriver=systemd&#34;</span><span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重启docker</span>
+</span></span><span class=line><span class=cl>systemctl restart docker
+</span></span></code></pre></td></tr></table></div></div><h4 id=安装cri-dockerd>安装cri-dockerd</h4><p><a class=link href=https://github.com/Mirantis/cri-dockerd/releases target=_blank rel=noopener>Releases · Mirantis/cri-dockerd</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 每个节点都安装</span>
+</span></span><span class=line><span class=cl>wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.17/cri-dockerd_0.3.17.3-0.debian-bookworm_amd64.deb
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>dpkg -i cri-dockerd_0.3.17.3-0.debian-bookworm_amd64.deb
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>dpkg -l <span class=p>|</span> grep cri-docker
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># vim /usr/lib/systemd/system/cri-docker.service</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 修改第10行内容</span>
+</span></span><span class=line><span class=cl><span class=c1># --pod-infra-container-image：指定 Kubernetes 使用的 pause 容器镜像，确保 Pod 的基础功能正常运行。</span>
+</span></span><span class=line><span class=cl><span class=c1># --container-runtime-endpoint：指定 cri-docker 与容器运行时的通信方式，确保 Kubernetes 能够管理容器。</span>
+</span></span><span class=line><span class=cl><span class=nv>ExecStart</span><span class=o>=</span>/usr/bin/cri-dockerd --pod-infra-container-image<span class=o>=</span>registry.k8s.io/pause:3.9 --container-runtime-endpoint fd://
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo systemctl start cri-docker
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> cri-docker
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo systemctl status cri-docker
+</span></span></code></pre></td></tr></table></div></div><h3 id=kubernetes-128x--集群部署>kubernetes 1.28.X 集群部署</h3><h4 id=集群软件及版本说明>集群软件及版本说明</h4><div class=table-wrapper><table><thead><tr><th></th><th>kubeadm</th><th>kubelet</th><th>kubectl</th></tr></thead><tbody><tr><td>版本</td><td>1.28.X</td><td>1.28.X</td><td>1.28.X</td></tr><tr><td>安装位置</td><td>集群所有主机</td><td>集群所有主机</td><td>集群所有主机</td></tr><tr><td>作用</td><td>初始化集群、管理集群等</td><td>用于接收api-server指令，对pod生命周期进行管理</td><td>集群应用命令行管理工具</td></tr></tbody></table></div><h4 id=阿里源安装集群软件>阿里源安装集群软件</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># debian 系统安装</span>
+</span></span><span class=line><span class=cl>apt-get update <span class=o>&amp;&amp;</span> apt-get install -y apt-transport-https
+</span></span><span class=line><span class=cl>curl -fsSL https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.28/deb/Release.key <span class=p>|</span>
+</span></span><span class=line><span class=cl>    gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.28/deb/ /&#34;</span> <span class=p>|</span>
+</span></span><span class=line><span class=cl>    tee /etc/apt/sources.list.d/kubernetes.list
+</span></span><span class=line><span class=cl>apt-get update
+</span></span><span class=line><span class=cl>apt-get install -y kubelet kubeadm kubectl
+</span></span></code></pre></td></tr></table></div></div><h4 id=配置kubelet>配置kubelet</h4><p>为了实现docker使用的cgroupdriver与kubelet使用的cgroup的一致性，建议修改如下文件内容。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># vim /etc/sysconfig/kubelet</span>
+</span></span><span class=line><span class=cl><span class=nv>KUBELET_EXTRA_ARGS</span><span class=o>=</span><span class=s2>&#34;--cgroup-driver=systemd&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># debian 系统 /etc/default/kubelet</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>systemctl <span class=nb>enable</span> kubelet
+</span></span></code></pre></td></tr></table></div></div><h4 id=集群镜像准备>集群镜像准备</h4><blockquote><p><strong>必须科学上网，否则都是徒劳</strong></p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 查看要下载的镜像信息</span>
+</span></span><span class=line><span class=cl>kubeadm config images list
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用下面的命令进行镜像下载</span>
+</span></span><span class=line><span class=cl>kubeadm config images pull  --cri-socket unix:///var/run/cri-dockerd.sock
+</span></span></code></pre></td></tr></table></div></div><h4 id=集群初始化>集群初始化</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubeadm init --kubernetes-version<span class=o>=</span>v1.28.15 --pod-network-cidr<span class=o>=</span>10.244.0.0/16 --apiserver-advertise-address<span class=o>=</span>192.168.52.129  --cri-socket unix:///var/run/cri-dockerd.sock
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 如果不添加--cri-socket选项，则会报错，内容如下：</span>
+</span></span><span class=line><span class=cl><span class=c1># Found multiple CRI endpoints on the host. Please define which one do you wish to use by setting the &#39;criSocket&#39; field in the kubeadm configuration file: unix:///var/run/containerd/containerd.sock, unix:///var/run/cri-dockerd.sock</span>
+</span></span><span class=line><span class=cl><span class=c1># To see the stack trace of this error execute with --v=5 or higher</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 配置输出</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>init<span class=o>]</span> Using Kubernetes version: v1.28.15
+</span></span><span class=line><span class=cl><span class=o>[</span>preflight<span class=o>]</span> Running pre-flight checks
+</span></span><span class=line><span class=cl><span class=o>[</span>preflight<span class=o>]</span> Pulling images required <span class=k>for</span> setting up a Kubernetes cluster
+</span></span><span class=line><span class=cl><span class=o>[</span>preflight<span class=o>]</span> This might take a minute or two, depending on the speed of your internet connection
+</span></span><span class=line><span class=cl><span class=o>[</span>preflight<span class=o>]</span> You can also perform this action in beforehand using <span class=s1>&#39;kubeadm config images pull&#39;</span>
+</span></span><span class=line><span class=cl>W0504 12:48:00.026524    <span class=m>2144</span> checks.go:835<span class=o>]</span> detected that the sandbox image <span class=s2>&#34;registry.k8s.io/pause:3.8&#34;</span> of the container runtime is inconsistent with that used by kubeadm. It is recommended that using <span class=s2>&#34;registry.k8s.io/pause:3.9&#34;</span> as the CRI sandbox image.
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Using certificateDir folder <span class=s2>&#34;/etc/kubernetes/pki&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Generating <span class=s2>&#34;ca&#34;</span> certificate and key
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Generating <span class=s2>&#34;apiserver&#34;</span> certificate and key
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> apiserver serving cert is signed <span class=k>for</span> DNS names <span class=o>[</span>kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local master01<span class=o>]</span> and IPs <span class=o>[</span>10.96.0.1 192.168.52.129<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Generating <span class=s2>&#34;apiserver-kubelet-client&#34;</span> certificate and key
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Generating <span class=s2>&#34;front-proxy-ca&#34;</span> certificate and key
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Generating <span class=s2>&#34;front-proxy-client&#34;</span> certificate and key
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Generating <span class=s2>&#34;etcd/ca&#34;</span> certificate and key
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Generating <span class=s2>&#34;etcd/server&#34;</span> certificate and key
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> etcd/server serving cert is signed <span class=k>for</span> DNS names <span class=o>[</span>localhost master01<span class=o>]</span> and IPs <span class=o>[</span>192.168.52.129 127.0.0.1 ::1<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Generating <span class=s2>&#34;etcd/peer&#34;</span> certificate and key
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> etcd/peer serving cert is signed <span class=k>for</span> DNS names <span class=o>[</span>localhost master01<span class=o>]</span> and IPs <span class=o>[</span>192.168.52.129 127.0.0.1 ::1<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Generating <span class=s2>&#34;etcd/healthcheck-client&#34;</span> certificate and key
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Generating <span class=s2>&#34;apiserver-etcd-client&#34;</span> certificate and key
+</span></span><span class=line><span class=cl><span class=o>[</span>certs<span class=o>]</span> Generating <span class=s2>&#34;sa&#34;</span> key and public key
+</span></span><span class=line><span class=cl><span class=o>[</span>kubeconfig<span class=o>]</span> Using kubeconfig folder <span class=s2>&#34;/etc/kubernetes&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>kubeconfig<span class=o>]</span> Writing <span class=s2>&#34;admin.conf&#34;</span> kubeconfig file
+</span></span><span class=line><span class=cl><span class=o>[</span>kubeconfig<span class=o>]</span> Writing <span class=s2>&#34;kubelet.conf&#34;</span> kubeconfig file
+</span></span><span class=line><span class=cl><span class=o>[</span>kubeconfig<span class=o>]</span> Writing <span class=s2>&#34;controller-manager.conf&#34;</span> kubeconfig file
+</span></span><span class=line><span class=cl><span class=o>[</span>kubeconfig<span class=o>]</span> Writing <span class=s2>&#34;scheduler.conf&#34;</span> kubeconfig file
+</span></span><span class=line><span class=cl><span class=o>[</span>etcd<span class=o>]</span> Creating static Pod manifest <span class=k>for</span> <span class=nb>local</span> etcd in <span class=s2>&#34;/etc/kubernetes/manifests&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>control-plane<span class=o>]</span> Using manifest folder <span class=s2>&#34;/etc/kubernetes/manifests&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>control-plane<span class=o>]</span> Creating static Pod manifest <span class=k>for</span> <span class=s2>&#34;kube-apiserver&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>control-plane<span class=o>]</span> Creating static Pod manifest <span class=k>for</span> <span class=s2>&#34;kube-controller-manager&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>control-plane<span class=o>]</span> Creating static Pod manifest <span class=k>for</span> <span class=s2>&#34;kube-scheduler&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>kubelet-start<span class=o>]</span> Writing kubelet environment file with flags to file <span class=s2>&#34;/var/lib/kubelet/kubeadm-flags.env&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>kubelet-start<span class=o>]</span> Writing kubelet configuration to file <span class=s2>&#34;/var/lib/kubelet/config.yaml&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>kubelet-start<span class=o>]</span> Starting the kubelet
+</span></span><span class=line><span class=cl><span class=o>[</span>wait-control-plane<span class=o>]</span> Waiting <span class=k>for</span> the kubelet to boot up the control plane as static Pods from directory <span class=s2>&#34;/etc/kubernetes/manifests&#34;</span>. This can take up to 4m0s
+</span></span><span class=line><span class=cl><span class=o>[</span>apiclient<span class=o>]</span> All control plane components are healthy after 21.505666 seconds
+</span></span><span class=line><span class=cl><span class=o>[</span>upload-config<span class=o>]</span> Storing the configuration used in ConfigMap <span class=s2>&#34;kubeadm-config&#34;</span> in the <span class=s2>&#34;kube-system&#34;</span> Namespace
+</span></span><span class=line><span class=cl><span class=o>[</span>kubelet<span class=o>]</span> Creating a ConfigMap <span class=s2>&#34;kubelet-config&#34;</span> in namespace kube-system with the configuration <span class=k>for</span> the kubelets in the cluster
+</span></span><span class=line><span class=cl><span class=o>[</span>upload-certs<span class=o>]</span> Skipping phase. Please see --upload-certs
+</span></span><span class=line><span class=cl><span class=o>[</span>mark-control-plane<span class=o>]</span> Marking the node master01 as control-plane by adding the labels: <span class=o>[</span>node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>mark-control-plane<span class=o>]</span> Marking the node master01 as control-plane by adding the taints <span class=o>[</span>node-role.kubernetes.io/control-plane:NoSchedule<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>bootstrap-token<span class=o>]</span> Using token: o4l5gb.8jem7v7x9upd376t
+</span></span><span class=line><span class=cl><span class=o>[</span>bootstrap-token<span class=o>]</span> Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+</span></span><span class=line><span class=cl><span class=o>[</span>bootstrap-token<span class=o>]</span> Configured RBAC rules to allow Node Bootstrap tokens to get nodes
+</span></span><span class=line><span class=cl><span class=o>[</span>bootstrap-token<span class=o>]</span> Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order <span class=k>for</span> nodes to get long term certificate credentials
+</span></span><span class=line><span class=cl><span class=o>[</span>bootstrap-token<span class=o>]</span> Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+</span></span><span class=line><span class=cl><span class=o>[</span>bootstrap-token<span class=o>]</span> Configured RBAC rules to allow certificate rotation <span class=k>for</span> all node client certificates in the cluster
+</span></span><span class=line><span class=cl><span class=o>[</span>bootstrap-token<span class=o>]</span> Creating the <span class=s2>&#34;cluster-info&#34;</span> ConfigMap in the <span class=s2>&#34;kube-public&#34;</span> namespace
+</span></span><span class=line><span class=cl><span class=o>[</span>kubelet-finalize<span class=o>]</span> Updating <span class=s2>&#34;/etc/kubernetes/kubelet.conf&#34;</span> to point to a rotatable kubelet client certificate and key
+</span></span><span class=line><span class=cl><span class=o>[</span>addons<span class=o>]</span> Applied essential addon: CoreDNS
+</span></span><span class=line><span class=cl><span class=o>[</span>addons<span class=o>]</span> Applied essential addon: kube-proxy
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Your Kubernetes control-plane has initialized successfully!
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>To start using your cluster, you need to run the following as a regular user:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  mkdir -p <span class=nv>$HOME</span>/.kube
+</span></span><span class=line><span class=cl>  sudo cp -i /etc/kubernetes/admin.conf <span class=nv>$HOME</span>/.kube/config
+</span></span><span class=line><span class=cl>  sudo chown <span class=k>$(</span>id -u<span class=k>)</span>:<span class=k>$(</span>id -g<span class=k>)</span> <span class=nv>$HOME</span>/.kube/config
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Alternatively, <span class=k>if</span> you are the root user, you can run:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nb>export</span> <span class=nv>KUBECONFIG</span><span class=o>=</span>/etc/kubernetes/admin.conf
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>You should now deploy a pod network to the cluster.
+</span></span><span class=line><span class=cl>Run <span class=s2>&#34;kubectl apply -f [podnetwork].yaml&#34;</span> with one of the options listed at:
+</span></span><span class=line><span class=cl>  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Then you can join any number of worker nodes by running the following on each as root:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>kubeadm join 192.168.52.129:6443 --token ghwg0j.hwc8l4o3h8j65le4 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>        --discovery-token-ca-cert-hash sha256:31ae1608dded0e8a442eaa653e52fc371f46bcbe3b047aa4a7a0a218d2601a50
+</span></span></code></pre></td></tr></table></div></div><h4 id=集群应用客户端管理集群文件准备>集群应用客户端管理集群文件准备</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 根据提示执行命令</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># mkdir -p $HOME/.kube</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># chown $(id -u):$(id -g) $HOME/.kube/config</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># export KUBECONFIG=/etc/kubernetes/admin.conf</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=集群网络插件部署-calico>集群网络插件部署 calico</h4><blockquote><p>使用calico部署集群网络</p><p>安装参考网址：<a class=link href=https://docs.tigera.io/calico/latest/getting-started/kubernetes/k8s-single-node target=_blank rel=noopener>Tutorial: Install Calico on single-host k8s cluster | Calico Documentation</a></p></blockquote><p><img src=/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/image-calico%E5%AE%89%E8%A3%85.png width=2346 height=1322 srcset="/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/image-calico%E5%AE%89%E8%A3%85_hu_fb582bdbf774394c.png 480w, /p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/image-calico%E5%AE%89%E8%A3%85_hu_7f9ae086208c15bd.png 1024w" loading=lazy alt=image-calico安装 class=gallery-image data-flex-grow=177 data-flex-basis=425px></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 应用operator资源清单文件</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/tigera-operator.yaml</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 下载自定义资源文件</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># wget https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/custom-resources.yaml</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 修改配置</span>
+</span></span><span class=line><span class=cl><span class=c1># 修改文件第13行，修改为使用kubeadm init ----pod-network-cidr对应的IP地址段</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># vim custom-resources.yaml</span>
+</span></span><span class=line><span class=cl>......
+</span></span><span class=line><span class=cl> <span class=m>11</span>     ipPools:
+</span></span><span class=line><span class=cl> <span class=m>12</span>     - blockSize: <span class=m>26</span>
+</span></span><span class=line><span class=cl> <span class=m>13</span>       cidr: 10.244.0.0/16 
+</span></span><span class=line><span class=cl> <span class=m>14</span>       encapsulation: VXLANCrossSubnet
+</span></span><span class=line><span class=cl>......
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 应用资源清单文件</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl create -f custom-resources.yaml</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 监视calico-sysem命名空间中pod运行情况</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># watch kubectl get pods -n calico-system</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>Wait until each pod has the <code>STATUS</code> of <code>Running</code>.</p><p>1、科学上网很重要</p><p>2、重启虚机，重启主机，科学上网断开重连</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 已经全部运行</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pods -n calico-system</span>
+</span></span><span class=line><span class=cl>NAME                                       READY   STATUS    RESTARTS       AGE
+</span></span><span class=line><span class=cl>calico-kube-controllers-789b9578b6-296xf   1/1     Running   <span class=m>11</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d21h
+</span></span><span class=line><span class=cl>calico-node-hrqlr                          1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>calico-node-l7dhd                          1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>calico-node-vll2x                          1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>calico-typha-5dd4d5c669-49svd              1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>calico-typha-5dd4d5c669-7mcsb              1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>csi-node-driver-fcx7c                      2/2     Running   <span class=m>10</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d19h
+</span></span><span class=line><span class=cl>csi-node-driver-gwsql                      2/2     Running   <span class=m>10</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d21h
+</span></span><span class=line><span class=cl>csi-node-driver-qlx46                      2/2     Running   <span class=m>10</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d19h
+</span></span><span class=line><span class=cl>goldmane-8456f8bf4d-vdc4h                  1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d21h
+</span></span><span class=line><span class=cl>whisker-594579fbdd-dtbjt                   2/2     Running   <span class=m>10</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d14h
+</span></span></code></pre></td></tr></table></div></div><h4 id=集群工作节点添加>集群工作节点添加</h4><blockquote><p>因容器镜像下载较慢，可能会导致报错，主要错误为没有准备好cni（集群网络插件），如有网络，请耐心等待即可。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-worker01 ~<span class=o>]</span><span class=c1># kubeadm join 192.168.52.129:6443 --token ghwg0j.hwc8l4o3h8j65le4 \</span>
+</span></span><span class=line><span class=cl>        --discovery-token-ca-cert-hash sha256:31ae1608dded0e8a442eaa653e52fc371f46bcbe3b047aa4a7a0a218d2601a50
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-worker02 ~<span class=o>]</span><span class=c1># kubeadm join 192.168.52.129:6443 --token ghwg0j.hwc8l4o3h8j65le4 \</span>
+</span></span><span class=line><span class=cl>        --discovery-token-ca-cert-hash sha256:31ae1608dded0e8a442eaa653e52fc371f46bcbe3b047aa4a7a0a218d2601a50
+</span></span></code></pre></td></tr></table></div></div><h3 id=验证集群可用性>验证集群可用性</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 查看所有的节点</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get nodes</span>
+</span></span><span class=line><span class=cl>NAME           STATUS   ROLES           AGE     VERSION
+</span></span><span class=line><span class=cl>k8s-master01   Ready    control-plane   2d22h   v1.28.15
+</span></span><span class=line><span class=cl>k8s-worker01   Ready    &lt;none&gt;          2d19h   v1.28.15
+</span></span><span class=line><span class=cl>k8s-worker02   Ready    &lt;none&gt;          2d19h   v1.28.15
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 查看集群健康情况</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get cs</span>
+</span></span><span class=line><span class=cl>Warning: v1 ComponentStatus is deprecated in v1.19+
+</span></span><span class=line><span class=cl>NAME                 STATUS    MESSAGE   ERROR
+</span></span><span class=line><span class=cl>controller-manager   Healthy   ok
+</span></span><span class=line><span class=cl>scheduler            Healthy   ok
+</span></span><span class=line><span class=cl>etcd-0               Healthy   ok
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 查看kubernetes集群pod运行情况</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pods -n kube-system</span>
+</span></span><span class=line><span class=cl>NAME                                   READY   STATUS    RESTARTS       AGE
+</span></span><span class=line><span class=cl>coredns-5dd5756b68-gbgsh               1/1     Running   <span class=m>11</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d22h
+</span></span><span class=line><span class=cl>coredns-5dd5756b68-pm85d               1/1     Running   <span class=m>11</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d22h
+</span></span><span class=line><span class=cl>etcd-k8s-master01                      1/1     Running   <span class=m>11</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d22h
+</span></span><span class=line><span class=cl>kube-apiserver-k8s-master01            1/1     Running   <span class=m>12</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d22h
+</span></span><span class=line><span class=cl>kube-controller-manager-k8s-master01   1/1     Running   <span class=m>11</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d22h
+</span></span><span class=line><span class=cl>kube-proxy-h7s9b                       1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>kube-proxy-qt8px                       1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>kube-proxy-wlvrg                       1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>kube-scheduler-k8s-master01            1/1     Running   <span class=m>11</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d22h
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 再次查看calico-system命名空间中pod运行情况。</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pods -n calico-system</span>
+</span></span><span class=line><span class=cl>NAME                                       READY   STATUS    RESTARTS       AGE
+</span></span><span class=line><span class=cl>calico-kube-controllers-789b9578b6-296xf   1/1     Running   <span class=m>11</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d22h
+</span></span><span class=line><span class=cl>calico-node-hrqlr                          1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>calico-node-l7dhd                          1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>calico-node-vll2x                          1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>calico-typha-5dd4d5c669-49svd              1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>calico-typha-5dd4d5c669-7mcsb              1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d14h
+</span></span><span class=line><span class=cl>csi-node-driver-fcx7c                      2/2     Running   <span class=m>10</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d19h
+</span></span><span class=line><span class=cl>csi-node-driver-gwsql                      2/2     Running   <span class=m>10</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d22h
+</span></span><span class=line><span class=cl>csi-node-driver-qlx46                      2/2     Running   <span class=m>10</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d19h
+</span></span><span class=line><span class=cl>goldmane-8456f8bf4d-vdc4h                  1/1     Running   <span class=m>5</span> <span class=o>(</span>21h ago<span class=o>)</span>    2d22h
+</span></span><span class=line><span class=cl>whisker-594579fbdd-dtbjt                   2/2     Running   <span class=m>10</span> <span class=o>(</span>21h ago<span class=o>)</span>   2d14h
+</span></span></code></pre></td></tr></table></div></div><h2 id=环境准备过程中问题排查>环境准备过程中问题排查</h2><h3 id=ip地址配置的问题>IP地址配置的问题</h3><p><strong>/etc/network/interfaces 这个下面不要做配置，不生效.</strong></p><p>使用界面做的配置
+Debian 12 默认使用 NetworkManager 或 systemd-networkd 管理网络，而不是传统的 ifupdown 工具。
+如果 NetworkManager 或 systemd-networkd 正在管理网络接口，/etc/network/interfaces 的配置会被忽略。</p><p>以下是排查过程
+NetworkManager 正在管理该接口</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@master01:~# nmcli device status
+</span></span><span class=line><span class=cl>DEVICE  TYPE      STATE                   CONNECTION
+</span></span><span class=line><span class=cl>ens33   ethernet  connected               Wired connection <span class=m>1</span>
+</span></span><span class=line><span class=cl>lo      loopback  connected <span class=o>(</span>externally<span class=o>)</span>  lo
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 查看 systemd-networkd 是否启用</span>
+</span></span><span class=line><span class=cl>root@master01:~# systemctl status systemd-networkd
+</span></span><span class=line><span class=cl>○ systemd-networkd.service - Network Configuration
+</span></span><span class=line><span class=cl>     Loaded: loaded <span class=o>(</span>/lib/systemd/system/systemd-networkd.service<span class=p>;</span> disabled<span class=p>;</span> preset: enabled<span class=o>)</span>
+</span></span><span class=line><span class=cl>     Active: inactive <span class=o>(</span>dead<span class=o>)</span>
+</span></span><span class=line><span class=cl>TriggeredBy: ○ systemd-networkd.socket
+</span></span><span class=line><span class=cl>       Docs: man:systemd-networkd.service<span class=o>(</span>8<span class=o>)</span>
+</span></span><span class=line><span class=cl>             man:org.freedesktop.network1<span class=o>(</span>5<span class=o>)</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=虚机重启后ipvs和br_netfilter未被加载>虚机重启后，ipvs和br_netfilter未被加载</h3><p>虚机重启后，需要重新加载<code>br_netfilter</code>模块。</p><p>将 modprobe &ndash; br_netfilter 命令加入到 /etc/ipvsadm.rules</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>vim /etc/systemd/system/ipvsadm.service
+</span></span><span class=line><span class=cl><span class=c1># 将启动内容拷贝</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>Unit<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>Description</span><span class=o>=</span>IPVS Load Balancer
+</span></span><span class=line><span class=cl><span class=nv>After</span><span class=o>=</span>network.target
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>Service<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>Type</span><span class=o>=</span>oneshot
+</span></span><span class=line><span class=cl><span class=c1># 启动时不能执行这条命令：/sbin/ipvsadm-restore &lt; /etc/ipvsadm.rules</span>
+</span></span><span class=line><span class=cl><span class=c1># 应该使用bash执行相应的规则文件</span>
+</span></span><span class=line><span class=cl><span class=nv>ExecStart</span><span class=o>=</span>/bin/bash /etc/ipvsadm.rules
+</span></span><span class=line><span class=cl><span class=nv>ExecStop</span><span class=o>=</span>/sbin/ipvsadm -C
+</span></span><span class=line><span class=cl><span class=nv>RemainAfterExit</span><span class=o>=</span>yes
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>Install<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>WantedBy</span><span class=o>=</span>multi-user.target
+</span></span></code></pre></td></tr></table></div></div><h3 id=error-cri-container-runtime-is-not-running>[ERROR CRI]: container runtime is not running</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 初始化时报这个错</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>init<span class=o>]</span> Using Kubernetes version: v1.28.15
+</span></span><span class=line><span class=cl><span class=o>[</span>preflight<span class=o>]</span> Running pre-flight checks
+</span></span><span class=line><span class=cl>error execution phase preflight: <span class=o>[</span>preflight<span class=o>]</span> Some fatal errors occurred:
+</span></span><span class=line><span class=cl>        <span class=o>[</span>ERROR CRI<span class=o>]</span>: container runtime is not running: output: <span class=nv>time</span><span class=o>=</span><span class=s2>&#34;2025-05-04T11:52:11-04:00&#34;</span> <span class=nv>level</span><span class=o>=</span>fatal <span class=nv>msg</span><span class=o>=</span><span class=s2>&#34;validate service connection: validate CRI v1 runtime API for endpoint \&#34;unix:///var/run/containerd/containerd.sock\&#34;: rpc error: code = Unimplemented desc = unknown service runtime.v1.RuntimeService&#34;</span>
+</span></span><span class=line><span class=cl>, error: <span class=nb>exit</span> status <span class=m>1</span>
+</span></span><span class=line><span class=cl>        <span class=o>[</span>ERROR FileContent--proc-sys-net-bridge-bridge-nf-call-iptables<span class=o>]</span>: /proc/sys/net/bridge/bridge-nf-call-iptables does not exist
+</span></span><span class=line><span class=cl><span class=o>[</span>preflight<span class=o>]</span> If you know what you are doing, you can make a check non-fatal with <span class=sb>`</span>--ignore-preflight-errors<span class=o>=</span>...<span class=sb>`</span>
+</span></span><span class=line><span class=cl>To see the stack trace of this error execute with --v<span class=o>=</span><span class=m>5</span> or higher
+</span></span></code></pre></td></tr></table></div></div><p>排查过程及解决方法，内核转发及网桥过滤模块没有加载，统一在<code>主机配置 > 安装ipset及ipvsadm</code>步骤进行优化了。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 解决容器运行时问题</span>
+</span></span><span class=line><span class=cl><span class=c1># (1) 检查 containerd.md 是否已安装并运行</span>
+</span></span><span class=line><span class=cl><span class=c1># 运行以下命令检查 containerd.md 的状态：</span>
+</span></span><span class=line><span class=cl>sudo systemctl status containerd.md
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># (2) 验证 containerd.md 配置</span>
+</span></span><span class=line><span class=cl><span class=c1># 确保 containerd.md 的配置文件（通常位于 /etc/containerd.md/config.toml）正确配置了 CRI（容器运行时接口）。运行以下命令生成默认配置（如果配置文件不存在）：</span>
+</span></span><span class=line><span class=cl>sudo containerd.md config default <span class=p>|</span> sudo tee /etc/containerd.md/config.toml
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># (3) 重启 containerd.md</span>
+</span></span><span class=line><span class=cl><span class=c1># 修改配置后，重启 containerd.md：</span>
+</span></span><span class=line><span class=cl>sudo systemctl restart containerd.md
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># (4) 验证 containerd.md 是否支持 CRI</span>
+</span></span><span class=line><span class=cl><span class=c1># 运行以下命令验证 containerd.md 是否支持 CRI：</span>
+</span></span><span class=line><span class=cl>sudo ctr version
+</span></span><span class=line><span class=cl><span class=c1># 如果输出显示版本信息，说明 containerd.md 已正确配置。</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 解决 /proc/sys/net/bridge/bridge-nf-call-iptables 问题</span>
+</span></span><span class=line><span class=cl><span class=c1># (1) 加载 br_netfilter 内核模块</span>
+</span></span><span class=line><span class=cl><span class=c1># 运行以下命令加载 br_netfilter 模块：</span>
+</span></span><span class=line><span class=cl>sudo modprobe br_netfilter
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># (2) 确保模块已加载</span>
+</span></span><span class=line><span class=cl><span class=c1># 运行以下命令检查模块是否已加载：</span>
+</span></span><span class=line><span class=cl>lsmod <span class=p>|</span> grep br_netfilter
+</span></span><span class=line><span class=cl><span class=c1># 如果输出显示 br_netfilter，说明模块已加载。</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># (3) 确保 /proc/sys/net/bridge/bridge-nf-call-iptables 存在</span>
+</span></span><span class=line><span class=cl><span class=c1># 运行以下命令检查文件是否存在：</span>
+</span></span><span class=line><span class=cl>cat /proc/sys/net/bridge/bridge-nf-call-iptables
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 如果文件不存在，可能是内核未正确配置。可以手动创建并设置值：</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=m>1</span> <span class=p>|</span> sudo tee /proc/sys/net/bridge/bridge-nf-call-iptables
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># (4) 永久生效</span>
+</span></span><span class=line><span class=cl><span class=c1># 为了确保每次重启后配置仍然有效，编辑 /etc/sysctl.conf 文件：</span>
+</span></span><span class=line><span class=cl>sudo vim /etc/sysctl.conf
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 添加以下内容：</span>
+</span></span><span class=line><span class=cl>net.bridge.bridge-nf-call-iptables <span class=o>=</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl>net.bridge.bridge-nf-call-ip6tables <span class=o>=</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=c1># 保存并退出，然后应用配置：</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo sysctl --system
+</span></span></code></pre></td></tr></table></div></div><h3 id=kubectl-get-pods-状态未running>kubectl get pods 状态未Running</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl describe pod calico-apiserver-5b9b48d497-5ck29 -n calico-apiserver</span>
+</span></span><span class=line><span class=cl>network is not ready: container runtime network not ready: <span class=nv>NetworkReady</span><span class=o>=</span><span class=nb>false</span> reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 这个目录下没有配置文件，说明没有安装 CNI</span>
+</span></span><span class=line><span class=cl>ls /etc/cni/net.d/
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>wget https://docs.projectcalico.org/manifests/calico.yaml
+</span></span><span class=line><span class=cl><span class=c1># 修改配置文件中的这个配置项</span>
+</span></span><span class=line><span class=cl>- name: CALICO_IPV4POOL_CIDR
+</span></span><span class=line><span class=cl>  value: <span class=s2>&#34;10.244.0.0/16&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>kubectl apply -f calico.yaml
+</span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/tags/k8s/>K8S</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 Jul 22, 2024 00:00 UTC</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/><div class=article-image><img src=/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 3.0 Kubernetes集群核心概念Pod" data-key="3.0 Kubernetes集群核心概念Pod" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>3.0 Kubernetes集群核心概念Pod</h2></div></a></article><article class=has-image><a href=/p/4.0-kubernetes%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5controller/><div class=article-image><img src=/p/4.0-kubernetes%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5controller/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 4.0 kubernetes核心概念Controller" data-key="4.0 kubernetes核心概念Controller" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>4.0 kubernetes核心概念Controller</h2></div></a></article><article class=has-image><a href=/p/2.0-kubernetes%E9%9B%86%E7%BE%A4node%E7%AE%A1%E7%90%86/><div class=article-image><img src=/p/2.0-kubernetes%E9%9B%86%E7%BE%A4node%E7%AE%A1%E7%90%86/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 2.0 Kubernetes集群Node管理" data-key="2.0 Kubernetes集群Node管理" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>2.0 Kubernetes集群Node管理</h2></div></a></article><article class=has-image><a href=/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/><div class=article-image><img src=/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 1.1 Kubernetes集群UI及主机资源监控" data-key="1.1 Kubernetes集群UI及主机资源监控" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>1.1 Kubernetes集群UI及主机资源监控</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2025 暮鼓晨钟</section><section class=powerby>工欲善其事，必先利其器。盛世之牛马，乱世之炮灰；平安榨其身，战时用其命。<br>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

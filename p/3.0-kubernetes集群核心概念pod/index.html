@@ -1,0 +1,538 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="Kubernetes集群中Pod的管理（创建，查看，删除），调度，生命周期等内容"><title>3.0 Kubernetes集群核心概念Pod</title>
+<link rel=canonical href=https://caijemmy.github.io/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/><link rel=stylesheet href=/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css><meta property='og:title' content="3.0 Kubernetes集群核心概念Pod"><meta property='og:description' content="Kubernetes集群中Pod的管理（创建，查看，删除），调度，生命周期等内容"><meta property='og:url' content='https://caijemmy.github.io/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/'><meta property='og:site_name' content='暮鼓晨钟'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='K8S'><meta property='article:published_time' content='2024-07-24T00:00:00+00:00'><meta property='article:modified_time' content='2024-07-24T00:00:00+00:00'><meta property='og:image' content='https://caijemmy.github.io/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/cover.jpg'><meta name=twitter:title content="3.0 Kubernetes集群核心概念Pod"><meta name=twitter:description content="Kubernetes集群中Pod的管理（创建，查看，删除），调度，生命周期等内容"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://caijemmy.github.io/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/cover.jpg'><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu_14da0899299e31c4.png width=300 height=330 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>暮鼓晨钟</a></h1><h2 class=site-description>生如蝼蚁不敢有鸿鹄之志，命似纸薄岂能生青云之心。</h2></div></header><ol class=menu-social><li><a href=https://github.com/CaiJemmy/CaiNiaoTool target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首页</span></a></li><li><a href=/category/><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg>
+<span>分类</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/%E9%93%BE%E6%8E%A5/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#工作负载workloads>工作负载(workloads)</a></li><li><a href=#pod介绍>pod介绍</a><ol><li><a href=#查看pod方法>查看pod方法</a></li><li><a href=#pod的yaml资源清单格式>pod的YAML资源清单格式</a></li></ol></li><li><a href=#pod创建与验证>pod创建与验证</a><ol><li><a href=#命令创建podv118变化>命令创建pod(v1.18变化)</a><ol><li><a href=#创建一个名为pod-nginx的pod>创建一个名为pod-nginx的pod</a></li><li><a href=#验证>验证</a></li></ol></li><li><a href=#yaml创建pod>YAML创建pod</a><ol><li><a href=#准备yaml文件>准备yaml文件</a></li><li><a href=#查看pod信息>查看pod信息</a></li></ol></li><li><a href=#删除pod>删除pod</a><ol><li><a href=#单个pod删除>单个pod删除</a></li><li><a href=#多个pod删除>多个pod删除</a></li></ol></li><li><a href=#镜像拉取策略>镜像拉取策略</a><ol><li><a href=#将上面的pod删除再创建使用下面命令查看信息>将上面的pod删除再创建，使用下面命令查看信息</a></li><li><a href=#修改yaml>修改YAML</a></li><li><a href=#再次删除再创建>再次删除再创建</a></li></ol></li><li><a href=#pod的标签>pod的标签</a><ol><li><a href=#通过命令管理pod标签>通过命令管理Pod标签</a></li><li><a href=#通过yaml创建pod时添加标签>通过YAML创建Pod时添加标签</a></li></ol></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/><img src=/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/cover_hu_c86b681f3fee94ff.jpg srcset="/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/cover_hu_c86b681f3fee94ff.jpg 800w, /p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/cover_hu_bea442a1395058f4.jpg 1600w" width=800 height=534 loading=lazy alt="Featured image of post 3.0 Kubernetes集群核心概念Pod"></a></div><div class=article-details><header class=article-category><a href=/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/>云原生</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/>3.0 Kubernetes集群核心概念Pod</a></h2><h3 class=article-subtitle>Kubernetes集群中Pod的管理（创建，查看，删除），调度，生命周期等内容</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jul 24, 2024</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 9 分钟</time></div></footer></div></header><section class=article-content><h1 id=kubernetes集群核心概念-pod>Kubernetes集群核心概念 Pod</h1><h2 id=工作负载workloads>工作负载(workloads)</h2><p>参考链接：<a class=link href=https://kubernetes.io/zh-cn/docs/concepts/workloads/ target=_blank rel=noopener>工作负载 | Kubernetes</a></p><p>工作负载（workload）是在kubernetes集群中运行的应用程序。无论你的工作负载是单一服务还是多个一同工作的服务构成，在kubernetes中都可以使用pod来运行它。</p><p><img src=/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/image-%E5%B7%A5%E4%BD%9C%E8%B4%9F%E8%BD%BD.png width=1911 height=845 srcset="/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/image-%E5%B7%A5%E4%BD%9C%E8%B4%9F%E8%BD%BD_hu_9eb8ce042826bc19.png 480w, /p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/image-%E5%B7%A5%E4%BD%9C%E8%B4%9F%E8%BD%BD_hu_cdc57ea1b2baf247.png 1024w" loading=lazy alt=image-工作负载 class=gallery-image data-flex-grow=226 data-flex-basis=542px></p><p>workloads分为pod与controllers</p><ul><li>pod通过控制器实现应用的运行，如何伸缩，升级等</li><li>controllers 在集群中管理pod</li><li>pod与控制器之间通过label-selector相关联，是唯一的关联方式</li></ul><p>在pod的YAML里指定pod标签</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 定义标签</span>
+</span></span><span class=line><span class=cl>  labels: 
+</span></span><span class=line><span class=cl>	app: nginx
+</span></span></code></pre></td></tr></table></div></div><p>在控制器的YAML里指定标签选择器匹配标签</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 通过标签选择器选择对应的pod</span>
+</span></span><span class=line><span class=cl>  selector:
+</span></span><span class=line><span class=cl>    matchLabels:
+</span></span><span class=line><span class=cl>      app: nginx
+</span></span></code></pre></td></tr></table></div></div><h2 id=pod介绍>pod介绍</h2><p>参考链接: <a class=link href=https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/ target=_blank rel=noopener>Pod | Kubernetes</a></p><p><img src=/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/image-pod%E6%98%AF%E4%BB%80%E4%B9%88.png width=1606 height=787 srcset="/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/image-pod%E6%98%AF%E4%BB%80%E4%B9%88_hu_b10ab4509ccdf644.png 480w, /p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/image-pod%E6%98%AF%E4%BB%80%E4%B9%88_hu_120f7edbb52a069a.png 1024w" loading=lazy alt=image-pod是什么 class=gallery-image data-flex-grow=204 data-flex-basis=489px></p><h3 id=查看pod方法>查看pod方法</h3><p>pod是一种计算资源，可以通过<code>kubectl get pod</code>来查看</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pod		# pod或pods都可以，不指定namespace,默认是名为default的namespace</span>
+</span></span><span class=line><span class=cl>No resources found in default namespace.
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pod -n kube-system</span>
+</span></span><span class=line><span class=cl>NAME                                   READY   STATUS    RESTARTS       AGE
+</span></span><span class=line><span class=cl>coredns-5dd5756b68-gbgsh               1/1     Running   <span class=m>13</span> <span class=o>(</span>17h ago<span class=o>)</span>   4d4h
+</span></span><span class=line><span class=cl>coredns-5dd5756b68-pm85d               1/1     Running   <span class=m>13</span> <span class=o>(</span>17h ago<span class=o>)</span>   4d4h
+</span></span><span class=line><span class=cl>etcd-k8s-master01                      1/1     Running   <span class=m>13</span> <span class=o>(</span>17h ago<span class=o>)</span>   4d4h
+</span></span><span class=line><span class=cl>kube-apiserver-k8s-master01            1/1     Running   <span class=m>14</span> <span class=o>(</span>17h ago<span class=o>)</span>   4d4h
+</span></span><span class=line><span class=cl>kube-controller-manager-k8s-master01   1/1     Running   <span class=m>13</span> <span class=o>(</span>17h ago<span class=o>)</span>   4d4h
+</span></span><span class=line><span class=cl>kube-proxy-h7s9b                       1/1     Running   <span class=m>7</span> <span class=o>(</span>17h ago<span class=o>)</span>    3d20h
+</span></span><span class=line><span class=cl>kube-proxy-qt8px                       1/1     Running   <span class=m>7</span> <span class=o>(</span>17h ago<span class=o>)</span>    3d20h
+</span></span><span class=line><span class=cl>kube-proxy-wlvrg                       1/1     Running   <span class=m>7</span> <span class=o>(</span>17h ago<span class=o>)</span>    3d20h
+</span></span><span class=line><span class=cl>kube-scheduler-k8s-master01            1/1     Running   <span class=m>13</span> <span class=o>(</span>17h ago<span class=o>)</span>   4d4h
+</span></span><span class=line><span class=cl>metrics-server-596474b58-697f8         1/1     Running   <span class=m>1</span> <span class=o>(</span>17h ago<span class=o>)</span>    19h
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1>#</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=pod的yaml资源清单格式>pod的YAML资源清单格式</h3><p>YAML格式查找帮助方法</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl explain namespace</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl explain pod</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl explain pod.spec</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl explain pod.spec.containers</span>
+</span></span></code></pre></td></tr></table></div></div><p>样例，及供参考。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># yaml格式的pod定义文件完整内容：</span>
+</span></span><span class=line><span class=cl>apiVersion: v1       <span class=c1>#必选，api版本号，例如v1</span>
+</span></span><span class=line><span class=cl>kind: Pod       	<span class=c1>#必选，Pod</span>
+</span></span><span class=line><span class=cl>metadata:       	<span class=c1>#必选，元数据</span>
+</span></span><span class=line><span class=cl>  name: string       <span class=c1>#必选，Pod名称</span>
+</span></span><span class=line><span class=cl>  namespace: string    <span class=c1>#Pod所属的命名空间,默认在default的namespace</span>
+</span></span><span class=line><span class=cl>  labels:     		 <span class=c1># 自定义标签</span>
+</span></span><span class=line><span class=cl>    name: string     <span class=c1>#自定义标签名字</span>
+</span></span><span class=line><span class=cl>  annotations:        <span class=c1>#自定义注释列表</span>
+</span></span><span class=line><span class=cl>    name: string
+</span></span><span class=line><span class=cl>spec:         <span class=c1>#必选，Pod中容器的详细定义(期望)</span>
+</span></span><span class=line><span class=cl>  containers:      <span class=c1>#必选，Pod中容器列表</span>
+</span></span><span class=line><span class=cl>  - name: string     <span class=c1>#必选，容器名称</span>
+</span></span><span class=line><span class=cl>    image: string    <span class=c1>#必选，容器的镜像名称</span>
+</span></span><span class=line><span class=cl>    imagePullPolicy: <span class=o>[</span>Always <span class=p>|</span> Never <span class=p>|</span> IfNotPresent<span class=o>]</span> <span class=c1>#获取镜像的策略 Alawys表示下载镜像 IfnotPresent表示优先使用本地镜像，否则下载镜像，Nerver表示仅使用本地镜像</span>
+</span></span><span class=line><span class=cl>    command: <span class=o>[</span>string<span class=o>]</span>    <span class=c1>#容器的启动命令列表，如不指定，使用打包时使用的启动命令</span>
+</span></span><span class=line><span class=cl>    args: <span class=o>[</span>string<span class=o>]</span>     <span class=c1>#容器的启动命令参数列表</span>
+</span></span><span class=line><span class=cl>    workingDir: string     <span class=c1>#容器的工作目录</span>
+</span></span><span class=line><span class=cl>    volumeMounts:    <span class=c1>#挂载到容器内部的存储卷配置</span>
+</span></span><span class=line><span class=cl>    - name: string     <span class=c1>#引用pod定义的共享存储卷的名称，需用volumes[]部分定义的的卷名</span>
+</span></span><span class=line><span class=cl>      mountPath: string    <span class=c1>#存储卷在容器内mount的绝对路径，应少于512字符</span>
+</span></span><span class=line><span class=cl>      readOnly: boolean    <span class=c1>#是否为只读模式</span>
+</span></span><span class=line><span class=cl>    ports:       <span class=c1>#需要暴露的端口库号列表</span>
+</span></span><span class=line><span class=cl>    - name: string     <span class=c1>#端口号名称</span>
+</span></span><span class=line><span class=cl>      containerPort: int   <span class=c1>#容器需要监听的端口号</span>
+</span></span><span class=line><span class=cl>      hostPort: int    <span class=c1>#容器所在主机需要监听的端口号，默认与Container相同</span>
+</span></span><span class=line><span class=cl>      protocol: string     <span class=c1>#端口协议，支持TCP和UDP，默认TCP</span>
+</span></span><span class=line><span class=cl>    env:       <span class=c1>#容器运行前需设置的环境变量列表</span>
+</span></span><span class=line><span class=cl>    - name: string     <span class=c1>#环境变量名称</span>
+</span></span><span class=line><span class=cl>      value: string    <span class=c1>#环境变量的值</span>
+</span></span><span class=line><span class=cl>    resources:       <span class=c1>#资源限制和请求的设置</span>
+</span></span><span class=line><span class=cl>      limits:      <span class=c1>#资源限制的设置</span>
+</span></span><span class=line><span class=cl>        cpu: string    <span class=c1>#Cpu的限制，单位为core数，将用于docker run --cpu-shares参数</span>
+</span></span><span class=line><span class=cl>        memory: string     <span class=c1>#内存限制，单位可以为Mib/Gib，将用于docker run --memory参数</span>
+</span></span><span class=line><span class=cl>      requests:      <span class=c1>#资源请求的设置</span>
+</span></span><span class=line><span class=cl>        cpu: string    <span class=c1>#Cpu请求，容器启动的初始可用数量</span>
+</span></span><span class=line><span class=cl>        memory: string     <span class=c1>#内存清求，容器启动的初始可用数量</span>
+</span></span><span class=line><span class=cl>    livenessProbe:     <span class=c1>#对Pod内个容器健康检查的设置，当探测无响应几次后将自动重启该容器，检查方法有exec、httpGet和tcpSocket，对一个容器只需设置其中一种方法即可</span>
+</span></span><span class=line><span class=cl>      exec:      <span class=c1>#对Pod容器内检查方式设置为exec方式</span>
+</span></span><span class=line><span class=cl>        command: <span class=o>[</span>string<span class=o>]</span>  <span class=c1>#exec方式需要制定的命令或脚本</span>
+</span></span><span class=line><span class=cl>      httpGet:       <span class=c1>#对Pod内个容器健康检查方法设置为HttpGet，需要制定Path、port</span>
+</span></span><span class=line><span class=cl>        path: string
+</span></span><span class=line><span class=cl>        port: number
+</span></span><span class=line><span class=cl>        host: string
+</span></span><span class=line><span class=cl>        scheme: string
+</span></span><span class=line><span class=cl>        HttpHeaders:
+</span></span><span class=line><span class=cl>        - name: string
+</span></span><span class=line><span class=cl>          value: string
+</span></span><span class=line><span class=cl>      tcpSocket:     <span class=c1>#对Pod内个容器健康检查方式设置为tcpSocket方式</span>
+</span></span><span class=line><span class=cl>         port: number
+</span></span><span class=line><span class=cl>       initialDelaySeconds: <span class=m>0</span>  <span class=c1>#容器启动完成后首次探测的时间，单位为秒</span>
+</span></span><span class=line><span class=cl>       timeoutSeconds: <span class=m>0</span>   <span class=c1>#对容器健康检查探测等待响应的超时时间，单位秒，默认1秒</span>
+</span></span><span class=line><span class=cl>       periodSeconds: <span class=m>0</span>    <span class=c1>#对容器监控检查的定期探测时间设置，单位秒，默认10秒一次</span>
+</span></span><span class=line><span class=cl>       successThreshold: <span class=m>0</span>
+</span></span><span class=line><span class=cl>       failureThreshold: <span class=m>0</span>
+</span></span><span class=line><span class=cl>       securityContext:
+</span></span><span class=line><span class=cl>         privileged:false
+</span></span><span class=line><span class=cl>    restartPolicy: <span class=o>[</span>Always <span class=p>|</span> Never <span class=p>|</span> OnFailure<span class=o>]</span> <span class=c1># Pod的重启策略，Always表示一旦不管以何种方式终止运行，kubelet都将重启，OnFailure表示只有Pod以非0退出码退出才重启，Nerver表示不再重启该Pod</span>
+</span></span><span class=line><span class=cl>    nodeSelector: obeject  <span class=c1># 设置NodeSelector表示将该Pod调度到包含这个label的node上，以key：value的格式指定</span>
+</span></span><span class=line><span class=cl>    imagePullSecrets:    <span class=c1>#Pull镜像时使用的secret名称，以key：secretkey格式指定</span>
+</span></span><span class=line><span class=cl>    - name: string
+</span></span><span class=line><span class=cl>    hostNetwork: <span class=nb>false</span>     <span class=c1>#是否使用主机网络模式，默认为false，如果设置为true，表示使用宿主机网络</span>
+</span></span><span class=line><span class=cl>    volumes:       <span class=c1>#在该pod上定义共享存储卷列表</span>
+</span></span><span class=line><span class=cl>    - name: string     <span class=c1>#共享存储卷名称 （volumes类型有很多种）</span>
+</span></span><span class=line><span class=cl>      emptyDir: <span class=o>{}</span>     <span class=c1>#类型为emtyDir的存储卷，与Pod同生命周期的一个临时目录。为空值</span>
+</span></span><span class=line><span class=cl>      hostPath: string     <span class=c1>#类型为hostPath的存储卷，表示挂载Pod所在宿主机的目录</span>
+</span></span><span class=line><span class=cl>        path: string     <span class=c1>#Pod所在宿主机的目录，将被用于同期中mount的目录</span>
+</span></span><span class=line><span class=cl>      secret:      <span class=c1>#类型为secret的存储卷，挂载集群与定义的secret对象到容器内部</span>
+</span></span><span class=line><span class=cl>        scretname: string  
+</span></span><span class=line><span class=cl>        items:     
+</span></span><span class=line><span class=cl>        - key: string
+</span></span><span class=line><span class=cl>          path: string
+</span></span><span class=line><span class=cl>      configMap:     <span class=c1>#类型为configMap的存储卷，挂载预定义的configMap对象到容器内部</span>
+</span></span><span class=line><span class=cl>        name: string
+</span></span><span class=line><span class=cl>        items:
+</span></span><span class=line><span class=cl>        - key: string
+</span></span><span class=line><span class=cl>          path: string
+</span></span></code></pre></td></tr></table></div></div><h2 id=pod创建与验证>pod创建与验证</h2><h3 id=命令创建podv118变化>命令创建pod(v1.18变化)</h3><ul><li>k8s之前版本中, kubectl run命令用于创建deployment控制器</li><li>在v1.18版本中, kubectl run命令改为创建pod</li></ul><h4 id=创建一个名为pod-nginx的pod>创建一个名为pod-nginx的pod</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl run nginx1 --image=nginx</span>
+</span></span><span class=line><span class=cl>pod/nginx1 created
+</span></span></code></pre></td></tr></table></div></div><h4 id=验证>验证</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pods</span>
+</span></span><span class=line><span class=cl>NAME             READY   STATUS    RESTARTS   AGE
+</span></span><span class=line><span class=cl>nginx1           1/1     Running   <span class=m>0</span>          41s
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># NAME：Pod 的名称。名称在同一命名空间内必须唯一。</span>
+</span></span><span class=line><span class=cl><span class=c1># READY：Pod 中容器的就绪状态。格式为 就绪容器数量/总容器数量。</span>
+</span></span><span class=line><span class=cl><span class=c1># STATUS：Pod 的当前状态。</span>
+</span></span><span class=line><span class=cl><span class=c1>#     常见的状态包括：</span>
+</span></span><span class=line><span class=cl><span class=c1>#     Running：Pod 中的所有容器已成功启动并正在运行。</span>
+</span></span><span class=line><span class=cl><span class=c1>#     Pending：Pod 已被调度到节点，但容器尚未启动（例如，正在拉取镜像）。</span>
+</span></span><span class=line><span class=cl><span class=c1>#     Succeeded：Pod 中的所有容器已成功完成任务并退出。</span>
+</span></span><span class=line><span class=cl><span class=c1>#     Failed：Pod 中的至少一个容器因错误退出。</span>
+</span></span><span class=line><span class=cl><span class=c1>#     CrashLoopBackOff：容器启动失败，Kubernetes 正在重试。</span>
+</span></span><span class=line><span class=cl><span class=c1>#     Unknown：无法获取 Pod 的状态（通常是由于与节点通信失败）。</span>
+</span></span><span class=line><span class=cl><span class=c1># RESTARTS：Pod 中容器的重启次数。</span>
+</span></span><span class=line><span class=cl><span class=c1># AGE：Pod 的存活时间。从 Pod 创建到当前时间的时间间隔。时间单位可以是秒（s）、分钟（m）、小时（h）或天（d）。</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=yaml创建pod>YAML创建pod</h3><h4 id=准备yaml文件>准备yaml文件</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># vim pod1.yml</span>
+</span></span><span class=line><span class=cl>apiVersion: v1					<span class=c1># api版本</span>
+</span></span><span class=line><span class=cl>kind: Pod						<span class=c1># 资源类型为Pod</span>
+</span></span><span class=line><span class=cl>metadata:						
+</span></span><span class=line><span class=cl>  name: pod-stress				<span class=c1># 自定义pod的名称</span>
+</span></span><span class=line><span class=cl>spec:
+</span></span><span class=line><span class=cl>  containers:					<span class=c1># 定义pod里包含的容器</span>
+</span></span><span class=line><span class=cl>  - name: c1					<span class=c1># 自定义pod中的容器名</span>
+</span></span><span class=line><span class=cl>    image: polinux/stress		<span class=c1># 启动容器的镜像名</span>
+</span></span><span class=line><span class=cl>    command: <span class=o>[</span><span class=s2>&#34;stress&#34;</span><span class=o>]</span>			<span class=c1># 自定义启动容器时要执行的命令(类似dockerfile里的CMD)</span>
+</span></span><span class=line><span class=cl>    args: <span class=o>[</span><span class=s2>&#34;--vm&#34;</span>, <span class=s2>&#34;1&#34;</span>, <span class=s2>&#34;--vm-bytes&#34;</span>, <span class=s2>&#34;150M&#34;</span>, <span class=s2>&#34;--vm-hang&#34;</span>, <span class=s2>&#34;1&#34;</span><span class=o>]</span> <span class=c1># 自定义启动容器执行命令的参数</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl><span class=c1># polinux/stress这个镜像用于压力测试,在启动容器时传命令与参数就是相当于分配容器运行时需要的压力</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl apply -f pod1.yml</span>
+</span></span><span class=line><span class=cl>pod/pod-stress created
+</span></span></code></pre></td></tr></table></div></div><h4 id=查看pod信息>查看pod信息</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl get pod</span>
+</span></span><span class=line><span class=cl>NAME         READY   STATUS    RESTARTS   AGE
+</span></span><span class=line><span class=cl>pod-stress   1/1     Running   <span class=m>0</span>          3m32s
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl get pod -o wide</span>
+</span></span><span class=line><span class=cl>NAME         READY   STATUS    RESTARTS   AGE     IP              NODE           NOMINATED NODE   READINESS GATES
+</span></span><span class=line><span class=cl>pod-stress   1/1     Running   <span class=m>0</span>          4m14s   10.244.69.215   k8s-worker02   &lt;none&gt;           &lt;none&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl describe pod pod-stress</span>
+</span></span><span class=line><span class=cl>Name:             pod-stress
+</span></span><span class=line><span class=cl>Namespace:        default
+</span></span><span class=line><span class=cl>......
+</span></span><span class=line><span class=cl>Events:
+</span></span><span class=line><span class=cl>  Type    Reason     Age    From               Message
+</span></span><span class=line><span class=cl>  ----    ------     ----   ----               -------
+</span></span><span class=line><span class=cl>  Normal  Scheduled  4m50s  default-scheduler  Successfully assigned default/pod-stress to k8s-worker02
+</span></span><span class=line><span class=cl>  Normal  Pulling    4m49s  kubelet            Pulling image <span class=s2>&#34;polinux/stress&#34;</span>
+</span></span><span class=line><span class=cl>  Normal  Pulled     4m38s  kubelet            Successfully pulled image <span class=s2>&#34;polinux/stress&#34;</span> in 11.549s <span class=o>(</span>11.549s including waiting<span class=o>)</span>
+</span></span><span class=line><span class=cl>  Normal  Created    4m38s  kubelet            Created container c1
+</span></span><span class=line><span class=cl>  Normal  Started    4m38s  kubelet            Started container c1
+</span></span></code></pre></td></tr></table></div></div><h3 id=删除pod>删除pod</h3><h4 id=单个pod删除>单个pod删除</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 方式1</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl delete -f pod1.yml</span>
+</span></span><span class=line><span class=cl>pod <span class=s2>&#34;pod-stress&#34;</span> deleted
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 方式2</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl delete pod pod-stress</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=多个pod删除>多个pod删除</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 方法1: 后接多个pod名</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master1 ~<span class=o>]</span><span class=c1># kubectl delete pod pod名1 pod名2 pod名3 ......</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 方法2: 通过awk截取要删除的pod名称，然后管道给xargs</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master1 ~<span class=o>]</span><span class=c1># kubectl get pods |awk &#39;NR&gt;1 {print $1}&#39; |xargs kubectl  delete pod</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 方法3: 如果要删除的pod都在同一个非default的命名空间，则可直接删除命名空间</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master1 ~<span class=o>]</span><span class=c1># kubectl delete ns xxxx</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=镜像拉取策略>镜像拉取策略</h3><p>由imagePullPolicy参数控制</p><ul><li>Always : 不管本地有没有镜像，都要从仓库中下载镜像</li><li>Never : 从来不从仓库下载镜像, 只用本地镜像,本地没有就算了</li><li>IfNotPresent: 如果本地存在就直接使用, 不存在才从仓库下载</li></ul><p>默认的策略是：</p><ul><li>当镜像标签版本是latest，默认策略就是Always</li><li>如果指定特定版本默认拉取策略就是IfNotPresent。</li></ul><h4 id=将上面的pod删除再创建使用下面命令查看信息>将上面的pod删除再创建，使用下面命令查看信息</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl delete -f pod1.yml</span>
+</span></span><span class=line><span class=cl>pod <span class=s2>&#34;pod-stress&#34;</span> deleted
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl get pods</span>
+</span></span><span class=line><span class=cl>No resources found in default namespace.
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># docker images | grep stress</span>
+</span></span><span class=line><span class=cl>polinux/stress                                  latest     df58d15b053d   <span class=m>5</span> years ago    9.74MB
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl apply -f pod1.yml</span>
+</span></span><span class=line><span class=cl>pod/pod-stress created
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl describe pod pod-stress</span>
+</span></span><span class=line><span class=cl>......
+</span></span><span class=line><span class=cl>Events:
+</span></span><span class=line><span class=cl>  Type    Reason     Age   From               Message
+</span></span><span class=line><span class=cl>  ----    ------     ----  ----               -------
+</span></span><span class=line><span class=cl>  Normal  Scheduled  26s   default-scheduler  Successfully assigned default/pod-stress to k8s-worker02
+</span></span><span class=line><span class=cl>  Normal  Pulling    25s   kubelet            Pulling image <span class=s2>&#34;polinux/stress&#34;</span>
+</span></span><span class=line><span class=cl>  Normal  Pulled     17s   kubelet            Successfully pulled image <span class=s2>&#34;polinux/stress&#34;</span> in 7.253s <span class=o>(</span>7.253s including waiting<span class=o>)</span>
+</span></span><span class=line><span class=cl>  Normal  Created    17s   kubelet            Created container c1
+</span></span><span class=line><span class=cl>  Normal  Started    17s   kubelet            Started container c1
+</span></span></code></pre></td></tr></table></div></div><p><strong>说明: 可以看到第二行信息还是<code>pulling image</code>下载镜像</strong></p><h4 id=修改yaml>修改YAML</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># cat pod1.yml</span>
+</span></span><span class=line><span class=cl>apiVersion: v1
+</span></span><span class=line><span class=cl>kind: Pod
+</span></span><span class=line><span class=cl>metadata:
+</span></span><span class=line><span class=cl>  name: pod-stress
+</span></span><span class=line><span class=cl>spec:
+</span></span><span class=line><span class=cl>  containers:
+</span></span><span class=line><span class=cl>  - name: c1
+</span></span><span class=line><span class=cl>    image: polinux/stress
+</span></span><span class=line><span class=cl>    command: <span class=o>[</span><span class=s2>&#34;stress&#34;</span><span class=o>]</span>
+</span></span><span class=line><span class=cl>    args: <span class=o>[</span><span class=s2>&#34;--vm&#34;</span>, <span class=s2>&#34;1&#34;</span>, <span class=s2>&#34;--vm-bytes&#34;</span>, <span class=s2>&#34;150M&#34;</span>, <span class=s2>&#34;--vm-hang&#34;</span>, <span class=s2>&#34;1&#34;</span><span class=o>]</span>
+</span></span><span class=line><span class=cl>    imagePullPolicy: IfNotPresent     <span class=c1># 增加了这一句</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=再次删除再创建>再次删除再创建</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl delete -f pod1.yml</span>
+</span></span><span class=line><span class=cl>pod <span class=s2>&#34;pod-stress&#34;</span> deleted
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl apply -f pod1.yml</span>
+</span></span><span class=line><span class=cl>pod/pod-stress created
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl describe pod pod-stress</span>
+</span></span><span class=line><span class=cl>......
+</span></span><span class=line><span class=cl>Events:
+</span></span><span class=line><span class=cl>  Type    Reason     Age   From               Message
+</span></span><span class=line><span class=cl>  ----    ------     ----  ----               -------
+</span></span><span class=line><span class=cl>  Normal  Scheduled  18s   default-scheduler  Successfully assigned default/pod-stress to k8s-worker02
+</span></span><span class=line><span class=cl>  Normal  Pulled     17s   kubelet            Container image <span class=s2>&#34;polinux/stress&#34;</span> already present on machine
+</span></span><span class=line><span class=cl>  Normal  Created    17s   kubelet            Created container c1
+</span></span><span class=line><span class=cl>  Normal  Started    17s   kubelet            Started container c1
+</span></span></code></pre></td></tr></table></div></div><p><strong>说明: 第二行信息是说镜像已经存在，直接使用了</strong></p><h3 id=pod的标签>pod的标签</h3><ul><li>为pod设置label,用于控制器通过label与pod关联</li><li>语法与前面学的node标签几乎一致</li></ul><h4 id=通过命令管理pod标签>通过命令管理Pod标签</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pod pod-stress --show-labels</span>
+</span></span><span class=line><span class=cl>NAME         READY   STATUS    RESTARTS   AGE     LABELS
+</span></span><span class=line><span class=cl>pod-stress   1/1     Running   <span class=m>0</span>          4m58s   &lt;none&gt;
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl label pod pod-stress region=huanan zone=A env=test bussiness=game</span>
+</span></span><span class=line><span class=cl>pod/pod-stress labeled
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pod pod-stress --show-labels</span>
+</span></span><span class=line><span class=cl>NAME         READY   STATUS    RESTARTS   AGE     LABELS
+</span></span><span class=line><span class=cl>pod-stress   1/1     Running   <span class=m>0</span>          7m27s   <span class=nv>bussiness</span><span class=o>=</span>game,env<span class=o>=</span>test,region<span class=o>=</span>huanan,zone<span class=o>=</span>A
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pods -l zone=A</span>
+</span></span><span class=line><span class=cl>NAME         READY   STATUS    RESTARTS   AGE
+</span></span><span class=line><span class=cl>pod-stress   1/1     Running   <span class=m>0</span>          8m45s
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pods -l &#34;zone in (A,B,C)&#34;</span>
+</span></span><span class=line><span class=cl>NAME         READY   STATUS    RESTARTS   AGE
+</span></span><span class=line><span class=cl>pod-stress   1/1     Running   <span class=m>0</span>          9m22s
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl label pod pod-stress zone=B --overwrite=true</span>
+</span></span><span class=line><span class=cl>pod/pod-stress labeled
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pod pod-stress --show-labels</span>
+</span></span><span class=line><span class=cl>NAME         READY   STATUS    RESTARTS   AGE   LABELS
+</span></span><span class=line><span class=cl>pod-stress   1/1     Running   <span class=m>0</span>          11m   <span class=nv>bussiness</span><span class=o>=</span>game,env<span class=o>=</span>test,region<span class=o>=</span>huanan,zone<span class=o>=</span>B
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl label pod pod-stress bussiness- env- region- zone-</span>
+</span></span><span class=line><span class=cl>pod/pod-stress unlabeled
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl get pod pod-stress --show-labels</span>
+</span></span><span class=line><span class=cl>NAME         READY   STATUS    RESTARTS   AGE   LABELS
+</span></span><span class=line><span class=cl>pod-stress   1/1     Running   <span class=m>0</span>          12m   &lt;none&gt;
+</span></span></code></pre></td></tr></table></div></div><p><strong>小结:</strong></p><ul><li>pod的label与node的label操作方式几乎相同</li><li>node的label用于pod调度到指定label的node节点</li><li>pod的label用于controller关联控制的pod</li></ul><h4 id=通过yaml创建pod时添加标签>通过YAML创建Pod时添加标签</h4><p>修改yaml</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>apiVersion: v1
+</span></span><span class=line><span class=cl>kind: Pod
+</span></span><span class=line><span class=cl>metadata:
+</span></span><span class=line><span class=cl>  name: pod-stress
+</span></span><span class=line><span class=cl>  labels:       <span class=c1># 增加多个标签</span>
+</span></span><span class=line><span class=cl>    env: dev
+</span></span><span class=line><span class=cl>    app: nginx
+</span></span><span class=line><span class=cl>spec:
+</span></span><span class=line><span class=cl>  containers:
+</span></span><span class=line><span class=cl>  - name: c1
+</span></span><span class=line><span class=cl>    image: polinux/stress
+</span></span><span class=line><span class=cl>    command: <span class=o>[</span><span class=s2>&#34;stress&#34;</span><span class=o>]</span>
+</span></span><span class=line><span class=cl>    args: <span class=o>[</span><span class=s2>&#34;--vm&#34;</span>, <span class=s2>&#34;1&#34;</span>, <span class=s2>&#34;--vm-bytes&#34;</span>, <span class=s2>&#34;150M&#34;</span>, <span class=s2>&#34;--vm-hang&#34;</span>, <span class=s2>&#34;1&#34;</span><span class=o>]</span>
+</span></span><span class=line><span class=cl>    imagePullPolicy: IfNotPresent
+</span></span></code></pre></td></tr></table></div></div><p>直接apply应用</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl apply -f pod1.yml</span>
+</span></span><span class=line><span class=cl>pod/pod-stress configured
+</span></span></code></pre></td></tr></table></div></div><p>验证</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl get pod pod-stress --show-labels</span>
+</span></span><span class=line><span class=cl>NAME         READY   STATUS    RESTARTS   AGE   LABELS
+</span></span><span class=line><span class=cl>pod-stress   1/1     Running   <span class=m>0</span>          16m   <span class=nv>app</span><span class=o>=</span>nginx,env<span class=o>=</span>dev
+</span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/tags/k8s/>K8S</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 Jul 24, 2024 00:00 UTC</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/p/4.0-kubernetes%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5controller/><div class=article-image><img src=/p/4.0-kubernetes%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5controller/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 4.0 kubernetes核心概念Controller" data-key="4.0 kubernetes核心概念Controller" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>4.0 kubernetes核心概念Controller</h2></div></a></article><article class=has-image><a href=/p/2.0-kubernetes%E9%9B%86%E7%BE%A4node%E7%AE%A1%E7%90%86/><div class=article-image><img src=/p/2.0-kubernetes%E9%9B%86%E7%BE%A4node%E7%AE%A1%E7%90%86/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 2.0 Kubernetes集群Node管理" data-key="2.0 Kubernetes集群Node管理" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>2.0 Kubernetes集群Node管理</h2></div></a></article><article class=has-image><a href=/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/><div class=article-image><img src=/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 1.0 kubeadm部署单Master节点kubernetes集群" data-key="1.0 kubeadm部署单Master节点kubernetes集群" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>1.0 kubeadm部署单Master节点kubernetes集群</h2></div></a></article><article class=has-image><a href=/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/><div class=article-image><img src=/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 1.1 Kubernetes集群UI及主机资源监控" data-key="1.1 Kubernetes集群UI及主机资源监控" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>1.1 Kubernetes集群UI及主机资源监控</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2025 暮鼓晨钟</section><section class=powerby>工欲善其事，必先利其器。盛世之牛马，乱世之炮灰；平安榨其身，战时用其命。<br>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
