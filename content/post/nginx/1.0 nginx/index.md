@@ -167,3 +167,230 @@ nginx -s quit
 ps axw -o pid,ppid,user,%cpu,vsz,wchan,command | egrep '(nginx|PID)'
 ```
 
+## 配置文件
+
+指令种类：简单指令，块指令。
+
+全局块：就是最开始的简单指令。从配置文件开始到events
+
+```shell
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /run/nginx.pid;
+```
+
+events块：配置服务器和用户网络连接相关的参数。
+
+http块：配置代理、缓存、日志及第三方模块等。
+
+### 最小化配置文件
+
+```shell
+# cat /etc/nginx/nginx.conf
+
+user  nginx;                                   # worker进程启动时以哪个用户启动，限制 worker 进程的权限，提高安全性。
+worker_processes  auto;                        # 启动nginx时，启动多少个worker进程，设置为 CPU 核心数或 2 倍 CPU 核心数。
+
+error_log  /var/log/nginx/error.log notice;    # 指定错误日志的路径和日志级别。notice 表示记录 notice 级别及以上的日志（如 notice、warn、error）。
+pid        /run/nginx.pid;                     # 指定存储 Nginx 主进程 PID 的文件路径。
+
+
+events {
+    worker_connections  1024;                  # 设置每个 worker 进程的最大连接数。总并发连接数 = worker_processes × worker_connections。
+}
+
+
+http {
+    include       /etc/nginx/mime.types;       # 包含MIME类型配置文件
+    default_type  application/octet-stream;    # 默认的MIME类型
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';    # 定义日志格式。main 是日志格式的名称，后面是具体的格式字符串。
+
+    access_log  /var/log/nginx/access.log  main;  # 指定访问日志的路径和日志格式。
+
+    sendfile        on;   # 启用 sendfile 机制，直接通过内核发送文件，减少用户态和内核态之间的数据拷贝。
+    #tcp_nopush     on;   # 启用 TCP_NOPUSH 选项，确保数据包填满后再发送
+
+    keepalive_timeout  65;   # 设置客户端保持连接的超时时间（单位为秒）。
+
+    #gzip  on;               # 启用 gzip 压缩
+
+    include /etc/nginx/conf.d/*.conf;
+}
+```
+
+
+
+```shell
+# /etc/nginx/conf.d/default.conf
+
+# server 块可以是多个
+server {
+    listen       80;         # 指定 Nginx 监听的端口号。
+    server_name  localhost;  # 指定服务器的域名或主机名。
+
+    #access_log  /var/log/nginx/host.access.log  main;
+
+    # location 块可以是多个
+    location / {    # 定义根路径（/）的请求处理规则。
+        root   /usr/share/nginx/html;   # 指定根路径的静态文件存储目录。
+        index  index.html index.htm;    # 指定默认的索引文件。
+    }
+
+    #error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;   # 定义当服务器返回 500、502、503 或 504 错误时，重定向到 /50x.html 页面。
+    location = /50x.html {              # 定义 /50x.html 路径的请求处理规则。= 表示精确匹配。
+        root   /usr/share/nginx/html;   # 指定 /50x.html 文件的存储目录。
+    }
+
+    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+    #
+    #location ~ \.php$ {                 # 匹配所有以 .php 结尾的请求路径。~ 表示正则表达式匹配。
+    #    proxy_pass   http://127.0.0.1;  # 将 PHP 请求代理到 http://127.0.0.1（通常是 Apache 服务器）。
+    #}
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #
+    #location ~ \.php$ {                 # 匹配所有以 .php 结尾的请求路径。~ 表示正则表达式匹配。
+    #    root           html;            # 指定根路径的静态文件存储目录。
+    #    fastcgi_pass   127.0.0.1:9000;  # 将 PHP 请求转发给 FastCGI 服务器（如 PHP-FPM）处理。
+    #    fastcgi_index  index.php;       # 指定FastCGI 服务器默认的索引文件。
+    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;  # 设置 FastCGI 参数，指定 PHP 脚本的路径。
+    #    include        fastcgi_params;  # 包含 FastCGI 的默认参数配置文件。
+    #}
+
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    #
+    #location ~ /\.ht {  # 匹配所有以 .ht 开头的文件路径（如 .htaccess）。
+    #    deny  all;      # 禁止访问匹配的文件。
+    #}
+}
+```
+
+## 反向代理
+
+### 单台代理
+
+#### 目标
+
+- 在浏览器访问一个地址。
+- Nginx接受上面的请求。
+- 转发请求到tomcat。
+- tomcat响应一个页面，页面中有："tomcat hello !!!"。
+
+#### 操作步骤1：安装tomcat
+
+```shell
+# 安装java
+sudo apt install openjdk-17-jdk
+
+# 安装tomcat
+root@debian:~# wget https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.7/bin/apache-tomcat-11.0.7.tar.gz
+root@debian:~# sudo tar -xzf apache-tomcat-11.0.7.tar.gz -C /opt
+root@debian:~# sudo mv /opt/apache-tomcat-11.0.7/ /opt/tomcat
+
+# 配置环境变量
+root@debian:/opt/tomcat# vim /etc/profile
+if [ -d /opt/tomcat ]; then
+    export CATALINA_HOME=/opt/tomcat
+    export PATH=$PATH:$CATALINA_HOME/bin
+fi
+
+# 创建tomcat用户
+root@debian:/opt/tomcat# sudo useradd -r -m -U -d /opt/tomcat -s /bin/false tomcat
+useradd: warning: the home directory /opt/tomcat already exists.
+useradd: Not copying any file from skel directory into it.
+root@debian:/opt/tomcat#
+root@debian:/opt/tomcat# sudo chown -R tomcat: /opt/tomcat
+
+# 配置tomcat服务
+root@debian:/opt/tomcat# vim /etc/systemd/system/tomcat.service
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=network.target
+
+[Service]
+Type=forking
+
+User=tomcat
+Group=tomcat
+
+Environment="JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64"
+Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
+Environment="CATALINA_HOME=/opt/tomcat"
+Environment="CATALINA_BASE=/opt/tomcat"
+
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
+
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+# 生成目标页面
+root@debian:~ # cd /opt/tomcat/webapps/ROOT
+root@debian:/opt/tomcat/webapps/ROOT# vim index.html
+tomcat hello !!!
+
+# 启动服务
+root@debian:/opt/tomcat# sudo systemctl daemon-reload
+root@debian:/opt/tomcat# sudo systemctl start tomcat
+root@debian:/opt/tomcat# sudo systemctl status tomcat
+● tomcat.service - Apache Tomcat Web Application Container
+     Loaded: loaded (/etc/systemd/system/tomcat.service; disabled; preset: enabled)
+     Active: active (running) since Mon 2025-05-19 09:36:27 EDT; 5s ago
+    Process: 2271 ExecStart=/opt/tomcat/bin/startup.sh (code=exited, status=0/SUCCESS)
+   Main PID: 2278 (java)
+      Tasks: 38 (limit: 2241)
+     Memory: 80.5M
+        CPU: 2.304s
+     CGroup: /system.slice/tomcat.service
+             └─2278 /usr/lib/jvm/java-17-openjdk-amd64/bin/java -Djava.util.logging.config.file=/opt/tomcat/conf/logging.properties -Djava.util.logging.m>
+
+May 19 09:36:27 debian systemd[1]: Starting tomcat.service - Apache Tomcat Web Application Container...
+May 19 09:36:27 debian startup.sh[2271]: Tomcat started.
+May 19 09:36:27 debian systemd[1]: Started tomcat.service - Apache Tomcat Web Application Container.
+
+# 本地验证
+root@debian:/opt/tomcat/webapps/ROOT# curl localhost:8080/index.html
+tomcat hello !!!
+```
+
+#### 操作步骤2：nginx配置
+
+```shell
+# 配置nginx代理地址:端口
+root@debian:/opt/tomcat/webapps/ROOT# cd /etc/nginx/conf.d/
+root@debian:/etc/nginx/conf.d# vim default.conf
+    location / {
+            #        root   /usr/share/nginx/html;
+            #        index  index.html index.htm;
+        proxy_pass   http://127.0.0.1:8080;
+    }
+
+# 重新加载nginx配置
+root@debian:/etc/nginx/conf.d# /usr/sbin/nginx -s reload
+
+```
+
+#### 操作步骤3：本地验证
+
+```shell
+C:\Users\YY>curl http://127.0.0.1:3000
+tomcat hello !!!
+```
+
+![image-反向代理验证1](image-反向代理验证1.png)
+
+### 多台代理
+
