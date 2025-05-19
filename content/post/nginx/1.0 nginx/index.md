@@ -281,7 +281,7 @@ server {
 
 #### 目标
 
-- 在浏览器访问一个地址。
+- 在浏览器访问一个地址: http://127.0.0.1:3000/。
 - Nginx接受上面的请求。
 - 转发请求到tomcat。
 - tomcat响应一个页面，页面中有："tomcat hello !!!"。
@@ -394,3 +394,103 @@ tomcat hello !!!
 
 ### 多台代理
 
+#### 目标
+
+- 浏览器访问：（http://127.0.0.0:3000/beijing），通过nginx，跳转到一个tomcat上 （http://localhost:8081），在浏览器上显示：beijing。
+- 浏览器访问：（http://127.0.0.0:3000/shanghai），通过nginx，跳转到一个tomcat上（http://localhost:8082），在浏览器上显示：shanghai
+
+#### 操作步骤1：安装tomcat
+
+```shell
+# 在单台代理的基础上，拷贝两个tomcat，再配置两个tomcat
+root@debian:/opt/tomcat8081/conf# vim server.xml
+<Server port="8015" shutdown="SHUTDOWN">
+
+    <Connector port="8081" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+               
+root@debian:/opt/tomcat8082/conf# vim server.xml
+<Server port="8025" shutdown="SHUTDOWN">
+
+    <Connector port="8082" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8453" />
+              
+# 停止tomcat
+root@debian:/opt/tomcat8082/conf# systemctl stop tomcat
+root@debian:/opt/tomcat8082/conf# systemctl status tomcat
+○ tomcat.service - Apache Tomcat Web Application Container
+     Loaded: loaded (/etc/systemd/system/tomcat.service; disabled; preset: enabled)
+     Active: inactive (dead)
+
+# 修改html文件内容
+root@debian:/opt/tomcat8081/webapps/beijing # vim index.html
+beijing
+
+root@debian:/opt/tomcat8082/webapps/shanghai # vim index.html
+shanghai
+
+# 启动服务并验证
+export CATALINA_HOME=/opt/tomcat8081
+export PATH=$CATALINA_HOME/bin:$PATH
+root@debian:/opt/tomcat8081# ./bin/startup.sh
+root@debian:/opt/tomcat8081# curl http://localhost:8081
+beijing
+
+export CATALINA_HOME=/opt/tomcat8082
+export PATH=$CATALINA_HOME/bin:$PATH
+root@debian:/opt/tomcat8082# ./bin/startup.sh
+root@debian:/opt/tomcat8082# curl http://localhost:8082
+shanghai
+```
+
+#### 操作步骤2：nginx配置
+
+```shell
+# 配置nginx代理地址:端口
+root@debian:/opt/tomcat/webapps/ROOT# cd /etc/nginx/conf.d/
+root@debian:/etc/nginx/conf.d# vim default.conf
+    location ~ /beijing/ {
+        proxy_pass   http://127.0.0.1:8081;
+    }
+    location ~ /shanghai/ {
+        proxy_pass   http://127.0.0.1:8082;
+    }
+
+    location / {
+            #        root   /usr/share/nginx/html;
+            #        index  index.html index.htm;
+        proxy_pass   http://127.0.0.1:8080;
+    }
+
+# 重新加载nginx配置
+root@debian:/etc/nginx/conf.d# /usr/sbin/nginx -s reload
+
+```
+
+#### 操作步骤3：本地验证
+
+```shell
+C:\Users\YY>curl http://127.0.0.1:3000/shanghai/
+shanghai
+
+C:\Users\YY>curl http://127.0.0.1:3000/shanghai/index.html
+shanghai
+
+C:\Users\YY>curl http://127.0.0.1:3000/beijing/index.html
+beijing
+
+C:\Users\YY>curl http://127.0.0.1:3000/beijing/
+beijing
+```
+
+
+
+![image-反向代理验证多台1](image-反向代理验证多台1.png)
+
+![image-反向代理验证多台2](image-反向代理验证多台2.png)
+
+![image-反向代理验证多台3](image-反向代理验证多台3.png)
+
+![image-反向代理验证多台4](image-反向代理验证多台4.png)
