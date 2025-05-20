@@ -671,3 +671,151 @@ upstream backend {
 # With this configuration of weights, out of every 6 requests, 5 are sent to backend1.example.com and 1 to backend2.example.com.
 ```
 
+## 动静分离
+
+### 什么是 Nginx 的动静分离？
+
+动静分离是指将 **静态资源（如 HTML、CSS、JavaScript、图片等）** 和 **动态资源（如 PHP、Java、Python 等生成的动态内容）** 分别处理，以提高服务器性能和资源利用率。
+
+- **静态资源**：内容固定不变，可以直接从磁盘或缓存中读取，不需要经过后端应用服务器处理。
+- **动态资源**：内容根据请求动态生成，需要经过后端应用服务器（如 Tomcat、PHP-FPM 等）处理。
+
+通过动静分离，可以将静态资源交给 Nginx 直接处理，而动态资源则转发给后端应用服务器处理，从而减轻后端服务器的压力，并提高静态资源的访问速度。
+
+### 为什么要做动静分离？
+
+1. **提高性能**：Nginx 处理静态资源的性能非常高，远高于后端应用服务器。
+2. **减轻后端压力**：将静态资源交给 Nginx 处理，减少后端服务器的负载。
+3. **提高用户体验**：静态资源加载更快，提升页面响应速度。
+4. **便于扩展**：静态资源可以单独部署到 CDN 或专门的静态资源服务器上。
+
+### 如何实现 Nginx 的动静分离？
+
+#### 静态资源和动态资源的分类
+
+- 静态资源：`.html`, `.css`, `.js`, `.jpg`, `.png`, `.gif`, `.ico`, `.woff`, `.ttf` 等。
+- 动态资源：`.php`, `.jsp`, `.do`, `.py` 等。
+
+#### Nginx 配置动静分离
+
+通过 `location` 块将静态资源和动态资源分别处理。
+
+```shell
+server {
+    listen 8000;
+    server_name cainiao.com;
+
+    # 静态资源处理
+    location ~* \.(html|css|js|jpg|jpeg|png|gif|ico|woff|ttf)$ {
+        root /var/www/static;  # 静态资源存放目录
+        expires 30d;          # 设置缓存过期时间
+    }
+
+    # 动态资源处理
+    location / {
+        proxy_pass http://backend_server;  # 转发到后端应用服务器
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+upstream backend_server {
+    server 127.0.0.1:8080;  # 后端应用服务器地址
+}
+```
+
+#### 配置说明
+
+1. **静态资源处理**：
+   - 使用 `location ~* \.(html|css|js|jpg|jpeg|png|gif|ico|woff|ttf)$` 匹配静态资源文件。
+   - `root /var/www/static`：指定静态资源的存放目录。
+   - `expires 30d`：设置静态资源的缓存过期时间，减少客户端请求。
+2. **动态资源处理**：
+   - 使用 `location /` 匹配所有请求。
+   - `proxy_pass http://backend_server`：将动态资源请求转发到后端应用服务器。
+3. **后端服务器**：
+   - 使用 `upstream` 定义后端应用服务器组。
+
+#### 测试动静分离
+
+**配置修改步骤**：
+
+1、域名映射
+
+```shell
+C:\Windows\System32\drivers\etc\hosts
+127.0.0.1 cainiao.com
+```
+
+2、配置nginx
+
+```shell
+root@debian:/etc/nginx# vim nginx.conf
+# 在http模块的最后添加如下内容
+    server {
+    listen 8000;
+    server_name cainiao.com;
+
+    # 静态资源处理
+    location ~* \.(html|css|js|jpg|jpeg|png|gif|ico|woff|ttf)$ {
+        root /var/www/static;  # 静态资源存放目录
+        expires 30d;          # 设置缓存过期时间
+        }
+
+    # 动态资源处理
+    location / {
+        proxy_pass http://backend_server;  # 转发到后端应用服务器
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+    }
+
+    upstream backend_server {
+        server 127.0.0.1:8080;  # 后端应用服务器地址
+    }
+
+# 重新加载服务配置
+root@debian:/etc/nginx/conf.d# /usr/sbin/nginx -s reload
+```
+
+3、配置资源
+
+```shell
+root@debian:/etc/nginx# mkdir -p /var/www/static
+# 上传一个名为logo.png的图片到该目录下
+```
+
+4、主机配置端口映射
+
+![image-主机配置端口映射到服务器8000端口](image-主机配置端口映射到服务器8000端口.png)
+
+5、浏览器验证静态资源
+
+![image-静态资源正常返回](image-静态资源正常返回.png)
+
+6、浏览器验证动态资源
+
+![image-动态资源正常返回](image-动态资源正常返回.png)
+
+### 进一步优化
+
+1. **使用 CDN**： 将静态资源部署到 CDN（内容分发网络），进一步提高静态资源的访问速度。
+
+2. **启用 Gzip 压缩**： 在 Nginx 中启用 Gzip 压缩，减少静态资源的传输大小。
+
+   ```shell
+   gzip on;
+   gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+   ```
+
+3. **设置缓存策略**： 为静态资源设置合理的缓存策略，减少客户端请求。
+
+   ```shell
+   location ~* \.(html|css|js|jpg|jpeg|png|gif|ico|woff|ttf)$ {
+       root /var/www/static;
+       expires 30d;
+       add_header Cache-Control "public, no-transform";
+   }
+   ```
