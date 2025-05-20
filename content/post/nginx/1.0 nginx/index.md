@@ -396,8 +396,8 @@ tomcat hello !!!
 
 #### 目标
 
-- 浏览器访问：（http://127.0.0.0:3000/beijing），通过nginx，跳转到一个tomcat上 （http://localhost:8081），在浏览器上显示：beijing。
-- 浏览器访问：（http://127.0.0.0:3000/shanghai），通过nginx，跳转到一个tomcat上（http://localhost:8082），在浏览器上显示：shanghai
+- 浏览器访问：（http://127.0.0.1:3000/beijing），通过nginx，跳转到一个tomcat上 （http://localhost:8081），在浏览器上显示：beijing。
+- 浏览器访问：（http://127.0.0.1:3000/shanghai），通过nginx，跳转到一个tomcat上（http://localhost:8082），在浏览器上显示：shanghai
 
 #### 操作步骤1：安装tomcat
 
@@ -494,3 +494,180 @@ beijing
 ![image-反向代理验证多台3](image-反向代理验证多台3.png)
 
 ![image-反向代理验证多台4](image-反向代理验证多台4.png)
+
+## 负载均衡
+
+### 目标
+
+- 通过浏览器多次访问一个地址（http://www.cainiao.com/load-balance）。
+- nginx接受上面的请求，并进行转发。
+- 那么每个请求的响应，是来自于不同的tomcat提供的。（2台tomcat，端口：8081，8082）。 两台tomcat，不同的响应内容：“8081”和“8082”。
+
+### 操作步骤
+
+#### 部署tomcat
+
+```shell
+# 还是使用多台代理时的tomcat
+root@debian:~# cd /opt/tomcat8081/webapps
+root@debian:/opt/tomcat8081/webapps# mkdir load-balance
+root@debian:/opt/tomcat8081/webapps# vim load-balance/index.html
+8081
+
+root@debian:~# cd /opt/tomcat8082/webapps
+root@debian:/opt/tomcat8082/webapps# mkdir load-balance
+root@debian:/opt/tomcat8082/webapps# vim load-balance/index.html
+8082
+
+# 启动服务
+export CATALINA_HOME=/opt/tomcat8081
+export PATH=$CATALINA_HOME/bin:$PATH
+root@debian:/opt/tomcat8081# /opt/tomcat8081/bin/startup.sh
+
+export CATALINA_HOME=/opt/tomcat8082
+export PATH=$CATALINA_HOME/bin:$PATH
+root@debian:/opt/tomcat8082# /opt/tomcat8082/bin/startup.sh
+
+root@debian:/opt/tomcat8082# curl http://127.0.0.1/load-balance/index.html
+8081
+root@debian:/opt/tomcat8082# curl http://127.0.0.1/load-balance/index.html
+8082
+```
+
+#### 配置nginx
+
+```shell
+root@debian:/opt/tomcat8082# cat /etc/nginx/conf.d/default.conf
+# upstream 要配置在http块中
+upstream myServers {
+    server 127.0.0.1:8081;   # server 指令只能指定 IP 地址（或域名）和端口
+    server 127.0.0.1:8082;
+}
+
+server {
+    listen       80;
+    server_name  localhost;
+
+    location / {
+        #        root   /usr/share/nginx/html;
+        #        index  index.html index.htm;
+        proxy_pass   http://myServers;
+    }
+......
+}
+
+# 重新加载服务配置
+root@debian:/etc/nginx/conf.d# /usr/sbin/nginx -s reload
+```
+
+**注意**
+
+- upstream 要配置在http块中
+- upstream 的server 指令只能指定 IP 地址（或域名）和端口
+
+#### 验证
+
+```shell
+C:\Users\YY>curl http://127.0.0.1:3000/load-balance/index.html
+8081
+
+C:\Users\YY>curl http://127.0.0.1:3000/load-balance/index.html
+8082
+```
+
+![image-负载均衡验证1](image-负载均衡验证1.png)
+
+![image-负载均衡验证2](image-负载均衡验证2.png)
+
+### 负载均衡的方法（算法）
+
+参考链接：https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/
+
+#### Round Robin
+
+Requests are distributed evenly across the servers, with [server weights](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/#weights) taken into consideration. This method is used by default (there is no directive for enabling it)
+
+```shell
+upstream backend {
+   # no load balancing method is specified for Round Robin
+   server backend1.example.com;
+   server backend2.example.com;
+}
+```
+
+#### Least Connections
+
+A request is sent to the server with the least number of active connections, again with [server weights](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/#weights) taken into consideration
+
+```shell
+upstream backend {
+    least_conn;
+    server backend1.example.com;
+    server backend2.example.com;
+}
+```
+
+#### IP Hash
+
+The server to which a request is sent is determined from the client IP address. In this case, either the first three octets of the IPv4 address or the whole IPv6 address are used to calculate the hash value. The method guarantees that requests from the same address get to the same server unless it is not available.
+
+通过这种方式，客户端的请求会转发到同一台服务器上
+
+```shell
+upstream backend {
+    ip_hash;
+    server backend1.example.com;
+    server backend2.example.com;
+    server backend3.example.com down;   # 如果一台服务器不能整体提供服务，自动转发到下一台服务器
+}
+```
+
+#### Generic Hash
+
+The server to which a request is sent is determined from a user‑defined key which can be a text string, variable, or a combination. For example, the key may be a paired source IP address and port, or a URI as in this example:
+
+```shell
+upstream backend {
+    hash $request_uri consistent;
+    server backend1.example.com;
+    server backend2.example.com;
+}
+```
+
+#### Least Time (NGINX Plus only)
+
+For each request, NGINX Plus selects the server with the lowest average latency and the lowest number of active connections, where the lowest average latency is calculated based on which of the following parameters to the least_time directive is included:
+
+**暂不涉及，使用时再查看文档**
+
+#### Random
+
+Each request will be passed to a randomly selected server. If the two parameter is specified, first, NGINX randomly selects two servers taking into account server weights, and then chooses one of these servers using the specified method:
+
+- least_conn – The least number of active connections
+- least_time=header (NGINX Plus) – The least average time to receive the response header from the server ($upstream_header_time)
+- least_time=last_byte (NGINX Plus) – The least average time to receive the full response from the server ($upstream_response_time)
+
+```shell
+upstream backend {
+    random two least_time=last_byte;
+    server backend1.example.com;
+    server backend2.example.com;
+    server backend3.example.com;
+    server backend4.example.com;
+}
+```
+
+### Server Weights(权重)
+
+By default, NGINX distributes requests among the servers in the group according to their weights using the Round Robin method. The [`weight`](https://nginx.org/en/docs/http/ngx_http_upstream_module.html#weight) parameter to the [`server`](https://nginx.org/en/docs/http/ngx_http_upstream_module.html#server) directive sets the weight of a server; the default is `1`:
+
+```shell
+upstream backend {
+    server backend1.example.com weight=5;
+    server backend2.example.com;
+    server 192.0.0.1 backup;
+}
+# With this configuration of weights, out of every 6 requests, 5 are sent to backend1.example.com and 1 to backend2.example.com.
+```
+
