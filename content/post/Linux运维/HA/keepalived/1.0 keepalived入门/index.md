@@ -161,7 +161,6 @@ sudo systemctl enable keepalived
 
 3. 恢复主服务器，检查 VIP 是否重新接管。
 
-------
 
 ## Keepalived 的健康检查
 
@@ -198,7 +197,6 @@ vrrp_instance VI_1 {
 }
 ```
 
-------
 
 ## Keepalived 的日志
 

@@ -834,7 +834,7 @@ root@debian:/etc/nginx# mkdir -p /var/www/static
 
 #### 安装keepalived
 
-**每个虚机都安装**，详细可以参考：
+**每个虚机都安装**，详细可以参考：[keepalived入门介绍](https://caijemmy.github.io/p/1.0-keepalived/)
 
 ```shell
 apt -y install keepalived
@@ -944,3 +944,4 @@ root@debian:~# ip a s
 再次通过浏览器访问
 
 ![image-高可用验证](image-高可用验证2.png)
+
