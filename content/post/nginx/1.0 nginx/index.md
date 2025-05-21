@@ -819,3 +819,128 @@ root@debian:/etc/nginx# mkdir -p /var/www/static
        add_header Cache-Control "public, no-transform";
    }
    ```
+
+## 高可用
+
+### 架构图
+
+![image-高可用架构图](image-高可用架构图.png)
+
+### 环境准备
+
+#### 前提条件
+
+拷贝复制前面nginx虚机，修改虚机IP为192.168.52.70
+
+#### 安装keepalived
+
+**每个虚机都安装**，详细可以参考：
+
+```shell
+apt -y install keepalived
+
+# 主节点
+root@debian:/etc/keepalived# vim keepalived.conf
+! Configuration File for keepalived
+
+global_defs {
+}
+
+vrrp_instance VI_1 {
+    state MASTER
+    interface ens33
+    virtual_router_id 51
+    priority 100
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    virtual_ipaddress {
+        192.168.52.99
+    }
+}
+
+# 备节点
+root@debian:/etc/keepalived# cat keepalived.conf
+! Configuration File for keepalived
+
+global_defs {
+}
+
+vrrp_instance VI_1 {
+    state BACKUP
+    interface ens33
+    virtual_router_id 51
+    priority 80
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    virtual_ipaddress {
+        192.168.52.99
+    }
+}
+
+# 启动服务
+root@debian:/etc/keepalived# systemctl start keepalived.service
+root@debian:/etc/keepalived# systemctl status keepalived.service
+● keepalived.service - Keepalive Daemon (LVS and VRRP)
+     Loaded: loaded (/lib/systemd/system/keepalived.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-05-20 22:14:30 EDT; 1s ago
+       Docs: man:keepalived(8)
+             man:keepalived.conf(5)
+             man:genhash(1)
+             https://keepalived.org
+   Main PID: 1681 (keepalived)
+      Tasks: 2 (limit: 2241)
+     Memory: 3.7M
+        CPU: 17ms
+     CGroup: /system.slice/keepalived.service
+             ├─1681 /usr/sbin/keepalived --dont-fork
+             └─1682 /usr/sbin/keepalived --dont-fork
+```
+
+### 验证
+
+![image-高可用验证](image-高可用验证1.png)
+
+```shell
+# 停止主节点192.168.52.60上的keepalived服务
+root@debian:~# ip a s
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:0c:29:dc:2d:71 brd ff:ff:ff:ff:ff:ff
+    altname enp2s1
+    inet 192.168.52.60/24 brd 192.168.52.255 scope global noprefixroute ens33
+       valid_lft forever preferred_lft forever
+    inet 192.168.52.99/32 scope global ens33
+       valid_lft forever preferred_lft forever
+    inet6 fe80::20c:29ff:fedc:2d71/64 scope link noprefixroute
+       valid_lft forever preferred_lft forever
+root@debian:~# systemctl stop keepalived.service
+root@debian:~# ip a s
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:0c:29:dc:2d:71 brd ff:ff:ff:ff:ff:ff
+    altname enp2s1
+    inet 192.168.52.60/24 brd 192.168.52.255 scope global noprefixroute ens33
+       valid_lft forever preferred_lft forever
+    inet6 fe80::20c:29ff:fedc:2d71/64 scope link noprefixroute
+       valid_lft forever preferred_lft forever
+```
+
+再次通过浏览器访问
+
+![image-高可用验证](image-高可用验证2.png)
