@@ -1,0 +1,958 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>运维 on 暮鼓晨钟</title><link>https://caijemmy.github.io/categories/%E8%BF%90%E7%BB%B4/</link><description>Recent content in 运维 on 暮鼓晨钟</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 24 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://caijemmy.github.io/categories/%E8%BF%90%E7%BB%B4/index.xml" rel="self" type="application/rss+xml"/><item><title>1.0 keepalived</title><link>https://caijemmy.github.io/p/1.0-keepalived/</link><pubDate>Mon, 24 Jun 2024 00:00:00 +0000</pubDate><guid>https://caijemmy.github.io/p/1.0-keepalived/</guid><description>&lt;img src="https://caijemmy.github.io/p/1.0-keepalived/cover.jpg" alt="Featured image of post 1.0 keepalived" />&lt;h2 id="什么是-keepalived">什么是 Keepalived？
+&lt;/h2>&lt;p>官网地址：https://keepalived.org/&lt;/p>
+&lt;p>Keepalived 是一个基于 &lt;strong>VRRP（Virtual Router Redundancy Protocol，虚拟路由器冗余协议）&lt;/strong> 的高可用性解决方案，主要用于实现 &lt;strong>IP 故障转移&lt;/strong> 和 &lt;strong>负载均衡&lt;/strong>。它通过将多个服务器组成一个虚拟路由器组，确保在主服务器故障时，备用服务器可以接管其 IP 地址和服务，从而实现高可用性。&lt;/p>
+&lt;h2 id="keepalived-的核心功能">Keepalived 的核心功能
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>IP 故障转移（Failover）：&lt;/p>
+&lt;ul>
+&lt;li>当主服务器故障时，备用服务器会自动接管其 IP 地址，确保服务不中断。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>健康检查（Health Check）：&lt;/p>
+&lt;ul>
+&lt;li>支持对后端服务（如 Nginx、Apache、MySQL 等）进行健康检查，确保只有健康的服务器才会接管 IP 地址。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>负载均衡：&lt;/p>
+&lt;ul>
+&lt;li>支持基于 Layer 4（传输层）的负载均衡，可以将请求分发到多个后端服务器。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="keepalived-的工作原理">Keepalived 的工作原理
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>VRRP 协议：&lt;/p>
+&lt;ul>
+&lt;li>Keepalived 使用 VRRP 协议在多个服务器之间同步状态。&lt;/li>
+&lt;li>每个服务器在 VRRP 组中有一个优先级（Priority），优先级最高的服务器成为主服务器（Master），其他服务器成为备用服务器（Backup）。&lt;/li>
+&lt;li>主服务器负责持有虚拟 IP 地址（VIP），备用服务器处于待命状态。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>故障检测：&lt;/p>
+&lt;ul>
+&lt;li>Keepalived 通过健康检查机制检测主服务器的状态。&lt;/li>
+&lt;li>如果主服务器故障，备用服务器中优先级最高的服务器会接管 VIP，成为新的主服务器。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>状态切换：&lt;/p>
+&lt;ul>
+&lt;li>当主服务器恢复后，可以根据配置决定是否重新接管 VIP。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="keepalived-的典型应用场景">Keepalived 的典型应用场景
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>高可用性集群：&lt;/p>
+&lt;ul>
+&lt;li>用于实现 Web 服务器（如 Nginx、Apache）、数据库（如 MySQL）、负载均衡器（如 HAProxy）等的高可用性。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>负载均衡：&lt;/p>
+&lt;ul>
+&lt;li>通过 Keepalived 和 IPVS（IP Virtual Server）实现基于 Layer 4 的负载均衡。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>网络冗余：&lt;/p>
+&lt;ul>
+&lt;li>用于确保关键网络服务（如网关、防火墙）的高可用性。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="keepalived-的安装与配置">Keepalived 的安装与配置
+&lt;/h2>&lt;h3 id="1-安装-keepalived">1. 安装 Keepalived
+&lt;/h3>&lt;p>在基于 Debian/Ubuntu 的系统上：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo apt update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo apt install keepalived
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在基于 CentOS/RHEL 的系统上：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo yum install keepalived
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="2-配置-keepalived">2. 配置 Keepalived
+&lt;/h3>&lt;p>Keepalived 的配置文件通常位于 &lt;code>/etc/keepalived/keepalived.conf&lt;/code>。&lt;/p>
+&lt;h4 id="示例配置高可用性-web-服务器">示例配置：高可用性 Web 服务器
+&lt;/h4>&lt;p>假设有两台服务器：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>主服务器&lt;/strong>：192.168.1.101&lt;/li>
+&lt;li>&lt;strong>备用服务器&lt;/strong>：192.168.1.102&lt;/li>
+&lt;li>&lt;strong>虚拟 IP 地址（VIP）&lt;/strong>：192.168.1.100&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>主服务器配置&lt;/strong>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vrrp_instance VI_1 &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> state MASTER &lt;span class="c1"># 主服务器&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> interface eth0 &lt;span class="c1"># 使用的网卡&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_router_id &lt;span class="m">51&lt;/span> &lt;span class="c1"># VRRP 组 ID，范围 0-255&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> priority &lt;span class="m">100&lt;/span> &lt;span class="c1"># 优先级，主服务器优先级最高&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> advert_int &lt;span class="m">1&lt;/span> &lt;span class="c1"># VRRP 广播间隔（秒）&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> authentication &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_type PASS &lt;span class="c1"># 认证类型&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_pass &lt;span class="m">1234&lt;/span> &lt;span class="c1"># 认证密码&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_ipaddress &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 192.168.1.100 &lt;span class="c1"># 虚拟 IP 地址&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>备用服务器配置&lt;/strong>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vrrp_instance VI_1 &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> state BACKUP &lt;span class="c1"># 备用服务器&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> interface eth0 &lt;span class="c1"># 使用的网卡&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_router_id &lt;span class="m">51&lt;/span> &lt;span class="c1"># VRRP 组 ID，与主服务器一致&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> priority &lt;span class="m">90&lt;/span> &lt;span class="c1"># 优先级，低于主服务器&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> advert_int &lt;span class="m">1&lt;/span> &lt;span class="c1"># VRRP 广播间隔（秒）&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> authentication &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_type PASS &lt;span class="c1"># 认证类型&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_pass &lt;span class="m">1234&lt;/span> &lt;span class="c1"># 认证密码&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_ipaddress &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 192.168.1.100 &lt;span class="c1"># 虚拟 IP 地址&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="3-启动-keepalived">3. 启动 Keepalived
+&lt;/h3>&lt;p>在主服务器和备用服务器上启动 Keepalived：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo systemctl start keepalived
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl &lt;span class="nb">enable&lt;/span> keepalived
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="4-测试故障转移">4. 测试故障转移
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>在主服务器上停止 Keepalived：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo systemctl stop keepalived
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>检查备用服务器是否接管了 VIP：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ip addr show eth0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>恢复主服务器，检查 VIP 是否重新接管。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="keepalived-的健康检查">Keepalived 的健康检查
+&lt;/h2>&lt;p>Keepalived 支持对后端服务进行健康检查，确保只有健康的服务器才会接管 VIP。&lt;/p>
+&lt;h3 id="示例nginx-健康检查">示例：Nginx 健康检查
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vrrp_script chk_nginx &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> script &lt;span class="s2">&amp;#34;/usr/bin/pgrep nginx&amp;#34;&lt;/span> &lt;span class="c1"># 检查 Nginx 是否运行&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> interval &lt;span class="m">2&lt;/span> &lt;span class="c1"># 检查间隔（秒）&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> weight &lt;span class="m">2&lt;/span> &lt;span class="c1"># 优先级增减值&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vrrp_instance VI_1 &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> state MASTER
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> interface eth0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_router_id &lt;span class="m">51&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> priority &lt;span class="m">100&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> advert_int &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> authentication &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_type PASS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_pass &lt;span class="m">1234&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_ipaddress &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 192.168.1.100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> track_script &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> chk_nginx &lt;span class="c1"># 引用健康检查脚本&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="keepalived-的日志">Keepalived 的日志
+&lt;/h2>&lt;p>Keepalived 的日志默认输出到 &lt;code>/var/log/syslog&lt;/code>（Debian/Ubuntu）或 &lt;code>/var/log/messages&lt;/code>（CentOS/RHEL）。可以通过以下命令查看日志：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tail -f /var/log/syslog &lt;span class="p">|&lt;/span> grep keepalived
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>1.0 lua</title><link>https://caijemmy.github.io/p/1.0-lua/</link><pubDate>Mon, 24 Jun 2024 00:00:00 +0000</pubDate><guid>https://caijemmy.github.io/p/1.0-lua/</guid><description>&lt;img src="https://caijemmy.github.io/p/1.0-lua/cover.jpg" alt="Featured image of post 1.0 lua" />&lt;h1 id="lua入门">lua入门
+&lt;/h1>&lt;p>官网：&lt;a class="link" href="https://www.lua.org/" target="_blank" rel="noopener"
+>https://www.lua.org&lt;/a>&lt;/p>
+&lt;p>Lua 是一种轻量级、高效、可嵌入的脚本语言&lt;/p>
+&lt;p>教程参考：&lt;a class="link" href="https://www.runoob.com/lua/lua-tutorial.html" target="_blank" rel="noopener"
+>https://www.runoob.com/lua/lua-tutorial.html&lt;/a>&lt;/p>
+&lt;h2 id="安装lua">安装lua
+&lt;/h2>&lt;ul>
+&lt;li>Linux 环境已安装 gcc、make。其他环境安装可以参考：&lt;a class="link" href="https://www.runoob.com/lua/lua-environment.html" target="_blank" rel="noopener"
+>https://www.runoob.com/lua/lua-environment.html&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">root@debian:~# curl -L -R -O https://www.lua.org/ftp/lua-5.4.7.tar.gz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:~# tar zxf lua-5.4.7.tar.gz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:~# &lt;span class="nb">cd&lt;/span> lua-5.4.7/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:~/lua-5.4.7# make all &lt;span class="nb">test&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:~/lua-5.4.7# make install
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> src &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> mkdir -p /usr/local/bin /usr/local/include /usr/local/lib /usr/local/man/man1 /usr/local/share/lua/5.4 /usr/local/lib/lua/5.4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> src &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> install -p -m &lt;span class="m">0755&lt;/span> lua luac /usr/local/bin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> src &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> install -p -m &lt;span class="m">0644&lt;/span> lua.h luaconf.h lualib.h lauxlib.h lua.hpp /usr/local/include
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> src &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> install -p -m &lt;span class="m">0644&lt;/span> liblua.a /usr/local/lib
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> doc &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> install -p -m &lt;span class="m">0644&lt;/span> lua.1 luac.1 /usr/local/man/man1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:~# &lt;span class="nb">echo&lt;/span> &lt;span class="s1">&amp;#39;print(&amp;#34;Hello World!&amp;#34;)&amp;#39;&lt;/span> &amp;gt; HelloWorld.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:~# lua HelloWorld.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Hello World!
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="基本语法">基本语法
+&lt;/h2>&lt;h3 id="交互式">交互式
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">root@debian:~# lua -i
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Lua 5.4.7 Copyright &lt;span class="o">(&lt;/span>C&lt;span class="o">)&lt;/span> 1994-2024 Lua.org, PUC-Rio
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt; print&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;hello lua&amp;#34;&lt;/span>&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hello lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt; os.exit&lt;span class="o">()&lt;/span> &lt;span class="c1"># 退出交互式&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:~#
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="脚本式">脚本式
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">root@debian:~# cat HelloWorld.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">print&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;Hello World!&amp;#34;&lt;/span>&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:~# lua ./HelloWorld.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Hello World!
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="注释">注释
+&lt;/h3>&lt;h4 id="单行">单行
+&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">root@debian:~# cat HelloWorld.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-- 这是注释
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">print&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;Hello World!&amp;#34;&lt;/span>&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:~# lua ./HelloWorld.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Hello World!
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="多行">多行
+&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">root@debian:~# cat HelloWorld.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--&lt;span class="o">[[&lt;/span> 这是注释
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">这是多行注释
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--&lt;span class="o">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">print&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;Hello World!&amp;#34;&lt;/span>&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:~# lua ./HelloWorld.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Hello World!
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>多行注释不支持嵌套&lt;/li>
+&lt;/ul>
+&lt;h3 id="标识符">标识符
+&lt;/h3>&lt;p>Lua 标识符用于定义一个变量，函数获取其他用户定义的项。标识符以一个字母 A 到 Z 或 a 到 z 或下划线 &lt;strong>_&lt;/strong> 开头后加上 0 个或多个字母，下划线，数字（0 到 9）。&lt;/p>
+&lt;p>最好不要使用下划线加大写字母的标识符，因为Lua的保留字也是这样的。&lt;/p>
+&lt;p>Lua 不允许使用特殊字符如 &lt;strong>@&lt;/strong>, &lt;strong>$&lt;/strong>, 和 &lt;strong>%&lt;/strong> 来定义标识符。 Lua 是一个区分大小写的编程语言。&lt;/p>
+&lt;h3 id="关键词">关键词
+&lt;/h3>&lt;p>以下列出了 Lua 的保留关键词。保留关键字不能作为常量或变量或其他用户自定义标示符：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>and&lt;/th>
+&lt;th>break&lt;/th>
+&lt;th>do&lt;/th>
+&lt;th>else&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>elseif&lt;/td>
+&lt;td>end&lt;/td>
+&lt;td>false&lt;/td>
+&lt;td>for&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>function&lt;/td>
+&lt;td>if&lt;/td>
+&lt;td>in&lt;/td>
+&lt;td>local&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>nil&lt;/td>
+&lt;td>not&lt;/td>
+&lt;td>or&lt;/td>
+&lt;td>repeat&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>return&lt;/td>
+&lt;td>then&lt;/td>
+&lt;td>true&lt;/td>
+&lt;td>until&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>while&lt;/td>
+&lt;td>goto&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>一般约定，以下划线开头连接一串大写字母的名字（比如 _VERSION）被保留用于 Lua 内部全局变量。&lt;/p>
+&lt;h3 id="全局变量">全局变量
+&lt;/h3>&lt;p>在默认情况下，变量总是认为是全局的。&lt;/p>
+&lt;p>全局变量不需要声明，给一个变量赋值后即创建了这个全局变量，访问一个没有初始化的全局变量也不会出错，只不过得到的结果是：nil。&lt;/p>
+&lt;p>如果你想删除一个全局变量，只需要将变量赋值为nil。换句话说, 当且仅当一个变量不等于nil时，这个变量即存在。&lt;/p>
+&lt;h2 id="数据类型">数据类型
+&lt;/h2>&lt;p>Lua 是动态类型语言，变量不要类型定义,只需要为变量赋值。 值可以存储在变量中，作为参数传递或结果返回。&lt;/p>
+&lt;p>Lua 中有 8 个基本类型分别为：nil、boolean、number、string、userdata、function、thread 和 table。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">数据类型&lt;/th>
+&lt;th style="text-align: left">描述&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">nil&lt;/td>
+&lt;td style="text-align: left">这个最简单，只有值nil属于该类，表示一个无效值（在条件表达式中相当于false）。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">boolean&lt;/td>
+&lt;td style="text-align: left">包含两个值：false和true。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">number&lt;/td>
+&lt;td style="text-align: left">表示双精度类型的实浮点数&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">string&lt;/td>
+&lt;td style="text-align: left">字符串由一对双引号或单引号来表示&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">function&lt;/td>
+&lt;td style="text-align: left">由 C 或 Lua 编写的函数&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">userdata&lt;/td>
+&lt;td style="text-align: left">表示任意存储在变量中的C数据结构&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">thread&lt;/td>
+&lt;td style="text-align: left">表示执行的独立线路，用于执行协同程序&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">table&lt;/td>
+&lt;td style="text-align: left">Lua 中的表（table）其实是一个&amp;quot;关联数组&amp;quot;（associative arrays），数组的索引可以是数字、字符串或表类型。在 Lua 里，table 的创建是通过&amp;quot;构造表达式&amp;quot;来完成，最简单构造表达式是{}，用来创建一个空表。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="nil空">nil（空）
+&lt;/h3>&lt;ul>
+&lt;li>nil 类型表示一种没有任何有效值，它只有一个值 &amp;ndash; nil，例如打印一个没有赋值的变量，便会输出一个 nil 值&lt;/li>
+&lt;li>对于全局变量和 table，nil 还有一个&amp;quot;删除&amp;quot;作用，给全局变量或者 table 表里的变量赋一个 nil 值，等同于把它们删掉&lt;/li>
+&lt;li>nil 作比较时应该加上双引号 &amp;quot;&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-lua" data-lang="lua">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- 对保留字nil进行type运算，结果返回nil字符串&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">nil&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">nil&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- 未定义变量返回的也是nil字符串&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- 对于全局变量和 table，nil 起&amp;#34;删除&amp;#34;作用&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">xx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;oo&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">xx&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">xx&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">xx&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">tab1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="n">key1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;val1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">key2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;val2&amp;#34;&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">for&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v&lt;/span> &lt;span class="kr">in&lt;/span> &lt;span class="n">pairs&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">tab1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="kr">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="s2">&amp;#34; - &amp;#34;&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">tab1.key1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">for&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v&lt;/span> &lt;span class="kr">in&lt;/span> &lt;span class="n">pairs&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">tab1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="kr">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="s2">&amp;#34; - &amp;#34;&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- nil 作比较时应该加上双引号 &amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">X&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="kc">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">X&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="s2">&amp;#34;nil&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 运行结果&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:/opt/lua# lua ./lua_type/test_nil.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nil
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">string
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nil
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">string
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">oo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nil
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">key1 - val1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">key2 - val2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">key2 - val2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="boolean布尔">boolean（布尔）
+&lt;/h3>&lt;p>boolean 类型只有两个可选值：true（真） 和 false（假），Lua 把 false 和 nil 看作是 false，其他的都为 true，数字 0 也是 true&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-lua" data-lang="lua">&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">nil&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">if&lt;/span> &lt;span class="kc">false&lt;/span> &lt;span class="ow">or&lt;/span> &lt;span class="kc">nil&lt;/span> &lt;span class="kr">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;至少有一个是 true&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;false 和 nil 都为 false&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">if&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="kr">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;数字 0 是 true&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;数字 0 为 false&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">end&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">root@debian:/opt/lua# lua ./lua_type/test_boolean.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">boolean
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">boolean
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nil
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">false&lt;/span> 和 nil 都为 &lt;span class="nb">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">数字 &lt;span class="m">0&lt;/span> 是 &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="number数字">number（数字）
+&lt;/h3>&lt;p>Lua 默认只有一种 number 类型 &amp;ndash; double（双精度）类型（默认类型可以修改 luaconf.h 里的定义），以下几种写法都被看作是 number 类型&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-lua" data-lang="lua">&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mf">2.2&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mf">0.2&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mf">2e+1&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mf">0.2e-1&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mf">7.8263692594256e-06&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">root@debian:/opt/lua# lua ./lua_type/test_number.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">number
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">number
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">number
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">number
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">number
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">number
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="string字符串">string（字符串）
+&lt;/h3>&lt;ul>
+&lt;li>字符串由一对双引号或单引号来表示。&lt;/li>
+&lt;li>也可以用 2 个方括号 &amp;ldquo;[[]]&amp;rdquo; 来表示&amp;quot;一块&amp;quot;字符串，&lt;strong>不支持嵌套&lt;/strong>。&lt;/li>
+&lt;li>在对一个数字字符串上进行算术操作时，Lua 会尝试将这个数字字符串转成一个数字，&lt;strong>数字字符串中有非数字时，报错&lt;/strong>。&lt;/li>
+&lt;li>使用 # 来计算字符串的长度，放在字符串前面，&lt;strong>1汉字为3个长度&lt;/strong>。&lt;/li>
+&lt;li>字符串连接使用的是 ..&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-lua" data-lang="lua">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- 字符串中如果需要单引号或双引号，需根据字符串使用情况进行转义&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">string1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;this is&amp;#39; &amp;#39;&lt;/span>&lt;span class="se">\&amp;#34;&lt;/span>&lt;span class="s2">string1&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">string2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;this is &amp;#34;string2&lt;/span>&lt;span class="se">\&amp;#39;&lt;/span>&lt;span class="s1">&amp;#34;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">string1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">string2&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- 块字符串不支持嵌套&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">html&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">[[
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">这是块字符串
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">块字符串不支持嵌套
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">]]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">html&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- 在对一个数字字符串上进行算术操作时，Lua 会尝试将这个数字字符串转成一个数字&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;2&amp;#34;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">6&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;2&amp;#34;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="s2">&amp;#34;6&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;2 + 6&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;-2e2&amp;#34;&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="s2">&amp;#34;6&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- print(&amp;#34;error&amp;#34; + 1) -- attempt to add a &amp;#39;string&amp;#39; with a &amp;#39;number&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;2.1&amp;#34;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- 字符串连接&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;a&amp;#34;&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="s1">&amp;#39;b&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">157&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="mi">428&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- 计算字符串的长度&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">len_test&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;你好 世界&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">#&lt;/span>&lt;span class="n">len_test&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">#&lt;/span>&lt;span class="s2">&amp;#34;你好 lua&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">root@debian:/opt/lua# lua ./lua_type/test_string.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">this is&lt;span class="s1">&amp;#39; &amp;#39;&lt;/span>&lt;span class="s2">&amp;#34;string1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">this is &amp;#34;&lt;/span>string2&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="s2">&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">这是块字符串
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">块字符串不支持嵌套
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">8
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">8
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">2 + 6
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">-1200.0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">3.1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">ab
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">157428
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">13
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">10
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="table表">table（表）
+&lt;/h3>&lt;p>在 Lua 里，table 的创建是通过&amp;quot;构造表达式&amp;quot;来完成，最简单构造表达式是{}，用来创建一个空表。也可以在表里添加一些数据，直接初始化表。&lt;/p>
+&lt;p>Lua 中的表（table）其实是一个&amp;quot;关联数组&amp;quot;（associative arrays），数组的索引可以是数字或者是字符串。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-lua" data-lang="lua">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- 创建一个空的 table&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">local&lt;/span> &lt;span class="n">tbl1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">for&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v&lt;/span> &lt;span class="kr">in&lt;/span> &lt;span class="n">pairs&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">tbl1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="kr">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="s2">&amp;#34; : &amp;#34;&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">-- 直接初始表&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">local&lt;/span> &lt;span class="n">tbl2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="s2">&amp;#34;apple&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;pear&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;orange&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;grape&amp;#34;&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">for&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v&lt;/span> &lt;span class="kr">in&lt;/span> &lt;span class="n">pairs&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">tbl2&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="kr">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="s2">&amp;#34; : &amp;#34;&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">end&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 运行结果&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@debian:/opt/lua# lua ./lua_type/test_table.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">1&lt;/span> : apple
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">2&lt;/span> : pear
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">3&lt;/span> : orange
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">4&lt;/span> : grape
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>不同于其他语言的数组把 0 作为数组的初始索引，在 Lua 里表的默认初始索引一般以 1 开始。&lt;/li>
+&lt;li>table 不会固定长度大小，有新数据添加时 table 长度会自动增长，没初始的 table 都是 nil。&lt;/li>
+&lt;/ul>
+&lt;h3 id="function函数">function（函数）
+&lt;/h3>&lt;p>在 Lua 中，函数是被看作是&amp;quot;第一类值（First-Class Value）&amp;quot;，函数可以存在变量里:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-lua" data-lang="lua">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">function&lt;/span> &lt;span class="nf">factorial1&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">if&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="kr">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">return&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">return&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">factorial1&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">n&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">factorial1&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">factorial2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">factorial1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">factorial2&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">root@debian:/opt/lua# lua ./lua_type/test_func.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">120&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">120&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="匿名函数anonymous-function">匿名函数（anonymous function）
+&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-lua" data-lang="lua">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">function&lt;/span> &lt;span class="nf">testFun&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">tab&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">fun&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">for&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v&lt;/span> &lt;span class="kr">in&lt;/span> &lt;span class="n">pairs&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">tab&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="kr">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fun&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">v&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">tab&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="n">key1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;val1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">key2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;val2&amp;#34;&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">testFun&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">tab&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">val&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">--匿名函数&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">return&lt;/span> &lt;span class="n">key&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="s2">&amp;#34;=&amp;#34;&lt;/span> &lt;span class="o">..&lt;/span> &lt;span class="n">val&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">root@debian:/opt/lua# lua ./lua_type/test_func.lua
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">120&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">120&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">key2&lt;/span>&lt;span class="o">=&lt;/span>val2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">key1&lt;/span>&lt;span class="o">=&lt;/span>val1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="thread线程">thread（线程）
+&lt;/h3>&lt;p>在 Lua 里，最主要的线程是协同程序（coroutine）。它跟线程（thread）差不多，拥有自己独立的栈、局部变量和指令指针，可以跟其他协同程序共享全局变量和其他大部分东西。&lt;/p>
+&lt;p>线程跟协程的区别：线程可以同时多个运行，而协程任意时刻只能运行一个，并且处于运行状态的协程只有被挂起（suspend）时才会暂停。&lt;/p>
+&lt;h3 id="userdata自定义类型">userdata（自定义类型）
+&lt;/h3>&lt;p>userdata 是一种用户自定义数据，用于表示一种由应用程序或 C/C++ 语言库所创建的类型，可以将任意 C/C++ 的任意数据类型的数据（通常是 struct 和 指针）存储到 Lua 变量中调用。&lt;/p></description></item></channel></rss>

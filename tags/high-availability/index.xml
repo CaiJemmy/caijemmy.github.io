@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>High Availability on 暮鼓晨钟</title><link>https://caijemmy.github.io/tags/high-availability/</link><description>Recent content in High Availability on 暮鼓晨钟</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 24 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://caijemmy.github.io/tags/high-availability/index.xml" rel="self" type="application/rss+xml"/><item><title>1.0 keepalived</title><link>https://caijemmy.github.io/p/1.0-keepalived/</link><pubDate>Mon, 24 Jun 2024 00:00:00 +0000</pubDate><guid>https://caijemmy.github.io/p/1.0-keepalived/</guid><description>&lt;img src="https://caijemmy.github.io/p/1.0-keepalived/cover.jpg" alt="Featured image of post 1.0 keepalived" />&lt;h2 id="什么是-keepalived">什么是 Keepalived？
+&lt;/h2>&lt;p>官网地址：https://keepalived.org/&lt;/p>
+&lt;p>Keepalived 是一个基于 &lt;strong>VRRP（Virtual Router Redundancy Protocol，虚拟路由器冗余协议）&lt;/strong> 的高可用性解决方案，主要用于实现 &lt;strong>IP 故障转移&lt;/strong> 和 &lt;strong>负载均衡&lt;/strong>。它通过将多个服务器组成一个虚拟路由器组，确保在主服务器故障时，备用服务器可以接管其 IP 地址和服务，从而实现高可用性。&lt;/p>
+&lt;h2 id="keepalived-的核心功能">Keepalived 的核心功能
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>IP 故障转移（Failover）：&lt;/p>
+&lt;ul>
+&lt;li>当主服务器故障时，备用服务器会自动接管其 IP 地址，确保服务不中断。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>健康检查（Health Check）：&lt;/p>
+&lt;ul>
+&lt;li>支持对后端服务（如 Nginx、Apache、MySQL 等）进行健康检查，确保只有健康的服务器才会接管 IP 地址。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>负载均衡：&lt;/p>
+&lt;ul>
+&lt;li>支持基于 Layer 4（传输层）的负载均衡，可以将请求分发到多个后端服务器。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="keepalived-的工作原理">Keepalived 的工作原理
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>VRRP 协议：&lt;/p>
+&lt;ul>
+&lt;li>Keepalived 使用 VRRP 协议在多个服务器之间同步状态。&lt;/li>
+&lt;li>每个服务器在 VRRP 组中有一个优先级（Priority），优先级最高的服务器成为主服务器（Master），其他服务器成为备用服务器（Backup）。&lt;/li>
+&lt;li>主服务器负责持有虚拟 IP 地址（VIP），备用服务器处于待命状态。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>故障检测：&lt;/p>
+&lt;ul>
+&lt;li>Keepalived 通过健康检查机制检测主服务器的状态。&lt;/li>
+&lt;li>如果主服务器故障，备用服务器中优先级最高的服务器会接管 VIP，成为新的主服务器。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>状态切换：&lt;/p>
+&lt;ul>
+&lt;li>当主服务器恢复后，可以根据配置决定是否重新接管 VIP。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="keepalived-的典型应用场景">Keepalived 的典型应用场景
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>高可用性集群：&lt;/p>
+&lt;ul>
+&lt;li>用于实现 Web 服务器（如 Nginx、Apache）、数据库（如 MySQL）、负载均衡器（如 HAProxy）等的高可用性。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>负载均衡：&lt;/p>
+&lt;ul>
+&lt;li>通过 Keepalived 和 IPVS（IP Virtual Server）实现基于 Layer 4 的负载均衡。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>网络冗余：&lt;/p>
+&lt;ul>
+&lt;li>用于确保关键网络服务（如网关、防火墙）的高可用性。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="keepalived-的安装与配置">Keepalived 的安装与配置
+&lt;/h2>&lt;h3 id="1-安装-keepalived">1. 安装 Keepalived
+&lt;/h3>&lt;p>在基于 Debian/Ubuntu 的系统上：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo apt update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo apt install keepalived
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在基于 CentOS/RHEL 的系统上：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo yum install keepalived
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="2-配置-keepalived">2. 配置 Keepalived
+&lt;/h3>&lt;p>Keepalived 的配置文件通常位于 &lt;code>/etc/keepalived/keepalived.conf&lt;/code>。&lt;/p>
+&lt;h4 id="示例配置高可用性-web-服务器">示例配置：高可用性 Web 服务器
+&lt;/h4>&lt;p>假设有两台服务器：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>主服务器&lt;/strong>：192.168.1.101&lt;/li>
+&lt;li>&lt;strong>备用服务器&lt;/strong>：192.168.1.102&lt;/li>
+&lt;li>&lt;strong>虚拟 IP 地址（VIP）&lt;/strong>：192.168.1.100&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>主服务器配置&lt;/strong>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vrrp_instance VI_1 &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> state MASTER &lt;span class="c1"># 主服务器&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> interface eth0 &lt;span class="c1"># 使用的网卡&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_router_id &lt;span class="m">51&lt;/span> &lt;span class="c1"># VRRP 组 ID，范围 0-255&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> priority &lt;span class="m">100&lt;/span> &lt;span class="c1"># 优先级，主服务器优先级最高&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> advert_int &lt;span class="m">1&lt;/span> &lt;span class="c1"># VRRP 广播间隔（秒）&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> authentication &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_type PASS &lt;span class="c1"># 认证类型&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_pass &lt;span class="m">1234&lt;/span> &lt;span class="c1"># 认证密码&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_ipaddress &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 192.168.1.100 &lt;span class="c1"># 虚拟 IP 地址&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>备用服务器配置&lt;/strong>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vrrp_instance VI_1 &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> state BACKUP &lt;span class="c1"># 备用服务器&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> interface eth0 &lt;span class="c1"># 使用的网卡&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_router_id &lt;span class="m">51&lt;/span> &lt;span class="c1"># VRRP 组 ID，与主服务器一致&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> priority &lt;span class="m">90&lt;/span> &lt;span class="c1"># 优先级，低于主服务器&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> advert_int &lt;span class="m">1&lt;/span> &lt;span class="c1"># VRRP 广播间隔（秒）&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> authentication &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_type PASS &lt;span class="c1"># 认证类型&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_pass &lt;span class="m">1234&lt;/span> &lt;span class="c1"># 认证密码&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_ipaddress &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 192.168.1.100 &lt;span class="c1"># 虚拟 IP 地址&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="3-启动-keepalived">3. 启动 Keepalived
+&lt;/h3>&lt;p>在主服务器和备用服务器上启动 Keepalived：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo systemctl start keepalived
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl &lt;span class="nb">enable&lt;/span> keepalived
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="4-测试故障转移">4. 测试故障转移
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>在主服务器上停止 Keepalived：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">sudo systemctl stop keepalived
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>检查备用服务器是否接管了 VIP：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">ip addr show eth0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>恢复主服务器，检查 VIP 是否重新接管。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="keepalived-的健康检查">Keepalived 的健康检查
+&lt;/h2>&lt;p>Keepalived 支持对后端服务进行健康检查，确保只有健康的服务器才会接管 VIP。&lt;/p>
+&lt;h3 id="示例nginx-健康检查">示例：Nginx 健康检查
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">vrrp_script chk_nginx &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> script &lt;span class="s2">&amp;#34;/usr/bin/pgrep nginx&amp;#34;&lt;/span> &lt;span class="c1"># 检查 Nginx 是否运行&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> interval &lt;span class="m">2&lt;/span> &lt;span class="c1"># 检查间隔（秒）&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> weight &lt;span class="m">2&lt;/span> &lt;span class="c1"># 优先级增减值&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vrrp_instance VI_1 &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> state MASTER
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> interface eth0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_router_id &lt;span class="m">51&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> priority &lt;span class="m">100&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> advert_int &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> authentication &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_type PASS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> auth_pass &lt;span class="m">1234&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> virtual_ipaddress &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 192.168.1.100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> track_script &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> chk_nginx &lt;span class="c1"># 引用健康检查脚本&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="keepalived-的日志">Keepalived 的日志
+&lt;/h2>&lt;p>Keepalived 的日志默认输出到 &lt;code>/var/log/syslog&lt;/code>（Debian/Ubuntu）或 &lt;code>/var/log/messages&lt;/code>（CentOS/RHEL）。可以通过以下命令查看日志：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">tail -f /var/log/syslog &lt;span class="p">|&lt;/span> grep keepalived
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

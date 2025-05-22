@@ -1,0 +1,268 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="安装Kubernetes集群UI，使用Kubernetes dashboard对主机资源进行监控和管理"><title>1.1 Kubernetes集群UI及主机资源监控</title><link rel=canonical href=https://caijemmy.github.io/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/><link rel=stylesheet href=/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css><meta property='og:title' content="1.1 Kubernetes集群UI及主机资源监控"><meta property='og:description' content="安装Kubernetes集群UI，使用Kubernetes dashboard对主机资源进行监控和管理"><meta property='og:url' content='https://caijemmy.github.io/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/'><meta property='og:site_name' content='暮鼓晨钟'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='K8S'><meta property='article:published_time' content='2024-07-22T00:00:00+00:00'><meta property='article:modified_time' content='2024-07-22T00:00:00+00:00'><meta property='og:image' content='https://caijemmy.github.io/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/cover.jpg'><meta name=twitter:title content="1.1 Kubernetes集群UI及主机资源监控"><meta name=twitter:description content="安装Kubernetes集群UI，使用Kubernetes dashboard对主机资源进行监控和管理"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://caijemmy.github.io/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/cover.jpg'><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu_14da0899299e31c4.png width=300 height=330 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>暮鼓晨钟</a></h1><h2 class=site-description>生如蝼蚁不敢有鸿鹄之志，命似纸薄岂能生青云之心。</h2></div></header><ol class=menu-social><li><a href=https://github.com/CaiJemmy/CaiNiaoTool target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首页</span></a></li><li><a href=/category/><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg>
+<span>分类</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/%E9%93%BE%E6%8E%A5/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#kubernetes-dashboard作用>Kubernetes dashboard作用</a></li><li><a href=#安装kubernetes-dashboard>安装kubernetes dashboard</a><ol><li><a href=#通过helm工具安装kubernetes-dashboard>通过helm工具安装kubernetes dashboard</a></li><li><a href=#命令执行后的回显>命令执行后的回显</a></li><li><a href=#查看服务是否已启动>查看服务是否已启动</a></li><li><a href=#浏览器localhost访问>浏览器localhost访问</a></li><li><a href=#浏览器节点访问>浏览器节点访问</a></li></ol></li><li><a href=#安装metrics-server>安装metrics-server</a><ol><li><a href=#通过配置文件进行安装>通过配置文件进行安装</a></li><li><a href=#验证及授权>验证及授权</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/><img src=/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/cover_hu_c86b681f3fee94ff.jpg srcset="/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/cover_hu_c86b681f3fee94ff.jpg 800w, /p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/cover_hu_bea442a1395058f4.jpg 1600w" width=800 height=534 loading=lazy alt="Featured image of post 1.1 Kubernetes集群UI及主机资源监控"></a></div><div class=article-details><header class=article-category><a href=/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/>云原生</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/>1.1 Kubernetes集群UI及主机资源监控</a></h2><h3 class=article-subtitle>安装Kubernetes集群UI，使用Kubernetes dashboard对主机资源进行监控和管理</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jul 22, 2024</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 3 分钟</time></div></footer></div></header><section class=article-content><h1 id=kubernetes集群ui及主机资源监控>Kubernetes集群UI及主机资源监控</h1><h2 id=kubernetes-dashboard作用>Kubernetes dashboard作用</h2><ul><li>通过dashboard能够直观了解Kubernetes集群中运行的资源对象</li><li>通过dashboard可以直接管理（创建、删除、重启等操作）资源对象</li></ul><h2 id=安装kubernetes-dashboard>安装kubernetes dashboard</h2><p><a class=link href=https://github.com/kubernetes/dashboard/blob/master/README.md target=_blank rel=noopener>参考链接：master的 dashboard/README.md ·kubernetes/dashboard</a></p><p><a class=link href=https://helm.sh/docs/intro/install/ target=_blank rel=noopener>helm参考链接：Helm | Installing Helm</a></p><h3 id=通过helm工具安装kubernetes-dashboard>通过helm工具安装kubernetes dashboard</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 安装helm</span>
+</span></span><span class=line><span class=cl>curl https://baltocdn.com/helm/signing.asc <span class=p>|</span> gpg --dearmor <span class=p>|</span> sudo tee /usr/share/keyrings/helm.gpg &gt; /dev/null
+</span></span><span class=line><span class=cl>sudo apt-get install apt-transport-https --yes
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;deb [arch=</span><span class=k>$(</span>dpkg --print-architecture<span class=k>)</span><span class=s2> signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main&#34;</span> <span class=p>|</span> sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+</span></span><span class=line><span class=cl>sudo apt-get update
+</span></span><span class=line><span class=cl>sudo apt-get install helm
+</span></span><span class=line><span class=cl>helm version
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 依赖科学上网</span>
+</span></span><span class=line><span class=cl><span class=c1># Add kubernetes-dashboard repository</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;kubernetes-dashboard&#34;</span> has been added to your repositories
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Deploy a Helm Release named &#34;kubernetes-dashboard&#34; using the kubernetes-dashboard chart</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=命令执行后的回显>命令执行后的回显</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>Release <span class=s2>&#34;kubernetes-dashboard&#34;</span> does not exist. Installing it now.
+</span></span><span class=line><span class=cl>NAME: kubernetes-dashboard
+</span></span><span class=line><span class=cl>LAST DEPLOYED: Thu May <span class=m>15</span> 04:25:22 <span class=m>2025</span>
+</span></span><span class=line><span class=cl>NAMESPACE: kubernetes-dashboard
+</span></span><span class=line><span class=cl>STATUS: deployed
+</span></span><span class=line><span class=cl>REVISION: <span class=m>1</span>
+</span></span><span class=line><span class=cl>TEST SUITE: None
+</span></span><span class=line><span class=cl>NOTES:
+</span></span><span class=line><span class=cl>*************************************************************************************************
+</span></span><span class=line><span class=cl>*** PLEASE BE PATIENT: Kubernetes Dashboard may need a few minutes to get up and become ready ***
+</span></span><span class=line><span class=cl>*************************************************************************************************
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Congratulations! You have just installed Kubernetes Dashboard in your cluster.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>To access Dashboard run:
+</span></span><span class=line><span class=cl>  kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>NOTE: In <span class=k>case</span> port-forward <span class=nb>command</span> does not work, make sure that kong service name is correct.
+</span></span><span class=line><span class=cl>      Check the services in Kubernetes Dashboard namespace using:
+</span></span><span class=line><span class=cl>        kubectl -n kubernetes-dashboard get svc
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Dashboard will be available at:
+</span></span><span class=line><span class=cl>  https://localhost:8443
+</span></span></code></pre></td></tr></table></div></div><h3 id=查看服务是否已启动>查看服务是否已启动</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>watch kubectl get pods -n kubernetes-dashboard
+</span></span><span class=line><span class=cl><span class=c1># 等待所有服务都为Running状态</span>
+</span></span><span class=line><span class=cl><span class=c1># 可以使用下面的命令查看具体的情况，注意观察Events:中d</span>
+</span></span><span class=line><span class=cl><span class=c1># kubectl describe pods kubernetes-dashboard-api-7bcbc9b5bd-l76bc -n kubernetes-dashboard</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ImagePullBackOff 错误后，重新启动步骤如下</span>
+</span></span><span class=line><span class=cl><span class=c1># 1、将副本数缩放到 0</span>
+</span></span><span class=line><span class=cl>kubectl scale deployment kubernetes-dashboard-auth --replicas<span class=o>=</span><span class=m>0</span> -n kubernetes-dashboard
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 2、将副本数恢复到 1</span>
+</span></span><span class=line><span class=cl>kubectl scale deployment kubernetes-dashboard-auth --replicas<span class=o>=</span><span class=m>1</span> -n kubernetes-dashboard
+</span></span></code></pre></td></tr></table></div></div><h3 id=浏览器localhost访问>浏览器localhost访问</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1>#   kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443</span>
+</span></span><span class=line><span class=cl>Forwarding from 127.0.0.1:8443 -&gt; <span class=m>8443</span>
+</span></span><span class=line><span class=cl>Forwarding from <span class=o>[</span>::1<span class=o>]</span>:8443 -&gt; <span class=m>8443</span>
+</span></span><span class=line><span class=cl>Handling connection <span class=k>for</span> <span class=m>8443</span>
+</span></span><span class=line><span class=cl>Handling connection <span class=k>for</span> <span class=m>8443</span>
+</span></span><span class=line><span class=cl>E0515 07:19:42.893297   <span class=m>73613</span> portforward.go:409<span class=o>]</span> an error occurred forwarding <span class=m>8443</span> -&gt; 8443: error forwarding port <span class=m>8443</span> to pod 161802690a0f8d6f42e5761323b2aafa46ff37baf8eba8e44675e0ef760f08b7, uid : unable to <span class=k>do</span> port forwarding: socat not found
+</span></span></code></pre></td></tr></table></div></div><p>以上日志说明环境缺少 <code>socat</code> ，安装之</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo apt-get update
+</span></span><span class=line><span class=cl>sudo apt-get install socat
+</span></span></code></pre></td></tr></table></div></div><p>登录界面</p><p><img src=/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2.png width=1280 height=800 srcset="/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2_hu_32019b034cfb1023.png 480w, /p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2_hu_ceb0460a338b8919.png 1024w" loading=lazy alt=image-dashboard登录界面 class=gallery-image data-flex-grow=160 data-flex-basis=384px></p><p>查看<code>kubernetes-dashboard</code>下的账户</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl -n kubernetes-dashboard get serviceaccounts
+</span></span></code></pre></td></tr></table></div></div><p>创建账户</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~<span class=o>]</span><span class=c1># kubectl -n kubernetes-dashboard create serviceaccount kubernetes-dashboard</span>
+</span></span><span class=line><span class=cl>serviceaccount/kubernetes-dashboard created
+</span></span></code></pre></td></tr></table></div></div><p>绑定角色权限</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl create clusterrolebinding kubernetes-dashboard-admin <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --clusterrole<span class=o>=</span>cluster-admin <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --serviceaccount<span class=o>=</span>kubernetes-dashboard:kubernetes-dashboard
+</span></span></code></pre></td></tr></table></div></div><p>生成 Token</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl -n kubernetes-dashboard create token kubernetes-dashboard
+</span></span></code></pre></td></tr></table></div></div><p>通过token成功访问</p><p><img src=/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E7%99%BB%E5%BD%95%E6%88%90%E5%8A%9F.png width=1280 height=800 srcset="/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E7%99%BB%E5%BD%95%E6%88%90%E5%8A%9F_hu_e8e00ccab3a97dc6.png 480w, /p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E7%99%BB%E5%BD%95%E6%88%90%E5%8A%9F_hu_ef3201ce50efd574.png 1024w" loading=lazy alt=image-dashboard登录成功 class=gallery-image data-flex-grow=160 data-flex-basis=384px></p><h3 id=浏览器节点访问>浏览器节点访问</h3><p><strong>检查 NodePort 服务配置</strong></p><p>确保 <code>kubernetes-dashboard</code> 服务已正确配置为 <code>NodePort</code>，并且端口范围在 <code>30000-32767</code> 之间。</p><p><strong>检查服务配置</strong></p><p>运行以下命令，查看服务的配置：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl -n kubernetes-dashboard get svc kubernetes-dashboard-kong-proxy -o yaml
+</span></span></code></pre></td></tr></table></div></div><p>确认以下字段：</p><ul><li><code>spec.type</code> 应为 <code>NodePort</code>。</li><li><code>spec.ports[0].nodePort</code> 应为 <code>32000</code>。</li></ul><p>如果配置不正确，可以通过以下命令更新：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl -n kubernetes-dashboard patch svc kubernetes-dashboard-kong-proxy -p <span class=s1>&#39;{&#34;spec&#34;:{&#34;type&#34;:&#34;NodePort&#34;,&#34;ports&#34;:[{&#34;port&#34;:443,&#34;targetPort&#34;:8443,&#34;nodePort&#34;:32000}]}}&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>获取节点 IP</strong>
+运行以下命令，获取节点的 IP 地址：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get nodes -o wide
+</span></span><span class=line><span class=cl><span class=c1># 使用 EXTERNAL-IP 或 INTERNAL-IP 访问 Dashboard。</span>
+</span></span></code></pre></td></tr></table></div></div><p>生成 Token</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl -n kubernetes-dashboard create token kubernetes-dashboard
+</span></span></code></pre></td></tr></table></div></div><p>通过token成功访问</p><p><img src=/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E8%8A%82%E7%82%B9%E7%99%BB%E5%BD%95%E6%88%90%E5%8A%9F.png width=3000 height=1754 srcset="/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E8%8A%82%E7%82%B9%E7%99%BB%E5%BD%95%E6%88%90%E5%8A%9F_hu_341505ebf277ed9.png 480w, /p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E8%8A%82%E7%82%B9%E7%99%BB%E5%BD%95%E6%88%90%E5%8A%9F_hu_488d6754384e9d4b.png 1024w" loading=lazy alt=image-dashboard节点登录成功 class=gallery-image data-flex-grow=171 data-flex-basis=410px></p><h2 id=安装metrics-server>安装metrics-server</h2><p>使用metrics-server实现主机资源监控，它可以解决的问题：解决上图中CPU和内存使用情况的获取</p><p><a class=link href=https://github.com/kubernetes-sigs/metrics-server/releases target=_blank rel=noopener>资源参考链接：Releases · kubernetes-sigs/metrics-server</a></p><h3 id=通过配置文件进行安装>通过配置文件进行安装</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 下载资源安装配置文件</span>
+</span></span><span class=line><span class=cl>wget https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.7.2/components.yaml
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 因为在使用 metrics-server 过程中没有创建证书，所以添加非安全的tls配置</span>
+</span></span><span class=line><span class=cl>    spec:
+</span></span><span class=line><span class=cl>      containers:
+</span></span><span class=line><span class=cl>      - args:
+</span></span><span class=line><span class=cl>        - --cert-dir<span class=o>=</span>/tmp
+</span></span><span class=line><span class=cl>        - --secure-port<span class=o>=</span><span class=m>10250</span>
+</span></span><span class=line><span class=cl>        - --kubelet-preferred-address-types<span class=o>=</span>InternalIP,ExternalIP,Hostname
+</span></span><span class=line><span class=cl>        - --kubelet-use-node-status-port
+</span></span><span class=line><span class=cl>        - --metric-resolution<span class=o>=</span>15s
+</span></span><span class=line><span class=cl>        - --kubelet-insecure-tls   <span class=c1># 这一行为添加内容</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安装之</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl apply -f components.yaml</span>
+</span></span><span class=line><span class=cl>serviceaccount/metrics-server created
+</span></span><span class=line><span class=cl>clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+</span></span><span class=line><span class=cl>clusterrole.rbac.authorization.k8s.io/system:metrics-server created
+</span></span><span class=line><span class=cl>rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
+</span></span><span class=line><span class=cl>clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
+</span></span><span class=line><span class=cl>clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
+</span></span><span class=line><span class=cl>service/metrics-server created
+</span></span><span class=line><span class=cl>deployment.apps/metrics-server created
+</span></span><span class=line><span class=cl>apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+</span></span></code></pre></td></tr></table></div></div><h3 id=验证及授权>验证及授权</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl get pods -n kube-system</span>
+</span></span><span class=line><span class=cl>NAME                                   READY   STATUS    RESTARTS         AGE
+</span></span><span class=line><span class=cl>coredns-5dd5756b68-gbgsh               1/1     Running   <span class=m>12</span> <span class=o>(</span>4h11m ago<span class=o>)</span>   3d8h
+</span></span><span class=line><span class=cl>coredns-5dd5756b68-pm85d               1/1     Running   <span class=m>12</span> <span class=o>(</span>4h11m ago<span class=o>)</span>   3d8h
+</span></span><span class=line><span class=cl>etcd-k8s-master01                      1/1     Running   <span class=m>12</span> <span class=o>(</span>4h11m ago<span class=o>)</span>   3d8h
+</span></span><span class=line><span class=cl>kube-apiserver-k8s-master01            1/1     Running   <span class=m>13</span> <span class=o>(</span>4h11m ago<span class=o>)</span>   3d8h
+</span></span><span class=line><span class=cl>kube-controller-manager-k8s-master01   1/1     Running   <span class=m>12</span> <span class=o>(</span>4h11m ago<span class=o>)</span>   3d8h
+</span></span><span class=line><span class=cl>kube-proxy-h7s9b                       1/1     Running   <span class=m>6</span> <span class=o>(</span>4h11m ago<span class=o>)</span>    3d
+</span></span><span class=line><span class=cl>kube-proxy-qt8px                       1/1     Running   <span class=m>6</span> <span class=o>(</span>4h11m ago<span class=o>)</span>    3d
+</span></span><span class=line><span class=cl>kube-proxy-wlvrg                       1/1     Running   <span class=m>6</span> <span class=o>(</span>4h11m ago<span class=o>)</span>    3d
+</span></span><span class=line><span class=cl>kube-scheduler-k8s-master01            1/1     Running   <span class=m>12</span> <span class=o>(</span>4h11m ago<span class=o>)</span>   3d8h
+</span></span><span class=line><span class=cl>metrics-server-596474b58-697f8         1/1     Running   <span class=m>0</span>                102s
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl top pods -n kube-system</span>
+</span></span><span class=line><span class=cl>NAME                                   CPU<span class=o>(</span>cores<span class=o>)</span>   MEMORY<span class=o>(</span>bytes<span class=o>)</span>
+</span></span><span class=line><span class=cl>coredns-5dd5756b68-gbgsh               2m           22Mi
+</span></span><span class=line><span class=cl>coredns-5dd5756b68-pm85d               2m           51Mi
+</span></span><span class=line><span class=cl>etcd-k8s-master01                      19m          128Mi
+</span></span><span class=line><span class=cl>kube-apiserver-k8s-master01            42m          532Mi
+</span></span><span class=line><span class=cl>kube-controller-manager-k8s-master01   11m          115Mi
+</span></span><span class=line><span class=cl>kube-proxy-h7s9b                       1m           59Mi
+</span></span><span class=line><span class=cl>kube-proxy-qt8px                       1m           50Mi
+</span></span><span class=line><span class=cl>kube-proxy-wlvrg                       1m           52Mi
+</span></span><span class=line><span class=cl>kube-scheduler-k8s-master01            3m           49Mi
+</span></span><span class=line><span class=cl>metrics-server-596474b58-697f8         2m           22Mi
+</span></span><span class=line><span class=cl><span class=o>[</span>root@k8s-master01 ~/dashboard<span class=o>]</span><span class=c1># kubectl top nodes -n kube-system</span>
+</span></span><span class=line><span class=cl>NAME           CPU<span class=o>(</span>cores<span class=o>)</span>   CPU%   MEMORY<span class=o>(</span>bytes<span class=o>)</span>   MEMORY%
+</span></span><span class=line><span class=cl>k8s-master01   131m         3%     4385Mi          86%
+</span></span><span class=line><span class=cl>k8s-worker01   41m          1%     2149Mi          76%
+</span></span><span class=line><span class=cl>k8s-worker02   45m          1%     2241Mi          79%
+</span></span></code></pre></td></tr></table></div></div><p><img src=/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5.png width=3000 height=1754 srcset="/p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5_hu_77352025d40cb66b.png 480w, /p/1.1-kubernetes%E9%9B%86%E7%BE%A4ui%E5%8F%8A%E4%B8%BB%E6%9C%BA%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7/image-dashboard%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5_hu_cd4bf98a45e82224.png 1024w" loading=lazy alt=image-dashboard资源使用情况 class=gallery-image data-flex-grow=171 data-flex-basis=410px></p></section><footer class=article-footer><section class=article-tags><a href=/tags/k8s/>K8S</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 Jul 22, 2024 00:00 UTC</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/><div class=article-image><img src=/p/3.0-kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5pod/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 3.0 Kubernetes集群核心概念Pod" data-key="3.0 Kubernetes集群核心概念Pod" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>3.0 Kubernetes集群核心概念Pod</h2></div></a></article><article class=has-image><a href=/p/4.0-kubernetes%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5controller/><div class=article-image><img src=/p/4.0-kubernetes%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5controller/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 4.0 kubernetes核心概念Controller" data-key="4.0 kubernetes核心概念Controller" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>4.0 kubernetes核心概念Controller</h2></div></a></article><article class=has-image><a href=/p/2.0-kubernetes%E9%9B%86%E7%BE%A4node%E7%AE%A1%E7%90%86/><div class=article-image><img src=/p/2.0-kubernetes%E9%9B%86%E7%BE%A4node%E7%AE%A1%E7%90%86/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 2.0 Kubernetes集群Node管理" data-key="2.0 Kubernetes集群Node管理" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>2.0 Kubernetes集群Node管理</h2></div></a></article><article class=has-image><a href=/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/><div class=article-image><img src=/p/1.0-kubeadm%E9%83%A8%E7%BD%B2%E5%8D%95master%E8%8A%82%E7%82%B9kubernetes%E9%9B%86%E7%BE%A4/cover.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg width=250 height=150 loading=lazy alt="Featured image of post 1.0 kubeadm部署单Master节点kubernetes集群" data-key="1.0 kubeadm部署单Master节点kubernetes集群" data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ=="></div><div class=article-details><h2 class=article-title>1.0 kubeadm部署单Master节点kubernetes集群</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2025 暮鼓晨钟</section><section class=powerby>工欲善其事，必先利其器。盛世之牛马，乱世之炮灰；平安榨其身，战时用其命。<br>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

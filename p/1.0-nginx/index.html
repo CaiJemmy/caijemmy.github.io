@@ -1,0 +1,1199 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="nginx 入门介绍"><title>1.0 nginx</title><link rel=canonical href=https://caijemmy.github.io/p/1.0-nginx/><link rel=stylesheet href=/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css><meta property='og:title' content="1.0 nginx"><meta property='og:description' content="nginx 入门介绍"><meta property='og:url' content='https://caijemmy.github.io/p/1.0-nginx/'><meta property='og:site_name' content='暮鼓晨钟'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='nginx'><meta property='article:published_time' content='2024-07-24T00:00:00+00:00'><meta property='article:modified_time' content='2024-07-24T00:00:00+00:00'><meta property='og:image' content='https://caijemmy.github.io/p/1.0-nginx/cover.jpg'><meta name=twitter:title content="1.0 nginx"><meta name=twitter:description content="nginx 入门介绍"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://caijemmy.github.io/p/1.0-nginx/cover.jpg'><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu_14da0899299e31c4.png width=300 height=330 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>暮鼓晨钟</a></h1><h2 class=site-description>生如蝼蚁不敢有鸿鹄之志，命似纸薄岂能生青云之心。</h2></div></header><ol class=menu-social><li><a href=https://github.com/CaiJemmy/CaiNiaoTool target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首页</span></a></li><li><a href=/category/><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg>
+<span>分类</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/%E9%93%BE%E6%8E%A5/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#nginx-安装>nginx 安装</a></li><li><a href=#nginx-启动及验证>nginx 启动及验证</a><ol><li><a href=#配置启动服务>配置启动服务</a></li></ol></li><li><a href=#nginx-常用命令>nginx 常用命令</a><ol><li><a href=#停止nginx的其他方式>停止nginx的其他方式</a></li></ol></li><li><a href=#配置文件>配置文件</a><ol><li><a href=#最小化配置文件>最小化配置文件</a></li></ol></li><li><a href=#反向代理>反向代理</a><ol><li><a href=#单台代理>单台代理</a><ol><li><a href=#目标>目标</a></li><li><a href=#操作步骤1安装tomcat>操作步骤1：安装tomcat</a></li><li><a href=#操作步骤2nginx配置>操作步骤2：nginx配置</a></li><li><a href=#操作步骤3本地验证>操作步骤3：本地验证</a></li></ol></li><li><a href=#多台代理>多台代理</a><ol><li><a href=#目标-1>目标</a></li><li><a href=#操作步骤1安装tomcat-1>操作步骤1：安装tomcat</a></li><li><a href=#操作步骤2nginx配置-1>操作步骤2：nginx配置</a></li><li><a href=#操作步骤3本地验证-1>操作步骤3：本地验证</a></li></ol></li></ol></li><li><a href=#负载均衡>负载均衡</a><ol><li><a href=#目标-2>目标</a></li><li><a href=#操作步骤>操作步骤</a><ol><li><a href=#部署tomcat>部署tomcat</a></li><li><a href=#配置nginx>配置nginx</a></li><li><a href=#验证>验证</a></li></ol></li><li><a href=#负载均衡的方法算法>负载均衡的方法（算法）</a><ol><li><a href=#round-robin>Round Robin</a></li><li><a href=#least-connections>Least Connections</a></li><li><a href=#ip-hash>IP Hash</a></li><li><a href=#generic-hash>Generic Hash</a></li><li><a href=#least-time-nginx-plus-only>Least Time (NGINX Plus only)</a></li><li><a href=#random>Random</a></li></ol></li><li><a href=#server-weights权重>Server Weights(权重)</a></li></ol></li><li><a href=#动静分离>动静分离</a><ol><li><a href=#什么是-nginx-的动静分离>什么是 Nginx 的动静分离？</a></li><li><a href=#为什么要做动静分离>为什么要做动静分离？</a></li><li><a href=#如何实现-nginx-的动静分离>如何实现 Nginx 的动静分离？</a><ol><li><a href=#静态资源和动态资源的分类>静态资源和动态资源的分类</a></li><li><a href=#nginx-配置动静分离>Nginx 配置动静分离</a></li><li><a href=#配置说明>配置说明</a></li><li><a href=#测试动静分离>测试动静分离</a></li></ol></li><li><a href=#进一步优化>进一步优化</a></li></ol></li><li><a href=#高可用>高可用</a><ol><li><a href=#架构图>架构图</a></li><li><a href=#环境准备>环境准备</a><ol><li><a href=#前提条件>前提条件</a></li><li><a href=#安装keepalived>安装keepalived</a></li></ol></li><li><a href=#验证-1>验证</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/p/1.0-nginx/><img src=/p/1.0-nginx/cover_hu_23892d11095fe9c4.jpg srcset="/p/1.0-nginx/cover_hu_23892d11095fe9c4.jpg 800w, /p/1.0-nginx/cover_hu_6a920290ad973050.jpg 1600w" width=800 height=534 loading=lazy alt="Featured image of post 1.0 nginx"></a></div><div class=article-details><header class=article-category><a href=/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/>中间件</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/1.0-nginx/>1.0 nginx</a></h2><h3 class=article-subtitle>nginx 入门介绍</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jul 24, 2024</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 12 分钟</time></div></footer></div></header><section class=article-content><h2 id=nginx-安装>nginx 安装</h2><p>常用版本4大阵营</p><ul><li>Nginx开源版本：<a class=link href=https://nginx.org/ target=_blank rel=noopener>nginx</a></li><li>Nginx plus 商业版：<a class=link href=https://www.f5.com/go/product/welcome-to-nginx target=_blank rel=noopener>Welcome to F5 NGINX</a></li><li>openresty：<a class=link href=https://openresty.org/cn/ target=_blank rel=noopener>OpenResty® - 开源官方站</a></li><li>Tengine：<a class=link href=https://tengine.taobao.org/ target=_blank rel=noopener>The Tengine Web Server</a></li></ul><p>安装参考链接：<a class=link href=https://nginx.org/en/linux_packages.html#Debian target=_blank rel=noopener>nginx：Linux 软件包</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 前提条件</span>
+</span></span><span class=line><span class=cl>sudo apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 导入官方 nginx 签名密钥</span>
+</span></span><span class=line><span class=cl>curl https://nginx.org/keys/nginx_signing.key <span class=p>|</span> gpg --dearmor <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    <span class=p>|</span> sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg &gt;/dev/null
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl><span class=c1># 验证下载的文件是否包含正确的密钥</span>
+</span></span><span class=line><span class=cl>root@debian:~# gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+</span></span><span class=line><span class=cl>pub   rsa4096 2024-05-29 <span class=o>[</span>SC<span class=o>]</span>
+</span></span><span class=line><span class=cl>      8540A6F18833A80E9C1653A42FD21310B49F6B46
+</span></span><span class=line><span class=cl>uid                      nginx signing key &lt;signing-key-2@nginx.com&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>pub   rsa2048 2011-08-19 <span class=o>[</span>SC<span class=o>]</span> <span class=o>[</span>expires: 2027-05-24<span class=o>]</span>
+</span></span><span class=line><span class=cl>      573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
+</span></span><span class=line><span class=cl>uid                      nginx signing key &lt;signing-key@nginx.com&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>pub   rsa4096 2024-05-29 <span class=o>[</span>SC<span class=o>]</span>
+</span></span><span class=line><span class=cl>      9E9BE90EACBCDE69FE9B204CBCDCD8A38D88A2B3
+</span></span><span class=line><span class=cl>uid                      nginx signing key &lt;signing-key-3@nginx.com&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 为稳定的 nginx 软件包设置 apt 存储库</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+</span></span></span><span class=line><span class=cl><span class=s2>http://nginx.org/packages/debian `lsb_release -cs` nginx&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    <span class=p>|</span> sudo tee /etc/apt/sources.list.d/nginx.list
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安装 nginx</span>
+</span></span><span class=line><span class=cl>sudo apt update
+</span></span><span class=line><span class=cl>sudo apt install nginx
+</span></span></code></pre></td></tr></table></div></div><h2 id=nginx-启动及验证>nginx 启动及验证</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 启动</span>
+</span></span><span class=line><span class=cl>root@debian:~# /usr/sbin/nginx
+</span></span><span class=line><span class=cl>root@debian:~# ps -ef<span class=p>|</span>grep nginx <span class=p>|</span> grep -v grep
+</span></span><span class=line><span class=cl>root        <span class=m>6683</span>       <span class=m>1</span>  <span class=m>0</span> 19:54 ?        00:00:00 nginx: master process /usr/sbin/nginx
+</span></span><span class=line><span class=cl>nginx       <span class=m>6684</span>    <span class=m>6683</span>  <span class=m>0</span> 19:54 ?        00:00:00 nginx: worker process
+</span></span><span class=line><span class=cl>nginx       <span class=m>6685</span>    <span class=m>6683</span>  <span class=m>0</span> 19:54 ?        00:00:00 nginx: worker process
+</span></span><span class=line><span class=cl>nginx       <span class=m>6686</span>    <span class=m>6683</span>  <span class=m>0</span> 19:54 ?        00:00:00 nginx: worker process
+</span></span><span class=line><span class=cl>nginx       <span class=m>6687</span>    <span class=m>6683</span>  <span class=m>0</span> 19:54 ?        00:00:00 nginx: worker process
+</span></span></code></pre></td></tr></table></div></div><ul><li>vmware 上配置本地端口到虚机端口的映射</li><li>虚机上如果有防火墙，注意防火墙的配置</li></ul><p><img src=/p/1.0-nginx/image-nginx%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F.png width=1134 height=406 srcset="/p/1.0-nginx/image-nginx%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F_hu_91a04b10d8fb7700.png 480w, /p/1.0-nginx/image-nginx%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F_hu_69a4874d1e3ba54f.png 1024w" loading=lazy alt=image-nginx服务启动成功 class=gallery-image data-flex-grow=279 data-flex-basis=670px></p><h3 id=配置启动服务>配置启动服务</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 查看/lib/systemd/system/nginx.service 或 /usr/lib/systemd/system/nginx.service 文件是否存在</span>
+</span></span><span class=line><span class=cl><span class=c1># 注意安装路径的修改</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>Unit<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>Description</span><span class=o>=</span>nginx - high performance web server
+</span></span><span class=line><span class=cl><span class=nv>Documentation</span><span class=o>=</span>https://nginx.org/en/docs/
+</span></span><span class=line><span class=cl><span class=nv>After</span><span class=o>=</span>network-online.target remote-fs.target nss-lookup.target
+</span></span><span class=line><span class=cl><span class=nv>Wants</span><span class=o>=</span>network-online.target
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>Service<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>Type</span><span class=o>=</span>forking
+</span></span><span class=line><span class=cl><span class=nv>PIDFile</span><span class=o>=</span>/run/nginx.pid
+</span></span><span class=line><span class=cl><span class=nv>Environment</span><span class=o>=</span><span class=s2>&#34;CONFFILE=/etc/nginx/nginx.conf&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>EnvironmentFile</span><span class=o>=</span>-/etc/default/nginx
+</span></span><span class=line><span class=cl><span class=nv>ExecStart</span><span class=o>=</span>/usr/sbin/nginx -c <span class=si>${</span><span class=nv>CONFFILE</span><span class=si>}</span>
+</span></span><span class=line><span class=cl><span class=nv>ExecReload</span><span class=o>=</span>/bin/sh -c <span class=s2>&#34;/bin/kill -s HUP </span><span class=k>$(</span>/bin/cat /run/nginx.pid<span class=k>)</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>ExecStop</span><span class=o>=</span>/bin/sh -c <span class=s2>&#34;/bin/kill -s TERM </span><span class=k>$(</span>/bin/cat /run/nginx.pid<span class=k>)</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>ExecQuit</span><span class=o>=</span>/bin/sh -c <span class=s2>&#34;/bin/kill -s QUIT </span><span class=k>$(</span>/bin/cat /run/nginx.pid<span class=k>)</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>Install<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>WantedBy</span><span class=o>=</span>multi-user.target
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 查看服务是否可用，开机自启动</span>
+</span></span><span class=line><span class=cl>systemctl daemon-reload
+</span></span><span class=line><span class=cl>systemctl status nginx
+</span></span><span class=line><span class=cl>systemctl <span class=nb>enable</span> nginx
+</span></span></code></pre></td></tr></table></div></div><h2 id=nginx-常用命令>nginx 常用命令</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 查看版本</span>
+</span></span><span class=line><span class=cl>root@debian:~# nginx -v
+</span></span><span class=line><span class=cl>nginx version: nginx/1.28.0
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 停止命令</span>
+</span></span><span class=line><span class=cl>root@debian:~# nginx -s stop
+</span></span><span class=line><span class=cl>root@debian:~# ps -ef<span class=p>|</span>grep nginx <span class=p>|</span> grep -v grep
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 启动命令</span>
+</span></span><span class=line><span class=cl>root@debian:~# /usr/sbin/nginx
+</span></span><span class=line><span class=cl>root@debian:~# ps -ef<span class=p>|</span>grep nginx <span class=p>|</span> grep -v grep
+</span></span><span class=line><span class=cl>root        <span class=m>6797</span>       <span class=m>1</span>  <span class=m>0</span> 20:21 ?        00:00:00 nginx: master process /usr/sbin/nginx
+</span></span><span class=line><span class=cl>nginx       <span class=m>6798</span>    <span class=m>6797</span>  <span class=m>0</span> 20:21 ?        00:00:00 nginx: worker process
+</span></span><span class=line><span class=cl>nginx       <span class=m>6799</span>    <span class=m>6797</span>  <span class=m>0</span> 20:21 ?        00:00:00 nginx: worker process
+</span></span><span class=line><span class=cl>nginx       <span class=m>6800</span>    <span class=m>6797</span>  <span class=m>0</span> 20:21 ?        00:00:00 nginx: worker process
+</span></span><span class=line><span class=cl>nginx       <span class=m>6801</span>    <span class=m>6797</span>  <span class=m>0</span> 20:21 ?        00:00:00 nginx: worker process
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 配置重新加载</span>
+</span></span><span class=line><span class=cl>root@debian:~# /usr/sbin/nginx -s reload
+</span></span><span class=line><span class=cl>root@debian:~# ps -ef<span class=p>|</span>grep nginx <span class=p>|</span> grep -v grep
+</span></span><span class=line><span class=cl>root        <span class=m>6797</span>       <span class=m>1</span>  <span class=m>0</span> 20:21 ?        00:00:00 nginx: master process /usr/sbin/nginx
+</span></span><span class=line><span class=cl>nginx       <span class=m>6809</span>    <span class=m>6797</span>  <span class=m>0</span> 20:23 ?        00:00:00 nginx: worker process
+</span></span><span class=line><span class=cl>nginx       <span class=m>6810</span>    <span class=m>6797</span>  <span class=m>0</span> 20:23 ?        00:00:00 nginx: worker process
+</span></span><span class=line><span class=cl>nginx       <span class=m>6811</span>    <span class=m>6797</span>  <span class=m>0</span> 20:23 ?        00:00:00 nginx: worker process
+</span></span><span class=line><span class=cl>nginx       <span class=m>6812</span>    <span class=m>6797</span>  <span class=m>0</span> 20:23 ?        00:00:00 nginx: worker process
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 配置默认路径</span>
+</span></span><span class=line><span class=cl>root@debian:~# ls -l /etc/nginx/
+</span></span><span class=line><span class=cl>total <span class=m>28</span>
+</span></span><span class=line><span class=cl>drwxr-xr-x <span class=m>2</span> root root <span class=m>4096</span> May <span class=m>17</span> 19:39 conf.d
+</span></span><span class=line><span class=cl>-rw-r--r-- <span class=m>1</span> root root <span class=m>1007</span> Apr <span class=m>23</span> 07:48 fastcgi_params
+</span></span><span class=line><span class=cl>-rw-r--r-- <span class=m>1</span> root root <span class=m>5349</span> Apr <span class=m>23</span> 07:48 mime.types
+</span></span><span class=line><span class=cl>lrwxrwxrwx <span class=m>1</span> root root   <span class=m>22</span> Apr <span class=m>23</span> 08:39 modules -&gt; /usr/lib/nginx/modules
+</span></span><span class=line><span class=cl>-rw-r--r-- <span class=m>1</span> root root  <span class=m>644</span> Apr <span class=m>23</span> 08:39 nginx.conf
+</span></span><span class=line><span class=cl>-rw-r--r-- <span class=m>1</span> root root  <span class=m>636</span> Apr <span class=m>23</span> 07:48 scgi_params
+</span></span><span class=line><span class=cl>-rw-r--r-- <span class=m>1</span> root root  <span class=m>664</span> Apr <span class=m>23</span> 07:48 uwsgi_params
+</span></span></code></pre></td></tr></table></div></div><h3 id=停止nginx的其他方式>停止nginx的其他方式</h3><p>参考链接：<a class=link href=https://nginx.org/en/docs/beginners_guide.html target=_blank rel=noopener>Beginner’s Guide</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># to stop nginx processes with waiting for the worker processes to finish serving current requests</span>
+</span></span><span class=line><span class=cl>nginx -s quit
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 通过 kill 命令</span>
+</span></span><span class=line><span class=cl><span class=o>[</span> -f /var/run/nginx.pid <span class=o>]</span> <span class=o>&amp;&amp;</span> cat /var/run/nginx.pid <span class=p>|</span> xargs <span class=nb>kill</span> -s QUIT
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 查看nginx资源使用情况</span>
+</span></span><span class=line><span class=cl>ps axw -o pid,ppid,user,%cpu,vsz,wchan,command <span class=p>|</span> egrep <span class=s1>&#39;(nginx|PID)&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=配置文件>配置文件</h2><p>指令种类：简单指令，块指令。</p><p>全局块：就是最开始的简单指令。从配置文件开始到events</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>user  nginx<span class=p>;</span>
+</span></span><span class=line><span class=cl>worker_processes  auto<span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>error_log  /var/log/nginx/error.log notice<span class=p>;</span>
+</span></span><span class=line><span class=cl>pid        /run/nginx.pid<span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><p>events块：配置服务器和用户网络连接相关的参数。</p><p>http块：配置代理、缓存、日志及第三方模块等。</p><h3 id=最小化配置文件>最小化配置文件</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># cat /etc/nginx/nginx.conf</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>user  nginx<span class=p>;</span>                                   <span class=c1># worker进程启动时以哪个用户启动，限制 worker 进程的权限，提高安全性。</span>
+</span></span><span class=line><span class=cl>worker_processes  auto<span class=p>;</span>                        <span class=c1># 启动nginx时，启动多少个worker进程，设置为 CPU 核心数或 2 倍 CPU 核心数。</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>error_log  /var/log/nginx/error.log notice<span class=p>;</span>    <span class=c1># 指定错误日志的路径和日志级别。notice 表示记录 notice 级别及以上的日志（如 notice、warn、error）。</span>
+</span></span><span class=line><span class=cl>pid        /run/nginx.pid<span class=p>;</span>                     <span class=c1># 指定存储 Nginx 主进程 PID 的文件路径。</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>events <span class=o>{</span>
+</span></span><span class=line><span class=cl>    worker_connections  1024<span class=p>;</span>                  <span class=c1># 设置每个 worker 进程的最大连接数。总并发连接数 = worker_processes × worker_connections。</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>http <span class=o>{</span>
+</span></span><span class=line><span class=cl>    include       /etc/nginx/mime.types<span class=p>;</span>       <span class=c1># 包含MIME类型配置文件</span>
+</span></span><span class=line><span class=cl>    default_type  application/octet-stream<span class=p>;</span>    <span class=c1># 默认的MIME类型</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    log_format  main  <span class=s1>&#39;$remote_addr - $remote_user [$time_local] &#34;$request&#34; &#39;</span>
+</span></span><span class=line><span class=cl>                      <span class=s1>&#39;$status $body_bytes_sent &#34;$http_referer&#34; &#39;</span>
+</span></span><span class=line><span class=cl>                      <span class=s1>&#39;&#34;$http_user_agent&#34; &#34;$http_x_forwarded_for&#34;&#39;</span><span class=p>;</span>    <span class=c1># 定义日志格式。main 是日志格式的名称，后面是具体的格式字符串。</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    access_log  /var/log/nginx/access.log  main<span class=p>;</span>  <span class=c1># 指定访问日志的路径和日志格式。</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    sendfile        on<span class=p>;</span>   <span class=c1># 启用 sendfile 机制，直接通过内核发送文件，减少用户态和内核态之间的数据拷贝。</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#tcp_nopush     on;   # 启用 TCP_NOPUSH 选项，确保数据包填满后再发送</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    keepalive_timeout  65<span class=p>;</span>   <span class=c1># 设置客户端保持连接的超时时间（单位为秒）。</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>#gzip  on;               # 启用 gzip 压缩</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    include /etc/nginx/conf.d/*.conf<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># /etc/nginx/conf.d/default.conf</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># server 块可以是多个</span>
+</span></span><span class=line><span class=cl>server <span class=o>{</span>
+</span></span><span class=line><span class=cl>    listen       80<span class=p>;</span>         <span class=c1># 指定 Nginx 监听的端口号。</span>
+</span></span><span class=line><span class=cl>    server_name  localhost<span class=p>;</span>  <span class=c1># 指定服务器的域名或主机名。</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>#access_log  /var/log/nginx/host.access.log  main;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># location 块可以是多个</span>
+</span></span><span class=line><span class=cl>    location / <span class=o>{</span>    <span class=c1># 定义根路径（/）的请求处理规则。</span>
+</span></span><span class=line><span class=cl>        root   /usr/share/nginx/html<span class=p>;</span>   <span class=c1># 指定根路径的静态文件存储目录。</span>
+</span></span><span class=line><span class=cl>        index  index.html index.htm<span class=p>;</span>    <span class=c1># 指定默认的索引文件。</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>#error_page  404              /404.html;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># redirect server error pages to the static page /50x.html</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#</span>
+</span></span><span class=line><span class=cl>    error_page   <span class=m>500</span> <span class=m>502</span> <span class=m>503</span> <span class=m>504</span>  /50x.html<span class=p>;</span>   <span class=c1># 定义当服务器返回 500、502、503 或 504 错误时，重定向到 /50x.html 页面。</span>
+</span></span><span class=line><span class=cl>    <span class=nv>location</span> <span class=o>=</span> /50x.html <span class=o>{</span>              <span class=c1># 定义 /50x.html 路径的请求处理规则。= 表示精确匹配。</span>
+</span></span><span class=line><span class=cl>        root   /usr/share/nginx/html<span class=p>;</span>   <span class=c1># 指定 /50x.html 文件的存储目录。</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># proxy the PHP scripts to Apache listening on 127.0.0.1:80</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#location ~ \.php$ {                 # 匹配所有以 .php 结尾的请求路径。~ 表示正则表达式匹配。</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#    proxy_pass   http://127.0.0.1;  # 将 PHP 请求代理到 http://127.0.0.1（通常是 Apache 服务器）。</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#location ~ \.php$ {                 # 匹配所有以 .php 结尾的请求路径。~ 表示正则表达式匹配。</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#    root           html;            # 指定根路径的静态文件存储目录。</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#    fastcgi_pass   127.0.0.1:9000;  # 将 PHP 请求转发给 FastCGI 服务器（如 PHP-FPM）处理。</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#    fastcgi_index  index.php;       # 指定FastCGI 服务器默认的索引文件。</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;  # 设置 FastCGI 参数，指定 PHP 脚本的路径。</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#    include        fastcgi_params;  # 包含 FastCGI 的默认参数配置文件。</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># deny access to .htaccess files, if Apache&#39;s document root</span>
+</span></span><span class=line><span class=cl>    <span class=c1># concurs with nginx&#39;s one</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#location ~ /\.ht {  # 匹配所有以 .ht 开头的文件路径（如 .htaccess）。</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#    deny  all;      # 禁止访问匹配的文件。</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=反向代理>反向代理</h2><h3 id=单台代理>单台代理</h3><h4 id=目标>目标</h4><ul><li>在浏览器访问一个地址: http://127.0.0.1:3000/。</li><li>Nginx接受上面的请求。</li><li>转发请求到tomcat。</li><li>tomcat响应一个页面，页面中有：&ldquo;tomcat hello !!!"。</li></ul><h4 id=操作步骤1安装tomcat>操作步骤1：安装tomcat</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 安装java</span>
+</span></span><span class=line><span class=cl>sudo apt install openjdk-17-jdk
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安装tomcat</span>
+</span></span><span class=line><span class=cl>root@debian:~# wget https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.7/bin/apache-tomcat-11.0.7.tar.gz
+</span></span><span class=line><span class=cl>root@debian:~# sudo tar -xzf apache-tomcat-11.0.7.tar.gz -C /opt
+</span></span><span class=line><span class=cl>root@debian:~# sudo mv /opt/apache-tomcat-11.0.7/ /opt/tomcat
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 配置环境变量</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat# vim /etc/profile
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> -d /opt/tomcat <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>export</span> <span class=nv>CATALINA_HOME</span><span class=o>=</span>/opt/tomcat
+</span></span><span class=line><span class=cl>    <span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$PATH</span>:<span class=nv>$CATALINA_HOME</span>/bin
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 创建tomcat用户</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat# sudo useradd -r -m -U -d /opt/tomcat -s /bin/false tomcat
+</span></span><span class=line><span class=cl>useradd: warning: the home directory /opt/tomcat already exists.
+</span></span><span class=line><span class=cl>useradd: Not copying any file from skel directory into it.
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat#
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat# sudo chown -R tomcat: /opt/tomcat
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 配置tomcat服务</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat# vim /etc/systemd/system/tomcat.service
+</span></span><span class=line><span class=cl><span class=o>[</span>Unit<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>Description</span><span class=o>=</span>Apache Tomcat Web Application Container
+</span></span><span class=line><span class=cl><span class=nv>After</span><span class=o>=</span>network.target
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>Service<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>Type</span><span class=o>=</span>forking
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>User</span><span class=o>=</span>tomcat
+</span></span><span class=line><span class=cl><span class=nv>Group</span><span class=o>=</span>tomcat
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>Environment</span><span class=o>=</span><span class=s2>&#34;JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>Environment</span><span class=o>=</span><span class=s2>&#34;CATALINA_PID=/opt/tomcat/temp/tomcat.pid&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>Environment</span><span class=o>=</span><span class=s2>&#34;CATALINA_HOME=/opt/tomcat&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>Environment</span><span class=o>=</span><span class=s2>&#34;CATALINA_BASE=/opt/tomcat&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>ExecStart</span><span class=o>=</span>/opt/tomcat/bin/startup.sh
+</span></span><span class=line><span class=cl><span class=nv>ExecStop</span><span class=o>=</span>/opt/tomcat/bin/shutdown.sh
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>RestartSec</span><span class=o>=</span><span class=m>10</span>
+</span></span><span class=line><span class=cl><span class=nv>Restart</span><span class=o>=</span>always
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>Install<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>WantedBy</span><span class=o>=</span>multi-user.target
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 生成目标页面</span>
+</span></span><span class=line><span class=cl>root@debian:~ <span class=c1># cd /opt/tomcat/webapps/ROOT</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat/webapps/ROOT# vim index.html
+</span></span><span class=line><span class=cl>tomcat hello !!!
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 启动服务</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat# sudo systemctl daemon-reload
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat# sudo systemctl start tomcat
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat# sudo systemctl status tomcat
+</span></span><span class=line><span class=cl>● tomcat.service - Apache Tomcat Web Application Container
+</span></span><span class=line><span class=cl>     Loaded: loaded <span class=o>(</span>/etc/systemd/system/tomcat.service<span class=p>;</span> disabled<span class=p>;</span> preset: enabled<span class=o>)</span>
+</span></span><span class=line><span class=cl>     Active: active <span class=o>(</span>running<span class=o>)</span> since Mon 2025-05-19 09:36:27 EDT<span class=p>;</span> 5s ago
+</span></span><span class=line><span class=cl>    Process: <span class=m>2271</span> <span class=nv>ExecStart</span><span class=o>=</span>/opt/tomcat/bin/startup.sh <span class=o>(</span><span class=nv>code</span><span class=o>=</span>exited, <span class=nv>status</span><span class=o>=</span>0/SUCCESS<span class=o>)</span>
+</span></span><span class=line><span class=cl>   Main PID: <span class=m>2278</span> <span class=o>(</span>java<span class=o>)</span>
+</span></span><span class=line><span class=cl>      Tasks: <span class=m>38</span> <span class=o>(</span>limit: 2241<span class=o>)</span>
+</span></span><span class=line><span class=cl>     Memory: 80.5M
+</span></span><span class=line><span class=cl>        CPU: 2.304s
+</span></span><span class=line><span class=cl>     CGroup: /system.slice/tomcat.service
+</span></span><span class=line><span class=cl>             └─2278 /usr/lib/jvm/java-17-openjdk-amd64/bin/java -Djava.util.logging.config.file<span class=o>=</span>/opt/tomcat/conf/logging.properties -Djava.util.logging.m&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>May <span class=m>19</span> 09:36:27 debian systemd<span class=o>[</span>1<span class=o>]</span>: Starting tomcat.service - Apache Tomcat Web Application Container...
+</span></span><span class=line><span class=cl>May <span class=m>19</span> 09:36:27 debian startup.sh<span class=o>[</span>2271<span class=o>]</span>: Tomcat started.
+</span></span><span class=line><span class=cl>May <span class=m>19</span> 09:36:27 debian systemd<span class=o>[</span>1<span class=o>]</span>: Started tomcat.service - Apache Tomcat Web Application Container.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 本地验证</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat/webapps/ROOT# curl localhost:8080/index.html
+</span></span><span class=line><span class=cl>tomcat hello !!!
+</span></span></code></pre></td></tr></table></div></div><h4 id=操作步骤2nginx配置>操作步骤2：nginx配置</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 配置nginx代理地址:端口</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat/webapps/ROOT# <span class=nb>cd</span> /etc/nginx/conf.d/
+</span></span><span class=line><span class=cl>root@debian:/etc/nginx/conf.d# vim default.conf
+</span></span><span class=line><span class=cl>    location / <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=c1>#        root   /usr/share/nginx/html;</span>
+</span></span><span class=line><span class=cl>            <span class=c1>#        index  index.html index.htm;</span>
+</span></span><span class=line><span class=cl>        proxy_pass   http://127.0.0.1:8080<span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重新加载nginx配置</span>
+</span></span><span class=line><span class=cl>root@debian:/etc/nginx/conf.d# /usr/sbin/nginx -s reload
+</span></span></code></pre></td></tr></table></div></div><h4 id=操作步骤3本地验证>操作步骤3：本地验证</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>C:<span class=se>\U</span>sers<span class=se>\Y</span>Y&gt;curl http://127.0.0.1:3000
+</span></span><span class=line><span class=cl>tomcat hello !!!
+</span></span></code></pre></td></tr></table></div></div><p><img src=/p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%811.png width=698 height=289 srcset="/p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%811_hu_b1ad05c57644e02.png 480w, /p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%811_hu_71c80484568c822e.png 1024w" loading=lazy alt=image-反向代理验证1 class=gallery-image data-flex-grow=241 data-flex-basis=579px></p><h3 id=多台代理>多台代理</h3><h4 id=目标-1>目标</h4><ul><li>浏览器访问：（http://127.0.0.1:3000/beijing），通过nginx，跳转到一个tomcat上 （http://localhost:8081），在浏览器上显示：beijing。</li><li>浏览器访问：（http://127.0.0.1:3000/shanghai），通过nginx，跳转到一个tomcat上（http://localhost:8082），在浏览器上显示：shanghai</li></ul><h4 id=操作步骤1安装tomcat-1>操作步骤1：安装tomcat</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 在单台代理的基础上，拷贝两个tomcat，再配置两个tomcat</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8081/conf# vim server.xml
+</span></span><span class=line><span class=cl>&lt;Server <span class=nv>port</span><span class=o>=</span><span class=s2>&#34;8015&#34;</span> <span class=nv>shutdown</span><span class=o>=</span><span class=s2>&#34;SHUTDOWN&#34;</span>&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    &lt;Connector <span class=nv>port</span><span class=o>=</span><span class=s2>&#34;8081&#34;</span> <span class=nv>protocol</span><span class=o>=</span><span class=s2>&#34;HTTP/1.1&#34;</span>
+</span></span><span class=line><span class=cl>               <span class=nv>connectionTimeout</span><span class=o>=</span><span class=s2>&#34;20000&#34;</span>
+</span></span><span class=line><span class=cl>               <span class=nv>redirectPort</span><span class=o>=</span><span class=s2>&#34;8443&#34;</span> /&gt;
+</span></span><span class=line><span class=cl>               
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8082/conf# vim server.xml
+</span></span><span class=line><span class=cl>&lt;Server <span class=nv>port</span><span class=o>=</span><span class=s2>&#34;8025&#34;</span> <span class=nv>shutdown</span><span class=o>=</span><span class=s2>&#34;SHUTDOWN&#34;</span>&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    &lt;Connector <span class=nv>port</span><span class=o>=</span><span class=s2>&#34;8082&#34;</span> <span class=nv>protocol</span><span class=o>=</span><span class=s2>&#34;HTTP/1.1&#34;</span>
+</span></span><span class=line><span class=cl>               <span class=nv>connectionTimeout</span><span class=o>=</span><span class=s2>&#34;20000&#34;</span>
+</span></span><span class=line><span class=cl>               <span class=nv>redirectPort</span><span class=o>=</span><span class=s2>&#34;8453&#34;</span> /&gt;
+</span></span><span class=line><span class=cl>              
+</span></span><span class=line><span class=cl><span class=c1># 停止tomcat</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8082/conf# systemctl stop tomcat
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8082/conf# systemctl status tomcat
+</span></span><span class=line><span class=cl>○ tomcat.service - Apache Tomcat Web Application Container
+</span></span><span class=line><span class=cl>     Loaded: loaded <span class=o>(</span>/etc/systemd/system/tomcat.service<span class=p>;</span> disabled<span class=p>;</span> preset: enabled<span class=o>)</span>
+</span></span><span class=line><span class=cl>     Active: inactive <span class=o>(</span>dead<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 修改html文件内容</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8081/webapps/beijing <span class=c1># vim index.html</span>
+</span></span><span class=line><span class=cl>beijing
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8082/webapps/shanghai <span class=c1># vim index.html</span>
+</span></span><span class=line><span class=cl>shanghai
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 启动服务并验证</span>
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>CATALINA_HOME</span><span class=o>=</span>/opt/tomcat8081
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$CATALINA_HOME</span>/bin:<span class=nv>$PATH</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8081# ./bin/startup.sh
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8081# curl http://localhost:8081
+</span></span><span class=line><span class=cl>beijing
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>CATALINA_HOME</span><span class=o>=</span>/opt/tomcat8082
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$CATALINA_HOME</span>/bin:<span class=nv>$PATH</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8082# ./bin/startup.sh
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8082# curl http://localhost:8082
+</span></span><span class=line><span class=cl>shanghai
+</span></span></code></pre></td></tr></table></div></div><h4 id=操作步骤2nginx配置-1>操作步骤2：nginx配置</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 配置nginx代理地址:端口</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat/webapps/ROOT# <span class=nb>cd</span> /etc/nginx/conf.d/
+</span></span><span class=line><span class=cl>root@debian:/etc/nginx/conf.d# vim default.conf
+</span></span><span class=line><span class=cl>    location ~ /beijing/ <span class=o>{</span>
+</span></span><span class=line><span class=cl>        proxy_pass   http://127.0.0.1:8081<span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>    location ~ /shanghai/ <span class=o>{</span>
+</span></span><span class=line><span class=cl>        proxy_pass   http://127.0.0.1:8082<span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    location / <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=c1>#        root   /usr/share/nginx/html;</span>
+</span></span><span class=line><span class=cl>            <span class=c1>#        index  index.html index.htm;</span>
+</span></span><span class=line><span class=cl>        proxy_pass   http://127.0.0.1:8080<span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重新加载nginx配置</span>
+</span></span><span class=line><span class=cl>root@debian:/etc/nginx/conf.d# /usr/sbin/nginx -s reload
+</span></span></code></pre></td></tr></table></div></div><h4 id=操作步骤3本地验证-1>操作步骤3：本地验证</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>C:<span class=se>\U</span>sers<span class=se>\Y</span>Y&gt;curl http://127.0.0.1:3000/shanghai/
+</span></span><span class=line><span class=cl>shanghai
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>C:<span class=se>\U</span>sers<span class=se>\Y</span>Y&gt;curl http://127.0.0.1:3000/shanghai/index.html
+</span></span><span class=line><span class=cl>shanghai
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>C:<span class=se>\U</span>sers<span class=se>\Y</span>Y&gt;curl http://127.0.0.1:3000/beijing/index.html
+</span></span><span class=line><span class=cl>beijing
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>C:<span class=se>\U</span>sers<span class=se>\Y</span>Y&gt;curl http://127.0.0.1:3000/beijing/
+</span></span><span class=line><span class=cl>beijing
+</span></span></code></pre></td></tr></table></div></div><p><img src=/p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B01.png width=701 height=158 srcset="/p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B01_hu_2aeff50651581a00.png 480w, /p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B01_hu_85bec14e5a55d61.png 1024w" loading=lazy alt=image-反向代理验证多台1 class=gallery-image data-flex-grow=443 data-flex-basis=1064px></p><p><img src=/p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B02.png width=784 height=170 srcset="/p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B02_hu_2583ff73fbb9165a.png 480w, /p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B02_hu_1f3a8ffdab141b91.png 1024w" loading=lazy alt=image-反向代理验证多台2 class=gallery-image data-flex-grow=461 data-flex-basis=1106px></p><p><img src=/p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B03.png width=659 height=152 srcset="/p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B03_hu_496c4dc84b1c6863.png 480w, /p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B03_hu_5a4597dc6b12f832.png 1024w" loading=lazy alt=image-反向代理验证多台3 class=gallery-image data-flex-grow=433 data-flex-basis=1040px></p><p><img src=/p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B04.png width=798 height=153 srcset="/p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B04_hu_1b2d73a83bc8d029.png 480w, /p/1.0-nginx/image-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%AA%8C%E8%AF%81%E5%A4%9A%E5%8F%B04_hu_b7817ab95575409c.png 1024w" loading=lazy alt=image-反向代理验证多台4 class=gallery-image data-flex-grow=521 data-flex-basis=1251px></p><h2 id=负载均衡>负载均衡</h2><h3 id=目标-2>目标</h3><ul><li>通过浏览器多次访问一个地址（http://www.cainiao.com/load-balance）。</li><li>nginx接受上面的请求，并进行转发。</li><li>那么每个请求的响应，是来自于不同的tomcat提供的。（2台tomcat，端口：8081，8082）。 两台tomcat，不同的响应内容：“8081”和“8082”。</li></ul><h3 id=操作步骤>操作步骤</h3><h4 id=部署tomcat>部署tomcat</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 还是使用多台代理时的tomcat</span>
+</span></span><span class=line><span class=cl>root@debian:~# <span class=nb>cd</span> /opt/tomcat8081/webapps
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8081/webapps# mkdir load-balance
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8081/webapps# vim load-balance/index.html
+</span></span><span class=line><span class=cl><span class=m>8081</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>root@debian:~# <span class=nb>cd</span> /opt/tomcat8082/webapps
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8082/webapps# mkdir load-balance
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8082/webapps# vim load-balance/index.html
+</span></span><span class=line><span class=cl><span class=m>8082</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 启动服务</span>
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>CATALINA_HOME</span><span class=o>=</span>/opt/tomcat8081
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$CATALINA_HOME</span>/bin:<span class=nv>$PATH</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8081# /opt/tomcat8081/bin/startup.sh
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>CATALINA_HOME</span><span class=o>=</span>/opt/tomcat8082
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$CATALINA_HOME</span>/bin:<span class=nv>$PATH</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8082# /opt/tomcat8082/bin/startup.sh
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8082# curl http://127.0.0.1/load-balance/index.html
+</span></span><span class=line><span class=cl><span class=m>8081</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/tomcat8082# curl http://127.0.0.1/load-balance/index.html
+</span></span><span class=line><span class=cl><span class=m>8082</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=配置nginx>配置nginx</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:/opt/tomcat8082# cat /etc/nginx/conf.d/default.conf
+</span></span><span class=line><span class=cl><span class=c1># upstream 要配置在http块中</span>
+</span></span><span class=line><span class=cl>upstream myServers <span class=o>{</span>
+</span></span><span class=line><span class=cl>    server 127.0.0.1:8081<span class=p>;</span>   <span class=c1># server 指令只能指定 IP 地址（或域名）和端口</span>
+</span></span><span class=line><span class=cl>    server 127.0.0.1:8082<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>server <span class=o>{</span>
+</span></span><span class=line><span class=cl>    listen       80<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server_name  localhost<span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    location / <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>#        root   /usr/share/nginx/html;</span>
+</span></span><span class=line><span class=cl>        <span class=c1>#        index  index.html index.htm;</span>
+</span></span><span class=line><span class=cl>        proxy_pass   http://myServers<span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>......
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重新加载服务配置</span>
+</span></span><span class=line><span class=cl>root@debian:/etc/nginx/conf.d# /usr/sbin/nginx -s reload
+</span></span></code></pre></td></tr></table></div></div><p><strong>注意</strong></p><ul><li>upstream 要配置在http块中</li><li>upstream 的server 指令只能指定 IP 地址（或域名）和端口</li></ul><h4 id=验证>验证</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>C:<span class=se>\U</span>sers<span class=se>\Y</span>Y&gt;curl http://127.0.0.1:3000/load-balance/index.html
+</span></span><span class=line><span class=cl><span class=m>8081</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>C:<span class=se>\U</span>sers<span class=se>\Y</span>Y&gt;curl http://127.0.0.1:3000/load-balance/index.html
+</span></span><span class=line><span class=cl><span class=m>8082</span>
+</span></span></code></pre></td></tr></table></div></div><p><img src=/p/1.0-nginx/image-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AA%8C%E8%AF%811.png width=851 height=156 srcset="/p/1.0-nginx/image-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AA%8C%E8%AF%811_hu_e88eccb4f1276ab.png 480w, /p/1.0-nginx/image-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AA%8C%E8%AF%811_hu_20f21a5154f24930.png 1024w" loading=lazy alt=image-负载均衡验证1 class=gallery-image data-flex-grow=545 data-flex-basis=1309px></p><p><img src=/p/1.0-nginx/image-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AA%8C%E8%AF%812.png width=874 height=141 srcset="/p/1.0-nginx/image-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AA%8C%E8%AF%812_hu_d1d840b9ae3405db.png 480w, /p/1.0-nginx/image-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AA%8C%E8%AF%812_hu_69ce617b94182124.png 1024w" loading=lazy alt=image-负载均衡验证2 class=gallery-image data-flex-grow=619 data-flex-basis=1487px></p><h3 id=负载均衡的方法算法>负载均衡的方法（算法）</h3><p>参考链接：https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/</p><h4 id=round-robin>Round Robin</h4><p>Requests are distributed evenly across the servers, with <a class=link href=https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/#weights target=_blank rel=noopener>server weights</a> taken into consideration. This method is used by default (there is no directive for enabling it)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>upstream backend <span class=o>{</span>
+</span></span><span class=line><span class=cl>   <span class=c1># no load balancing method is specified for Round Robin</span>
+</span></span><span class=line><span class=cl>   server backend1.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl>   server backend2.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=least-connections>Least Connections</h4><p>A request is sent to the server with the least number of active connections, again with <a class=link href=https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/#weights target=_blank rel=noopener>server weights</a> taken into consideration</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>upstream backend <span class=o>{</span>
+</span></span><span class=line><span class=cl>    least_conn<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend1.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend2.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=ip-hash>IP Hash</h4><p>The server to which a request is sent is determined from the client IP address. In this case, either the first three octets of the IPv4 address or the whole IPv6 address are used to calculate the hash value. The method guarantees that requests from the same address get to the same server unless it is not available.</p><p>通过这种方式，客户端的请求会转发到同一台服务器上</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>upstream backend <span class=o>{</span>
+</span></span><span class=line><span class=cl>    ip_hash<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend1.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend2.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend3.example.com down<span class=p>;</span>   <span class=c1># 如果一台服务器不能整体提供服务，自动转发到下一台服务器</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=generic-hash>Generic Hash</h4><p>The server to which a request is sent is determined from a user‑defined key which can be a text string, variable, or a combination. For example, the key may be a paired source IP address and port, or a URI as in this example:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>upstream backend <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>hash</span> <span class=nv>$request_uri</span> consistent<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend1.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend2.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=least-time-nginx-plus-only>Least Time (NGINX Plus only)</h4><p>For each request, NGINX Plus selects the server with the lowest average latency and the lowest number of active connections, where the lowest average latency is calculated based on which of the following parameters to the least_time directive is included:</p><p><strong>暂不涉及，使用时再查看文档</strong></p><h4 id=random>Random</h4><p>Each request will be passed to a randomly selected server. If the two parameter is specified, first, NGINX randomly selects two servers taking into account server weights, and then chooses one of these servers using the specified method:</p><ul><li>least_conn – The least number of active connections</li><li>least_time=header (NGINX Plus) – The least average time to receive the response header from the server ($upstream_header_time)</li><li>least_time=last_byte (NGINX Plus) – The least average time to receive the full response from the server ($upstream_response_time)</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>upstream backend <span class=o>{</span>
+</span></span><span class=line><span class=cl>    random two <span class=nv>least_time</span><span class=o>=</span>last_byte<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend1.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend2.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend3.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend4.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=server-weights权重>Server Weights(权重)</h3><p>By default, NGINX distributes requests among the servers in the group according to their weights using the Round Robin method. The <a class=link href=https://nginx.org/en/docs/http/ngx_http_upstream_module.html#weight target=_blank rel=noopener><code>weight</code></a> parameter to the <a class=link href=https://nginx.org/en/docs/http/ngx_http_upstream_module.html#server target=_blank rel=noopener><code>server</code></a> directive sets the weight of a server; the default is <code>1</code>:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>upstream backend <span class=o>{</span>
+</span></span><span class=line><span class=cl>    server backend1.example.com <span class=nv>weight</span><span class=o>=</span>5<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server backend2.example.com<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server 192.0.0.1 backup<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=c1># With this configuration of weights, out of every 6 requests, 5 are sent to backend1.example.com and 1 to backend2.example.com.</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=动静分离>动静分离</h2><h3 id=什么是-nginx-的动静分离>什么是 Nginx 的动静分离？</h3><p>动静分离是指将 <strong>静态资源（如 HTML、CSS、JavaScript、图片等）</strong> 和 <strong>动态资源（如 PHP、Java、Python 等生成的动态内容）</strong> 分别处理，以提高服务器性能和资源利用率。</p><ul><li><strong>静态资源</strong>：内容固定不变，可以直接从磁盘或缓存中读取，不需要经过后端应用服务器处理。</li><li><strong>动态资源</strong>：内容根据请求动态生成，需要经过后端应用服务器（如 Tomcat、PHP-FPM 等）处理。</li></ul><p>通过动静分离，可以将静态资源交给 Nginx 直接处理，而动态资源则转发给后端应用服务器处理，从而减轻后端服务器的压力，并提高静态资源的访问速度。</p><h3 id=为什么要做动静分离>为什么要做动静分离？</h3><ol><li><strong>提高性能</strong>：Nginx 处理静态资源的性能非常高，远高于后端应用服务器。</li><li><strong>减轻后端压力</strong>：将静态资源交给 Nginx 处理，减少后端服务器的负载。</li><li><strong>提高用户体验</strong>：静态资源加载更快，提升页面响应速度。</li><li><strong>便于扩展</strong>：静态资源可以单独部署到 CDN 或专门的静态资源服务器上。</li></ol><h3 id=如何实现-nginx-的动静分离>如何实现 Nginx 的动静分离？</h3><h4 id=静态资源和动态资源的分类>静态资源和动态资源的分类</h4><ul><li>静态资源：<code>.html</code>, <code>.css</code>, <code>.js</code>, <code>.jpg</code>, <code>.png</code>, <code>.gif</code>, <code>.ico</code>, <code>.woff</code>, <code>.ttf</code> 等。</li><li>动态资源：<code>.php</code>, <code>.jsp</code>, <code>.do</code>, <code>.py</code> 等。</li></ul><h4 id=nginx-配置动静分离>Nginx 配置动静分离</h4><p>通过 <code>location</code> 块将静态资源和动态资源分别处理。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>server <span class=o>{</span>
+</span></span><span class=line><span class=cl>    listen 8000<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server_name cainiao.com<span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 静态资源处理</span>
+</span></span><span class=line><span class=cl>    location ~* <span class=se>\.</span><span class=o>(</span>html<span class=p>|</span>css<span class=p>|</span>js<span class=p>|</span>jpg<span class=p>|</span>jpeg<span class=p>|</span>png<span class=p>|</span>gif<span class=p>|</span>ico<span class=p>|</span>woff<span class=p>|</span>ttf<span class=o>)</span>$ <span class=o>{</span>
+</span></span><span class=line><span class=cl>        root /var/www/static<span class=p>;</span>  <span class=c1># 静态资源存放目录</span>
+</span></span><span class=line><span class=cl>        expires 30d<span class=p>;</span>          <span class=c1># 设置缓存过期时间</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 动态资源处理</span>
+</span></span><span class=line><span class=cl>    location / <span class=o>{</span>
+</span></span><span class=line><span class=cl>        proxy_pass http://backend_server<span class=p>;</span>  <span class=c1># 转发到后端应用服务器</span>
+</span></span><span class=line><span class=cl>        proxy_set_header Host <span class=nv>$host</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        proxy_set_header X-Real-IP <span class=nv>$remote_addr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        proxy_set_header X-Forwarded-For <span class=nv>$proxy_add_x_forwarded_for</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>upstream backend_server <span class=o>{</span>
+</span></span><span class=line><span class=cl>    server 127.0.0.1:8080<span class=p>;</span>  <span class=c1># 后端应用服务器地址</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=配置说明>配置说明</h4><ol><li><strong>静态资源处理</strong>：<ul><li>使用 <code>location ~* \.(html|css|js|jpg|jpeg|png|gif|ico|woff|ttf)$</code> 匹配静态资源文件。</li><li><code>root /var/www/static</code>：指定静态资源的存放目录。</li><li><code>expires 30d</code>：设置静态资源的缓存过期时间，减少客户端请求。</li></ul></li><li><strong>动态资源处理</strong>：<ul><li>使用 <code>location /</code> 匹配所有请求。</li><li><code>proxy_pass http://backend_server</code>：将动态资源请求转发到后端应用服务器。</li></ul></li><li><strong>后端服务器</strong>：<ul><li>使用 <code>upstream</code> 定义后端应用服务器组。</li></ul></li></ol><h4 id=测试动静分离>测试动静分离</h4><p><strong>配置修改步骤</strong>：</p><p>1、域名映射</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>C:<span class=se>\W</span>indows<span class=se>\S</span>ystem32<span class=se>\d</span>rivers<span class=se>\e</span>tc<span class=se>\h</span>osts
+</span></span><span class=line><span class=cl>127.0.0.1 cainiao.com
+</span></span></code></pre></td></tr></table></div></div><p>2、配置nginx</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:/etc/nginx# vim nginx.conf
+</span></span><span class=line><span class=cl><span class=c1># 在http模块的最后添加如下内容</span>
+</span></span><span class=line><span class=cl>    server <span class=o>{</span>
+</span></span><span class=line><span class=cl>    listen 8000<span class=p>;</span>
+</span></span><span class=line><span class=cl>    server_name cainiao.com<span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 静态资源处理</span>
+</span></span><span class=line><span class=cl>    location ~* <span class=se>\.</span><span class=o>(</span>html<span class=p>|</span>css<span class=p>|</span>js<span class=p>|</span>jpg<span class=p>|</span>jpeg<span class=p>|</span>png<span class=p>|</span>gif<span class=p>|</span>ico<span class=p>|</span>woff<span class=p>|</span>ttf<span class=o>)</span>$ <span class=o>{</span>
+</span></span><span class=line><span class=cl>        root /var/www/static<span class=p>;</span>  <span class=c1># 静态资源存放目录</span>
+</span></span><span class=line><span class=cl>        expires 30d<span class=p>;</span>          <span class=c1># 设置缓存过期时间</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 动态资源处理</span>
+</span></span><span class=line><span class=cl>    location / <span class=o>{</span>
+</span></span><span class=line><span class=cl>        proxy_pass http://backend_server<span class=p>;</span>  <span class=c1># 转发到后端应用服务器</span>
+</span></span><span class=line><span class=cl>        proxy_set_header Host <span class=nv>$host</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        proxy_set_header X-Real-IP <span class=nv>$remote_addr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        proxy_set_header X-Forwarded-For <span class=nv>$proxy_add_x_forwarded_for</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    upstream backend_server <span class=o>{</span>
+</span></span><span class=line><span class=cl>        server 127.0.0.1:8080<span class=p>;</span>  <span class=c1># 后端应用服务器地址</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重新加载服务配置</span>
+</span></span><span class=line><span class=cl>root@debian:/etc/nginx/conf.d# /usr/sbin/nginx -s reload
+</span></span></code></pre></td></tr></table></div></div><p>3、配置资源</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:/etc/nginx# mkdir -p /var/www/static
+</span></span><span class=line><span class=cl><span class=c1># 上传一个名为logo.png的图片到该目录下</span>
+</span></span></code></pre></td></tr></table></div></div><p>4、主机配置端口映射</p><p><img src=/p/1.0-nginx/image-%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A88000%E7%AB%AF%E5%8F%A3.png width=888 height=583 srcset="/p/1.0-nginx/image-%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A88000%E7%AB%AF%E5%8F%A3_hu_38038ea2f1c224c7.png 480w, /p/1.0-nginx/image-%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A88000%E7%AB%AF%E5%8F%A3_hu_236a80a9eba6e487.png 1024w" loading=lazy alt=image-主机配置端口映射到服务器8000端口 class=gallery-image data-flex-grow=152 data-flex-basis=365px></p><p>5、浏览器验证静态资源</p><p><img src=/p/1.0-nginx/image-%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%AD%A3%E5%B8%B8%E8%BF%94%E5%9B%9E.png width=1964 height=1612 srcset="/p/1.0-nginx/image-%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%AD%A3%E5%B8%B8%E8%BF%94%E5%9B%9E_hu_d805c8f593a5b5e3.png 480w, /p/1.0-nginx/image-%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%AD%A3%E5%B8%B8%E8%BF%94%E5%9B%9E_hu_410b0165db76e75b.png 1024w" loading=lazy alt=image-静态资源正常返回 class=gallery-image data-flex-grow=121 data-flex-basis=292px></p><p>6、浏览器验证动态资源</p><p><img src=/p/1.0-nginx/image-%E5%8A%A8%E6%80%81%E8%B5%84%E6%BA%90%E6%AD%A3%E5%B8%B8%E8%BF%94%E5%9B%9E.png width=1784 height=811 srcset="/p/1.0-nginx/image-%E5%8A%A8%E6%80%81%E8%B5%84%E6%BA%90%E6%AD%A3%E5%B8%B8%E8%BF%94%E5%9B%9E_hu_5d2b6ab120673d96.png 480w, /p/1.0-nginx/image-%E5%8A%A8%E6%80%81%E8%B5%84%E6%BA%90%E6%AD%A3%E5%B8%B8%E8%BF%94%E5%9B%9E_hu_c3c9f3452c817e67.png 1024w" loading=lazy alt=image-动态资源正常返回 class=gallery-image data-flex-grow=219 data-flex-basis=527px></p><h3 id=进一步优化>进一步优化</h3><ol><li><p><strong>使用 CDN</strong>： 将静态资源部署到 CDN（内容分发网络），进一步提高静态资源的访问速度。</p></li><li><p><strong>启用 Gzip 压缩</strong>： 在 Nginx 中启用 Gzip 压缩，减少静态资源的传输大小。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>gzip on<span class=p>;</span>
+</span></span><span class=line><span class=cl>gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript<span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div></li><li><p><strong>设置缓存策略</strong>： 为静态资源设置合理的缓存策略，减少客户端请求。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>location ~* <span class=se>\.</span><span class=o>(</span>html<span class=p>|</span>css<span class=p>|</span>js<span class=p>|</span>jpg<span class=p>|</span>jpeg<span class=p>|</span>png<span class=p>|</span>gif<span class=p>|</span>ico<span class=p>|</span>woff<span class=p>|</span>ttf<span class=o>)</span>$ <span class=o>{</span>
+</span></span><span class=line><span class=cl>    root /var/www/static<span class=p>;</span>
+</span></span><span class=line><span class=cl>    expires 30d<span class=p>;</span>
+</span></span><span class=line><span class=cl>    add_header Cache-Control <span class=s2>&#34;public, no-transform&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div></li></ol><h2 id=高可用>高可用</h2><h3 id=架构图>架构图</h3><p><img src=/p/1.0-nginx/image-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84%E5%9B%BE.png width=1304 height=805 srcset="/p/1.0-nginx/image-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84%E5%9B%BE_hu_14f65318d7d8c3f3.png 480w, /p/1.0-nginx/image-%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84%E5%9B%BE_hu_6b65b6a924b2ca90.png 1024w" loading=lazy alt=image-高可用架构图 class=gallery-image data-flex-grow=161 data-flex-basis=388px></p><h3 id=环境准备>环境准备</h3><h4 id=前提条件>前提条件</h4><p>拷贝复制前面nginx虚机，修改虚机IP为192.168.52.70</p><h4 id=安装keepalived>安装keepalived</h4><p><strong>每个虚机都安装</strong>，详细可以参考：<a class=link href=https://caijemmy.github.io/p/1.0-keepalived/ target=_blank rel=noopener>keepalived入门介绍</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>apt -y install keepalived
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 主节点</span>
+</span></span><span class=line><span class=cl>root@debian:/etc/keepalived# vim keepalived.conf
+</span></span><span class=line><span class=cl>! Configuration File <span class=k>for</span> keepalived
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>global_defs <span class=o>{</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>vrrp_instance VI_1 <span class=o>{</span>
+</span></span><span class=line><span class=cl>    state MASTER
+</span></span><span class=line><span class=cl>    interface ens33
+</span></span><span class=line><span class=cl>    virtual_router_id <span class=m>51</span>
+</span></span><span class=line><span class=cl>    priority <span class=m>100</span>
+</span></span><span class=line><span class=cl>    advert_int <span class=m>1</span>
+</span></span><span class=line><span class=cl>    authentication <span class=o>{</span>
+</span></span><span class=line><span class=cl>        auth_type PASS
+</span></span><span class=line><span class=cl>        auth_pass <span class=m>1111</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>    virtual_ipaddress <span class=o>{</span>
+</span></span><span class=line><span class=cl>        192.168.52.99
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 备节点</span>
+</span></span><span class=line><span class=cl>root@debian:/etc/keepalived# cat keepalived.conf
+</span></span><span class=line><span class=cl>! Configuration File <span class=k>for</span> keepalived
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>global_defs <span class=o>{</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>vrrp_instance VI_1 <span class=o>{</span>
+</span></span><span class=line><span class=cl>    state BACKUP
+</span></span><span class=line><span class=cl>    interface ens33
+</span></span><span class=line><span class=cl>    virtual_router_id <span class=m>51</span>
+</span></span><span class=line><span class=cl>    priority <span class=m>80</span>
+</span></span><span class=line><span class=cl>    advert_int <span class=m>1</span>
+</span></span><span class=line><span class=cl>    authentication <span class=o>{</span>
+</span></span><span class=line><span class=cl>        auth_type PASS
+</span></span><span class=line><span class=cl>        auth_pass <span class=m>1111</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>    virtual_ipaddress <span class=o>{</span>
+</span></span><span class=line><span class=cl>        192.168.52.99
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 启动服务</span>
+</span></span><span class=line><span class=cl>root@debian:/etc/keepalived# systemctl start keepalived.service
+</span></span><span class=line><span class=cl>root@debian:/etc/keepalived# systemctl status keepalived.service
+</span></span><span class=line><span class=cl>● keepalived.service - Keepalive Daemon <span class=o>(</span>LVS and VRRP<span class=o>)</span>
+</span></span><span class=line><span class=cl>     Loaded: loaded <span class=o>(</span>/lib/systemd/system/keepalived.service<span class=p>;</span> enabled<span class=p>;</span> preset: enabled<span class=o>)</span>
+</span></span><span class=line><span class=cl>     Active: active <span class=o>(</span>running<span class=o>)</span> since Tue 2025-05-20 22:14:30 EDT<span class=p>;</span> 1s ago
+</span></span><span class=line><span class=cl>       Docs: man:keepalived<span class=o>(</span>8<span class=o>)</span>
+</span></span><span class=line><span class=cl>             man:keepalived.conf<span class=o>(</span>5<span class=o>)</span>
+</span></span><span class=line><span class=cl>             man:genhash<span class=o>(</span>1<span class=o>)</span>
+</span></span><span class=line><span class=cl>             https://keepalived.org
+</span></span><span class=line><span class=cl>   Main PID: <span class=m>1681</span> <span class=o>(</span>keepalived<span class=o>)</span>
+</span></span><span class=line><span class=cl>      Tasks: <span class=m>2</span> <span class=o>(</span>limit: 2241<span class=o>)</span>
+</span></span><span class=line><span class=cl>     Memory: 3.7M
+</span></span><span class=line><span class=cl>        CPU: 17ms
+</span></span><span class=line><span class=cl>     CGroup: /system.slice/keepalived.service
+</span></span><span class=line><span class=cl>             ├─1681 /usr/sbin/keepalived --dont-fork
+</span></span><span class=line><span class=cl>             └─1682 /usr/sbin/keepalived --dont-fork
+</span></span></code></pre></td></tr></table></div></div><h3 id=验证-1>验证</h3><p><img src=/p/1.0-nginx/image-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%AA%8C%E8%AF%811.png width=1915 height=524 srcset="/p/1.0-nginx/image-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%AA%8C%E8%AF%811_hu_69a6eaec32084434.png 480w, /p/1.0-nginx/image-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%AA%8C%E8%AF%811_hu_2ea8cf5f198d34a6.png 1024w" loading=lazy alt=image-高可用验证 class=gallery-image data-flex-grow=365 data-flex-basis=877px></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 停止主节点192.168.52.60上的keepalived服务</span>
+</span></span><span class=line><span class=cl>root@debian:~# ip a s
+</span></span><span class=line><span class=cl>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class=m>65536</span> qdisc noqueue state UNKNOWN group default qlen <span class=m>1000</span>
+</span></span><span class=line><span class=cl>    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span></span><span class=line><span class=cl>    inet 127.0.0.1/8 scope host lo
+</span></span><span class=line><span class=cl>       valid_lft forever preferred_lft forever
+</span></span><span class=line><span class=cl>    inet6 ::1/128 scope host noprefixroute
+</span></span><span class=line><span class=cl>       valid_lft forever preferred_lft forever
+</span></span><span class=line><span class=cl>2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class=m>1500</span> qdisc fq_codel state UP group default qlen <span class=m>1000</span>
+</span></span><span class=line><span class=cl>    link/ether 00:0c:29:dc:2d:71 brd ff:ff:ff:ff:ff:ff
+</span></span><span class=line><span class=cl>    altname enp2s1
+</span></span><span class=line><span class=cl>    inet 192.168.52.60/24 brd 192.168.52.255 scope global noprefixroute ens33
+</span></span><span class=line><span class=cl>       valid_lft forever preferred_lft forever
+</span></span><span class=line><span class=cl>    inet 192.168.52.99/32 scope global ens33
+</span></span><span class=line><span class=cl>       valid_lft forever preferred_lft forever
+</span></span><span class=line><span class=cl>    inet6 fe80::20c:29ff:fedc:2d71/64 scope link noprefixroute
+</span></span><span class=line><span class=cl>       valid_lft forever preferred_lft forever
+</span></span><span class=line><span class=cl>root@debian:~# systemctl stop keepalived.service
+</span></span><span class=line><span class=cl>root@debian:~# ip a s
+</span></span><span class=line><span class=cl>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class=m>65536</span> qdisc noqueue state UNKNOWN group default qlen <span class=m>1000</span>
+</span></span><span class=line><span class=cl>    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span></span><span class=line><span class=cl>    inet 127.0.0.1/8 scope host lo
+</span></span><span class=line><span class=cl>       valid_lft forever preferred_lft forever
+</span></span><span class=line><span class=cl>    inet6 ::1/128 scope host noprefixroute
+</span></span><span class=line><span class=cl>       valid_lft forever preferred_lft forever
+</span></span><span class=line><span class=cl>2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class=m>1500</span> qdisc fq_codel state UP group default qlen <span class=m>1000</span>
+</span></span><span class=line><span class=cl>    link/ether 00:0c:29:dc:2d:71 brd ff:ff:ff:ff:ff:ff
+</span></span><span class=line><span class=cl>    altname enp2s1
+</span></span><span class=line><span class=cl>    inet 192.168.52.60/24 brd 192.168.52.255 scope global noprefixroute ens33
+</span></span><span class=line><span class=cl>       valid_lft forever preferred_lft forever
+</span></span><span class=line><span class=cl>    inet6 fe80::20c:29ff:fedc:2d71/64 scope link noprefixroute
+</span></span><span class=line><span class=cl>       valid_lft forever preferred_lft forever
+</span></span></code></pre></td></tr></table></div></div><p>再次通过浏览器访问</p><p><img src=/p/1.0-nginx/image-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%AA%8C%E8%AF%812.png width=1915 height=524 srcset="/p/1.0-nginx/image-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%AA%8C%E8%AF%812_hu_69a6eaec32084434.png 480w, /p/1.0-nginx/image-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%AA%8C%E8%AF%812_hu_2ea8cf5f198d34a6.png 1024w" loading=lazy alt=image-高可用验证 class=gallery-image data-flex-grow=365 data-flex-basis=877px></p></section><footer class=article-footer><section class=article-tags><a href=/tags/nginx/>Nginx</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 Jul 24, 2024 00:00 UTC</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/p/2.0-nginx/><div class=article-image><img src=/p/2.0-nginx/cover.017ba8aa3f43e2fc996c7edf4f87c888_hu_f6827cbd29fd7fb9.jpg width=250 height=150 loading=lazy alt="Featured image of post 2.0 nginx" data-key="2.0 nginx" data-hash="md5-AXuoqj9D4vyZbH7fT4fIiA=="></div><div class=article-details><h2 class=article-title>2.0 nginx</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2025 暮鼓晨钟</section><section class=powerby>工欲善其事，必先利其器。盛世之牛马，乱世之炮灰；平安榨其身，战时用其命。<br>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

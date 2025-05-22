@@ -1,0 +1,425 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="lua入门介绍"><title>1.0 lua</title><link rel=canonical href=https://caijemmy.github.io/p/1.0-lua/><link rel=stylesheet href=/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css><meta property='og:title' content="1.0 lua"><meta property='og:description' content="lua入门介绍"><meta property='og:url' content='https://caijemmy.github.io/p/1.0-lua/'><meta property='og:site_name' content='暮鼓晨钟'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='lua'><meta property='article:published_time' content='2024-06-24T00:00:00+00:00'><meta property='article:modified_time' content='2024-06-24T00:00:00+00:00'><meta property='og:image' content='https://caijemmy.github.io/p/1.0-lua/cover.jpg'><meta name=twitter:title content="1.0 lua"><meta name=twitter:description content="lua入门介绍"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://caijemmy.github.io/p/1.0-lua/cover.jpg'><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu_14da0899299e31c4.png width=300 height=330 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>暮鼓晨钟</a></h1><h2 class=site-description>生如蝼蚁不敢有鸿鹄之志，命似纸薄岂能生青云之心。</h2></div></header><ol class=menu-social><li><a href=https://github.com/CaiJemmy/CaiNiaoTool target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首页</span></a></li><li><a href=/category/><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg>
+<span>分类</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/%E9%93%BE%E6%8E%A5/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#安装lua>安装lua</a></li><li><a href=#基本语法>基本语法</a><ol><li><a href=#交互式>交互式</a></li><li><a href=#脚本式>脚本式</a></li><li><a href=#注释>注释</a><ol><li><a href=#单行>单行</a></li><li><a href=#多行>多行</a></li></ol></li><li><a href=#标识符>标识符</a></li><li><a href=#关键词>关键词</a></li><li><a href=#全局变量>全局变量</a></li></ol></li><li><a href=#数据类型>数据类型</a><ol><li><a href=#nil空>nil（空）</a></li><li><a href=#boolean布尔>boolean（布尔）</a></li><li><a href=#number数字>number（数字）</a></li><li><a href=#string字符串>string（字符串）</a></li><li><a href=#table表>table（表）</a></li><li><a href=#function函数>function（函数）</a><ol><li><a href=#匿名函数anonymous-function>匿名函数（anonymous function）</a></li></ol></li><li><a href=#thread线程>thread（线程）</a></li><li><a href=#userdata自定义类型>userdata（自定义类型）</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/p/1.0-lua/><img src=/p/1.0-lua/cover_hu_b69f3bc6c0a0e284.jpg srcset="/p/1.0-lua/cover_hu_b69f3bc6c0a0e284.jpg 800w, /p/1.0-lua/cover_hu_9213264e5fa0118f.jpg 1600w" width=800 height=450 loading=lazy alt="Featured image of post 1.0 lua"></a></div><div class=article-details><header class=article-category><a href=/categories/%E8%BF%90%E7%BB%B4/>运维</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/1.0-lua/>1.0 lua</a></h2><h3 class=article-subtitle>lua入门介绍</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jun 24, 2024</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 6 分钟</time></div></footer></div></header><section class=article-content><h1 id=lua入门>lua入门</h1><p>官网：<a class=link href=https://www.lua.org/ target=_blank rel=noopener>https://www.lua.org</a></p><p>Lua 是一种轻量级、高效、可嵌入的脚本语言</p><p>教程参考：<a class=link href=https://www.runoob.com/lua/lua-tutorial.html target=_blank rel=noopener>https://www.runoob.com/lua/lua-tutorial.html</a></p><h2 id=安装lua>安装lua</h2><ul><li>Linux 环境已安装 gcc、make。其他环境安装可以参考：<a class=link href=https://www.runoob.com/lua/lua-environment.html target=_blank rel=noopener>https://www.runoob.com/lua/lua-environment.html</a></li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:~# curl -L -R -O https://www.lua.org/ftp/lua-5.4.7.tar.gz
+</span></span><span class=line><span class=cl>root@debian:~# tar zxf lua-5.4.7.tar.gz
+</span></span><span class=line><span class=cl>root@debian:~# <span class=nb>cd</span> lua-5.4.7/
+</span></span><span class=line><span class=cl>root@debian:~/lua-5.4.7# make all <span class=nb>test</span>
+</span></span><span class=line><span class=cl>root@debian:~/lua-5.4.7# make install
+</span></span><span class=line><span class=cl><span class=nb>cd</span> src <span class=o>&amp;&amp;</span> mkdir -p /usr/local/bin /usr/local/include /usr/local/lib /usr/local/man/man1 /usr/local/share/lua/5.4 /usr/local/lib/lua/5.4
+</span></span><span class=line><span class=cl><span class=nb>cd</span> src <span class=o>&amp;&amp;</span> install -p -m <span class=m>0755</span> lua luac /usr/local/bin
+</span></span><span class=line><span class=cl><span class=nb>cd</span> src <span class=o>&amp;&amp;</span> install -p -m <span class=m>0644</span> lua.h luaconf.h lualib.h lauxlib.h lua.hpp /usr/local/include
+</span></span><span class=line><span class=cl><span class=nb>cd</span> src <span class=o>&amp;&amp;</span> install -p -m <span class=m>0644</span> liblua.a /usr/local/lib
+</span></span><span class=line><span class=cl><span class=nb>cd</span> doc <span class=o>&amp;&amp;</span> install -p -m <span class=m>0644</span> lua.1 luac.1 /usr/local/man/man1
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>root@debian:~# <span class=nb>echo</span> <span class=s1>&#39;print(&#34;Hello World!&#34;)&#39;</span> &gt; HelloWorld.lua
+</span></span><span class=line><span class=cl>root@debian:~# lua HelloWorld.lua
+</span></span><span class=line><span class=cl>Hello World!
+</span></span></code></pre></td></tr></table></div></div><h2 id=基本语法>基本语法</h2><h3 id=交互式>交互式</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:~# lua -i
+</span></span><span class=line><span class=cl>Lua 5.4.7  Copyright <span class=o>(</span>C<span class=o>)</span> 1994-2024 Lua.org, PUC-Rio
+</span></span><span class=line><span class=cl>&gt; print<span class=o>(</span><span class=s2>&#34;hello lua&#34;</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>hello lua
+</span></span><span class=line><span class=cl>&gt; os.exit<span class=o>()</span>           <span class=c1># 退出交互式</span>
+</span></span><span class=line><span class=cl>root@debian:~#
+</span></span></code></pre></td></tr></table></div></div><h3 id=脚本式>脚本式</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:~# cat HelloWorld.lua
+</span></span><span class=line><span class=cl>print<span class=o>(</span><span class=s2>&#34;Hello World!&#34;</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>root@debian:~# lua ./HelloWorld.lua
+</span></span><span class=line><span class=cl>Hello World!
+</span></span></code></pre></td></tr></table></div></div><h3 id=注释>注释</h3><h4 id=单行>单行</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:~# cat HelloWorld.lua
+</span></span><span class=line><span class=cl>-- 这是注释
+</span></span><span class=line><span class=cl>print<span class=o>(</span><span class=s2>&#34;Hello World!&#34;</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>root@debian:~# lua ./HelloWorld.lua
+</span></span><span class=line><span class=cl>Hello World!
+</span></span></code></pre></td></tr></table></div></div><h4 id=多行>多行</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:~# cat HelloWorld.lua
+</span></span><span class=line><span class=cl>--<span class=o>[[</span> 这是注释
+</span></span><span class=line><span class=cl>这是多行注释
+</span></span><span class=line><span class=cl>--<span class=o>]]</span>
+</span></span><span class=line><span class=cl>print<span class=o>(</span><span class=s2>&#34;Hello World!&#34;</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>root@debian:~# lua ./HelloWorld.lua
+</span></span><span class=line><span class=cl>Hello World!
+</span></span></code></pre></td></tr></table></div></div><ul><li>多行注释不支持嵌套</li></ul><h3 id=标识符>标识符</h3><p>Lua 标识符用于定义一个变量，函数获取其他用户定义的项。标识符以一个字母 A 到 Z 或 a 到 z 或下划线 <strong>_</strong> 开头后加上 0 个或多个字母，下划线，数字（0 到 9）。</p><p>最好不要使用下划线加大写字母的标识符，因为Lua的保留字也是这样的。</p><p>Lua 不允许使用特殊字符如 <strong>@</strong>, <strong>$</strong>, 和 <strong>%</strong> 来定义标识符。 Lua 是一个区分大小写的编程语言。</p><h3 id=关键词>关键词</h3><p>以下列出了 Lua 的保留关键词。保留关键字不能作为常量或变量或其他用户自定义标示符：</p><div class=table-wrapper><table><thead><tr><th>and</th><th>break</th><th>do</th><th>else</th></tr></thead><tbody><tr><td>elseif</td><td>end</td><td>false</td><td>for</td></tr><tr><td>function</td><td>if</td><td>in</td><td>local</td></tr><tr><td>nil</td><td>not</td><td>or</td><td>repeat</td></tr><tr><td>return</td><td>then</td><td>true</td><td>until</td></tr><tr><td>while</td><td>goto</td><td></td><td></td></tr></tbody></table></div><p>一般约定，以下划线开头连接一串大写字母的名字（比如 _VERSION）被保留用于 Lua 内部全局变量。</p><h3 id=全局变量>全局变量</h3><p>在默认情况下，变量总是认为是全局的。</p><p>全局变量不需要声明，给一个变量赋值后即创建了这个全局变量，访问一个没有初始化的全局变量也不会出错，只不过得到的结果是：nil。</p><p>如果你想删除一个全局变量，只需要将变量赋值为nil。换句话说, 当且仅当一个变量不等于nil时，这个变量即存在。</p><h2 id=数据类型>数据类型</h2><p>Lua 是动态类型语言，变量不要类型定义,只需要为变量赋值。 值可以存储在变量中，作为参数传递或结果返回。</p><p>Lua 中有 8 个基本类型分别为：nil、boolean、number、string、userdata、function、thread 和 table。</p><div class=table-wrapper><table><thead><tr><th style=text-align:left>数据类型</th><th style=text-align:left>描述</th></tr></thead><tbody><tr><td style=text-align:left>nil</td><td style=text-align:left>这个最简单，只有值nil属于该类，表示一个无效值（在条件表达式中相当于false）。</td></tr><tr><td style=text-align:left>boolean</td><td style=text-align:left>包含两个值：false和true。</td></tr><tr><td style=text-align:left>number</td><td style=text-align:left>表示双精度类型的实浮点数</td></tr><tr><td style=text-align:left>string</td><td style=text-align:left>字符串由一对双引号或单引号来表示</td></tr><tr><td style=text-align:left>function</td><td style=text-align:left>由 C 或 Lua 编写的函数</td></tr><tr><td style=text-align:left>userdata</td><td style=text-align:left>表示任意存储在变量中的C数据结构</td></tr><tr><td style=text-align:left>thread</td><td style=text-align:left>表示执行的独立线路，用于执行协同程序</td></tr><tr><td style=text-align:left>table</td><td style=text-align:left>Lua 中的表（table）其实是一个"关联数组"（associative arrays），数组的索引可以是数字、字符串或表类型。在 Lua 里，table 的创建是通过"构造表达式"来完成，最简单构造表达式是{}，用来创建一个空表。</td></tr></tbody></table></div><h3 id=nil空>nil（空）</h3><ul><li>nil 类型表示一种没有任何有效值，它只有一个值 &ndash; nil，例如打印一个没有赋值的变量，便会输出一个 nil 值</li><li>对于全局变量和 table，nil 还有一个"删除"作用，给全局变量或者 table 表里的变量赋一个 nil 值，等同于把它们删掉</li><li>nil 作比较时应该加上双引号 "</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-lua data-lang=lua><span class=line><span class=cl><span class=c1>-- 对保留字nil进行type运算，结果返回nil字符串</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=kc>nil</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=kc>nil</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>-- 未定义变量返回的也是nil字符串</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=n>a</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=n>a</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>-- 对于全局变量和 table，nil 起&#34;删除&#34;作用</span>
+</span></span><span class=line><span class=cl><span class=n>xx</span> <span class=o>=</span> <span class=s1>&#39;oo&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>xx</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>xx</span> <span class=o>=</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>xx</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>tab1</span> <span class=o>=</span> <span class=p>{</span> <span class=n>key1</span> <span class=o>=</span> <span class=s2>&#34;val1&#34;</span><span class=p>,</span> <span class=n>key2</span> <span class=o>=</span> <span class=s2>&#34;val2&#34;</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kr>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=kr>in</span> <span class=n>pairs</span><span class=p>(</span><span class=n>tab1</span><span class=p>)</span> <span class=kr>do</span>
+</span></span><span class=line><span class=cl>    <span class=n>print</span><span class=p>(</span><span class=n>k</span> <span class=o>..</span> <span class=s2>&#34; - &#34;</span> <span class=o>..</span> <span class=n>v</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>tab1.key1</span> <span class=o>=</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=kr>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=kr>in</span> <span class=n>pairs</span><span class=p>(</span><span class=n>tab1</span><span class=p>)</span> <span class=kr>do</span>
+</span></span><span class=line><span class=cl>    <span class=n>print</span><span class=p>(</span><span class=n>k</span> <span class=o>..</span> <span class=s2>&#34; - &#34;</span> <span class=o>..</span> <span class=n>v</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>-- nil 作比较时应该加上双引号 &#34;</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=n>X</span><span class=p>)</span><span class=o>==</span><span class=kc>nil</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=n>X</span><span class=p>)</span><span class=o>==</span><span class=s2>&#34;nil&#34;</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 运行结果</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/lua# lua ./lua_type/test_nil.lua 
+</span></span><span class=line><span class=cl>nil
+</span></span><span class=line><span class=cl>string
+</span></span><span class=line><span class=cl>nil
+</span></span><span class=line><span class=cl>string
+</span></span><span class=line><span class=cl>oo
+</span></span><span class=line><span class=cl>nil
+</span></span><span class=line><span class=cl>key1 - val1
+</span></span><span class=line><span class=cl>key2 - val2
+</span></span><span class=line><span class=cl>key2 - val2
+</span></span><span class=line><span class=cl><span class=nb>false</span>
+</span></span><span class=line><span class=cl><span class=nb>true</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=boolean布尔>boolean（布尔）</h3><p>boolean 类型只有两个可选值：true（真） 和 false（假），Lua 把 false 和 nil 看作是 false，其他的都为 true，数字 0 也是 true</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-lua data-lang=lua><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=kc>true</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=kc>false</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=kc>nil</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>if</span> <span class=kc>false</span> <span class=ow>or</span> <span class=kc>nil</span> <span class=kr>then</span>
+</span></span><span class=line><span class=cl>    <span class=n>print</span><span class=p>(</span><span class=s2>&#34;至少有一个是 true&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>else</span>
+</span></span><span class=line><span class=cl>    <span class=n>print</span><span class=p>(</span><span class=s2>&#34;false 和 nil 都为 false&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>if</span> <span class=mi>0</span> <span class=kr>then</span>
+</span></span><span class=line><span class=cl>    <span class=n>print</span><span class=p>(</span><span class=s2>&#34;数字 0 是 true&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>else</span>
+</span></span><span class=line><span class=cl>    <span class=n>print</span><span class=p>(</span><span class=s2>&#34;数字 0 为 false&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>end</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:/opt/lua# lua ./lua_type/test_boolean.lua 
+</span></span><span class=line><span class=cl>boolean
+</span></span><span class=line><span class=cl>boolean
+</span></span><span class=line><span class=cl>nil
+</span></span><span class=line><span class=cl><span class=nb>false</span> 和 nil 都为 <span class=nb>false</span>
+</span></span><span class=line><span class=cl>数字 <span class=m>0</span> 是 <span class=nb>true</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=number数字>number（数字）</h3><p>Lua 默认只有一种 number 类型 &ndash; double（双精度）类型（默认类型可以修改 luaconf.h 里的定义），以下几种写法都被看作是 number 类型</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-lua data-lang=lua><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=mi>2</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=mf>2.2</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=mf>0.2</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=mf>2e+1</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=mf>0.2e-1</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>type</span><span class=p>(</span><span class=mf>7.8263692594256e-06</span><span class=p>))</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:/opt/lua# lua ./lua_type/test_number.lua 
+</span></span><span class=line><span class=cl>number
+</span></span><span class=line><span class=cl>number
+</span></span><span class=line><span class=cl>number
+</span></span><span class=line><span class=cl>number
+</span></span><span class=line><span class=cl>number
+</span></span><span class=line><span class=cl>number
+</span></span></code></pre></td></tr></table></div></div><h3 id=string字符串>string（字符串）</h3><ul><li>字符串由一对双引号或单引号来表示。</li><li>也可以用 2 个方括号 &ldquo;[[]]&rdquo; 来表示"一块"字符串，<strong>不支持嵌套</strong>。</li><li>在对一个数字字符串上进行算术操作时，Lua 会尝试将这个数字字符串转成一个数字，<strong>数字字符串中有非数字时，报错</strong>。</li><li>使用 # 来计算字符串的长度，放在字符串前面，<strong>1汉字为3个长度</strong>。</li><li>字符串连接使用的是 ..</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-lua data-lang=lua><span class=line><span class=cl><span class=c1>-- 字符串中如果需要单引号或双引号，需根据字符串使用情况进行转义</span>
+</span></span><span class=line><span class=cl><span class=n>string1</span> <span class=o>=</span> <span class=s2>&#34;this is&#39; &#39;</span><span class=se>\&#34;</span><span class=s2>string1&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>string2</span> <span class=o>=</span> <span class=s1>&#39;this is &#34;string2</span><span class=se>\&#39;</span><span class=s1>&#34;&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>string1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>string2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>-- 块字符串不支持嵌套</span>
+</span></span><span class=line><span class=cl><span class=n>html</span> <span class=o>=</span> <span class=s>[[
+</span></span></span><span class=line><span class=cl><span class=s>这是块字符串
+</span></span></span><span class=line><span class=cl><span class=s>块字符串不支持嵌套
+</span></span></span><span class=line><span class=cl><span class=s>]]</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>html</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>-- 在对一个数字字符串上进行算术操作时，Lua 会尝试将这个数字字符串转成一个数字</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=s2>&#34;2&#34;</span> <span class=o>+</span> <span class=mi>6</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=s2>&#34;2&#34;</span> <span class=o>+</span> <span class=s2>&#34;6&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=s2>&#34;2 + 6&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=s2>&#34;-2e2&#34;</span> <span class=o>*</span> <span class=s2>&#34;6&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1>-- print(&#34;error&#34; + 1)  -- attempt to add a &#39;string&#39; with a &#39;number&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=s2>&#34;2.1&#34;</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>-- 字符串连接</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=s2>&#34;a&#34;</span> <span class=o>..</span> <span class=s1>&#39;b&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=mi>157</span> <span class=o>..</span> <span class=mi>428</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>-- 计算字符串的长度</span>
+</span></span><span class=line><span class=cl><span class=n>len_test</span> <span class=o>=</span> <span class=s2>&#34;你好 世界&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=o>#</span><span class=n>len_test</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=o>#</span><span class=s2>&#34;你好 lua&#34;</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:/opt/lua# lua ./lua_type/test_string.lua 
+</span></span><span class=line><span class=cl>this is<span class=s1>&#39; &#39;</span><span class=s2>&#34;string1
+</span></span></span><span class=line><span class=cl><span class=s2>this is &#34;</span>string2<span class=err>&#39;</span><span class=s2>&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>这是块字符串
+</span></span></span><span class=line><span class=cl><span class=s2>块字符串不支持嵌套
+</span></span></span><span class=line><span class=cl><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>8
+</span></span></span><span class=line><span class=cl><span class=s2>8
+</span></span></span><span class=line><span class=cl><span class=s2>2 + 6
+</span></span></span><span class=line><span class=cl><span class=s2>-1200.0
+</span></span></span><span class=line><span class=cl><span class=s2>3.1
+</span></span></span><span class=line><span class=cl><span class=s2>ab
+</span></span></span><span class=line><span class=cl><span class=s2>157428
+</span></span></span><span class=line><span class=cl><span class=s2>13
+</span></span></span><span class=line><span class=cl><span class=s2>10
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=table表>table（表）</h3><p>在 Lua 里，table 的创建是通过"构造表达式"来完成，最简单构造表达式是{}，用来创建一个空表。也可以在表里添加一些数据，直接初始化表。</p><p>Lua 中的表（table）其实是一个"关联数组"（associative arrays），数组的索引可以是数字或者是字符串。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-lua data-lang=lua><span class=line><span class=cl><span class=c1>-- 创建一个空的 table</span>
+</span></span><span class=line><span class=cl><span class=kd>local</span> <span class=n>tbl1</span> <span class=o>=</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl><span class=kr>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=kr>in</span> <span class=n>pairs</span><span class=p>(</span><span class=n>tbl1</span><span class=p>)</span> <span class=kr>do</span>
+</span></span><span class=line><span class=cl>    <span class=n>print</span><span class=p>(</span><span class=n>k</span> <span class=o>..</span> <span class=s2>&#34; : &#34;</span> <span class=o>..</span> <span class=n>v</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>-- 直接初始表</span>
+</span></span><span class=line><span class=cl><span class=kd>local</span> <span class=n>tbl2</span> <span class=o>=</span> <span class=p>{</span><span class=s2>&#34;apple&#34;</span><span class=p>,</span> <span class=s2>&#34;pear&#34;</span><span class=p>,</span> <span class=s2>&#34;orange&#34;</span><span class=p>,</span> <span class=s2>&#34;grape&#34;</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kr>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=kr>in</span> <span class=n>pairs</span><span class=p>(</span><span class=n>tbl2</span><span class=p>)</span> <span class=kr>do</span>
+</span></span><span class=line><span class=cl>    <span class=n>print</span><span class=p>(</span><span class=n>k</span> <span class=o>..</span> <span class=s2>&#34; : &#34;</span> <span class=o>..</span> <span class=n>v</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>end</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 运行结果</span>
+</span></span><span class=line><span class=cl>root@debian:/opt/lua# lua ./lua_type/test_table.lua 
+</span></span><span class=line><span class=cl><span class=m>1</span> : apple
+</span></span><span class=line><span class=cl><span class=m>2</span> : pear
+</span></span><span class=line><span class=cl><span class=m>3</span> : orange
+</span></span><span class=line><span class=cl><span class=m>4</span> : grape
+</span></span></code></pre></td></tr></table></div></div><ul><li>不同于其他语言的数组把 0 作为数组的初始索引，在 Lua 里表的默认初始索引一般以 1 开始。</li><li>table 不会固定长度大小，有新数据添加时 table 长度会自动增长，没初始的 table 都是 nil。</li></ul><h3 id=function函数>function（函数）</h3><p>在 Lua 中，函数是被看作是"第一类值（First-Class Value）"，函数可以存在变量里:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-lua data-lang=lua><span class=line><span class=cl><span class=kr>function</span> <span class=nf>factorial1</span><span class=p>(</span><span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=kr>if</span> <span class=n>n</span> <span class=o>==</span> <span class=mi>0</span> <span class=kr>then</span>
+</span></span><span class=line><span class=cl>        <span class=kr>return</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=kr>else</span>
+</span></span><span class=line><span class=cl>        <span class=kr>return</span> <span class=n>n</span> <span class=o>*</span> <span class=n>factorial1</span><span class=p>(</span><span class=n>n</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=kr>end</span>
+</span></span><span class=line><span class=cl><span class=kr>end</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>factorial1</span><span class=p>(</span><span class=mi>5</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>factorial2</span> <span class=o>=</span> <span class=n>factorial1</span>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=n>factorial2</span><span class=p>(</span><span class=mi>5</span><span class=p>))</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:/opt/lua# lua ./lua_type/test_func.lua 
+</span></span><span class=line><span class=cl><span class=m>120</span>
+</span></span><span class=line><span class=cl><span class=m>120</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=匿名函数anonymous-function>匿名函数（anonymous function）</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-lua data-lang=lua><span class=line><span class=cl><span class=kr>function</span> <span class=nf>testFun</span><span class=p>(</span><span class=n>tab</span><span class=p>,</span> <span class=n>fun</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=kr>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=kr>in</span> <span class=n>pairs</span><span class=p>(</span><span class=n>tab</span><span class=p>)</span> <span class=kr>do</span>
+</span></span><span class=line><span class=cl>        <span class=n>print</span><span class=p>(</span><span class=n>fun</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=n>v</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>    <span class=kr>end</span>
+</span></span><span class=line><span class=cl><span class=kr>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>tab</span> <span class=o>=</span> <span class=p>{</span> <span class=n>key1</span> <span class=o>=</span> <span class=s2>&#34;val1&#34;</span><span class=p>,</span> <span class=n>key2</span> <span class=o>=</span> <span class=s2>&#34;val2&#34;</span> <span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=n>testFun</span><span class=p>(</span><span class=n>tab</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=kr>function</span><span class=p>(</span><span class=n>key</span><span class=p>,</span> <span class=n>val</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=c1>--匿名函数</span>
+</span></span><span class=line><span class=cl>            <span class=kr>return</span> <span class=n>key</span> <span class=o>..</span> <span class=s2>&#34;=&#34;</span> <span class=o>..</span> <span class=n>val</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kr>end</span>
+</span></span><span class=line><span class=cl><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@debian:/opt/lua# lua ./lua_type/test_func.lua 
+</span></span><span class=line><span class=cl><span class=m>120</span>
+</span></span><span class=line><span class=cl><span class=m>120</span>
+</span></span><span class=line><span class=cl><span class=nv>key2</span><span class=o>=</span>val2
+</span></span><span class=line><span class=cl><span class=nv>key1</span><span class=o>=</span>val1
+</span></span></code></pre></td></tr></table></div></div><h3 id=thread线程>thread（线程）</h3><p>在 Lua 里，最主要的线程是协同程序（coroutine）。它跟线程（thread）差不多，拥有自己独立的栈、局部变量和指令指针，可以跟其他协同程序共享全局变量和其他大部分东西。</p><p>线程跟协程的区别：线程可以同时多个运行，而协程任意时刻只能运行一个，并且处于运行状态的协程只有被挂起（suspend）时才会暂停。</p><h3 id=userdata自定义类型>userdata（自定义类型）</h3><p>userdata 是一种用户自定义数据，用于表示一种由应用程序或 C/C++ 语言库所创建的类型，可以将任意 C/C++ 的任意数据类型的数据（通常是 struct 和 指针）存储到 Lua 变量中调用。</p></section><footer class=article-footer><section class=article-tags><a href=/tags/lua/>Lua</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 Jun 24, 2024 00:00 UTC</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/p/1.0-keepalived/><div class=article-image><img src=/p/1.0-keepalived/cover.86bc2c7c0036fd8c8010086ffa5e2b11_hu_783110c5af06be18.jpg width=250 height=150 loading=lazy alt="Featured image of post 1.0 keepalived" data-key="1.0 keepalived" data-hash="md5-hrwsfAA2/YyAEAhv+l4rEQ=="></div><div class=article-details><h2 class=article-title>1.0 keepalived</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2025 暮鼓晨钟</section><section class=powerby>工欲善其事，必先利其器。盛世之牛马，乱世之炮灰；平安榨其身，战时用其命。<br>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
