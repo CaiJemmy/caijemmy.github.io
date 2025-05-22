@@ -14,15 +14,15 @@ weight: 10       # You can add weight to some posts to override the default sort
 
 # lua入门
 
-官网：https://www.lua.org/
+官网：[https://www.lua.org](https://www.lua.org/)
 
 Lua 是一种轻量级、高效、可嵌入的脚本语言
 
-教程参考：https://www.runoob.com/lua/lua-tutorial.html
+教程参考：[https://www.runoob.com/lua/lua-tutorial.html](https://www.runoob.com/lua/lua-tutorial.html)
 
 ## 安装lua
 
-- Linux 环境已安装 gcc、make。其他环境安装可以参考：https://www.runoob.com/lua/lua-environment.html
+- Linux 环境已安装 gcc、make。其他环境安装可以参考：[https://www.runoob.com/lua/lua-environment.html](https://www.runoob.com/lua/lua-environment.html)
 
 ```shell
 root@debian:~# curl -L -R -O https://www.lua.org/ftp/lua-5.4.7.tar.gz
