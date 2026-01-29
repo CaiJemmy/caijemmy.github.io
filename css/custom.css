@@ -1,0 +1,59 @@
+pre:not(.mermaid) {
+  background-color: var(--INTERNAL-CODE-BLOCK-BG-color);
+  border-color: var(--INTERNAL-CODE-BLOCK-BORDER-color);
+  border-radius: 2px;
+  border-style: solid;
+  border-width: 1px;
+  color: var(--INTERNAL-CODE-BLOCK-color);
+  -webkit-print-color-adjust: economy;
+  color-adjust: economy;
+  line-height: 1.15;
+  padding: 1rem;
+  position: relative;
+  margin: 0;
+}
+
+
+/* 方案2：专门用于多行高亮的类 */
+mark.multiline {
+  background-color: #CCCCCC;
+  /*color: #000;*/
+  padding: 10px 50px 10px 50px;
+  border-radius: 50px 0px 50px 0px;
+  font-weight: 360;
+  display: inline-block; /* 关键：改为行内块 */
+  max-width: 100%; /* 防止溢出 */
+  white-space: normal; /* 允许换行 */
+  word-break: break-word; /* 允许单词内换行 */
+  margin: 0.1em 0; /* 添加垂直间距 */
+
+  background: transparent;
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--INTERNAL-ACCENT-MARK-MULTILINE-color) 5%, transparent), color-mix(in srgb, var(--INTERNAL-ACCENT-MARK-MULTILINE-color) 95%, transparent) 4%, color-mix(in srgb, var(--INTERNAL-ACCENT-MARK-MULTILINE-color) 40%, transparent));
+}
+
+/* 方案3：flexbox 布局，支持图标等 */
+mark.flex-highlight {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em;
+  margin: 0.3em 0;
+  max-width: 100%;
+}
+
+/* 方案4：用于段落级高亮 */
+mark.block-highlight {
+  display: block;
+  width: 100%;
+  padding: 1em;
+  margin: 1em 0;
+  border-left: 4px solid #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+  border-radius: 0 4px 4px 0;
+}
+
+/* 暗色主题适配 */
+[data-theme="dark"] mark {
+  background-color: rgba(255, 152, 0, 0.3);
+}
