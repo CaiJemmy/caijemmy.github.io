@@ -9,8 +9,8 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 日常拾趣 \u003e 日常感悟 \u003e 亲子",
-    "content": "后来我也当上了爸爸，我站在爸爸的角度审视着我的儿子，我想告诉他，要听爸爸的话，别走爸爸走过的弯路，可我才发现，儿子就像小时候的自己，贪玩，爱拖延，明明说了很多遍的问题，他还是会犯，那一刻我才发现，我管教的何止是儿子，还有曾经的自己… …\n其实我们犯的最大的错误就是，试图让一个几岁，十几岁的孩子，去理解我们用了三四十年才感悟出来的人生道理，其实我并不是接受不了孩子的平庸，而是担心他的以后会和我一样，用尽了全力，却吃尽了生活的苦和累。",
-    "description": "记录日常感悟、生活感悟。",
+    "content": "后来我也当上了爸爸，我站在爸爸的角度审视着我的儿子，我想告诉他，要听爸爸的话，别走爸爸走过的弯路，可我才发现，儿子就像小时候的自己，贪玩，爱拖延，明明说了很多遍的问题，他还是会犯，那一刻我才发现，我管教的何止是儿子，还有曾经的自己……\n其实我们犯的最大的错误就是，试图让一个几岁，十几岁的孩子，去理解我们用了三四十年才感悟出来的人生道理，其实我并不是接受不了孩子的平庸，而是担心他的以后会和我一样，用尽了全力，却吃尽了生活的苦和累。",
+    "description": "管教的何止是孩子，还有曾经的自己……",
     "tags": [
       "感悟"
     ],
@@ -20,7 +20,7 @@ var relearn_searchindex = [
   {
     "breadcrumb": "暮鼓晨钟 \u003e 日常拾趣 \u003e 日常感悟 \u003e 感悟",
     "content": "一般孩子不可能同时具备的3个优点！\n聪明 又 听话 = 大概率“演”给家长看 聪明 又 努力 = 一般就不太听话（倔） 听话 又 努力 = 一般就不太聪明",
-    "description": "记录日常感悟、生活感悟。",
+    "description": "一般孩子不可能同时具备的3个优点。",
     "tags": [
       "感悟"
     ],
@@ -46,7 +46,7 @@ var relearn_searchindex = [
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e C++",
     "content": "结构化绑定\n结构化绑定是C++17引入的一种语法特性，允许将一个复合对象（如pair、tuple、结构体、数组）的成员自动解构到多个变量中。它的设计目的是消除‘解包-使用-丢弃’的冗余代码模式。",
-    "description": "C++17 语言特性。",
+    "description": "C++17 核心特性：结构化绑定, std::optional, std::string_view, 带初始化的if/switch, std::variant, 文件系统, 并行算法等。",
     "tags": [],
     "title": "C++17",
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/c++17/index.html"
@@ -61,7 +61,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能",
-    "content": "C++17\rC++17 语言特性。",
+    "content": "C++17\nC++17 核心特性：结构化绑定, std::optional, std::string_view, 带初始化的if/switch, std::variant, 文件系统, 并行算法等。",
     "description": "C++ 语言特性及项目。",
     "tags": [],
     "title": "C++",
@@ -93,7 +93,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 日常拾趣 \u003e 日常感悟",
-    "content": "- [管孩子](/日常拾趣/日常感悟/亲子/管孩子)\n\n    记录日常感悟、生活感悟。\n{class=\"children children-type-tree children-sort-\"}",
+    "content": "管孩子\n管教的何止是孩子，还有曾经的自己……",
     "description": "和孩子相关。",
     "tags": [],
     "title": "亲子",
@@ -109,7 +109,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 日常拾趣 \u003e 日常感悟",
-    "content": "- [聪明、听话、努力](/日常拾趣/日常感悟/感悟/聪明、听话、努力)\n\n    记录日常感悟、生活感悟。\n{class=\"children children-type-tree children-sort-\"}",
+    "content": "聪明、听话、努力\n一般孩子不可能同时具备的3个优点。",
     "description": "记录日常感悟、生活感悟。",
     "tags": [],
     "title": "感悟",
