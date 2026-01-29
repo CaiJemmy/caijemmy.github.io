@@ -93,8 +93,8 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 日常拾趣 \u003e 日常感悟",
-    "content": "管孩子\r记录日常感悟、生活感悟。",
-    "description": "记录日常感悟、生活感悟。",
+    "content": "- [管孩子](/日常拾趣/日常感悟/亲子/管孩子)\n\n    记录日常感悟、生活感悟。\n{class=\"children children-type-tree children-sort-\"}",
+    "description": "和孩子相关。",
     "tags": [],
     "title": "亲子",
     "uri": "/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"
@@ -109,7 +109,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 日常拾趣 \u003e 日常感悟",
-    "content": "聪明、听话、努力\r记录日常感悟、生活感悟。",
+    "content": "- [聪明、听话、努力](/日常拾趣/日常感悟/感悟/聪明、听话、努力)\n\n    记录日常感悟、生活感悟。\n{class=\"children children-type-tree children-sort-\"}",
     "description": "记录日常感悟、生活感悟。",
     "tags": [],
     "title": "感悟",
@@ -125,7 +125,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 日常拾趣",
-    "content": "亲子\r记录日常感悟、生活感悟。\r感悟\r记录日常感悟、生活感悟。",
+    "content": "亲子\r和孩子相关。\r感悟\r记录日常感悟、生活感悟。",
     "description": "记录日常感悟、生活感悟。",
     "tags": [],
     "title": "日常感悟",

@@ -30,30 +30,3 @@ mark.multiline {
   background: transparent;
   background-image: linear-gradient(to right, color-mix(in srgb, var(--INTERNAL-ACCENT-MARK-MULTILINE-color) 5%, transparent), color-mix(in srgb, var(--INTERNAL-ACCENT-MARK-MULTILINE-color) 95%, transparent) 4%, color-mix(in srgb, var(--INTERNAL-ACCENT-MARK-MULTILINE-color) 40%, transparent));
 }
-
-/* 方案3：flexbox 布局，支持图标等 */
-mark.flex-highlight {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5em;
-  padding: 0.5em;
-  margin: 0.3em 0;
-  max-width: 100%;
-}
-
-/* 方案4：用于段落级高亮 */
-mark.block-highlight {
-  display: block;
-  width: 100%;
-  padding: 1em;
-  margin: 1em 0;
-  border-left: 4px solid #007bff;
-  background-color: rgba(0, 123, 255, 0.1);
-  border-radius: 0 4px 4px 0;
-}
-
-/* 暗色主题适配 */
-[data-theme="dark"] mark {
-  background-color: rgba(255, 152, 0, 0.3);
-}
