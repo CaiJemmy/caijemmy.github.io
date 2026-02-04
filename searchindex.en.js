@@ -52,32 +52,42 @@ var relearn_searchindex = [
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/c++17/index.html"
   },
   {
-    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e CMake",
-    "content": "1、单个源文件生成可执行文件\nHello World！",
-    "description": "开启CMake之旅。",
-    "tags": [],
-    "title": "01、从可执行文件到库",
-    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html"
-  },
-  {
-    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e CMake \u003e 01、从可执行文件到库",
-    "content": "项目结构 CMakeLists.txt hello_world.cpp 注释 文件的名称区分大小写，必须命名为CMakeLists.txt，CMake才能够解 析。\nCPP源文件 ​ hello_world.cpp 1#include \u003ciostream\u003e 2#include \u003cstring\u003e 3 4std::string SayHello() { 5 return \"Hello, CMake World!\"; 6} 7 8int main() { 9 std::cout \u003c\u003c SayHello() \u003c\u003c std::endl; 10 return 0; 11} CMake文件 ​ CMakeLists.txt 1cmake_minimum_required(VERSION 3.25 FATAL_ERROR) 2 3project(hello-world LANGUAGES CXX) 4 5add_executable( 6 ${PROJECT_NAME} 7 hello_world.cpp 8) 注释 CMake语言不区分大小写，但是参数区分大小写。\n提示 CMake中，C++是默认的编程语言。不过在实际编写代码过程中，仍建议使用LANGUAGES选项在project命令中显示地声明项目的语言。\n构建 生成CMake相关文件 ​ 生成CMake文件命令 1mkdir build 2cd build 3cmake .. 4# 或 5cmake -H. -Bbuild 注释 -H 和 -B 为CLI选项。 -H 表示当前目录中搜索根CMakeLists.txt文件。-Bbuild告诉CMake在一个名为build的目录中生成所有的文件。\n​ 命令结果输出 1-- The CXX compiler identification is GNU 12.2.0 2-- Detecting CXX compiler ABI info 3-- Detecting CXX compiler ABI info - done 4-- Check for working CXX compiler: /usr/bin/c++ - skipped 5-- Detecting CXX compile features 6-- Detecting CXX compile features - done 7-- Configuring done 8-- Generating done 9-- Build files have been written to: /root/cmake/01/build ​ build目录下文件 1root@debian:~/cmake/01/build# ll 2total 32 3-rw-r--r-- 1 root root 12334 Feb 3 09:23 CMakeCache.txt 4drwxr-xr-x 6 root root 4096 Feb 3 09:23 CMakeFiles 5-rw-r--r-- 1 root root 1604 Feb 3 09:23 cmake_install.cmake 6-rw-r--r-- 1 root root 5275 Feb 3 09:23 Makefile GNU/Linux上，CMake默认生成Unix Makefile来构建项目：\nMakefile: make将运行指令来构建项目。 CMakefile：包含临时文件的目录，CMake用于检测操作系统、编译器等。此外，根据所选的生成器，它还包含特定的文件。 cmake_install.cmake：处理安装规则的CMake脚本，在项目安装时使用。 CMakeCache.txt：如文件名所示，CMake缓存。CMake在重新运行配置时使用这个文件。 生成可执行文件 ​ 构建可执行文件 1cmake --build . 2# 或 3cmake --build build 提示 一条命令：cmake -H. -Bbuild \u0026\u0026 cmake –build build",
-    "description": "Hello World！",
-    "tags": [
-      "CMake"
-    ],
-    "title": "1、单个源文件生成可执行文件",
-    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"
-  },
-  {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e shell \u003e shell编程技巧",
     "content": "严格模式模板 1#!/usr/bin/env bash 2 3# 严格模式 4set -euo pipefail 5IFS=$'\\n\\t' 6 7# 调试模式（取消注释启用） 8# set -x 9 10set -o errtrace 11# 错误处理 12trap 'echo \"Error on line $LINENO. Exit code: $?\" \u003e\u00262' ERR 13 14# 退出清理 15cleanup() { 16 # 清理临时文件等 17 echo \"cleanup ... ...\" 18 rm -f \"${TEMP_FILE:-}\" 19} 20trap cleanup EXIT 21 22# 主逻辑 23main() { 24 # ... 25 fake 26} 27 28main \"$@\" 严格模式详解 命令返回非零状态时立即退出 set -e (errexit)\n1set -e 2 3echo \"开始\" 4false # 返回1，脚本立即退出 5echo \"这行不会执行\" 但要注意，有些情况下 -e 不生效：\n1#!/bin/bash 2set -e 3 4# 1. 失败命令在条件语句中 5if ls /不存在的目录; then 6 echo \"条件中失败不会退出\" 7fi 8 9# 2. 失败命令在逻辑或 || 之后 10ls /不存在的目录 || echo \"命令失败，但继续执行\" 11 12# 3. 失败命令在管道中（除了最后一部分） 13ls /不存在的目录 | wc -l # 管道中非最后部分的失败不会退出 set -o errexit\n这是 set -e 的长格式写法，功能完全相同。\nset +e\n关闭错误退出模式：\n1#!/bin/bash 2set -e # 开启错误退出 3 4# 临时关闭 5set +e 6ls /不存在的目录 7set -e # 重新开启 8 9echo \"这行会执行\" 使用未定义变量时报错退出 1set -u 2 3echo \"$UNDEFINED_VAR\" # 报错：UNDEFINED_VAR: unbound variable 处理可选变量的方式\n1set -u 2 3# 提供默认值 4echo \"${OPTIONAL_VAR:-default_value}\" 5 6# 检查变量是否设置 7if [[ -v OPTIONAL_VAR ]]; then 8 echo \"变量已设置: $OPTIONAL_VAR\" 9fi 10 11# 数组的特殊处理 12declare -a my_array=() 13echo \"${my_array[@]:-}\" # 避免空数组报错 管道中任何命令失败，整个管道返回失败 1set -o pipefail 2 3# 现在第一个命令的失败会被检测到 4cat /nonexistent | grep pattern 5echo $? # 返回1，而不是0 修改字段分隔符，避免空格引起的问题 1# 默认IFS包含空格 2IFS=$' \\t\\n' 3files=\"file 1.txt file2.txt\" 4for f in $files; do 5 echo \"-\u003e $f\" 6done 7# 输出3行，因为空格也是分隔符 8 9# 修改IFS 10IFS=$'\\n\\t' 11for f in $files; do 12 echo \"-\u003e $f\" 13done 14# 输出1行 trap 详细介绍 一、trap 的核心概念 trap 是一个 shell 内置命令，用来指定当“某些信号到来”或“某些 shell 事件发生”时要执行的命令序列。 常见用途包括：在脚本退出前做清理、对特定信号做优雅处理、在调试时记录执行信息等。 重要点：不同的 Shell 对某些事件的支持不完全一致。Bash 支持的事件比 POSIX sh 更丰富（如 EXIT、ERR、DEBUG、RETURN 等特殊事件）。 二、基本语法 语法形式 trap ‘commands’ SIGNALS… trap “commands” SIGNALS… trap -p # 打印当前已有的 trap trap -l # 列出系统信号及编号 重置/清除陷阱 trap - SIGNAL # 将该 SIGNAL 的 trap 重置为默认处理 trap -p # 可以用于查看当前的 trap 设置 与退出相关的特殊事件（Bash 支持，POSIX sh 通常不支持） trap ‘commands’ EXIT # 在脚本结束时执行 trap ‘commands’ ERR # 命令返回非零时执行（通常在 set -e 时配合使用） trap ‘commands’ DEBUG # 每条命令执行前执行 trap ‘commands’ RETURN # 函数返回时执行 注意 SIGKILL 和 SIGSTOP 不能被捕获、阻塞或忽略。 POSIX sh 在很多实现里不一定支持 EXIT/ERR/DEBUG/RETURN 等 Bash 专有事件，务必分环境测试。 三、常见的信号类型（用于 trap 的 SIGNALS…） SIGINT（中断，通常 Ctrl+C） SIGTERM（请求终止，较友好地结束进程） SIGQUIT SIGHUP（挂起/终端退出时的信号，常用于重新加载配置） SIGPIPE（管道破裂，写入一个已经读取端关闭的管道时产生） SIGKILL、SIGSTOP（不能捕获，系统强制终止或暂停） 用户自定义信号：SIGUSR1、SIGUSR2 等 以及其他常见信号：例如 SIGABRT、SIGCHLD、SIGALRM 等，具体按系统信号表为准",
     "description": "避免最常见的Shell陷阱，让脚本fail-fast。",
     "tags": [
       "Shell"
     ],
-    "title": "1.严格模式",
-    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/1.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html"
+    "title": "01.严格模式",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e CMake",
+    "content": "1 单个源文件生成可执行文件\nHello World！",
+    "description": "开启CMake之旅。",
+    "tags": [],
+    "title": "01.从可执行文件到库",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e shell \u003e shell编程技巧",
+    "content": "getopts 参数处理 什么是 getopts？ getopts 是 Bash shell 内置的命令行参数解析器，用于处理脚本的命令行选项和参数。\n基本语法 1getopts optstring name [args] optstring：选项字符串，定义脚本接受的选项 name：存储当前选项的变量名 args：可选，要解析的参数列表（默认是 \"$@\"） 工作原理 optstring 以冒号开头或不以冒号开头 如果 optstring 以冒号开头：\n当遇到无效选项，getopts 返回 ‘?’，OPTARG 为无效选项字母。\n当遇到需要参数但未提供参数，getopts 返回 ‘:’，OPTARG 为该选项字母。\n如果 optstring 不以冒号开头：\n遇到无效选项，getopts 返回 ‘?’，并自动输出错误信息（到标准错误）。 遇到需要参数但未提供参数，getopts 会输出错误信息，并返回 ‘?’。 注释 实践中多以冒号开头，手动处理错误。\n特殊变量$OPTARG 存储当前选项的参数值（仅当选项需要参数时）\n特殊变量$OPTIND 下一个要处理的参数的索引\ngetopts脚本模板 支持长选项模板 ​ getopts 参数解析 1#!/bin/bash 2# script_template.sh 3 4# 默认值 5verbose=false 6output_file=\"output.txt\" 7recursive=false 8dry_run=false 9exclude_pattern=\"\" 10 11# 显示帮助信息 12show_help() { 13 cat \u003c\u003c EOF 14使用方法: $0 [选项] [文件...] 15 16选项: 17 -h, --help 显示此帮助信息 18 -v, --verbose 启用详细输出 19 -o FILE 指定输出文件 (默认: output.txt) 20 -r, --recursive 递归处理目录 21 -n, --dry-run 试运行，不实际修改文件 22 -e PATTERN 排除匹配 PATTERN 的文件 23 --version 显示版本信息 24 25示例: 26 $0 -v -o results.txt *.txt 27 $0 -r -e \"*.bak\" /path/to/dir 28EOF 29} 30 31# 解析参数 32while getopts \"hvo:rne:-:\" opt; do 33 case $opt in 34 h) 35 show_help 36 exit 0 37 ;; 38 v) 39 verbose=true 40 ;; 41 o) 42 output_file=\"$OPTARG\" 43 ;; 44 r) 45 recursive=true 46 ;; 47 n) 48 dry_run=true 49 ;; 50 e) 51 exclude_pattern=\"$OPTARG\" 52 ;; 53 -) # 处理长选项 54 case \"$OPTARG\" in 55 help) 56 show_help 57 exit 0 58 ;; 59 verbose) 60 verbose=true 61 ;; 62 recursive) 63 recursive=true 64 ;; 65 dry-run) 66 dry_run=true 67 ;; 68 version) 69 echo \"$0 版本 1.0.0\" 70 exit 0 71 ;; 72 *) 73 echo \"错误：未知的长选项 --$OPTARG\" \u003e\u00262 74 exit 1 75 ;; 76 esac 77 ;; 78 \\?) 79 echo \"错误：无效选项 -$OPTARG\" \u003e\u00262 80 show_help 81 exit 1 82 ;; 83 :) 84 echo \"错误：选项 -$OPTARG 需要参数\" \u003e\u00262 85 exit 1 86 ;; 87 esac 88done 89 90# 跳过已处理的选项 91shift $((OPTIND - 1)) 92 93# 检查必要参数 94if [ $# -eq 0 ] \u0026\u0026 [ \"$recursive\" = false ]; then 95 echo \"错误：需要指定文件或目录\" \u003e\u00262 96 show_help 97 exit 1 98fi 99 100# 处理文件/目录 101process_items() { 102 if [ \"$recursive\" = true ]; then 103 find \"$@\" -type f ! -name \"$exclude_pattern\" 104 else 105 for item in \"$@\"; do 106 if [ -f \"$item\" ]; then 107 echo \"$item\" 108 fi 109 done 110 fi 111} 112 113# 主逻辑 114echo \"配置信息：\" 115echo \" 详细模式: $verbose\" 116echo \" 输出文件: $output_file\" 117echo \" 递归模式: $recursive\" 118echo \" 试运行: $dry_run\" 119echo \" 排除模式: $exclude_pattern\" 120echo \" 处理的项目: $# 个\" 121 122if [ \"$dry_run\" = true ]; then 123 echo \"试运行模式，不实际执行操作\" 124 process_items \"$@\" 125else 126 echo \"开始处理...\" 127 # 实际处理逻辑 128fi 带子命令的复杂脚本 1#!/bin/bash 2# multi_command.sh 3 4# 显示帮助 5show_help() { 6 cat \u003c\u003c EOF 7数据库管理工具 8 9用法: $0 \u003c命令\u003e [选项] 10 11命令: 12 backup 备份数据库 13 restore 恢复数据库 14 query 执行查询 15 status 查看状态 16 17使用 '$0 \u003c命令\u003e --help' 查看具体命令的帮助 18EOF 19} 20 21# 备份命令 22backup_command() { 23 local compress=false 24 local output=\"backup.sql\" 25 26 while getopts \"co:h\" opt; do 27 case $opt in 28 c) 29 compress=true 30 ;; 31 o) 32 output=\"$OPTARG\" 33 ;; 34 h) 35 cat \u003c\u003c EOF 36备份数据库 37 38用法: $0 backup [选项] 39 40选项: 41 -c 压缩备份文件 42 -o FILE 指定输出文件名 (默认: backup.sql) 43 -h 显示此帮助信息 44EOF 45 exit 0 46 ;; 47 \\?) 48 exit 1 49 ;; 50 esac 51 done 52 53 shift $((OPTIND - 1)) 54 55 echo \"执行备份...\" 56 echo \"输出文件: $output\" 57 echo \"压缩: $compress\" 58 59 # 实际备份逻辑 60} 61 62# 主脚本逻辑 63if [ $# -eq 0 ]; then 64 show_help 65 exit 1 66fi 67 68command=\"$1\" 69shift # 移除命令名 70 71case \"$command\" in 72 backup) 73 backup_command \"$@\" 74 ;; 75 restore|query|status) 76 echo \"执行 $command 命令\" 77 # 其他命令的实现 78 ;; 79 -h|--help|help) 80 show_help 81 ;; 82 *) 83 echo \"错误：未知命令 '$command'\" 84 show_help 85 exit 1 86 ;; 87esac getopts的可选参数（不建议使用） a: 表示选项 a 必须带一个参数（如 -a value 或 -avalue）。 a:: 表示选项 a 可以带一个可选的参数：要么提供参数，要么不提供。 双冒号的作用就是“参数是可选的”，如果给出了参数就把它作为 OPTARG；没有参数时，OPTARG 为空或未设置，取决于具体实现和调用方式。 在 getopts 的实现中： 对于必选参数（如 a:）：下一个参数必须是参数值，无论是否以 - 开头 对于可选参数（如 a::）：下一个参数如果存在，总是被当作参数值，无论是否以 - 开头 1#!/bin/bash 2# optional_args.sh 3 4# 处理可选参数需要一些技巧 5# 这个脚本还有一些潜在的问题 6process_option_with_optional_arg() { 7 local next=\"$2\" 8 9 if [[ -n \"$next\" \u0026\u0026 \"$next\" != -* ]]; then 10 echo \"选项 $1 有参数: $next\" 11 # 跳过这个参数 12 shift 13 else 14 echo \"选项 $1 使用默认参数\" 15 fi 16} 17 18while getopts \"a::b::\" opt; do 19 case $opt in 20 a) 21 # 处理可选参数 22 if [[ -n \"$OPTARG\" ]]; then 23 echo \"选项 -a 参数: $OPTARG\" 24 else 25 echo \"选项 -a 无参数\" 26 fi 27 ;; 28 b) 29 # 另一种方式 30 process_option_with_optional_arg \"-b\" \"${!OPTIND}\" 31 ;; 32 esac 33done getopt 参数处理 什么是 getopt？ getopt 是 Bash shell 外部程序（util-linux 包）的命令行参数解析器，用于处理脚本的命令行选项和参数。\ngetopt 与 getopts 的区别 特性 getopts（内置） getopt（外部命令） 类型 Bash 内置命令 外部程序（util-linux 包） 长选项 不支持 支持 可选参数 有限支持 支持 错误处理 简单 更灵活 跨平台 所有 Bash 都支持 需要安装 参数重排 不支持 支持（自动重排） 基本语法 1# 基本语法 2getopt [options] -o 短选项 -l 长选项 -- \"$@\" 3 4# 常用选项 5getopt -o 短选项字符串 -l 长选项列表 -- \"$@\" 选项字符串语法\n格式 含义 示例 a: a 必须有参数 -a value 或 -avalue a:: a 可以有可选参数 -a 或 -avalue a a 无参数 -a abc a,b,c 都无参数 -a -b -c 或 -abc --long 无参数长选项 --help --long: 必须有参数 --verbose=3 或 --verbose 3 --long:: 可选参数 --output=file 或 --output 基本用法 1#!/bin/bash 2# getopt_long.sh 3 4# 定义选项：短选项和长选项 5args=$(getopt -o hv:o:: -l help,verbose:,output:: -- \"$@\") || exit 1 6 7eval set -- \"$args\" 8 9while true; do 10 case \"\\$1\" in 11 -h|--help) 12 echo \"用法: \\$0 [选项] [文件...]\" 13 echo \"选项:\" 14 echo \" -h, --help 显示帮助信息\" 15 echo \" -v, --verbose 详细模式（必须有参数）\" 16 echo \" -o, --output 输出文件（可选参数）\" 17 exit 0 18 ;; 19 -v|--verbose) 20 echo \"详细级别: \\$2\" 21 shift 2 22 ;; 23 -o|--output) 24 if [[ -n \"\\$2\" \u0026\u0026 \"\\$2\" != \"--\" ]]; then 25 echo \"输出文件: \\$2\" 26 shift 2 27 else 28 echo \"输出到标准输出\" 29 shift 30 fi 31 ;; 32 --) 33 shift 34 break 35 ;; 36 *) 37 echo \"错误: 未知选项 \\$1\" \u003e\u00262 38 exit 1 39 ;; 40 esac 41done 42 43# 处理剩余的非选项参数 44for file in \"$@\"; do 45 echo \"处理文件: $file\" 46done",
+    "description": "命令行参数解析是每个脚本都要面对的问题。",
+    "tags": [
+      "Shell"
+    ],
+    "title": "02.参数解析",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e CMake \u003e 01.从可执行文件到库",
+    "content": "项目结构 CMakeLists.txt hello_world.cpp 注释 文件的名称区分大小写，必须命名为CMakeLists.txt，CMake才能够解 析。\nCPP源文件 ​ hello_world.cpp 1#include \u003ciostream\u003e 2#include \u003cstring\u003e 3 4std::string SayHello() { 5 return \"Hello, CMake World!\"; 6} 7 8int main() { 9 std::cout \u003c\u003c SayHello() \u003c\u003c std::endl; 10 return 0; 11} CMake文件 ​ CMakeLists.txt 1cmake_minimum_required(VERSION 3.25 FATAL_ERROR) 2 3project(hello-world LANGUAGES CXX) 4 5add_executable( 6 ${PROJECT_NAME} 7 hello_world.cpp 8) 注释 CMake语言不区分大小写，但是参数区分大小写。\n提示 CMake中，C++是默认的编程语言。不过在实际编写代码过程中，仍建议使用LANGUAGES选项在project命令中显示地声明项目的语言。\n构建 生成CMake相关文件 ​ 生成CMake文件命令 1mkdir build 2cd build 3cmake .. 4# 或 5cmake -H. -Bbuild 注释 -H 和 -B 为CLI选项。 -H 表示当前目录中搜索根CMakeLists.txt文件。-Bbuild告诉CMake在一个名为build的目录中生成所有的文件。\n​ 命令结果输出 1-- The CXX compiler identification is GNU 12.2.0 2-- Detecting CXX compiler ABI info 3-- Detecting CXX compiler ABI info - done 4-- Check for working CXX compiler: /usr/bin/c++ - skipped 5-- Detecting CXX compile features 6-- Detecting CXX compile features - done 7-- Configuring done 8-- Generating done 9-- Build files have been written to: /root/cmake/01/build ​ build目录下文件 1root@debian:~/cmake/01/build# ll 2total 32 3-rw-r--r-- 1 root root 12334 Feb 3 09:23 CMakeCache.txt 4drwxr-xr-x 6 root root 4096 Feb 3 09:23 CMakeFiles 5-rw-r--r-- 1 root root 1604 Feb 3 09:23 cmake_install.cmake 6-rw-r--r-- 1 root root 5275 Feb 3 09:23 Makefile GNU/Linux上，CMake默认生成Unix Makefile来构建项目：\nMakefile: make将运行指令来构建项目。 CMakefile：包含临时文件的目录，CMake用于检测操作系统、编译器等。此外，根据所选的生成器，它还包含特定的文件。 cmake_install.cmake：处理安装规则的CMake脚本，在项目安装时使用。 CMakeCache.txt：如文件名所示，CMake缓存。CMake在重新运行配置时使用这个文件。 生成可执行文件 ​ 构建可执行文件 1cmake --build . 2# 或 3cmake --build build 提示 一条命令：cmake -H. -Bbuild \u0026\u0026 cmake --build build",
+    "description": "Hello World！",
+    "tags": [
+      "CMake"
+    ],
+    "title": "1 单个源文件生成可执行文件",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 标签",
@@ -113,7 +123,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能",
-    "content": "本次cmake学习之旅是结合《CMake Cookbook》一书以及本人在具体项目工程需求中的具体实践，将Modern CMake所有性能以代码和笔记的形式呈现！\n01、从可执行文件到库\n开启CMake之旅。",
+    "content": "本次cmake学习之旅是结合《CMake Cookbook》一书以及本人在具体项目工程需求中的具体实践，将Modern CMake所有性能以代码和笔记的形式呈现！\n01.从可执行文件到库\n开启CMake之旅。",
     "description": "C++ 项目构建工具。",
     "tags": [],
     "title": "CMake",
@@ -137,7 +147,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e shell",
-    "content": "1.严格模式\n避免最常见的Shell陷阱，让脚本fail-fast。",
+    "content": "01.严格模式\n避免最常见的Shell陷阱，让脚本fail-fast。\n02.参数解析\n命令行参数解析是每个脚本都要面对的问题。",
     "description": "shell编程中的一些技巧总结。",
     "tags": [],
     "title": "shell编程技巧",

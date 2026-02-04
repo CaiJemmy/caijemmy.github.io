@@ -5,53 +5,51 @@
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="generator" content="Hugo 0.155.2">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
-    <meta name="description" content="Hello World！">
+    <meta name="description" content="开启CMake之旅。">
     <meta name="author" content="">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="1、单个源文件生成可执行文件 :: 暮鼓晨钟">
-    <meta name="twitter:description" content="Hello World！">
-    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">
+    <meta name="twitter:title" content="01.从可执行文件到库 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="开启CMake之旅。">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html">
     <meta property="og:site_name" content="暮鼓晨钟">
-    <meta property="og:title" content="1、单个源文件生成可执行文件 :: 暮鼓晨钟">
-    <meta property="og:description" content="Hello World！">
+    <meta property="og:title" content="01.从可执行文件到库 :: 暮鼓晨钟">
+    <meta property="og:description" content="开启CMake之旅。">
     <meta property="og:locale" content="zh_CN">
-    <meta property="og:type" content="article">
-    <meta property="article:section" content="程序员技能">
-    <meta property="article:tag" content="CMake">
-    <meta itemprop="name" content="1、单个源文件生成可执行文件 :: 暮鼓晨钟">
-    <meta itemprop="description" content="Hello World！">
-    <meta itemprop="wordCount" content="207">
-    <meta itemprop="keywords" content="CMake">
-    <title>1、单个源文件生成可执行文件 :: 暮鼓晨钟</title>
-    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html" rel="canonical" type="text/html" title="1、单个源文件生成可执行文件 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1770141170" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1770141170" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1770141170" defer></script>
-    <script src="/js/search-lunr.min.js?1770141170" defer></script>
-    <script src="/js/search.min.js?1770141170" defer></script>
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="01.从可执行文件到库 :: 暮鼓晨钟">
+    <meta itemprop="description" content="开启CMake之旅。">
+    <meta itemprop="wordCount" content="4">
+    <title>01.从可执行文件到库 :: 暮鼓晨钟</title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html" rel="canonical" type="text/html" title="01.从可执行文件到库 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.xml" rel="alternate" type="application/rss+xml" title="01.从可执行文件到库 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1770227802" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1770227802" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1770227802" defer></script>
+    <script src="/js/search-lunr.min.js?1770227802" defer></script>
+    <script src="/js/search.min.js?1770227802" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1770141170";
+      window.relearn.index_js_url="/searchindex.en.js?1770227802";
     </script>
-    <script src="/js/lunr/lunr.min.js?1770141170" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1770141170" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1770141170" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1770141170" defer></script>
+    <script src="/js/lunr/lunr.min.js?1770227802" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1770227802" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1770227802" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1770227802" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1770141170" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1770141170" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1770141170" rel="stylesheet">
-    <link href="/css/theme.min.css?1770141170" rel="stylesheet">
-    <link href="/css/format-print.min.css?1770141170" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1770227802" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1770227802" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1770227802" rel="stylesheet">
+    <link href="/css/theme.min.css?1770227802" rel="stylesheet">
+    <link href="/css/format-print.min.css?1770227802" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
       window.relearn.min = `.min`;
-      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/cmake\/01%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93\/1%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6\/index.html';
-      window.relearn.relBasePath='..\/..\/..\/..';
-      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/cmake\/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93\/index.html';
+      window.relearn.relBasePath='..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
       window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
       window.relearn.disableInlineCopyToClipboard=false;
       window.relearn.enableBlockCodeWrap=false;
@@ -93,9 +91,9 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1770141170" rel="stylesheet">
+    <link href="/css/custom.css?1770227802" rel="stylesheet">
   </head>
-  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html">
     <div id="R-body" class="default-animation">
       <div id="R-body-overlay"></div>
       <nav id="R-topbar" class="default-animation">
@@ -108,35 +106,22 @@
             <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
 <span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
               <div class="topbar-content">
-                <div class="topbar-content-wrapper">
-<nav class="TableOfContents">
-  <ul>
-    <li><a href="#项目结构">项目结构</a></li>
-    <li><a href="#cpp源文件">CPP源文件</a></li>
-    <li><a href="#cmake文件">CMake文件</a></li>
-    <li><a href="#构建">构建</a>
-      <ul>
-        <li><a href="#生成cmake相关文件">生成CMake相关文件</a></li>
-        <li><a href="#生成可执行文件">生成可执行文件</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
+                <div class="topbar-content-wrapper"> 
                 </div>
               </div>
             </div>
           </div>
-          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html"><span itemprop="name">CMake</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html"><span itemprop="name">01、从可执行文件到库</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">1、单个源文件生成可执行文件</span><meta itemprop="position" content="5"></li>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html"><span itemprop="name">CMake</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">01.从可执行文件到库</span><meta itemprop="position" content="4"></li>
           </ol>
           <div class="topbar-area topbar-area-end" data-area="end">
             <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html" title="01、从可执行文件到库 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html" title="CMake (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html" title="shell (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html" title="1 单个源文件生成可执行文件 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
 <span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
@@ -155,6 +140,26 @@
         <div class="flex-block-wrapper">
 <article class="default">
   <header class="headline">
+  </header>
+
+<h1 id="01从可执行文件到库">01.从可执行文件到库</h1>
+
+<ul class="children children-type-tree children-sort-">
+<li>
+<p><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">1 单个源文件生成可执行文件</a></p>
+<p>Hello World！</p>
+</li>
+</ul>
+
+  <footer class="footline">
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+          <section>
+            <h1 class="a11y-only">01.从可执行文件到库 的子部分</h1>
+<article class="default">
+  <header class="headline">
 <div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
   <i class="fa-fw fas fa-layer-group"></i>
   <ul>
@@ -163,7 +168,7 @@
 </div>
   </header>
 
-<h1 id="1单个源文件生成可执行文件">1、单个源文件生成可执行文件</h1>
+<h1 id="1-单个源文件生成可执行文件">1 单个源文件生成可执行文件</h1>
 
 <h2 id="项目结构">项目结构<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <div class="list-tree"><ul>
@@ -182,21 +187,21 @@
   </div>
 </details>
 <h2 id="cpp源文件">CPP源文件<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<div class="tab-panel" data-tab-group="R-tabs-60d7ce796ad5d492b0a8ad709e921b44">
+<div class="tab-panel" data-tab-group="R-tabs-d9d08fddcc9ae2d381b36a647b928e9a">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-4f7491c1f0c32bfcb669d5b1f22f45b2" aria-expanded="true"
+      aria-controls="R-tab-id-c190fe34e57946e647e76266b9b1528c" aria-expanded="true"
       data-tab-item="R-tab-9e70be30221ce738537b82eb3edc46d4"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-60d7ce796ad5d492b0a8ad709e921b44','R-tab-9e70be30221ce738537b82eb3edc46d4')"
+      onclick="switchTab('R-tabs-d9d08fddcc9ae2d381b36a647b928e9a','R-tab-9e70be30221ce738537b82eb3edc46d4')"
     >
       <span class="tab-nav-text">hello_world.cpp</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-4f7491c1f0c32bfcb669d5b1f22f45b2"
+      id="R-tab-id-c190fe34e57946e647e76266b9b1528c"
       data-tab-item="R-tab-9e70be30221ce738537b82eb3edc46d4"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -215,21 +220,21 @@
     </div>
   </div>
 </div><h2 id="cmake文件">CMake文件<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<div class="tab-panel" data-tab-group="R-tabs-da3668da957598fe9ad1156c27e84db8">
+<div class="tab-panel" data-tab-group="R-tabs-68f8109f5bdb6e862b6ae88cf35dd341">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-71778b942af4400292b8f1f9f04fdadd" aria-expanded="true"
+      aria-controls="R-tab-id-d717535c0082a2c0d253bdb27069cefb" aria-expanded="true"
       data-tab-item="R-tab-af3b638bc2a3e6c650974192a53c7291"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-da3668da957598fe9ad1156c27e84db8','R-tab-af3b638bc2a3e6c650974192a53c7291')"
+      onclick="switchTab('R-tabs-68f8109f5bdb6e862b6ae88cf35dd341','R-tab-af3b638bc2a3e6c650974192a53c7291')"
     >
       <span class="tab-nav-text">CMakeLists.txt</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-71778b942af4400292b8f1f9f04fdadd"
+      id="R-tab-id-d717535c0082a2c0d253bdb27069cefb"
       data-tab-item="R-tab-af3b638bc2a3e6c650974192a53c7291"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -266,21 +271,21 @@
 </details>
 <h2 id="构建">构建<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="生成cmake相关文件">生成CMake相关文件<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-42070dbd30fea6d267c1cc2fdf7b30e1">
+<div class="tab-panel" data-tab-group="R-tabs-467f1770e1dc2859b557fc448c86bc24">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-a2104676a04556ffefbf6ebd73d8e329" aria-expanded="true"
+      aria-controls="R-tab-id-17f2fc79b1c7e458bd053bd77fb8a2fa" aria-expanded="true"
       data-tab-item="R-tab-19f129d83c0db143bd85f89713ede162"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-42070dbd30fea6d267c1cc2fdf7b30e1','R-tab-19f129d83c0db143bd85f89713ede162')"
+      onclick="switchTab('R-tabs-467f1770e1dc2859b557fc448c86bc24','R-tab-19f129d83c0db143bd85f89713ede162')"
     >
       <span class="tab-nav-text">生成CMake文件命令</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-a2104676a04556ffefbf6ebd73d8e329"
+      id="R-tab-id-17f2fc79b1c7e458bd053bd77fb8a2fa"
       data-tab-item="R-tab-19f129d83c0db143bd85f89713ede162"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -302,21 +307,21 @@
 <p><code>-H</code> 和 <code>-B</code> 为CLI选项。 <code>-H</code> 表示当前目录中搜索根<code>CMakeLists.txt</code>文件。<code>-Bbuild</code>告诉CMake在一个名为<code>build</code>的目录中生成所有的文件。</p>
   </div>
 </details>
-<div class="tab-panel" data-tab-group="R-tabs-6c17a2a6c5a81eab7f9205f9bc163552">
+<div class="tab-panel" data-tab-group="R-tabs-0aff2c6fb5b3de8c494fc07e28d45ce9">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-9db2d91428f397e922ed7f074942ad0d" aria-expanded="true"
+      aria-controls="R-tab-id-037f45189f01eb1e6e169d91df32393d" aria-expanded="true"
       data-tab-item="R-tab-96b9efaec56e2d7ae2517cf64b524917"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-6c17a2a6c5a81eab7f9205f9bc163552','R-tab-96b9efaec56e2d7ae2517cf64b524917')"
+      onclick="switchTab('R-tabs-0aff2c6fb5b3de8c494fc07e28d45ce9','R-tab-96b9efaec56e2d7ae2517cf64b524917')"
     >
       <span class="tab-nav-text">命令结果输出</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-9db2d91428f397e922ed7f074942ad0d"
+      id="R-tab-id-037f45189f01eb1e6e169d91df32393d"
       data-tab-item="R-tab-96b9efaec56e2d7ae2517cf64b524917"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -332,21 +337,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-b2ea96261a55284b72a88951bb7e9fed">
+</div><div class="tab-panel" data-tab-group="R-tabs-6adb56b865b340ba75068e16073b069f">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-dd80c50803bfb318e927304a49757c06" aria-expanded="true"
+      aria-controls="R-tab-id-b4644eff0cc87dcb2b95d58e46afd8da" aria-expanded="true"
       data-tab-item="R-tab-e3c230e0d9d676c083ad298b1bbd7e2c"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-b2ea96261a55284b72a88951bb7e9fed','R-tab-e3c230e0d9d676c083ad298b1bbd7e2c')"
+      onclick="switchTab('R-tabs-6adb56b865b340ba75068e16073b069f','R-tab-e3c230e0d9d676c083ad298b1bbd7e2c')"
     >
       <span class="tab-nav-text">build目录下文件</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-dd80c50803bfb318e927304a49757c06"
+      id="R-tab-id-b4644eff0cc87dcb2b95d58e46afd8da"
       data-tab-item="R-tab-e3c230e0d9d676c083ad298b1bbd7e2c"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -367,21 +372,21 @@
 <li>CMakeCache.txt：如文件名所示，CMake缓存。CMake在重新运行配置时使用这个文件。</li>
 </ul>
 <h3 id="生成可执行文件">生成可执行文件<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-862473c27f3b9cf298266fd7ab309a2d">
+<div class="tab-panel" data-tab-group="R-tabs-d0a91eab3fe47ec32e7faff0009ae410">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-0742b80f4b3c8ced71550beaf7234ea4" aria-expanded="true"
+      aria-controls="R-tab-id-bd9ceeb913d4e561977297358d56ea8f" aria-expanded="true"
       data-tab-item="R-tab-905cb25908f66559a3f42d6a48a8f2c3"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-862473c27f3b9cf298266fd7ab309a2d','R-tab-905cb25908f66559a3f42d6a48a8f2c3')"
+      onclick="switchTab('R-tabs-d0a91eab3fe47ec32e7faff0009ae410','R-tab-905cb25908f66559a3f42d6a48a8f2c3')"
     >
       <span class="tab-nav-text">构建可执行文件</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-0742b80f4b3c8ced71550beaf7234ea4"
+      id="R-tab-id-bd9ceeb913d4e561977297358d56ea8f"
       data-tab-item="R-tab-905cb25908f66559a3f42d6a48a8f2c3"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -398,7 +403,7 @@
     提示
   </summary>
   <div class="box-content">
-<p><strong>一条命令</strong>：cmake -H. -Bbuild &amp;&amp; cmake &ndash;build build</p>
+<p><strong>一条命令</strong>：cmake -H. -Bbuild &amp;&amp; cmake --build build</p>
   </div>
 </details>
 
@@ -413,6 +418,7 @@
 <p>工欲善其事，必先利其器。</p>
   </footer>
 </article>
+          </section>
         </div>
       </main>
     </div>
@@ -427,9 +433,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1770141170"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1770141170" defer></script>
-    <script src="/js/theme.min.js?1770141170" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1770227802"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1770227802" defer></script>
+    <script src="/js/theme.min.js?1770227802" defer></script>
 
 <style>
     .highlight {
