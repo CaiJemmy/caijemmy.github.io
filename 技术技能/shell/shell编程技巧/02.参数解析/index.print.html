@@ -8,42 +8,42 @@
     <meta name="description" content="命令行参数解析是每个脚本都要面对的问题。">
     <meta name="author" content="">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="02.参数解析 :: 暮鼓晨钟">
+    <meta name="twitter:title" content="02 参数解析 :: 暮鼓晨钟">
     <meta name="twitter:description" content="命令行参数解析是每个脚本都要面对的问题。">
     <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html">
     <meta property="og:site_name" content="暮鼓晨钟">
-    <meta property="og:title" content="02.参数解析 :: 暮鼓晨钟">
+    <meta property="og:title" content="02 参数解析 :: 暮鼓晨钟">
     <meta property="og:description" content="命令行参数解析是每个脚本都要面对的问题。">
     <meta property="og:locale" content="zh_CN">
     <meta property="og:type" content="website">
-    <meta itemprop="name" content="02.参数解析 :: 暮鼓晨钟">
+    <meta itemprop="name" content="02 参数解析 :: 暮鼓晨钟">
     <meta itemprop="description" content="命令行参数解析是每个脚本都要面对的问题。">
     <meta itemprop="wordCount" content="1543">
     <meta itemprop="keywords" content="Shell">
-    <title>02.参数解析 :: 暮鼓晨钟</title>
-    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html" rel="canonical" type="text/html" title="02.参数解析 :: 暮鼓晨钟">
-    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.xml" rel="alternate" type="application/rss+xml" title="02.参数解析 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1770234056" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1770234056" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1770234056" defer></script>
-    <script src="/js/search-lunr.min.js?1770234056" defer></script>
-    <script src="/js/search.min.js?1770234056" defer></script>
+    <title>02 参数解析 :: 暮鼓晨钟</title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html" rel="canonical" type="text/html" title="02 参数解析 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.xml" rel="alternate" type="application/rss+xml" title="02 参数解析 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1770304094" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1770304094" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1770304094" defer></script>
+    <script src="/js/search-lunr.min.js?1770304094" defer></script>
+    <script src="/js/search.min.js?1770304094" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1770234056";
+      window.relearn.index_js_url="/searchindex.en.js?1770304094";
     </script>
-    <script src="/js/lunr/lunr.min.js?1770234056" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1770234056" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1770234056" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1770234056" defer></script>
+    <script src="/js/lunr/lunr.min.js?1770304094" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1770304094" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1770304094" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1770304094" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1770234056" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1770234056" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1770234056" rel="stylesheet">
-    <link href="/css/theme.min.css?1770234056" rel="stylesheet">
-    <link href="/css/format-print.min.css?1770234056" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1770304094" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1770304094" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1770304094" rel="stylesheet">
+    <link href="/css/theme.min.css?1770304094" rel="stylesheet">
+    <link href="/css/format-print.min.css?1770304094" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1770234056" rel="stylesheet">
+    <link href="/css/custom.css?1770304094" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html">
     <div id="R-body" class="default-animation">
@@ -149,14 +149,14 @@
               </div>
             </div>
           </div>
-          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><span itemprop="name">shell</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/index.html"><span itemprop="name">shell编程技巧</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">02.参数解析</span><meta itemprop="position" content="5"></li>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><span itemprop="name">shell</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/index.html"><span itemprop="name">shell编程技巧</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">02 参数解析</span><meta itemprop="position" content="5"></li>
           </ol>
           <div class="topbar-area topbar-area-end" data-area="end">
             <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
 <span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html" title="01.严格模式 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html" title="01 严格模式 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
 <span class="btn cstyle button link noborder notitle"><span><i class="fa-fw fas fa-chevron-right"></i></span></span>
@@ -186,7 +186,7 @@
 </div>
   </header>
 
-<h1 id="02参数解析">02.参数解析</h1>
+<h1 id="02-参数解析">02 参数解析</h1>
 
 <h2 id="getopts-参数处理">getopts 参数处理<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="什么是-getopts">什么是 <code>getopts</code>？<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
@@ -236,21 +236,21 @@
 <p>下一个要处理的参数的索引</p>
 <h3 id="getopts脚本模板">getopts脚本模板<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <h4 id="支持长选项模板">支持长选项模板<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-99187b6e8c5710c1d3c945348a267915">
+<div class="tab-panel" data-tab-group="R-tabs-8ed81a213a727a08691cc890ceea0ac1">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-792d0da174f39f6ff6f866155a4f4ed7" aria-expanded="true"
+      aria-controls="R-tab-id-e0510fc5b29835d7cf522fc80bcf3a47" aria-expanded="true"
       data-tab-item="R-tab-9f18b2813a9d35616e19e139bc06f82f"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-99187b6e8c5710c1d3c945348a267915','R-tab-9f18b2813a9d35616e19e139bc06f82f')"
+      onclick="switchTab('R-tabs-8ed81a213a727a08691cc890ceea0ac1','R-tab-9f18b2813a9d35616e19e139bc06f82f')"
     >
       <span class="tab-nav-text">getopts 参数解析</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-792d0da174f39f6ff6f866155a4f4ed7"
+      id="R-tab-id-e0510fc5b29835d7cf522fc80bcf3a47"
       data-tab-item="R-tab-9f18b2813a9d35616e19e139bc06f82f"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -670,21 +670,21 @@
 <li>对于可选参数，没有参数时，<code>getopt</code> 解析时<code>$2</code>是空串，代码处理逻辑要是<code>shift 2</code>，否则参数处理报错。</li>
 <li>对于可选参数，调用时传参要注意。</li>
 </ol>
-<div class="tab-panel" data-tab-group="R-tabs-c1effee15083e0f924c3257b65e25be7">
+<div class="tab-panel" data-tab-group="R-tabs-71e60910ba3c65aacf48e7f9403edb68">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-97aec0848a1a8a4423b319c12cead4d9" aria-expanded="true"
+      aria-controls="R-tab-id-8138a5bbeeaae5738a67f38c750a498e" aria-expanded="true"
       data-tab-item="R-tab-4c17ad21d027e93babfbe426990f2123"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-c1effee15083e0f924c3257b65e25be7','R-tab-4c17ad21d027e93babfbe426990f2123')"
+      onclick="switchTab('R-tabs-71e60910ba3c65aacf48e7f9403edb68','R-tab-4c17ad21d027e93babfbe426990f2123')"
     >
       <span class="tab-nav-text">测试脚本</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-97aec0848a1a8a4423b319c12cead4d9"
+      id="R-tab-id-8138a5bbeeaae5738a67f38c750a498e"
       data-tab-item="R-tab-4c17ad21d027e93babfbe426990f2123"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -897,9 +897,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1770234056"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1770234056" defer></script>
-    <script src="/js/theme.min.js?1770234056" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1770304094"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1770304094" defer></script>
+    <script src="/js/theme.min.js?1770304094" defer></script>
 
 <style>
     .highlight {

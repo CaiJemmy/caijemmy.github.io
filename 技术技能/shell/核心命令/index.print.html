@@ -5,22 +5,22 @@
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="generator" content="Hugo 0.155.2">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
-    <meta name="description" content="">
+    <meta name="description" content="Linux 系统中常用命令。">
     <meta name="author" content="">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://caijemmy.github.io/images/notes/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0.jpg">
-    <meta name="twitter:title" content="书香笔记 :: 暮鼓晨钟">
-    <meta property="og:url" content="https://caijemmy.github.io/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="linux 核心命令 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="Linux 系统中常用命令。">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html">
     <meta property="og:site_name" content="暮鼓晨钟">
-    <meta property="og:title" content="书香笔记 :: 暮鼓晨钟">
+    <meta property="og:title" content="linux 核心命令 :: 暮鼓晨钟">
+    <meta property="og:description" content="Linux 系统中常用命令。">
     <meta property="og:locale" content="zh_CN">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://caijemmy.github.io/images/notes/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0.jpg">
-    <meta itemprop="name" content="书香笔记 :: 暮鼓晨钟">
-    <meta itemprop="image" content="https://caijemmy.github.io/images/notes/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0.jpg">
-    <title>书香笔记 :: 暮鼓晨钟</title>
-    <link href="https://caijemmy.github.io/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html" rel="canonical" type="text/html" title="书香笔记 :: 暮鼓晨钟">
-    <link href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.xml" rel="alternate" type="application/rss+xml" title="书香笔记 :: 暮鼓晨钟">
+    <meta itemprop="name" content="linux 核心命令 :: 暮鼓晨钟">
+    <meta itemprop="description" content="Linux 系统中常用命令。">
+    <title>linux 核心命令 :: 暮鼓晨钟</title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html" rel="canonical" type="text/html" title="linux 核心命令 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.xml" rel="alternate" type="application/rss+xml" title="linux 核心命令 :: 暮鼓晨钟">
     <link href="/images/favicon.png?1770304094" rel="icon" type="image/png">
     <link href="/css/auto-complete/auto-complete.min.css?1770304094" rel="stylesheet">
     <script src="/js/auto-complete/auto-complete.min.js?1770304094" defer></script>
@@ -46,9 +46,9 @@
       window.relearn = window.relearn || {};
       // configuration
       window.relearn.min = `.min`;
-      window.relearn.path='\/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0\/index.html';
-      window.relearn.relBasePath='..';
-      window.relearn.relBaseUri='..';
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/shell\/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4\/index.html';
+      window.relearn.relBasePath='..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
       window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
       window.relearn.disableInlineCopyToClipboard=false;
       window.relearn.enableBlockCodeWrap=false;
@@ -92,7 +92,7 @@
     </script>
     <link href="/css/custom.css?1770304094" rel="stylesheet">
   </head>
-  <body class="mobile-support print" data-origin="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html">
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html">
     <div id="R-body" class="default-animation">
       <div id="R-body-overlay"></div>
       <nav id="R-topbar" class="default-animation">
@@ -110,17 +110,17 @@
               </div>
             </div>
           </div>
-          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">书香笔记</span><meta itemprop="position" content="2"></li>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><span itemprop="name">shell</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">linux 核心命令</span><meta itemprop="position" content="4"></li>
           </ol>
           <div class="topbar-area topbar-area-end" data-area="end">
             <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html" title="聪明、听话、努力 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html" title="shell (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html" title="程序员技能 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/index.html" title="shell编程技巧 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
 <span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
@@ -135,17 +135,14 @@
         </div>
       </nav>
       <div id="R-main-overlay"></div>
-      <main id="R-body-inner" class="highlightable 书香笔记" tabindex="-1">
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
         <div class="flex-block-wrapper">
 <article class="default">
   <header class="headline">
   </header>
 
-<h1 id="书香笔记">书香笔记</h1>
+<h1 id="linux-核心命令">linux 核心命令</h1>
 
-
-<p><a href="#R-image-8e2339b47283497797a03f1c5e3372c3" class="lightbox-link"><img class="lazy lightbox figure-image" loading="lazy" src="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0.jpg" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-8e2339b47283497797a03f1c5e3372c3"><img class="lazy lightbox lightbox-image" loading="lazy" src="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0.jpg"></a></p>
 
   <footer class="footline">
 
