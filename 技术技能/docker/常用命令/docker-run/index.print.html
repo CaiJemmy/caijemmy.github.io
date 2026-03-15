@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="print">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.157.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+    <meta name="description" content="Docker run 命令详解 📚 命令概述 docker run 是 Docker 中最核心、最常用的命令，用于从镜像创建并启动一个新的容器。
+基本语法：
+1docker run [OPTIONS] IMAGE [COMMAND] [ARG...] 🎯 基本使用示例 1. 最简单的运行 1# 运行一个容器，执行命令后退出 2docker run ubuntu echo &#34;Hello Docker&#34; 3 4# 运行并进入交互式终端 5docker run -it ubuntu bash 6 7# 运行后台容器 8docker run -d nginx 2. 常用选项分类 🔧 容器运行模式选项 交互式 vs 后台运行 1# 交互式运行（-i -t 通常一起使用） 2docker run -it ubuntu bash 3# -i, --interactive: 保持 STDIN 打开 4# -t, --tty: 分配一个伪终端 5 6# 后台运行（守护进程模式） 7docker run -d nginx 8# -d, --detach: 后台运行容器 9 10# 后台运行但附加日志 11docker run -d --log-driver=json-file nginx 容器命名和管理 1# 指定容器名称 2docker run --name my-container nginx 3 4# 自动删除容器（退出时） 5docker run --rm ubuntu echo &#34;临时任务&#34; 6 7# 重启策略 8docker run --restart=always nginx 9# no: 不自动重启（默认） 10# on-failure[:max-retries]: 失败时重启 11# always: 总是重启 12# unless-stopped: 除非手动停止，否则总是重启 🌐 网络配置选项 网络模式 1# 使用主机网络（共享主机网络栈） 2docker run --network=host nginx 3 4# 使用桥接网络（默认） 5docker run --network=bridge nginx 6 7# 使用自定义网络 8docker network create mynet 9docker run --network=mynet nginx 10 11# 不联网 12docker run --network=none alpine 13 14# 容器网络（连接到其他容器） 15docker run --network=container:existing-container nginx 端口映射 1# 简单端口映射 2docker run -p 8080:80 nginx 3# 主机端口:容器端口 4 5# 多个端口映射 6docker run -p 8080:80 -p 8443:443 nginx 7 8# 指定主机IP 9docker run -p 127.0.0.1:8080:80 nginx 10 11# 随机主机端口 12docker run -p 80 nginx 13docker port &lt;container_id&gt; # 查看分配的端口 14 15# 使用 UDP 端口 16docker run -p 53:53/udp dns-server DNS 和主机名 1# 设置主机名 2docker run --hostname myhost ubuntu 3 4# 添加 hosts 条目 5docker run --add-host db.local:192.168.1.100 ubuntu 6 7# 自定义 DNS 8docker run --dns 8.8.8.8 ubuntu 9docker run --dns-search example.com ubuntu 💾 存储和卷选项 数据卷（Volumes） 1# 创建匿名卷 2docker run -v /data ubuntu 3 4# 挂载主机目录 5docker run -v /host/path:/container/path ubuntu 6 7# 挂载数据卷 8docker volume create mydata 9docker run -v mydata:/data ubuntu 10 11# 只读挂载 12docker run -v /host/path:/container/path:ro ubuntu 13 14# 挂载多个目录 15docker run -v /host/data:/data -v /host/config:/config ubuntu tmpfs 挂载 1# 内存文件系统 2docker run --tmpfs /tmp:size=100M,mode=1777 ubuntu 3 4# 多个 tmpfs 5docker run --tmpfs /tmp --tmpfs /run ubuntu 绑定挂载高级选项 1# 使用 --mount（更详细的选项） 2docker run \ 3 --mount type=bind,source=/host/path,target=/container/path,readonly \ 4 ubuntu 5 6# 挂载类型： 7# type=bind: 绑定挂载 8# type=volume: 数据卷 9# type=tmpfs: 临时文件系统 10# type=pipe: 命名管道（Windows） 11 12# 传播选项 13docker run \ 14 --mount type=bind,source=/host,target=/container,bind-propagation=rshared \ 15 ubuntu ⚙️ 资源限制选项 CPU 限制 1# 限制 CPU 使用（相对权重） 2docker run --cpu-shares=512 ubuntu 3# 默认 1024，值越高优先级越高 4 5# 限制 CPU 核心数 6docker run --cpus=1.5 ubuntu 7docker run --cpus=0.5 ubuntu 8 9# 绑定到特定 CPU 核心 10docker run --cpuset-cpus=&#34;0,3&#34; ubuntu 11docker run --cpuset-cpus=&#34;0-2&#34; ubuntu 内存限制 1# 内存限制 2docker run -m 512m ubuntu 3# 或 4docker run --memory=512m ubuntu 5 6# 内存&#43;交换分区限制 7docker run -m 512m --memory-swap=1g ubuntu 8# 如果只设置 memory，swap = memory * 2 9# 如果设置为 -1，不限制 swap 10 11# 内存预留（软限制） 12docker run --memory-reservation=256m ubuntu 13 14# OOM 优先级 15docker run --oom-kill-disable ubuntu 16docker run --oom-score-adj=-500 ubuntu 其他资源限制 1# 设备限制 2docker run --device=/dev/sda:/dev/xvda ubuntu 3docker run --device-read-bps=/dev/sda:1mb ubuntu 4docker run --device-write-iops=/dev/sda:100 ubuntu 5 6# 进程数限制 7docker run --pids-limit=100 ubuntu 8 9# 内核参数 10docker run --ulimit nofile=1024:1024 ubuntu 11# ulimit 选项： 12# core: 核心文件大小 13# cpu: CPU时间（秒） 14# data: 数据段大小 15# fsize: 文件大小 16# locks: 文件锁数 17# memlock: 锁定内存 18# msgqueue: 消息队列大小 19# nice: 优先级 20# nofile: 打开文件数 21# nproc: 进程数 22# rss: 常驻集大小 23# rtprio: 实时优先级 24# sigpending: 挂起信号 25# stack: 栈大小 🔐 安全选项 用户和权限 1# 指定运行用户 2docker run -u 1000 ubuntu 3docker run --user=appuser ubuntu 4 5# 用户命名空间 6docker run --userns=host ubuntu 7 8# 安全选项（SELinux/AppArmor） 9docker run --security-opt label=type:svirt_apache ubuntu 10docker run --security-opt apparmor=docker-default ubuntu 11docker run --security-opt seccomp=unconfined ubuntu 12 13# 不推荐：特权模式（获得所有权限） 14docker run --privileged ubuntu 15 16# 添加/删除能力 17docker run --cap-add=NET_ADMIN ubuntu 18docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE ubuntu 只读文件系统 1# 只读根文件系统 2docker run --read-only ubuntu 3 4# 配合 tmpfs 使用 5docker run --read-only --tmpfs /tmp ubuntu 6 7# 只读特定目录 8docker run -v /data:ro ubuntu 📦 镜像相关选项 镜像标签和拉取策略 1# 指定镜像标签 2docker run ubuntu:20.04 3docker run nginx:alpine 4 5# 拉取策略 6docker run --pull=always nginx # 总是拉取最新 7docker run --pull=missing nginx # 本地没有才拉取 8docker run --pull=never nginx # 只用本地镜像 9 10# 平台架构 11docker run --platform=linux/amd64 ubuntu 12docker run --platform=linux/arm64 ubuntu 📝 环境变量 1# 设置环境变量 2docker run -e MYVAR=value ubuntu 3docker run -e MYVAR ubuntu # 从主机继承 4 5# 多个环境变量 6docker run -e VAR1=value1 -e VAR2=value2 ubuntu 7 8# 从文件读取 9docker run --env-file .env ubuntu 10 11# 特殊环境变量 12docker run -e &#34;TERM=xterm-256color&#34; ubuntu 13docker run -e &#34;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&#34; ubuntu 🎨 输出和日志 1# 输出附加 2docker run -a stdin -a stdout -a stderr ubuntu 3 4# 日志驱动 5docker run --log-driver=json-file ubuntu 6docker run --log-driver=syslog ubuntu 7docker run --log-driver=journald ubuntu 8docker run --log-driver=none ubuntu 9 10# 日志选项 11docker run --log-opt max-size=10m --log-opt max-file=3 ubuntu 12docker run --log-opt tag=&#34;{{.ImageName}}/{{.Name}}/{{.ID}}&#34; ubuntu 🚀 高级选项 健康检查 1# 自定义健康检查 2docker run \ 3 --health-cmd=&#34;curl -f http://localhost/ || exit 1&#34; \ 4 --health-interval=30s \ 5 --health-timeout=10s \ 6 --health-retries=3 \ 7 --health-start-period=5s \ 8 nginx 设备映射 1# GPU 支持 2docker run --gpus all nvidia/cuda:11.0-base 3docker run --gpus &#39;&#34;device=0,1&#34;&#39; nvidia/cuda 4 5# USB 设备 6docker run --device=/dev/bus/usb/001/002 ubuntu 7 8# 字符设备 9docker run --device=/dev/ttyUSB0 ubuntu IPC 和共享内存 1# IPC 命名空间 2docker run --ipc=host ubuntu 3docker run --ipc=container:other-container ubuntu 4 5# 共享内存大小 6docker run --shm-size=1g ubuntu 7 8# 信号代理 9docker run --sig-proxy=true ubuntu 📊 实际应用示例 示例1：Web 应用容器 1docker run -d \ 2 --name=my-webapp \ 3 --hostname=webapp \ 4 -p 8080:80 \ 5 -p 8443:443 \ 6 -v /data/webapp:/var/www/html \ 7 -v /data/config:/etc/nginx/conf.d \ 8 -e &#34;NGINX_HOST=example.com&#34; \ 9 -e &#34;NGINX_PORT=80&#34; \ 10 --memory=512m \ 11 --cpus=1 \ 12 --restart=unless-stopped \ 13 --log-opt max-size=10m \ 14 --log-opt max-file=3 \ 15 nginx:alpine 示例2：数据库容器 1docker run -d \ 2 --name=mysql-db \ 3 -p 3306:3306 \ 4 -v mysql_data:/var/lib/mysql \ 5 -v /backup/mysql:/backup \ 6 -e MYSQL_ROOT_PASSWORD=secret \ 7 -e MYSQL_DATABASE=appdb \ 8 -e MYSQL_USER=appuser \ 9 -e MYSQL_PASSWORD=apppass \ 10 --network=app-network \ 11 --memory=1g \ 12 --memory-swap=2g \ 13 --cpus=2 \ 14 --ulimit nofile=65536:65536 \ 15 mysql:8.0 \ 16 --character-set-server=utf8mb4 \ 17 --collation-server=utf8mb4_unicode_ci 示例3：开发环境容器 1docker run -it \ 2 --name=dev-env \ 3 -v $(pwd):/workspace \ 4 -v ~/.ssh:/root/.ssh \ 5 -v ~/.gitconfig:/root/.gitconfig \ 6 -p 3000:3000 \ 7 -p 9229:9229 \ 8 --add-host=host.docker.internal:host-gateway \ 9 -e &#34;NODE_ENV=development&#34; \ 10 -e &#34;DEBUG=*&#34; \ 11 --security-opt seccomp=unconfined \ 12 --cap-add=SYS_PTRACE \ 13 node:18-alpine \ 14 sh 示例4：测试容器（自动清理） 1docker run --rm \ 2 -v $(pwd):/app \ 3 -w /app \ 4 -e &#34;CI=true&#34; \ 5 node:18-alpine \ 6 sh -c &#34;npm install &amp;&amp; npm test&#34; 🔍 调试和故障排除 查看容器信息 1# 查看容器详细信息 2docker inspect &lt;container_id&gt; 3 4# 查看容器日志 5docker logs &lt;container_id&gt; 6docker logs -f &lt;container_id&gt; # 实时跟踪 7docker logs --tail=100 &lt;container_id&gt; 8 9# 查看容器进程 10docker top &lt;container_id&gt; 11 12# 查看容器资源使用 13docker stats &lt;container_id&gt; 14 15# 进入运行中的容器 16docker exec -it &lt;container_id&gt; bash 调试运行参数 1# 查看容器运行时的命令 2docker inspect &lt;container_id&gt; | grep -A 20 &#34;Args&#34; 3 4# 测试运行（不实际启动） 5docker run --dry-run ubuntu echo &#34;test&#34; 6 7# 查看镜像的默认命令 8docker inspect ubuntu:20.04 | grep -A 5 &#34;Cmd&#34; 📋 常用参数速查表 选项 简写 描述 --detach -d 后台运行 --interactive -i 保持 STDIN 打开 --tty -t 分配伪终端 --rm 退出时自动删除 --name 指定容器名称 --publish -p 端口映射 --volume -v 挂载卷 --env -e 设置环境变量 --workdir -w 设置工作目录 --network 网络设置 --memory -m 内存限制 --cpus CPU 限制 --restart 重启策略 --entrypoint 覆盖入口点 --user -u 运行用户 --read-only 只读文件系统 --security-opt 安全选项 --cap-add 添加 Linux 能力 --cap-drop 删除 Linux 能力 --log-driver 日志驱动 --log-opt 日志选项 --health-cmd 健康检查命令 --add-host 添加 hosts 条目 --dns 自定义 DNS --device 挂载设备 🎓 最佳实践 始终指定版本标签">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:description" content="Docker run 命令详解 📚 命令概述 docker run 是 Docker 中最核心、最常用的命令，用于从镜像创建并启动一个新的容器。
+基本语法：
+1docker run [OPTIONS] IMAGE [COMMAND] [ARG...] 🎯 基本使用示例 1. 最简单的运行 1# 运行一个容器，执行命令后退出 2docker run ubuntu echo &#34;Hello Docker&#34; 3 4# 运行并进入交互式终端 5docker run -it ubuntu bash 6 7# 运行后台容器 8docker run -d nginx 2. 常用选项分类 🔧 容器运行模式选项 交互式 vs 后台运行 1# 交互式运行（-i -t 通常一起使用） 2docker run -it ubuntu bash 3# -i, --interactive: 保持 STDIN 打开 4# -t, --tty: 分配一个伪终端 5 6# 后台运行（守护进程模式） 7docker run -d nginx 8# -d, --detach: 后台运行容器 9 10# 后台运行但附加日志 11docker run -d --log-driver=json-file nginx 容器命名和管理 1# 指定容器名称 2docker run --name my-container nginx 3 4# 自动删除容器（退出时） 5docker run --rm ubuntu echo &#34;临时任务&#34; 6 7# 重启策略 8docker run --restart=always nginx 9# no: 不自动重启（默认） 10# on-failure[:max-retries]: 失败时重启 11# always: 总是重启 12# unless-stopped: 除非手动停止，否则总是重启 🌐 网络配置选项 网络模式 1# 使用主机网络（共享主机网络栈） 2docker run --network=host nginx 3 4# 使用桥接网络（默认） 5docker run --network=bridge nginx 6 7# 使用自定义网络 8docker network create mynet 9docker run --network=mynet nginx 10 11# 不联网 12docker run --network=none alpine 13 14# 容器网络（连接到其他容器） 15docker run --network=container:existing-container nginx 端口映射 1# 简单端口映射 2docker run -p 8080:80 nginx 3# 主机端口:容器端口 4 5# 多个端口映射 6docker run -p 8080:80 -p 8443:443 nginx 7 8# 指定主机IP 9docker run -p 127.0.0.1:8080:80 nginx 10 11# 随机主机端口 12docker run -p 80 nginx 13docker port &lt;container_id&gt; # 查看分配的端口 14 15# 使用 UDP 端口 16docker run -p 53:53/udp dns-server DNS 和主机名 1# 设置主机名 2docker run --hostname myhost ubuntu 3 4# 添加 hosts 条目 5docker run --add-host db.local:192.168.1.100 ubuntu 6 7# 自定义 DNS 8docker run --dns 8.8.8.8 ubuntu 9docker run --dns-search example.com ubuntu 💾 存储和卷选项 数据卷（Volumes） 1# 创建匿名卷 2docker run -v /data ubuntu 3 4# 挂载主机目录 5docker run -v /host/path:/container/path ubuntu 6 7# 挂载数据卷 8docker volume create mydata 9docker run -v mydata:/data ubuntu 10 11# 只读挂载 12docker run -v /host/path:/container/path:ro ubuntu 13 14# 挂载多个目录 15docker run -v /host/data:/data -v /host/config:/config ubuntu tmpfs 挂载 1# 内存文件系统 2docker run --tmpfs /tmp:size=100M,mode=1777 ubuntu 3 4# 多个 tmpfs 5docker run --tmpfs /tmp --tmpfs /run ubuntu 绑定挂载高级选项 1# 使用 --mount（更详细的选项） 2docker run \ 3 --mount type=bind,source=/host/path,target=/container/path,readonly \ 4 ubuntu 5 6# 挂载类型： 7# type=bind: 绑定挂载 8# type=volume: 数据卷 9# type=tmpfs: 临时文件系统 10# type=pipe: 命名管道（Windows） 11 12# 传播选项 13docker run \ 14 --mount type=bind,source=/host,target=/container,bind-propagation=rshared \ 15 ubuntu ⚙️ 资源限制选项 CPU 限制 1# 限制 CPU 使用（相对权重） 2docker run --cpu-shares=512 ubuntu 3# 默认 1024，值越高优先级越高 4 5# 限制 CPU 核心数 6docker run --cpus=1.5 ubuntu 7docker run --cpus=0.5 ubuntu 8 9# 绑定到特定 CPU 核心 10docker run --cpuset-cpus=&#34;0,3&#34; ubuntu 11docker run --cpuset-cpus=&#34;0-2&#34; ubuntu 内存限制 1# 内存限制 2docker run -m 512m ubuntu 3# 或 4docker run --memory=512m ubuntu 5 6# 内存&#43;交换分区限制 7docker run -m 512m --memory-swap=1g ubuntu 8# 如果只设置 memory，swap = memory * 2 9# 如果设置为 -1，不限制 swap 10 11# 内存预留（软限制） 12docker run --memory-reservation=256m ubuntu 13 14# OOM 优先级 15docker run --oom-kill-disable ubuntu 16docker run --oom-score-adj=-500 ubuntu 其他资源限制 1# 设备限制 2docker run --device=/dev/sda:/dev/xvda ubuntu 3docker run --device-read-bps=/dev/sda:1mb ubuntu 4docker run --device-write-iops=/dev/sda:100 ubuntu 5 6# 进程数限制 7docker run --pids-limit=100 ubuntu 8 9# 内核参数 10docker run --ulimit nofile=1024:1024 ubuntu 11# ulimit 选项： 12# core: 核心文件大小 13# cpu: CPU时间（秒） 14# data: 数据段大小 15# fsize: 文件大小 16# locks: 文件锁数 17# memlock: 锁定内存 18# msgqueue: 消息队列大小 19# nice: 优先级 20# nofile: 打开文件数 21# nproc: 进程数 22# rss: 常驻集大小 23# rtprio: 实时优先级 24# sigpending: 挂起信号 25# stack: 栈大小 🔐 安全选项 用户和权限 1# 指定运行用户 2docker run -u 1000 ubuntu 3docker run --user=appuser ubuntu 4 5# 用户命名空间 6docker run --userns=host ubuntu 7 8# 安全选项（SELinux/AppArmor） 9docker run --security-opt label=type:svirt_apache ubuntu 10docker run --security-opt apparmor=docker-default ubuntu 11docker run --security-opt seccomp=unconfined ubuntu 12 13# 不推荐：特权模式（获得所有权限） 14docker run --privileged ubuntu 15 16# 添加/删除能力 17docker run --cap-add=NET_ADMIN ubuntu 18docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE ubuntu 只读文件系统 1# 只读根文件系统 2docker run --read-only ubuntu 3 4# 配合 tmpfs 使用 5docker run --read-only --tmpfs /tmp ubuntu 6 7# 只读特定目录 8docker run -v /data:ro ubuntu 📦 镜像相关选项 镜像标签和拉取策略 1# 指定镜像标签 2docker run ubuntu:20.04 3docker run nginx:alpine 4 5# 拉取策略 6docker run --pull=always nginx # 总是拉取最新 7docker run --pull=missing nginx # 本地没有才拉取 8docker run --pull=never nginx # 只用本地镜像 9 10# 平台架构 11docker run --platform=linux/amd64 ubuntu 12docker run --platform=linux/arm64 ubuntu 📝 环境变量 1# 设置环境变量 2docker run -e MYVAR=value ubuntu 3docker run -e MYVAR ubuntu # 从主机继承 4 5# 多个环境变量 6docker run -e VAR1=value1 -e VAR2=value2 ubuntu 7 8# 从文件读取 9docker run --env-file .env ubuntu 10 11# 特殊环境变量 12docker run -e &#34;TERM=xterm-256color&#34; ubuntu 13docker run -e &#34;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&#34; ubuntu 🎨 输出和日志 1# 输出附加 2docker run -a stdin -a stdout -a stderr ubuntu 3 4# 日志驱动 5docker run --log-driver=json-file ubuntu 6docker run --log-driver=syslog ubuntu 7docker run --log-driver=journald ubuntu 8docker run --log-driver=none ubuntu 9 10# 日志选项 11docker run --log-opt max-size=10m --log-opt max-file=3 ubuntu 12docker run --log-opt tag=&#34;{{.ImageName}}/{{.Name}}/{{.ID}}&#34; ubuntu 🚀 高级选项 健康检查 1# 自定义健康检查 2docker run \ 3 --health-cmd=&#34;curl -f http://localhost/ || exit 1&#34; \ 4 --health-interval=30s \ 5 --health-timeout=10s \ 6 --health-retries=3 \ 7 --health-start-period=5s \ 8 nginx 设备映射 1# GPU 支持 2docker run --gpus all nvidia/cuda:11.0-base 3docker run --gpus &#39;&#34;device=0,1&#34;&#39; nvidia/cuda 4 5# USB 设备 6docker run --device=/dev/bus/usb/001/002 ubuntu 7 8# 字符设备 9docker run --device=/dev/ttyUSB0 ubuntu IPC 和共享内存 1# IPC 命名空间 2docker run --ipc=host ubuntu 3docker run --ipc=container:other-container ubuntu 4 5# 共享内存大小 6docker run --shm-size=1g ubuntu 7 8# 信号代理 9docker run --sig-proxy=true ubuntu 📊 实际应用示例 示例1：Web 应用容器 1docker run -d \ 2 --name=my-webapp \ 3 --hostname=webapp \ 4 -p 8080:80 \ 5 -p 8443:443 \ 6 -v /data/webapp:/var/www/html \ 7 -v /data/config:/etc/nginx/conf.d \ 8 -e &#34;NGINX_HOST=example.com&#34; \ 9 -e &#34;NGINX_PORT=80&#34; \ 10 --memory=512m \ 11 --cpus=1 \ 12 --restart=unless-stopped \ 13 --log-opt max-size=10m \ 14 --log-opt max-file=3 \ 15 nginx:alpine 示例2：数据库容器 1docker run -d \ 2 --name=mysql-db \ 3 -p 3306:3306 \ 4 -v mysql_data:/var/lib/mysql \ 5 -v /backup/mysql:/backup \ 6 -e MYSQL_ROOT_PASSWORD=secret \ 7 -e MYSQL_DATABASE=appdb \ 8 -e MYSQL_USER=appuser \ 9 -e MYSQL_PASSWORD=apppass \ 10 --network=app-network \ 11 --memory=1g \ 12 --memory-swap=2g \ 13 --cpus=2 \ 14 --ulimit nofile=65536:65536 \ 15 mysql:8.0 \ 16 --character-set-server=utf8mb4 \ 17 --collation-server=utf8mb4_unicode_ci 示例3：开发环境容器 1docker run -it \ 2 --name=dev-env \ 3 -v $(pwd):/workspace \ 4 -v ~/.ssh:/root/.ssh \ 5 -v ~/.gitconfig:/root/.gitconfig \ 6 -p 3000:3000 \ 7 -p 9229:9229 \ 8 --add-host=host.docker.internal:host-gateway \ 9 -e &#34;NODE_ENV=development&#34; \ 10 -e &#34;DEBUG=*&#34; \ 11 --security-opt seccomp=unconfined \ 12 --cap-add=SYS_PTRACE \ 13 node:18-alpine \ 14 sh 示例4：测试容器（自动清理） 1docker run --rm \ 2 -v $(pwd):/app \ 3 -w /app \ 4 -e &#34;CI=true&#34; \ 5 node:18-alpine \ 6 sh -c &#34;npm install &amp;&amp; npm test&#34; 🔍 调试和故障排除 查看容器信息 1# 查看容器详细信息 2docker inspect &lt;container_id&gt; 3 4# 查看容器日志 5docker logs &lt;container_id&gt; 6docker logs -f &lt;container_id&gt; # 实时跟踪 7docker logs --tail=100 &lt;container_id&gt; 8 9# 查看容器进程 10docker top &lt;container_id&gt; 11 12# 查看容器资源使用 13docker stats &lt;container_id&gt; 14 15# 进入运行中的容器 16docker exec -it &lt;container_id&gt; bash 调试运行参数 1# 查看容器运行时的命令 2docker inspect &lt;container_id&gt; | grep -A 20 &#34;Args&#34; 3 4# 测试运行（不实际启动） 5docker run --dry-run ubuntu echo &#34;test&#34; 6 7# 查看镜像的默认命令 8docker inspect ubuntu:20.04 | grep -A 5 &#34;Cmd&#34; 📋 常用参数速查表 选项 简写 描述 --detach -d 后台运行 --interactive -i 保持 STDIN 打开 --tty -t 分配伪终端 --rm 退出时自动删除 --name 指定容器名称 --publish -p 端口映射 --volume -v 挂载卷 --env -e 设置环境变量 --workdir -w 设置工作目录 --network 网络设置 --memory -m 内存限制 --cpus CPU 限制 --restart 重启策略 --entrypoint 覆盖入口点 --user -u 运行用户 --read-only 只读文件系统 --security-opt 安全选项 --cap-add 添加 Linux 能力 --cap-drop 删除 Linux 能力 --log-driver 日志驱动 --log-opt 日志选项 --health-cmd 健康检查命令 --add-host 添加 hosts 条目 --dns 自定义 DNS --device 挂载设备 🎓 最佳实践 始终指定版本标签">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/docker-run/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:description" content="Docker run 命令详解 📚 命令概述 docker run 是 Docker 中最核心、最常用的命令，用于从镜像创建并启动一个新的容器。
+基本语法：
+1docker run [OPTIONS] IMAGE [COMMAND] [ARG...] 🎯 基本使用示例 1. 最简单的运行 1# 运行一个容器，执行命令后退出 2docker run ubuntu echo &#34;Hello Docker&#34; 3 4# 运行并进入交互式终端 5docker run -it ubuntu bash 6 7# 运行后台容器 8docker run -d nginx 2. 常用选项分类 🔧 容器运行模式选项 交互式 vs 后台运行 1# 交互式运行（-i -t 通常一起使用） 2docker run -it ubuntu bash 3# -i, --interactive: 保持 STDIN 打开 4# -t, --tty: 分配一个伪终端 5 6# 后台运行（守护进程模式） 7docker run -d nginx 8# -d, --detach: 后台运行容器 9 10# 后台运行但附加日志 11docker run -d --log-driver=json-file nginx 容器命名和管理 1# 指定容器名称 2docker run --name my-container nginx 3 4# 自动删除容器（退出时） 5docker run --rm ubuntu echo &#34;临时任务&#34; 6 7# 重启策略 8docker run --restart=always nginx 9# no: 不自动重启（默认） 10# on-failure[:max-retries]: 失败时重启 11# always: 总是重启 12# unless-stopped: 除非手动停止，否则总是重启 🌐 网络配置选项 网络模式 1# 使用主机网络（共享主机网络栈） 2docker run --network=host nginx 3 4# 使用桥接网络（默认） 5docker run --network=bridge nginx 6 7# 使用自定义网络 8docker network create mynet 9docker run --network=mynet nginx 10 11# 不联网 12docker run --network=none alpine 13 14# 容器网络（连接到其他容器） 15docker run --network=container:existing-container nginx 端口映射 1# 简单端口映射 2docker run -p 8080:80 nginx 3# 主机端口:容器端口 4 5# 多个端口映射 6docker run -p 8080:80 -p 8443:443 nginx 7 8# 指定主机IP 9docker run -p 127.0.0.1:8080:80 nginx 10 11# 随机主机端口 12docker run -p 80 nginx 13docker port &lt;container_id&gt; # 查看分配的端口 14 15# 使用 UDP 端口 16docker run -p 53:53/udp dns-server DNS 和主机名 1# 设置主机名 2docker run --hostname myhost ubuntu 3 4# 添加 hosts 条目 5docker run --add-host db.local:192.168.1.100 ubuntu 6 7# 自定义 DNS 8docker run --dns 8.8.8.8 ubuntu 9docker run --dns-search example.com ubuntu 💾 存储和卷选项 数据卷（Volumes） 1# 创建匿名卷 2docker run -v /data ubuntu 3 4# 挂载主机目录 5docker run -v /host/path:/container/path ubuntu 6 7# 挂载数据卷 8docker volume create mydata 9docker run -v mydata:/data ubuntu 10 11# 只读挂载 12docker run -v /host/path:/container/path:ro ubuntu 13 14# 挂载多个目录 15docker run -v /host/data:/data -v /host/config:/config ubuntu tmpfs 挂载 1# 内存文件系统 2docker run --tmpfs /tmp:size=100M,mode=1777 ubuntu 3 4# 多个 tmpfs 5docker run --tmpfs /tmp --tmpfs /run ubuntu 绑定挂载高级选项 1# 使用 --mount（更详细的选项） 2docker run \ 3 --mount type=bind,source=/host/path,target=/container/path,readonly \ 4 ubuntu 5 6# 挂载类型： 7# type=bind: 绑定挂载 8# type=volume: 数据卷 9# type=tmpfs: 临时文件系统 10# type=pipe: 命名管道（Windows） 11 12# 传播选项 13docker run \ 14 --mount type=bind,source=/host,target=/container,bind-propagation=rshared \ 15 ubuntu ⚙️ 资源限制选项 CPU 限制 1# 限制 CPU 使用（相对权重） 2docker run --cpu-shares=512 ubuntu 3# 默认 1024，值越高优先级越高 4 5# 限制 CPU 核心数 6docker run --cpus=1.5 ubuntu 7docker run --cpus=0.5 ubuntu 8 9# 绑定到特定 CPU 核心 10docker run --cpuset-cpus=&#34;0,3&#34; ubuntu 11docker run --cpuset-cpus=&#34;0-2&#34; ubuntu 内存限制 1# 内存限制 2docker run -m 512m ubuntu 3# 或 4docker run --memory=512m ubuntu 5 6# 内存&#43;交换分区限制 7docker run -m 512m --memory-swap=1g ubuntu 8# 如果只设置 memory，swap = memory * 2 9# 如果设置为 -1，不限制 swap 10 11# 内存预留（软限制） 12docker run --memory-reservation=256m ubuntu 13 14# OOM 优先级 15docker run --oom-kill-disable ubuntu 16docker run --oom-score-adj=-500 ubuntu 其他资源限制 1# 设备限制 2docker run --device=/dev/sda:/dev/xvda ubuntu 3docker run --device-read-bps=/dev/sda:1mb ubuntu 4docker run --device-write-iops=/dev/sda:100 ubuntu 5 6# 进程数限制 7docker run --pids-limit=100 ubuntu 8 9# 内核参数 10docker run --ulimit nofile=1024:1024 ubuntu 11# ulimit 选项： 12# core: 核心文件大小 13# cpu: CPU时间（秒） 14# data: 数据段大小 15# fsize: 文件大小 16# locks: 文件锁数 17# memlock: 锁定内存 18# msgqueue: 消息队列大小 19# nice: 优先级 20# nofile: 打开文件数 21# nproc: 进程数 22# rss: 常驻集大小 23# rtprio: 实时优先级 24# sigpending: 挂起信号 25# stack: 栈大小 🔐 安全选项 用户和权限 1# 指定运行用户 2docker run -u 1000 ubuntu 3docker run --user=appuser ubuntu 4 5# 用户命名空间 6docker run --userns=host ubuntu 7 8# 安全选项（SELinux/AppArmor） 9docker run --security-opt label=type:svirt_apache ubuntu 10docker run --security-opt apparmor=docker-default ubuntu 11docker run --security-opt seccomp=unconfined ubuntu 12 13# 不推荐：特权模式（获得所有权限） 14docker run --privileged ubuntu 15 16# 添加/删除能力 17docker run --cap-add=NET_ADMIN ubuntu 18docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE ubuntu 只读文件系统 1# 只读根文件系统 2docker run --read-only ubuntu 3 4# 配合 tmpfs 使用 5docker run --read-only --tmpfs /tmp ubuntu 6 7# 只读特定目录 8docker run -v /data:ro ubuntu 📦 镜像相关选项 镜像标签和拉取策略 1# 指定镜像标签 2docker run ubuntu:20.04 3docker run nginx:alpine 4 5# 拉取策略 6docker run --pull=always nginx # 总是拉取最新 7docker run --pull=missing nginx # 本地没有才拉取 8docker run --pull=never nginx # 只用本地镜像 9 10# 平台架构 11docker run --platform=linux/amd64 ubuntu 12docker run --platform=linux/arm64 ubuntu 📝 环境变量 1# 设置环境变量 2docker run -e MYVAR=value ubuntu 3docker run -e MYVAR ubuntu # 从主机继承 4 5# 多个环境变量 6docker run -e VAR1=value1 -e VAR2=value2 ubuntu 7 8# 从文件读取 9docker run --env-file .env ubuntu 10 11# 特殊环境变量 12docker run -e &#34;TERM=xterm-256color&#34; ubuntu 13docker run -e &#34;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&#34; ubuntu 🎨 输出和日志 1# 输出附加 2docker run -a stdin -a stdout -a stderr ubuntu 3 4# 日志驱动 5docker run --log-driver=json-file ubuntu 6docker run --log-driver=syslog ubuntu 7docker run --log-driver=journald ubuntu 8docker run --log-driver=none ubuntu 9 10# 日志选项 11docker run --log-opt max-size=10m --log-opt max-file=3 ubuntu 12docker run --log-opt tag=&#34;{{.ImageName}}/{{.Name}}/{{.ID}}&#34; ubuntu 🚀 高级选项 健康检查 1# 自定义健康检查 2docker run \ 3 --health-cmd=&#34;curl -f http://localhost/ || exit 1&#34; \ 4 --health-interval=30s \ 5 --health-timeout=10s \ 6 --health-retries=3 \ 7 --health-start-period=5s \ 8 nginx 设备映射 1# GPU 支持 2docker run --gpus all nvidia/cuda:11.0-base 3docker run --gpus &#39;&#34;device=0,1&#34;&#39; nvidia/cuda 4 5# USB 设备 6docker run --device=/dev/bus/usb/001/002 ubuntu 7 8# 字符设备 9docker run --device=/dev/ttyUSB0 ubuntu IPC 和共享内存 1# IPC 命名空间 2docker run --ipc=host ubuntu 3docker run --ipc=container:other-container ubuntu 4 5# 共享内存大小 6docker run --shm-size=1g ubuntu 7 8# 信号代理 9docker run --sig-proxy=true ubuntu 📊 实际应用示例 示例1：Web 应用容器 1docker run -d \ 2 --name=my-webapp \ 3 --hostname=webapp \ 4 -p 8080:80 \ 5 -p 8443:443 \ 6 -v /data/webapp:/var/www/html \ 7 -v /data/config:/etc/nginx/conf.d \ 8 -e &#34;NGINX_HOST=example.com&#34; \ 9 -e &#34;NGINX_PORT=80&#34; \ 10 --memory=512m \ 11 --cpus=1 \ 12 --restart=unless-stopped \ 13 --log-opt max-size=10m \ 14 --log-opt max-file=3 \ 15 nginx:alpine 示例2：数据库容器 1docker run -d \ 2 --name=mysql-db \ 3 -p 3306:3306 \ 4 -v mysql_data:/var/lib/mysql \ 5 -v /backup/mysql:/backup \ 6 -e MYSQL_ROOT_PASSWORD=secret \ 7 -e MYSQL_DATABASE=appdb \ 8 -e MYSQL_USER=appuser \ 9 -e MYSQL_PASSWORD=apppass \ 10 --network=app-network \ 11 --memory=1g \ 12 --memory-swap=2g \ 13 --cpus=2 \ 14 --ulimit nofile=65536:65536 \ 15 mysql:8.0 \ 16 --character-set-server=utf8mb4 \ 17 --collation-server=utf8mb4_unicode_ci 示例3：开发环境容器 1docker run -it \ 2 --name=dev-env \ 3 -v $(pwd):/workspace \ 4 -v ~/.ssh:/root/.ssh \ 5 -v ~/.gitconfig:/root/.gitconfig \ 6 -p 3000:3000 \ 7 -p 9229:9229 \ 8 --add-host=host.docker.internal:host-gateway \ 9 -e &#34;NODE_ENV=development&#34; \ 10 -e &#34;DEBUG=*&#34; \ 11 --security-opt seccomp=unconfined \ 12 --cap-add=SYS_PTRACE \ 13 node:18-alpine \ 14 sh 示例4：测试容器（自动清理） 1docker run --rm \ 2 -v $(pwd):/app \ 3 -w /app \ 4 -e &#34;CI=true&#34; \ 5 node:18-alpine \ 6 sh -c &#34;npm install &amp;&amp; npm test&#34; 🔍 调试和故障排除 查看容器信息 1# 查看容器详细信息 2docker inspect &lt;container_id&gt; 3 4# 查看容器日志 5docker logs &lt;container_id&gt; 6docker logs -f &lt;container_id&gt; # 实时跟踪 7docker logs --tail=100 &lt;container_id&gt; 8 9# 查看容器进程 10docker top &lt;container_id&gt; 11 12# 查看容器资源使用 13docker stats &lt;container_id&gt; 14 15# 进入运行中的容器 16docker exec -it &lt;container_id&gt; bash 调试运行参数 1# 查看容器运行时的命令 2docker inspect &lt;container_id&gt; | grep -A 20 &#34;Args&#34; 3 4# 测试运行（不实际启动） 5docker run --dry-run ubuntu echo &#34;test&#34; 6 7# 查看镜像的默认命令 8docker inspect ubuntu:20.04 | grep -A 5 &#34;Cmd&#34; 📋 常用参数速查表 选项 简写 描述 --detach -d 后台运行 --interactive -i 保持 STDIN 打开 --tty -t 分配伪终端 --rm 退出时自动删除 --name 指定容器名称 --publish -p 端口映射 --volume -v 挂载卷 --env -e 设置环境变量 --workdir -w 设置工作目录 --network 网络设置 --memory -m 内存限制 --cpus CPU 限制 --restart 重启策略 --entrypoint 覆盖入口点 --user -u 运行用户 --read-only 只读文件系统 --security-opt 安全选项 --cap-add 添加 Linux 能力 --cap-drop 删除 Linux 能力 --log-driver 日志驱动 --log-opt 日志选项 --health-cmd 健康检查命令 --add-host 添加 hosts 条目 --dns 自定义 DNS --device 挂载设备 🎓 最佳实践 始终指定版本标签">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="程序员技能">
+    <meta itemprop="description" content="Docker run 命令详解 📚 命令概述 docker run 是 Docker 中最核心、最常用的命令，用于从镜像创建并启动一个新的容器。
+基本语法：
+1docker run [OPTIONS] IMAGE [COMMAND] [ARG...] 🎯 基本使用示例 1. 最简单的运行 1# 运行一个容器，执行命令后退出 2docker run ubuntu echo &#34;Hello Docker&#34; 3 4# 运行并进入交互式终端 5docker run -it ubuntu bash 6 7# 运行后台容器 8docker run -d nginx 2. 常用选项分类 🔧 容器运行模式选项 交互式 vs 后台运行 1# 交互式运行（-i -t 通常一起使用） 2docker run -it ubuntu bash 3# -i, --interactive: 保持 STDIN 打开 4# -t, --tty: 分配一个伪终端 5 6# 后台运行（守护进程模式） 7docker run -d nginx 8# -d, --detach: 后台运行容器 9 10# 后台运行但附加日志 11docker run -d --log-driver=json-file nginx 容器命名和管理 1# 指定容器名称 2docker run --name my-container nginx 3 4# 自动删除容器（退出时） 5docker run --rm ubuntu echo &#34;临时任务&#34; 6 7# 重启策略 8docker run --restart=always nginx 9# no: 不自动重启（默认） 10# on-failure[:max-retries]: 失败时重启 11# always: 总是重启 12# unless-stopped: 除非手动停止，否则总是重启 🌐 网络配置选项 网络模式 1# 使用主机网络（共享主机网络栈） 2docker run --network=host nginx 3 4# 使用桥接网络（默认） 5docker run --network=bridge nginx 6 7# 使用自定义网络 8docker network create mynet 9docker run --network=mynet nginx 10 11# 不联网 12docker run --network=none alpine 13 14# 容器网络（连接到其他容器） 15docker run --network=container:existing-container nginx 端口映射 1# 简单端口映射 2docker run -p 8080:80 nginx 3# 主机端口:容器端口 4 5# 多个端口映射 6docker run -p 8080:80 -p 8443:443 nginx 7 8# 指定主机IP 9docker run -p 127.0.0.1:8080:80 nginx 10 11# 随机主机端口 12docker run -p 80 nginx 13docker port &lt;container_id&gt; # 查看分配的端口 14 15# 使用 UDP 端口 16docker run -p 53:53/udp dns-server DNS 和主机名 1# 设置主机名 2docker run --hostname myhost ubuntu 3 4# 添加 hosts 条目 5docker run --add-host db.local:192.168.1.100 ubuntu 6 7# 自定义 DNS 8docker run --dns 8.8.8.8 ubuntu 9docker run --dns-search example.com ubuntu 💾 存储和卷选项 数据卷（Volumes） 1# 创建匿名卷 2docker run -v /data ubuntu 3 4# 挂载主机目录 5docker run -v /host/path:/container/path ubuntu 6 7# 挂载数据卷 8docker volume create mydata 9docker run -v mydata:/data ubuntu 10 11# 只读挂载 12docker run -v /host/path:/container/path:ro ubuntu 13 14# 挂载多个目录 15docker run -v /host/data:/data -v /host/config:/config ubuntu tmpfs 挂载 1# 内存文件系统 2docker run --tmpfs /tmp:size=100M,mode=1777 ubuntu 3 4# 多个 tmpfs 5docker run --tmpfs /tmp --tmpfs /run ubuntu 绑定挂载高级选项 1# 使用 --mount（更详细的选项） 2docker run \ 3 --mount type=bind,source=/host/path,target=/container/path,readonly \ 4 ubuntu 5 6# 挂载类型： 7# type=bind: 绑定挂载 8# type=volume: 数据卷 9# type=tmpfs: 临时文件系统 10# type=pipe: 命名管道（Windows） 11 12# 传播选项 13docker run \ 14 --mount type=bind,source=/host,target=/container,bind-propagation=rshared \ 15 ubuntu ⚙️ 资源限制选项 CPU 限制 1# 限制 CPU 使用（相对权重） 2docker run --cpu-shares=512 ubuntu 3# 默认 1024，值越高优先级越高 4 5# 限制 CPU 核心数 6docker run --cpus=1.5 ubuntu 7docker run --cpus=0.5 ubuntu 8 9# 绑定到特定 CPU 核心 10docker run --cpuset-cpus=&#34;0,3&#34; ubuntu 11docker run --cpuset-cpus=&#34;0-2&#34; ubuntu 内存限制 1# 内存限制 2docker run -m 512m ubuntu 3# 或 4docker run --memory=512m ubuntu 5 6# 内存&#43;交换分区限制 7docker run -m 512m --memory-swap=1g ubuntu 8# 如果只设置 memory，swap = memory * 2 9# 如果设置为 -1，不限制 swap 10 11# 内存预留（软限制） 12docker run --memory-reservation=256m ubuntu 13 14# OOM 优先级 15docker run --oom-kill-disable ubuntu 16docker run --oom-score-adj=-500 ubuntu 其他资源限制 1# 设备限制 2docker run --device=/dev/sda:/dev/xvda ubuntu 3docker run --device-read-bps=/dev/sda:1mb ubuntu 4docker run --device-write-iops=/dev/sda:100 ubuntu 5 6# 进程数限制 7docker run --pids-limit=100 ubuntu 8 9# 内核参数 10docker run --ulimit nofile=1024:1024 ubuntu 11# ulimit 选项： 12# core: 核心文件大小 13# cpu: CPU时间（秒） 14# data: 数据段大小 15# fsize: 文件大小 16# locks: 文件锁数 17# memlock: 锁定内存 18# msgqueue: 消息队列大小 19# nice: 优先级 20# nofile: 打开文件数 21# nproc: 进程数 22# rss: 常驻集大小 23# rtprio: 实时优先级 24# sigpending: 挂起信号 25# stack: 栈大小 🔐 安全选项 用户和权限 1# 指定运行用户 2docker run -u 1000 ubuntu 3docker run --user=appuser ubuntu 4 5# 用户命名空间 6docker run --userns=host ubuntu 7 8# 安全选项（SELinux/AppArmor） 9docker run --security-opt label=type:svirt_apache ubuntu 10docker run --security-opt apparmor=docker-default ubuntu 11docker run --security-opt seccomp=unconfined ubuntu 12 13# 不推荐：特权模式（获得所有权限） 14docker run --privileged ubuntu 15 16# 添加/删除能力 17docker run --cap-add=NET_ADMIN ubuntu 18docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE ubuntu 只读文件系统 1# 只读根文件系统 2docker run --read-only ubuntu 3 4# 配合 tmpfs 使用 5docker run --read-only --tmpfs /tmp ubuntu 6 7# 只读特定目录 8docker run -v /data:ro ubuntu 📦 镜像相关选项 镜像标签和拉取策略 1# 指定镜像标签 2docker run ubuntu:20.04 3docker run nginx:alpine 4 5# 拉取策略 6docker run --pull=always nginx # 总是拉取最新 7docker run --pull=missing nginx # 本地没有才拉取 8docker run --pull=never nginx # 只用本地镜像 9 10# 平台架构 11docker run --platform=linux/amd64 ubuntu 12docker run --platform=linux/arm64 ubuntu 📝 环境变量 1# 设置环境变量 2docker run -e MYVAR=value ubuntu 3docker run -e MYVAR ubuntu # 从主机继承 4 5# 多个环境变量 6docker run -e VAR1=value1 -e VAR2=value2 ubuntu 7 8# 从文件读取 9docker run --env-file .env ubuntu 10 11# 特殊环境变量 12docker run -e &#34;TERM=xterm-256color&#34; ubuntu 13docker run -e &#34;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&#34; ubuntu 🎨 输出和日志 1# 输出附加 2docker run -a stdin -a stdout -a stderr ubuntu 3 4# 日志驱动 5docker run --log-driver=json-file ubuntu 6docker run --log-driver=syslog ubuntu 7docker run --log-driver=journald ubuntu 8docker run --log-driver=none ubuntu 9 10# 日志选项 11docker run --log-opt max-size=10m --log-opt max-file=3 ubuntu 12docker run --log-opt tag=&#34;{{.ImageName}}/{{.Name}}/{{.ID}}&#34; ubuntu 🚀 高级选项 健康检查 1# 自定义健康检查 2docker run \ 3 --health-cmd=&#34;curl -f http://localhost/ || exit 1&#34; \ 4 --health-interval=30s \ 5 --health-timeout=10s \ 6 --health-retries=3 \ 7 --health-start-period=5s \ 8 nginx 设备映射 1# GPU 支持 2docker run --gpus all nvidia/cuda:11.0-base 3docker run --gpus &#39;&#34;device=0,1&#34;&#39; nvidia/cuda 4 5# USB 设备 6docker run --device=/dev/bus/usb/001/002 ubuntu 7 8# 字符设备 9docker run --device=/dev/ttyUSB0 ubuntu IPC 和共享内存 1# IPC 命名空间 2docker run --ipc=host ubuntu 3docker run --ipc=container:other-container ubuntu 4 5# 共享内存大小 6docker run --shm-size=1g ubuntu 7 8# 信号代理 9docker run --sig-proxy=true ubuntu 📊 实际应用示例 示例1：Web 应用容器 1docker run -d \ 2 --name=my-webapp \ 3 --hostname=webapp \ 4 -p 8080:80 \ 5 -p 8443:443 \ 6 -v /data/webapp:/var/www/html \ 7 -v /data/config:/etc/nginx/conf.d \ 8 -e &#34;NGINX_HOST=example.com&#34; \ 9 -e &#34;NGINX_PORT=80&#34; \ 10 --memory=512m \ 11 --cpus=1 \ 12 --restart=unless-stopped \ 13 --log-opt max-size=10m \ 14 --log-opt max-file=3 \ 15 nginx:alpine 示例2：数据库容器 1docker run -d \ 2 --name=mysql-db \ 3 -p 3306:3306 \ 4 -v mysql_data:/var/lib/mysql \ 5 -v /backup/mysql:/backup \ 6 -e MYSQL_ROOT_PASSWORD=secret \ 7 -e MYSQL_DATABASE=appdb \ 8 -e MYSQL_USER=appuser \ 9 -e MYSQL_PASSWORD=apppass \ 10 --network=app-network \ 11 --memory=1g \ 12 --memory-swap=2g \ 13 --cpus=2 \ 14 --ulimit nofile=65536:65536 \ 15 mysql:8.0 \ 16 --character-set-server=utf8mb4 \ 17 --collation-server=utf8mb4_unicode_ci 示例3：开发环境容器 1docker run -it \ 2 --name=dev-env \ 3 -v $(pwd):/workspace \ 4 -v ~/.ssh:/root/.ssh \ 5 -v ~/.gitconfig:/root/.gitconfig \ 6 -p 3000:3000 \ 7 -p 9229:9229 \ 8 --add-host=host.docker.internal:host-gateway \ 9 -e &#34;NODE_ENV=development&#34; \ 10 -e &#34;DEBUG=*&#34; \ 11 --security-opt seccomp=unconfined \ 12 --cap-add=SYS_PTRACE \ 13 node:18-alpine \ 14 sh 示例4：测试容器（自动清理） 1docker run --rm \ 2 -v $(pwd):/app \ 3 -w /app \ 4 -e &#34;CI=true&#34; \ 5 node:18-alpine \ 6 sh -c &#34;npm install &amp;&amp; npm test&#34; 🔍 调试和故障排除 查看容器信息 1# 查看容器详细信息 2docker inspect &lt;container_id&gt; 3 4# 查看容器日志 5docker logs &lt;container_id&gt; 6docker logs -f &lt;container_id&gt; # 实时跟踪 7docker logs --tail=100 &lt;container_id&gt; 8 9# 查看容器进程 10docker top &lt;container_id&gt; 11 12# 查看容器资源使用 13docker stats &lt;container_id&gt; 14 15# 进入运行中的容器 16docker exec -it &lt;container_id&gt; bash 调试运行参数 1# 查看容器运行时的命令 2docker inspect &lt;container_id&gt; | grep -A 20 &#34;Args&#34; 3 4# 测试运行（不实际启动） 5docker run --dry-run ubuntu echo &#34;test&#34; 6 7# 查看镜像的默认命令 8docker inspect ubuntu:20.04 | grep -A 5 &#34;Cmd&#34; 📋 常用参数速查表 选项 简写 描述 --detach -d 后台运行 --interactive -i 保持 STDIN 打开 --tty -t 分配伪终端 --rm 退出时自动删除 --name 指定容器名称 --publish -p 端口映射 --volume -v 挂载卷 --env -e 设置环境变量 --workdir -w 设置工作目录 --network 网络设置 --memory -m 内存限制 --cpus CPU 限制 --restart 重启策略 --entrypoint 覆盖入口点 --user -u 运行用户 --read-only 只读文件系统 --security-opt 安全选项 --cap-add 添加 Linux 能力 --cap-drop 删除 Linux 能力 --log-driver 日志驱动 --log-opt 日志选项 --health-cmd 健康检查命令 --add-host 添加 hosts 条目 --dns 自定义 DNS --device 挂载设备 🎓 最佳实践 始终指定版本标签">
+    <meta itemprop="wordCount" content="4164">
+    <title></title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/docker-run/index.html" rel="canonical" type="text/html" title="">
+    <link href="/images/favicon.png?1773589997" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1773589997" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1773589997" defer></script>
+    <script src="/js/search-lunr.min.js?1773589997" defer></script>
+    <script src="/js/search.min.js?1773589997" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1773589997";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1773589997" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1773589997" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1773589997" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1773589997" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1773589997" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1773589997" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1773589997" rel="stylesheet">
+    <link href="/css/theme.min.css?1773589997" rel="stylesheet">
+    <link href="/css/format-print.min.css?1773589997" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/docker\/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4\/docker-run\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1773589997" rel="stylesheet">
+  </head>
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/docker-run/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#-命令概述">📚 <strong>命令概述</strong></a></li>
+    <li><a href="#-基本使用示例">🎯 <strong>基本使用示例</strong></a>
+      <ul>
+        <li><a href="#1-最简单的运行"><strong>1. 最简单的运行</strong></a></li>
+        <li><a href="#2-常用选项分类"><strong>2. 常用选项分类</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-容器运行模式选项">🔧 <strong>容器运行模式选项</strong></a>
+      <ul>
+        <li><a href="#交互式-vs-后台运行"><strong>交互式 vs 后台运行</strong></a></li>
+        <li><a href="#容器命名和管理"><strong>容器命名和管理</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-网络配置选项">🌐 <strong>网络配置选项</strong></a>
+      <ul>
+        <li><a href="#网络模式"><strong>网络模式</strong></a></li>
+        <li><a href="#端口映射"><strong>端口映射</strong></a></li>
+        <li><a href="#dns-和主机名"><strong>DNS 和主机名</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-存储和卷选项">💾 <strong>存储和卷选项</strong></a>
+      <ul>
+        <li><a href="#数据卷volumes"><strong>数据卷（Volumes）</strong></a></li>
+        <li><a href="#tmpfs-挂载"><strong>tmpfs 挂载</strong></a></li>
+        <li><a href="#绑定挂载高级选项"><strong>绑定挂载高级选项</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-资源限制选项">⚙️ <strong>资源限制选项</strong></a>
+      <ul>
+        <li><a href="#cpu-限制"><strong>CPU 限制</strong></a></li>
+        <li><a href="#内存限制"><strong>内存限制</strong></a></li>
+        <li><a href="#其他资源限制"><strong>其他资源限制</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-安全选项">🔐 <strong>安全选项</strong></a>
+      <ul>
+        <li><a href="#用户和权限"><strong>用户和权限</strong></a></li>
+        <li><a href="#只读文件系统"><strong>只读文件系统</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-镜像相关选项">📦 <strong>镜像相关选项</strong></a>
+      <ul>
+        <li><a href="#镜像标签和拉取策略"><strong>镜像标签和拉取策略</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-环境变量">📝 <strong>环境变量</strong></a></li>
+    <li><a href="#-输出和日志">🎨 <strong>输出和日志</strong></a></li>
+    <li><a href="#-高级选项">🚀 <strong>高级选项</strong></a>
+      <ul>
+        <li><a href="#健康检查"><strong>健康检查</strong></a></li>
+        <li><a href="#设备映射"><strong>设备映射</strong></a></li>
+        <li><a href="#ipc-和共享内存"><strong>IPC 和共享内存</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-实际应用示例">📊 <strong>实际应用示例</strong></a>
+      <ul>
+        <li><a href="#示例1web-应用容器"><strong>示例1：Web 应用容器</strong></a></li>
+        <li><a href="#示例2数据库容器"><strong>示例2：数据库容器</strong></a></li>
+        <li><a href="#示例3开发环境容器"><strong>示例3：开发环境容器</strong></a></li>
+        <li><a href="#示例4测试容器自动清理"><strong>示例4：测试容器（自动清理）</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-调试和故障排除">🔍 <strong>调试和故障排除</strong></a>
+      <ul>
+        <li><a href="#查看容器信息"><strong>查看容器信息</strong></a></li>
+        <li><a href="#调试运行参数"><strong>调试运行参数</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-常用参数速查表">📋 <strong>常用参数速查表</strong></a></li>
+    <li><a href="#-最佳实践">🎓 <strong>最佳实践</strong></a></li>
+    <li><a href="#-常见错误和解决">🚨 <strong>常见错误和解决</strong></a></li>
+    <li><a href="#-学习建议">📖 <strong>学习建议</strong></a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#-交互式操作示例">🎮 <strong>交互式操作示例</strong></a>
+      <ul>
+        <li><a href="#1-开发环境交互"><strong>1. 开发环境交互</strong></a></li>
+        <li><a href="#2-数据库交互"><strong>2. 数据库交互</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-容器连接和通信">🔗 <strong>容器连接和通信</strong></a>
+      <ul>
+        <li><a href="#1-容器间链接传统方式"><strong>1. 容器间链接（传统方式）</strong></a></li>
+        <li><a href="#2-使用自定义网络推荐"><strong>2. 使用自定义网络（推荐）</strong></a></li>
+        <li><a href="#3-容器间文件共享"><strong>3. 容器间文件共享</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-安全增强配置">🛡️ <strong>安全增强配置</strong></a>
+      <ul>
+        <li><a href="#1-最小权限原则"><strong>1. 最小权限原则</strong></a></li>
+        <li><a href="#2-资源隔离"><strong>2. 资源隔离</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-监控和调试">📈 <strong>监控和调试</strong></a>
+      <ul>
+        <li><a href="#1-运行时监控"><strong>1. 运行时监控</strong></a></li>
+        <li><a href="#2-调试容器"><strong>2. 调试容器</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-高级部署模式">🚀 <strong>高级部署模式</strong></a>
+      <ul>
+        <li><a href="#1-滚动更新模拟"><strong>1. 滚动更新模拟</strong></a></li>
+        <li><a href="#2-蓝绿部署"><strong>2. 蓝绿部署</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-测试环境配置">🧪 <strong>测试环境配置</strong></a>
+      <ul>
+        <li><a href="#1-单元测试容器"><strong>1. 单元测试容器</strong></a></li>
+        <li><a href="#2-性能测试"><strong>2. 性能测试</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-多区域部署">🌍 <strong>多区域部署</strong></a>
+      <ul>
+        <li><a href="#1-时区和本地化"><strong>1. 时区和本地化</strong></a></li>
+        <li><a href="#2-地域特定配置"><strong>2. 地域特定配置</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-生命周期管理">🔄 <strong>生命周期管理</strong></a>
+      <ul>
+        <li><a href="#1-初始化脚本"><strong>1. 初始化脚本</strong></a></li>
+        <li><a href="#2-数据迁移"><strong>2. 数据迁移</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-资源优化配置">📊 <strong>资源优化配置</strong></a>
+      <ul>
+        <li><a href="#1-内存优化"><strong>1. 内存优化</strong></a></li>
+        <li><a href="#2-存储优化"><strong>2. 存储优化</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-编排集成">🎛️ <strong>编排集成</strong></a>
+      <ul>
+        <li><a href="#1-docker-compose-兼容运行"><strong>1. Docker Compose 兼容运行</strong></a></li>
+        <li><a href="#2-kubernetes-兼容"><strong>2. Kubernetes 兼容</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-自定义配置模板">🎨 <strong>自定义配置模板</strong></a>
+      <ul>
+        <li><a href="#1-配置文件模板"><strong>1. 配置文件模板</strong></a></li>
+        <li><a href="#2-环境特定配置"><strong>2. 环境特定配置</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-故障排查命令集">🔍 <strong>故障排查命令集</strong></a>
+      <ul>
+        <li><a href="#1-诊断脚本"><strong>1. 诊断脚本</strong></a></li>
+        <li><a href="#2-运行问题检查清单"><strong>2. 运行问题检查清单</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-学习路径建议">📚 <strong>学习路径建议</strong></a>
+      <ul>
+        <li><a href="#初学者路径"><strong>初学者路径</strong></a></li>
+        <li><a href="#中级路径"><strong>中级路径</strong></a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#-学习建议-1">📚 <strong>学习建议</strong></a>
+      <ul>
+        <li><a href="#初学者学习路径"><strong>初学者学习路径</strong></a>
+          <ul>
+            <li><a href="#第一阶段基础掌握1-2周"><strong>第一阶段：基础掌握（1-2周）</strong></a></li>
+            <li><a href="#第二阶段进阶应用2-3周"><strong>第二阶段：进阶应用（2-3周）</strong></a></li>
+            <li><a href="#第三阶段生产实践3-4周"><strong>第三阶段：生产实践（3-4周）</strong></a></li>
+          </ul>
+        </li>
+        <li><a href="#学习资源推荐"><strong>学习资源推荐</strong></a>
+          <ul>
+            <li><a href="#官方文档"><strong>官方文档</strong></a></li>
+            <li><a href="#在线课程"><strong>在线课程</strong></a></li>
+            <li><a href="#实践平台"><strong>实践平台</strong></a></li>
+            <li><a href="#书籍推荐"><strong>书籍推荐</strong></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#-后续补充">🔄 <strong>后续补充</strong></a>
+      <ul>
+        <li><a href="#1-性能优化技巧"><strong>1. 性能优化技巧</strong></a>
+          <ul>
+            <li><a href="#容器启动优化"><strong>容器启动优化</strong></a></li>
+            <li><a href="#网络性能优化"><strong>网络性能优化</strong></a></li>
+            <li><a href="#存储-io-优化"><strong>存储 I/O 优化</strong></a></li>
+          </ul>
+        </li>
+        <li><a href="#2-安全加固指南"><strong>2. 安全加固指南</strong></a>
+          <ul>
+            <li><a href="#运行时安全"><strong>运行时安全</strong></a></li>
+            <li><a href="#镜像安全扫描"><strong>镜像安全扫描</strong></a></li>
+          </ul>
+        </li>
+        <li><a href="#3-监控和告警配置"><strong>3. 监控和告警配置</strong></a>
+          <ul>
+            <li><a href="#监控集成"><strong>监控集成</strong></a></li>
+            <li><a href="#日志收集"><strong>日志收集</strong></a></li>
+          </ul>
+        </li>
+        <li><a href="#4-多环境部署策略"><strong>4. 多环境部署策略</strong></a>
+          <ul>
+            <li><a href="#环境变量管理"><strong>环境变量管理</strong></a></li>
+            <li><a href="#配置注入"><strong>配置注入</strong></a></li>
+          </ul>
+        </li>
+        <li><a href="#5-备份和恢复"><strong>5. 备份和恢复</strong></a>
+          <ul>
+            <li><a href="#容器数据备份"><strong>容器数据备份</strong></a></li>
+            <li><a href="#恢复脚本"><strong>恢复脚本</strong></a></li>
+          </ul>
+        </li>
+        <li><a href="#6-自动化脚本模板"><strong>6. 自动化脚本模板</strong></a>
+          <ul>
+            <li><a href="#开发环境脚本"><strong>开发环境脚本</strong></a></li>
+            <li><a href="#生产部署脚本"><strong>生产部署脚本</strong></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"><span itemprop="name">Docker</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/docker-run/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html" title="Docker (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html" title="Docker 入门 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+        </div>
+      </main>
+    </div>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1773589997"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1773589997" defer></script>
+    <script src="/js/theme.min.js?1773589997" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>

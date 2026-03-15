@@ -1,12 +1,22 @@
 var relearn_searchindex = [
   {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Docker \u003e Docker 入门",
+    "content": "常用命令 帮助启动类命令 1查看服务状态：systemctl status docker 2启动docker：systemctl start docker 3停止docker：systemctl stop docker 4重启docker：systemctl restart docker 5开机启动：systemctl enable docker 6查看docker概要信息：docker info 7查看docker总体帮助文档：docker --help 8查看docker命令帮助文档：docker 具体命令 --help 镜像命令 docker images docker images --digests 各列含义：\nREPOSITORY - 镜像仓库名称（这里是 hello-world） TAG - 镜像标签（这里是 latest） DIGEST - 镜像内容的唯一哈希值（新增列） IMAGE ID - 镜像ID（前12位） CREATED - 创建时间 SIZE - 镜像大小\n1root@debian:~/shell# docker images --digests 2REPOSITORY TAG DIGEST IMAGE ID CREATED SIZE 3hello-world latest sha256:85404b3c53951c3ff5d40de0972b1bb21fafa2e8daa235355baf44f33db9dbdd 85404b3c5395 7 months ago 25.9kB docker images --all 各列含义：\nIMAGE - 完整镜像引用（仓库:标签） ID - 镜像ID（完整或截断） DISK USAGE - 磁盘使用量（新增列） CONTENT SIZE - 内容大小（新增列） EXTRA - 额外信息（这里是 U 表示在使用中）\n1root@debian:~/shell# docker images --all 2IMAGE ID DISK USAGE CONTENT SIZE EXTRA 3hello-world:latest 85404b3c5395 25.9kB 9.52kB U docker search 1root@debian:~/shell# docker search --limit 5 redis 2NAME DESCRIPTION STARS OFFICIAL 3mcp/redis Access to Redis database operations. 13 4redis Redis is the world’s fastest data platform f… 13528 [OK] 5redis/redis-stack-server redis-stack-server installs a Redis server w… 102 6redis/redis-stack redis-stack installs a Redis server with add… 158 7redis/redisinsight Redis Insight - our best official GUI for Re… 47 docker pull docker pull redis 和 docker pull redis:8.0 的区别，不加tag，拉取的是latest版本。\ndocker system df 查看镜像/容器/数据卷所占的空间\ndocker rmi image_id 1docker rmi -f image_id 2docker rmi -f image_id1 image_id2 3docker rmi -f $(docker images -qa) #全部删除 虚悬镜像（dangling image） REPOSITORY 和 TAG 都是None的镜像\n容器命令 docker run docker run 都做了什么 flowchart LR A[开始] --\u003e B(Docker在本机中寻找该镜像) B --\u003e C{本机是否有该镜像} C --\u003e|是| D[以该镜像为模板生产容器实例运行] C --\u003e|否| E[去Docker hub上查找该镜像] E --\u003e F{Hub能否找到} F --\u003e|是| G[下载该镜像到本地] F --\u003e|否| H[返回失败错误，查不到该镜像] G --\u003e I[以该镜像为模板生产容器实例运行] ​ 基本语法 1docker run [OPTIONS] IMAGE [COMMAND] [ARG...] 2OPTIONS（常用） 3# --name 指定容器名称 4docker run --name my-container nginx 5 6# 交互式运行（-i -t 通常一起使用） 7docker run -it ubuntu bash 8# -i, --interactive: 保持 STDIN 打开 9# -t, --tty: 分配一个伪终端 10 11# -d, --detach: 后台运行容器，后台运行（守护进程模式） 12docker run -d nginx 13 14# -p 指定简单端口映射，主机端口:容器端口 15docker run -p 8080:80 nginx 16 17# -P 随机简单端口映射（大写P） 18docker run -p 8080:80 nginx docker ps 1# 查看正在运行的容器 2docker ps 3 4# 查看所有容器（包括已停止的） 5docker ps -a 6 7# 查看最近创建的容器 8docker ps -l 9 10# 查看最后 n 个创建的容器 11docker ps -n 3 12 13# 查看容器大小 14docker ps -s 15 16# 查看完整输出（不截断） 17docker ps --no-trunc 容器退出 两种退出方式\nexit：run进去容器，exit退出，容器停止 ctrl+p+q：run进去容器，ctrl+p+q退出，容器不停止 1docker start 容器ID或容器名 2docker restart 容器ID或容器名 3docker stop 容器ID或容器名 4docker kill 容器ID或容器名 # 强制停止容器 5docker rm 容器ID或容器名 # 删除已停止的容器 6 7# 危险操作：一次删除多个容器实例 8docker rm -f $(docker ps -a -q) 9docker ps -a -q | xargs docker rm 后端容器 为什么 docker run -d ubuntu 容器会立即退出？\n1. 主进程退出\nUbuntu 镜像的默认 ENTRYPOINT 或 CMD 是 /bin/bash：\n1# 查看镜像配置 2docker inspect ubuntu --format='{{.Config.Cmd}}' 3# [\"/bin/bash\"] 4 5# 查看镜像入口点 6docker inspect ubuntu --format='{{.Config.Entrypoint}}' 7# null 或 [] 当执行 docker run -d ubuntu 时：\nDocker 启动容器 运行 /bin/bash 作为主进程 /bin/bash 在非交互模式下立即退出（因为没有输入源） 主进程退出 → 容器退出 2. Docker 容器生命周期规则\n规则：容器在主进程退出时自动停止 设计哲学：一个容器 = 一个进程 后台模式 (-d)：只是让容器在后台运行，不保证进程持续运行 为什么 docker run -d redis 容器不会退出？\n1. 查看两个镜像的默认命令\n1# 查看 Ubuntu 镜像的默认 CMD 2docker inspect ubuntu:latest --format='{{json .Config.Cmd}}' 3# [\"/bin/bash\"] 4 5# 查看 Redis 镜像的默认 CMD 6docker inspect redis:latest --format='{{json .Config.Cmd}}' 7# [\"redis-server\"] 8 9# 查看 Ubuntu 镜像的 ENTRYPOINT 10docker inspect ubuntu --format='{{json .Config.Entrypoint}}' 11# null 或 [] (没有设置) 12 13# 查看 Redis 镜像的 ENTRYPOINT 14docker inspect redis --format='{{json .Config.Entrypoint}}' 15# [\"docker-entrypoint.sh\"] 2. 进程执行流程对比\nUbuntu 容器流程：\n1docker run -d ubuntu 2 ↓ 3执行默认 CMD: /bin/bash 4 ↓ 5/bin/bash 在非交互模式下启动 6 ↓ 7没有输入源，bash 立即退出 8 ↓ 9主进程退出 → 容器停止 Redis 容器流程：\n1docker run -d redis 2 ↓ 3执行 ENTRYPOINT: docker-entrypoint.sh 4 ↓ 5docker-entrypoint.sh 执行最终命令: redis-server 6 ↓ 7redis-server 作为守护进程启动（但以前台模式运行） 8 ↓ 9主进程持续运行 → 容器保持运行 docker logs docker logs 容器ID 查看容器日志\ndocker top docker logs 容器ID 查看容器内部进程\ndocker inspect docker inspect 容器ID 查看容器内部细节\ndocker exec docker exec 是在运行中的容器内部执行命令的主要方式，非常强大且实用。\n基本语法\n1bashdocker exec [OPTIONS] CONTAINER COMMAND [ARG...] 核心功能概述\n功能 命令示例 说明 执行命令 docker exec container ls -la 在容器内执行命令 交互式会话 docker exec -it container bash 进入容器交互式 shell 后台执行 docker exec -d container top 在后台执行命令 指定用户 docker exec -u root container whoami 以特定用户身份执行 设置环境变量 docker exec -e VAR=value container env 设置执行环境的环境变量 指定工作目录 docker exec -w /app container pwd 设置命令执行的工作目录 与 docker attach 的区别\ndocker exec：创建新的进程执行命令，不影响原容器主进程，exit退出，不会导致容器停止。 docker attach：连接到容器的主进程（PID 1），共享同一个进程，exit退出，会导致容器停止。 特性 docker exec docker attach 创建新进程 ✅ 是 ❌ 否（连接到现有进程） 影响主进程 ❌ 不影响 ✅ 直接影响 退出方式 命令结束或 exit Ctrl+P, Ctrl+Q（分离）或主进程结束 退出后容器 继续运行 如果主进程退出，容器停止 多个连接 ✅ 可同时多个 exec ❌ 只能一个 attach（或共享） 适用场景 调试、维护、执行临时命令 查看主进程输出、交互式程序 默认终端 需要 -it 指定 自动使用容器的 STDIN/STDOUT 安全性 高（隔离） 低（直接操作主进程） docker cp docker cp 是用于在容器和主机之间复制文件和目录的命令\n基本语法\n1# 从容器复制到主机 2docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH 3 4# 从主机复制到容器 5docker cp [OPTIONS] SRC_PATH CONTAINER:DEST_PATH 方向 命令示例 说明 容器 → 主机 docker cp myapp:/app/logs ./logs 复制容器内文件到主机 主机 → 容器 docker cp config.yml myapp:/app/ 复制主机文件到容器 目录复制 docker cp myapp:/var/log ./backup 递归复制整个目录 归档模式 docker cp -a myapp:/home/user ./user-backup 保留所有属性 导入导出容器 1# 导出容器文件系统 2docker export [OPTIONS] CONTAINER 3 4# 导入容器文件系统为镜像 5docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]] export 导出容器的内容留作为一个tar归档文件【应对import】 import 从tar包中的内容创建一个新的文件系统再导入为镜像【应对export】 1# 导出容器文件系统到 tar 归档 2docker export my-container \u003e my-container.tar 3 4# 或者使用 -o 选项 5docker export -o my-container.tar my-container 6 7# 导出到标准输出 8docker export my-container | gzip \u003e my-container.tar.gz 9 10# 导出多个容器 11docker export container1 \u003e container1.tar 12docker export container2 \u003e container2.tar 13 14# 从 tar 文件导入为镜像 15docker import exported-container.tar my-imported-image:latest 16 17# 从标准输入导入 18cat exported-container.tar | docker import - my-image:tag 19 20# 从 URL 导入 21docker import http://example.com/container.tar my-remote-image 22 23# 指定标签和注释 24docker import --change \"ENV DEBUG=false\" --message \"Imported from backup\" ./container.tar myapp:v1.0 总结",
+    "description": "docker入门之docker常用命令。",
+    "tags": [
+      "Docker"
+    ],
+    "title": "01 docker常用命令",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"
+  },
+  {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e shell \u003e shell编程技巧",
     "content": "严格模式模板 1#!/usr/bin/env bash 2 3# 严格模式 4set -euo pipefail 5IFS=$'\\n\\t' 6 7# 调试模式（取消注释启用） 8# set -x 9 10set -o errtrace 11# 错误处理 12trap 'echo \"Error on line $LINENO. Exit code: $?\" \u003e\u00262' ERR 13 14# 退出清理 15cleanup() { 16 # 清理临时文件等 17 echo \"cleanup ... ...\" 18 rm -f \"${TEMP_FILE:-}\" 19} 20trap cleanup EXIT 21 22# 主逻辑 23main() { 24 # ... 25 fake 26} 27 28main \"$@\" 严格模式详解 命令返回非零状态时立即退出 set -e (errexit)\n1set -e 2 3echo \"开始\" 4false # 返回1，脚本立即退出 5echo \"这行不会执行\" 但要注意，有些情况下 -e 不生效：\n1#!/bin/bash 2set -e 3 4# 1. 失败命令在条件语句中 5if ls /不存在的目录; then 6 echo \"条件中失败不会退出\" 7fi 8 9# 2. 失败命令在逻辑或 || 之后 10ls /不存在的目录 || echo \"命令失败，但继续执行\" 11 12# 3. 失败命令在管道中（除了最后一部分） 13ls /不存在的目录 | wc -l # 管道中非最后部分的失败不会退出 set -o errexit\n这是 set -e 的长格式写法，功能完全相同。\nset +e\n关闭错误退出模式：\n1#!/bin/bash 2set -e # 开启错误退出 3 4# 临时关闭 5set +e 6ls /不存在的目录 7set -e # 重新开启 8 9echo \"这行会执行\" 使用未定义变量时报错退出 1set -u 2 3echo \"$UNDEFINED_VAR\" # 报错：UNDEFINED_VAR: unbound variable 处理可选变量的方式\n1set -u 2 3# 提供默认值 4echo \"${OPTIONAL_VAR:-default_value}\" 5 6# 检查变量是否设置 7if [[ -v OPTIONAL_VAR ]]; then 8 echo \"变量已设置: $OPTIONAL_VAR\" 9fi 10 11# 数组的特殊处理 12declare -a my_array=() 13echo \"${my_array[@]:-}\" # 避免空数组报错 管道中任何命令失败，整个管道返回失败 1set -o pipefail 2 3# 现在第一个命令的失败会被检测到 4cat /nonexistent | grep pattern 5echo $? # 返回1，而不是0 修改字段分隔符，避免空格引起的问题 1# 默认IFS包含空格 2IFS=$' \\t\\n' 3files=\"file 1.txt file2.txt\" 4for f in $files; do 5 echo \"-\u003e $f\" 6done 7# 输出3行，因为空格也是分隔符 8 9# 修改IFS 10IFS=$'\\n\\t' 11for f in $files; do 12 echo \"-\u003e $f\" 13done 14# 输出1行 trap 详细介绍 一、trap 的核心概念 trap 是一个 shell 内置命令，用来指定当“某些信号到来”或“某些 shell 事件发生”时要执行的命令序列。 常见用途包括：在脚本退出前做清理、对特定信号做优雅处理、在调试时记录执行信息等。 重要点：不同的 Shell 对某些事件的支持不完全一致。Bash 支持的事件比 POSIX sh 更丰富（如 EXIT、ERR、DEBUG、RETURN 等特殊事件）。 二、基本语法 语法形式 trap ‘commands’ SIGNALS… trap “commands” SIGNALS… trap -p # 打印当前已有的 trap trap -l # 列出系统信号及编号 重置/清除陷阱 trap - SIGNAL # 将该 SIGNAL 的 trap 重置为默认处理 trap -p # 可以用于查看当前的 trap 设置 与退出相关的特殊事件（Bash 支持，POSIX sh 通常不支持） trap ‘commands’ EXIT # 在脚本结束时执行 trap ‘commands’ ERR # 命令返回非零时执行（通常在 set -e 时配合使用） trap ‘commands’ DEBUG # 每条命令执行前执行 trap ‘commands’ RETURN # 函数返回时执行 注意 SIGKILL 和 SIGSTOP 不能被捕获、阻塞或忽略。 POSIX sh 在很多实现里不一定支持 EXIT/ERR/DEBUG/RETURN 等 Bash 专有事件，务必分环境测试。 三、常见的信号类型（用于 trap 的 SIGNALS…） SIGINT（中断，通常 Ctrl+C） SIGTERM（请求终止，较友好地结束进程） SIGQUIT SIGHUP（挂起/终端退出时的信号，常用于重新加载配置） SIGPIPE（管道破裂，写入一个已经读取端关闭的管道时产生） SIGKILL、SIGSTOP（不能捕获，系统强制终止或暂停） 用户自定义信号：SIGUSR1、SIGUSR2 等 以及其他常见信号：例如 SIGABRT、SIGCHLD、SIGALRM 等，具体按系统信号表为准",
     "description": "避免最常见的Shell陷阱，让脚本fail-fast。",
     "tags": [
       "Shell"
     ],
-    "title": "01 严格模式",
+    "title": "01、严格模式",
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html"
   },
   {
@@ -54,7 +64,7 @@ var relearn_searchindex = [
     "tags": [
       "Shell"
     ],
-    "title": "02 参数解析",
+    "title": "02、参数解析",
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html"
   },
   {
@@ -67,8 +77,8 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟",
-    "content": "C++\rC++ 语言特性及项目。\rCMake\rC++ 项目构建工具。\rshell\r核心命令及shell脚本总结。",
-    "description": "C++\rC++ 语言特性及项目。\rCMake\rC++ 项目构建工具。\rshell\r核心命令及shell脚本总结。",
+    "content": "C++\rC++ 语言特性及项目。\rCMake\rC++ 项目构建工具。\rDocker\r应用容器引擎。\rshell\r核心命令及shell脚本总结。",
+    "description": "C++\rC++ 语言特性及项目。\rCMake\rC++ 项目构建工具。\rDocker\r应用容器引擎。\rshell\r核心命令及shell脚本总结。",
     "tags": [],
     "title": "程序员技能",
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"
@@ -82,20 +92,30 @@ var relearn_searchindex = [
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/c++17/index.html"
   },
   {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e C++",
+    "content": "伪随机数\n`` 库是 C++11 引入的标准库，提供了多种随机数生成器和分布。",
+    "description": "C++标准库：常用库总结",
+    "tags": [],
+    "title": "C++标准库",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/%E6%A0%87%E5%87%86%E5%BA%93/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e shell \u003e linux 核心命令",
+    "content": "核心命令 从信息的筛选、处理及组合三个方面总结。\n筛选信息 主要涉及shell快捷键、grep、sort命令。\nshell快捷键 快捷键符号\n1命令执行：\t2 !! 执行上一条命令 3 !num 执行历史命令中的第num行命令 4 Ctrl 关键字 执行内容匹配的命令 1命令行切换 2\tCtrl + A 光标迅速回到行首 3\tCtrl + E\t光标迅速回到行尾 4\tCtrl + k\t删除光标到行尾内容 5\tCtrl + u\t删除光标到行首内容 6\tCtrl + y\t粘贴删除的内容 7\tCtrl + c\t临时终止命令行命令 8\tEsc + b\t移动到当前单词的开头 9\tEsc + f\t移动到当前单词的结尾 grep命令 负责从数据源中检索对应的字符串，行过滤\n1grep options 'keys' filename 2OPTIONS: 3 -i: 不区分大小写 4 -v: 查找不包含指定内容的行,反向选择 5 -w: 按单词搜索 6 -o: 打印匹配关键字 7 -c: 统计匹配到的次数 8 -n: 显示行号 9 -r: 逐层遍历目录查找 10 -A: 显示匹配行及后面多少行\t11 -B: 显示匹配行及前面多少行 12 -C: 显示匹配行前后多少行 13 -l：只列出匹配的文件名 14 -L：列出不匹配的文件名 15 -e: 使用正则匹配 16 -E:使用扩展正则匹配 17 ^key:以关键字开头 18 key$:以关键字结尾 19 ^$:匹配空行 20 --color=auto ：可以将找到的关键词部分加上颜色的显示 1grep 高亮显示 2centos7中已经为大家设置了，存放在/etc/profile.d/colorgrep.sh文件中，如若大家使用的系统中没有设置颜色输出，可以使用以下方法来自行设置 3 4临时设置： 5# alias grep='grep --color=auto'\t//只针对当前终端和当前用户生效 6 7永久设置： 81）全局（针对所有用户生效） 9vim /etc/bashrc 10alias grep='grep --color=auto' 11source /etc/bashrc 12 132）局部（针对具体的某个用户） 14vim ~/.bashrc 15alias grep='grep --color=auto' 16source ~/.bashrc 1常用命令选项必知必会 示例： 2# grep -i root passwd\t忽略大小写匹配包含root的行 3# grep -w ftp passwd 精确匹配ftp单词 4# grep -wo ftp passwd 打印匹配到的关键字ftp 5# grep -n root passwd 打印匹配到root关键字的行好 6# grep -ni root passwd 忽略大小写匹配统计包含关键字root的行 7# grep -nic root passwd\t忽略大小写匹配统计包含关键字root的行数 8# grep -i ^root passwd 忽略大小写匹配以root开头的行 9# grep bash$ passwd 匹配以bash结尾的行 10# grep -n ^$ passwd 匹配空行并打印行号 11# grep ^# /etc/vsftpd/vsftpd.conf\t匹配以#号开头的行 12# grep -v ^# /etc/vsftpd/vsftpd.conf\t匹配不以#号开头的行 13# grep -A 5 mail passwd 匹配包含mail关键字及其后5行 14# grep -B 5 mail passwd 匹配包含mail关键字及其前5行 15# grep -C 5 mail passwd 匹配包含mail关键字及其前后5行 sort命令 信息排序\n1语法： 2sort [options] file 3将文件的每一行作为一个单位，从首字符向后，依次按ASCII码值进行比较，最后将他们按升序输出。 4 5options: 6-u ：去除重复行 7-r ：降序排列，默认是升序 8-o : 将排序结果输出到文件中 类似 重定向符号\u003e 9-n ：以数字排序，默认是按字符排序 10-t ：分隔符 11-k ：第N列 12-b ：忽略前导空格。 13-R ：随机排序，每次运行的结果均不同。 1文件内容 2[root@localhost ~]# cat num.txt 39 48 56 68 74 87 92 101 11 12内容升序 13[root@localhost ~]# sort -n num.txt 141 152 164 176 187 198 208 219 22 23内容降序 24[root@localhost ~]# sort -r num.txt 259 269 278 287 296 304 312 321 33 34其他实践 35sort -nu num.txt\t升序去重 36sort -ru num.txt\t降序去重 37sort -nru num.txt\t先升序后降序再去重 38sort -R num.txt\t随机排序 39sort -nu num.txt -o /tmp/a.txt\t升序去重后输出到一个文件 处理信息 主要涉及cut、tr、uniq命令。\ncut命令 数据截取\n1Mandatory arguments to long options are mandatory for short options too. 2 -b, --bytes=列表 只选中指定的这些字节 3 -c, --characters=列表 只选中指定的这些字符 4 -d, --delimiter=分界符 使用指定分界符代替制表符作为区域分界 5 -f, --fields=LIST select only these fields; also print any line 6 that contains no delimiter character, unless 7 the -s option is specified 8 -n with -b: don't split multibyte characters 9 --complement 补全选中的字节、字符或域 10 -s, --only-delimited 不打印没有包含分界符的行 11 --output-delimiter=字符串 使用指定的字符串作为输出分界符，默认采用输入 12 的分界符 13 --help 显示此帮助信息并退出 14 --version 显示版本信息并退出 1# cut -d: -f1 1.txt 以:冒号分割，截取第1列内容 2# cut -d: -f1,6,7 1.txt 以:冒号分割，截取第1,6,7列内容 3# cut -c4 1.txt 截取文件中每行第4个字符 4# cut -c1-4 1.txt 截取文件中每行的1-4个字符 5# cut -c5- 1.txt 从第5个字符开始截取后面所有字符 tr命令 字符转换、替换、删除\n1用法：tr [选项]... SET1 [SET2] 2从标准输入中替换、缩减和/或删除字符，并将结果写到标准输出。 3 4 -c, -C, --complement 首先补足SET1 5 -d, --delete 删除匹配SET1 的内容，并不作替换 6 -s, --squeeze-repeats 如果匹配于SET1 的字符在输入序列中存在连续的 7 重复，在替换时会被统一缩为一个字符的长度 8 -t, --truncate-set1 先将SET1 的长度截为和SET2 相等 9 --help 显示此帮助信息并退出 10 --version 显示版本信息并退出 11 12用法1：把commands命令输出做为tr输入进行处理 13commands | tr 'string1' 'string2' 14 15用法2：把文件中的内容输入给tr进行处理 16tr 'string1' 'string2' \u003c filename 17 18用法3：把文件中的内容输入给tr进行处理，需要使用到选项 19tr options 'string1' \u003c filename 1示例1：通过tr把反复出现的内容进行压缩，压缩后再处理。 2[root@localhost ~]# ifconfig eth0 | grep -w inet 3 inet 10.0.0.12 netmask 255.255.255.0 broadcast 10.0.0.255 4[root@localhost ~]# ifconfig eth0 | grep -w inet | tr -s \" \" 5 inet 10.0.0.12 netmask 255.255.255.0 broadcast 10.0.0.255 6[root@localhost ~]# ifconfig eth0 | grep -w inet | tr -s \" \" | cut -d \" \" -f 3 10.0.0.12 1示例2： 文件的演示 2[root@localhost ~]# head -n 5 /etc/passwd \u003e test1.txt 3[root@localhost ~]# tr '[0-9]' '@' \u003c test1.txt 4root:x:@:@:root:/root:/bin/bash 5bin:x:@:@:bin:/bin:/sbin/nologin 6daemon:x:@:@:daemon:/sbin:/sbin/nologin 7adm:x:@:@:adm:/var/adm:/sbin/nologin 8lp:x:@:@:lp:/var/spool/lpd:/sbin/nologin 9 10[root@localhost ~]# tr '[a-z]' '[A-Z]' \u003c test1.txt 11ROOT:X:0:0:ROOT:/ROOT:/BIN/BASH 12BIN:X:1:1:BIN:/BIN:/SBIN/NOLOGIN 13DAEMON:X:2:2:DAEMON:/SBIN:/SBIN/NOLOGIN 14ADM:X:3:4:ADM:/VAR/ADM:/SBIN/NOLOGIN 15LP:X:4:7:LP:/VAR/SPOOL/LPD:/SBIN/NOLOGIN uniq命令 连续信息去重\n1Mandatory arguments to long options are mandatory for short options too. 2 -c, --count 统计重复行次数 3 -d, --repeated 只显示重复行 4 -i, --ignore-case 忽略大小写 5 -s, --skip-chars=N avoid comparing the first N characters 6 -u, --unique only print unique lines 1文件内容 2[root@localhost ~]# cat uniq.txt 3AA 4aa 5aa 6bb 7cc 8cc 9dd 10 11去重演示 12[root@localhost ~]# uniq uniq.txt 13AA 14aa 15bb 16cc 17dd 18 19其他演示 20uniq -i uniq.txt\t大小写不敏感去重 21uniq -ic uniq.txt\t大小写不敏感去重后计数 22uniq -d uniq.txt\t仅显示重复的内容 23sort -n num.txt | uniq\t结合sort排序后去重 组合信息 主要涉及paste、xargs命令。\npaste命令 合并文件行内容输出到屏幕，不会改动源文件\n1Mandatory arguments to long options are mandatory for short options too. 2 -d, --delimiters=列表 改用指定列表里的字符替代制表分隔符 3 -s, --serial 不使用平行的行目输出模式，而是每个文件占用一行 4 --help 显示此帮助信息并退出 5 --version 显示版本信息并退出 1文件内容 2[root@localhost ~]# cat a.txt 3hello 4[root@localhost ~]# cat b.txt 5world 6888 7999 8 9内容合并 10[root@localhost ~]# paste a.txt b.txt 11hello world 12 888 13 999 14[root@localhost ~]# paste b.txt a.txt 15world hello 16888 17999 18 19自定义分隔符后合并内容 20[root@localhost ~]# paste -d'@' b.txt a.txt 21world@hello 22888@ 23999@ 24 25将一个文件所有内容一行输出 26[root@localhost ~]# paste -s b.txt 27world 888 999 28[root@localhost ~]# paste -d'@' -s b.txt 29world@888@999 xargs命令 命令结果传递\n1作用： 2 xargs 可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据。 3 xargs 一般是和管道一起使用。 4 5命令格式： 6\tsomecommand |xargs -item command 7 8OPTIONS: 9 -a file 从文件中读入作为sdtin 10 -E flag flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。 11 -p 当每次执行一个argument的时候询问一次用户。 12 -n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的。 13 -t 表示先打印命令，然后再执行。 14 -i 或者是-I，将xargs接收的每项名称，逐行赋值给 {}，可以用 {} 代替。 15 -r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。 16 -d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符。 17 18 19注意：linux命令格式一般为 20 命令 命令选项 参数 21 上一个命令的输出就是下一个命令的参数 这句话结合命令语法 应该知道输出的内容在下一个命令的位置了吧。 1从文件中读取内容 2[root@localhost ~]# xargs -a num.txt 39 8 6 8 4 7 2 1 4 5从文件中读取内容时，指定内容结束符号 6[root@localhost ~]# xargs -a num.txt -E 4 79 8 6 8 8 9从文件中读取内容时，询问用户是否显示，y显示，其他不显示 10[root@localhost ~]# xargs -a num.txt -p 11echo 9 8 6 8 4 7 2 1 ?...y 129 8 6 8 4 7 2 1 13[root@localhost ~]# xargs -a num.txt -p 14echo 9 8 6 8 4 7 2 1 ?...n 15 16从文件中读取内容时，指定每行显示几个内容 17[root@localhost ~]# xargs -a num.txt -n4 189 8 6 8 194 7 2 1 20 21从文件中读取内容时，指定每行显示几个内容，没显示一行询问一下用户 22[root@localhost ~]# xargs -a num.txt -n4 -p 23echo 9 8 6 8 ?...y 249 8 6 8 25echo 4 7 2 1 ?...y 264 7 2 1 27 28默认xargs以空格为分隔符，可以通过-d来自定义分隔符 29[root@localhost ~]# echo \"ab cd ef g\" | xargs 30ab cd ef g 31[root@localhost ~]# echo \"nameXnameXnameXname\" | xargs -dX 32name name name name 33[root@localhost ~]# echo \"nameXnameXnameXname\" | xargs 34nameXnameXnameXname 1-I 临时存储内容给一个对象，然后进行后续处理 2[root@localhost ~]# xargs -a num.txt -n1 -I {} echo {}--bak 39--bak 48--bak 56--bak 68--bak 74--bak 87--bak 92--bak 101--bak 11 12-I的综合运用，转移文件并改名 13[root@localhost ~]# ls *.txt 14a.txt b.txt num.txt test1.txt uniq.txt 15[root@localhost ~]# ls *.txt | xargs -n1 -I {} cp {} /tmp/{}-bak 16[root@localhost ~]# ls /tmp/*-bak 17/tmp/a.txt-bak /tmp/num.txt-bak /tmp/uniq.txt-bak 18/tmp/b.txt-bak /tmp/test1.txt-bak",
+    "description": "Linux 系统中常用命令。",
+    "tags": [
+      "Shell"
+    ],
+    "title": "01、常用命令",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"
+  },
+  {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e CMake",
     "content": "01单个源文件生成可执行文件\nHello World！",
     "description": "开启CMake之旅。",
     "tags": [],
     "title": "01.从可执行文件到库",
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html"
-  },
-  {
-    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e shell \u003e linux 核心命令",
-    "content": "核心命令 从信息的筛选、处理及组合三个方面总结。\n筛选信息 主要涉及shell快捷键、grep、sort命令。\nshell快捷键 快捷键符号\n1命令执行：\t2 !! 执行上一条命令 3 !num 执行历史命令中的第num行命令 4 Ctrl 关键字 执行内容匹配的命令 1命令行切换 2\tCtrl + A 光标迅速回到行首 3\tCtrl + E\t光标迅速回到行尾 4\tCtrl + k\t删除光标到行尾内容 5\tCtrl + u\t删除光标到行首内容 6\tCtrl + y\t粘贴删除的内容 7\tCtrl + c\t临时终止命令行命令 8\tEsc + b\t移动到当前单词的开头 9\tEsc + f\t移动到当前单词的结尾 grep命令 负责从数据源中检索对应的字符串，行过滤\n1grep options 'keys' filename 2OPTIONS: 3 -i: 不区分大小写 4 -v: 查找不包含指定内容的行,反向选择 5 -w: 按单词搜索 6 -o: 打印匹配关键字 7 -c: 统计匹配到的次数 8 -n: 显示行号 9 -r: 逐层遍历目录查找 10 -A: 显示匹配行及后面多少行\t11 -B: 显示匹配行及前面多少行 12 -C: 显示匹配行前后多少行 13 -l：只列出匹配的文件名 14 -L：列出不匹配的文件名 15 -e: 使用正则匹配 16 -E:使用扩展正则匹配 17 ^key:以关键字开头 18 key$:以关键字结尾 19 ^$:匹配空行 20 --color=auto ：可以将找到的关键词部分加上颜色的显示 1grep 高亮显示 2centos7中已经为大家设置了，存放在/etc/profile.d/colorgrep.sh文件中，如若大家使用的系统中没有设置颜色输出，可以使用以下方法来自行设置 3 4临时设置： 5# alias grep='grep --color=auto'\t//只针对当前终端和当前用户生效 6 7永久设置： 81）全局（针对所有用户生效） 9vim /etc/bashrc 10alias grep='grep --color=auto' 11source /etc/bashrc 12 132）局部（针对具体的某个用户） 14vim ~/.bashrc 15alias grep='grep --color=auto' 16source ~/.bashrc 1常用命令选项必知必会 示例： 2# grep -i root passwd\t忽略大小写匹配包含root的行 3# grep -w ftp passwd 精确匹配ftp单词 4# grep -wo ftp passwd 打印匹配到的关键字ftp 5# grep -n root passwd 打印匹配到root关键字的行好 6# grep -ni root passwd 忽略大小写匹配统计包含关键字root的行 7# grep -nic root passwd\t忽略大小写匹配统计包含关键字root的行数 8# grep -i ^root passwd 忽略大小写匹配以root开头的行 9# grep bash$ passwd 匹配以bash结尾的行 10# grep -n ^$ passwd 匹配空行并打印行号 11# grep ^# /etc/vsftpd/vsftpd.conf\t匹配以#号开头的行 12# grep -v ^# /etc/vsftpd/vsftpd.conf\t匹配不以#号开头的行 13# grep -A 5 mail passwd 匹配包含mail关键字及其后5行 14# grep -B 5 mail passwd 匹配包含mail关键字及其前5行 15# grep -C 5 mail passwd 匹配包含mail关键字及其前后5行 sort命令 信息排序\n1语法： 2sort [options] file 3将文件的每一行作为一个单位，从首字符向后，依次按ASCII码值进行比较，最后将他们按升序输出。 4 5options: 6-u ：去除重复行 7-r ：降序排列，默认是升序 8-o : 将排序结果输出到文件中 类似 重定向符号\u003e 9-n ：以数字排序，默认是按字符排序 10-t ：分隔符 11-k ：第N列 12-b ：忽略前导空格。 13-R ：随机排序，每次运行的结果均不同。 1文件内容 2[root@localhost ~]# cat num.txt 39 48 56 68 74 87 92 101 11 12内容升序 13[root@localhost ~]# sort -n num.txt 141 152 164 176 187 198 208 219 22 23内容降序 24[root@localhost ~]# sort -r num.txt 259 269 278 287 296 304 312 321 33 34其他实践 35sort -nu num.txt\t升序去重 36sort -ru num.txt\t降序去重 37sort -nru num.txt\t先升序后降序再去重 38sort -R num.txt\t随机排序 39sort -nu num.txt -o /tmp/a.txt\t升序去重后输出到一个文件 处理信息 主要涉及cut、tr、uniq命令。\ncut命令 数据截取\n1Mandatory arguments to long options are mandatory for short options too. 2 -b, --bytes=列表 只选中指定的这些字节 3 -c, --characters=列表 只选中指定的这些字符 4 -d, --delimiter=分界符 使用指定分界符代替制表符作为区域分界 5 -f, --fields=LIST select only these fields; also print any line 6 that contains no delimiter character, unless 7 the -s option is specified 8 -n with -b: don't split multibyte characters 9 --complement 补全选中的字节、字符或域 10 -s, --only-delimited 不打印没有包含分界符的行 11 --output-delimiter=字符串 使用指定的字符串作为输出分界符，默认采用输入 12 的分界符 13 --help 显示此帮助信息并退出 14 --version 显示版本信息并退出 1# cut -d: -f1 1.txt 以:冒号分割，截取第1列内容 2# cut -d: -f1,6,7 1.txt 以:冒号分割，截取第1,6,7列内容 3# cut -c4 1.txt 截取文件中每行第4个字符 4# cut -c1-4 1.txt 截取文件中每行的1-4个字符 5# cut -c5- 1.txt 从第5个字符开始截取后面所有字符 tr命令 字符转换、替换、删除\n1用法：tr [选项]... SET1 [SET2] 2从标准输入中替换、缩减和/或删除字符，并将结果写到标准输出。 3 4 -c, -C, --complement 首先补足SET1 5 -d, --delete 删除匹配SET1 的内容，并不作替换 6 -s, --squeeze-repeats 如果匹配于SET1 的字符在输入序列中存在连续的 7 重复，在替换时会被统一缩为一个字符的长度 8 -t, --truncate-set1 先将SET1 的长度截为和SET2 相等 9 --help 显示此帮助信息并退出 10 --version 显示版本信息并退出 11 12用法1：把commands命令输出做为tr输入进行处理 13commands | tr 'string1' 'string2' 14 15用法2：把文件中的内容输入给tr进行处理 16tr 'string1' 'string2' \u003c filename 17 18用法3：把文件中的内容输入给tr进行处理，需要使用到选项 19tr options 'string1' \u003c filename 1示例1：通过tr把反复出现的内容进行压缩，压缩后再处理。 2[root@localhost ~]# ifconfig eth0 | grep -w inet 3 inet 10.0.0.12 netmask 255.255.255.0 broadcast 10.0.0.255 4[root@localhost ~]# ifconfig eth0 | grep -w inet | tr -s \" \" 5 inet 10.0.0.12 netmask 255.255.255.0 broadcast 10.0.0.255 6[root@localhost ~]# ifconfig eth0 | grep -w inet | tr -s \" \" | cut -d \" \" -f 3 10.0.0.12 1示例2： 文件的演示 2[root@localhost ~]# head -n 5 /etc/passwd \u003e test1.txt 3[root@localhost ~]# tr '[0-9]' '@' \u003c test1.txt 4root:x:@:@:root:/root:/bin/bash 5bin:x:@:@:bin:/bin:/sbin/nologin 6daemon:x:@:@:daemon:/sbin:/sbin/nologin 7adm:x:@:@:adm:/var/adm:/sbin/nologin 8lp:x:@:@:lp:/var/spool/lpd:/sbin/nologin 9 10[root@localhost ~]# tr '[a-z]' '[A-Z]' \u003c test1.txt 11ROOT:X:0:0:ROOT:/ROOT:/BIN/BASH 12BIN:X:1:1:BIN:/BIN:/SBIN/NOLOGIN 13DAEMON:X:2:2:DAEMON:/SBIN:/SBIN/NOLOGIN 14ADM:X:3:4:ADM:/VAR/ADM:/SBIN/NOLOGIN 15LP:X:4:7:LP:/VAR/SPOOL/LPD:/SBIN/NOLOGIN uniq命令 连续信息去重\n1Mandatory arguments to long options are mandatory for short options too. 2 -c, --count 统计重复行次数 3 -d, --repeated 只显示重复行 4 -i, --ignore-case 忽略大小写 5 -s, --skip-chars=N avoid comparing the first N characters 6 -u, --unique only print unique lines 1文件内容 2[root@localhost ~]# cat uniq.txt 3AA 4aa 5aa 6bb 7cc 8cc 9dd 10 11去重演示 12[root@localhost ~]# uniq uniq.txt 13AA 14aa 15bb 16cc 17dd 18 19其他演示 20uniq -i uniq.txt\t大小写不敏感去重 21uniq -ic uniq.txt\t大小写不敏感去重后计数 22uniq -d uniq.txt\t仅显示重复的内容 23sort -n num.txt | uniq\t结合sort排序后去重 组合信息 主要涉及paste、xargs命令。\npaste命令 合并文件行内容输出到屏幕，不会改动源文件\n1Mandatory arguments to long options are mandatory for short options too. 2 -d, --delimiters=列表 改用指定列表里的字符替代制表分隔符 3 -s, --serial 不使用平行的行目输出模式，而是每个文件占用一行 4 --help 显示此帮助信息并退出 5 --version 显示版本信息并退出 1文件内容 2[root@localhost ~]# cat a.txt 3hello 4[root@localhost ~]# cat b.txt 5world 6888 7999 8 9内容合并 10[root@localhost ~]# paste a.txt b.txt 11hello world 12 888 13 999 14[root@localhost ~]# paste b.txt a.txt 15world hello 16888 17999 18 19自定义分隔符后合并内容 20[root@localhost ~]# paste -d'@' b.txt a.txt 21world@hello 22888@ 23999@ 24 25将一个文件所有内容一行输出 26[root@localhost ~]# paste -s b.txt 27world 888 999 28[root@localhost ~]# paste -d'@' -s b.txt 29world@888@999 xargs命令 命令结果传递\n1作用： 2 xargs 可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据。 3 xargs 一般是和管道一起使用。 4 5命令格式： 6\tsomecommand |xargs -item command 7 8OPTIONS: 9 -a file 从文件中读入作为sdtin 10 -E flag flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。 11 -p 当每次执行一个argument的时候询问一次用户。 12 -n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的。 13 -t 表示先打印命令，然后再执行。 14 -i 或者是-I，将xargs接收的每项名称，逐行赋值给 {}，可以用 {} 代替。 15 -r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。 16 -d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符。 17 18 19注意：linux命令格式一般为 20 命令 命令选项 参数 21 上一个命令的输出就是下一个命令的参数 这句话结合命令语法 应该知道输出的内容在下一个命令的位置了吧。 1从文件中读取内容 2[root@localhost ~]# xargs -a num.txt 39 8 6 8 4 7 2 1 4 5从文件中读取内容时，指定内容结束符号 6[root@localhost ~]# xargs -a num.txt -E 4 79 8 6 8 8 9从文件中读取内容时，询问用户是否显示，y显示，其他不显示 10[root@localhost ~]# xargs -a num.txt -p 11echo 9 8 6 8 4 7 2 1 ?...y 129 8 6 8 4 7 2 1 13[root@localhost ~]# xargs -a num.txt -p 14echo 9 8 6 8 4 7 2 1 ?...n 15 16从文件中读取内容时，指定每行显示几个内容 17[root@localhost ~]# xargs -a num.txt -n4 189 8 6 8 194 7 2 1 20 21从文件中读取内容时，指定每行显示几个内容，没显示一行询问一下用户 22[root@localhost ~]# xargs -a num.txt -n4 -p 23echo 9 8 6 8 ?...y 249 8 6 8 25echo 4 7 2 1 ?...y 264 7 2 1 27 28默认xargs以空格为分隔符，可以通过-d来自定义分隔符 29[root@localhost ~]# echo \"ab cd ef g\" | xargs 30ab cd ef g 31[root@localhost ~]# echo \"nameXnameXnameXname\" | xargs -dX 32name name name name 33[root@localhost ~]# echo \"nameXnameXnameXname\" | xargs 34nameXnameXnameXname 1-I 临时存储内容给一个对象，然后进行后续处理 2[root@localhost ~]# xargs -a num.txt -n1 -I {} echo {}--bak 39--bak 48--bak 56--bak 68--bak 74--bak 87--bak 92--bak 101--bak 11 12-I的综合运用，转移文件并改名 13[root@localhost ~]# ls *.txt 14a.txt b.txt num.txt test1.txt uniq.txt 15[root@localhost ~]# ls *.txt | xargs -n1 -I {} cp {} /tmp/{}-bak 16[root@localhost ~]# ls /tmp/*-bak 17/tmp/a.txt-bak /tmp/num.txt-bak /tmp/uniq.txt-bak 18/tmp/b.txt-bak /tmp/test1.txt-bak",
-    "description": "Linux 系统中常用命令。",
-    "tags": [],
-    "title": "01.常用命令",
-    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 标签",
@@ -107,7 +127,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能",
-    "content": "C++17\nC++17 核心特性：结构化绑定, std::optional, std::string_view, 带初始化的if/switch, std::variant, 文件系统, 并行算法等。",
+    "content": "C++17\nC++17 核心特性：结构化绑定, std::optional, std::string_view, 带初始化的if/switch, std::variant, 文件系统, 并行算法等。\nC++标准库\nC++标准库：常用库总结",
     "description": "C++ 语言特性及项目。",
     "tags": [],
     "title": "C++",
@@ -148,8 +168,40 @@ var relearn_searchindex = [
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html"
   },
   {
+    "breadcrumb": "暮鼓晨钟 \u003e 类别",
+    "content": "",
+    "description": "",
+    "tags": [],
+    "title": "类别 :: Devops",
+    "uri": "/categories/devops/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 标签",
+    "content": "",
+    "description": "",
+    "tags": [],
+    "title": "标签 :: Docker",
+    "uri": "/tags/docker/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能",
+    "content": "Docker 入门\n开启Docker之旅。",
+    "description": "应用容器引擎。",
+    "tags": [],
+    "title": "Docker",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Docker",
+    "content": "01 docker常用命令\ndocker入门之docker常用命令。",
+    "description": "开启Docker之旅。",
+    "tags": [],
+    "title": "Docker 入门",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html"
+  },
+  {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e shell",
-    "content": "01.常用命令\nLinux 系统中常用命令。",
+    "content": "01、常用命令\nLinux 系统中常用命令。",
     "description": "Linux 系统中常用命令。",
     "tags": [],
     "title": "linux 核心命令",
@@ -173,7 +225,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e shell",
-    "content": "01 严格模式\n避免最常见的Shell陷阱，让脚本fail-fast。\n02 参数解析\n命令行参数解析是每个脚本都要面对的问题。",
+    "content": "01、严格模式\n避免最常见的Shell陷阱，让脚本fail-fast。\n02、参数解析\n命令行参数解析是每个脚本都要面对的问题。",
     "description": "shell编程中的一些技巧总结。",
     "tags": [],
     "title": "shell编程技巧",
@@ -194,6 +246,16 @@ var relearn_searchindex = [
     "tags": [],
     "title": "亲子",
     "uri": "/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e C++ \u003e C++标准库",
+    "content": "基础使用 引擎选择 名称 使用频率 周期长 随机质量 性能 std::mt19937 非常高。使用场景如模拟、游戏开发、密码学研究等 2^19937-1 高 好 std::ranlux48 中等。科学计算和蒙特卡罗模拟等场景 非常高 较慢 std::minstd_rand 低。对随机数质量要求不高，且对性能有一定要求的简单应用 短 一般 好 std::knuth_b 低。特定的算法或研究中可能会使用 介于 std::minstd_rand 和 std::mt19937 之间 介于 std::minstd_rand 和 std::mt19937 之间 std::default_random_engine 一般。它是一个类型别名，具体的实现依赖于编译器和平台，通常会选择一个合适的默认引擎，可能是 std::mt19937 或其他引擎。 总结，std::mt19937 因其良好的综合性能和广泛的适用性，使用频率最高；std::ranlux48 在对随机数质量要求高的场景中使用较多；而 std::minstd_rand、std::knuth_b 和 std::default_random_engine 则在特定场景或简单应用中使用。\n均匀分布整数和实数 ​ 生成随机数 1#include \u003ciostream\u003e 2#include \u003crandom\u003e 3#include \u003cvector\u003e 4 5int main() { 6 std::mt19937 engine(std::random_device{}()); 7 8 // 1. 整数均匀分布 9 std::uniform_int_distribution\u003cint\u003e int_dist(1, 100); // [1, 100] 10 std::cout \u003c\u003c \"整数均匀分布 (1-100): \"; 11 for (int i = 0; i \u003c 10; ++i) { 12 std::cout \u003c\u003c int_dist(engine) \u003c\u003c \" \"; 13 } 14 std::cout \u003c\u003c std::endl; 15 16 // 2. 浮点数均匀分布 17 std::uniform_real_distribution\u003cdouble\u003e real_dist(0.0, 1.0); // [0.0, 1.0) 18 std::cout \u003c\u003c \"浮点均匀分布 (0-1): \"; 19 for (int i = 0; i \u003c 10; ++i) { 20 std::cout \u003c\u003c std::fixed \u003c\u003c std::setprecision(3) 21 \u003c\u003c real_dist(engine) \u003c\u003c \" \"; 22 } 23 std::cout \u003c\u003c std::endl; 24 25 // 3. 指定步长的分布 26 std::uniform_int_distribution\u003cint\u003e step_dist(0, 10); // 0,1,2,...,10 27 std::cout \u003c\u003c \"步长分布 (0-10): \"; 28 for (int i = 0; i \u003c 10; ++i) { 29 std::cout \u003c\u003c step_dist(engine) * 5 \u003c\u003c \" \"; // 0,5,10,...,50 30 } 31 std::cout \u003c\u003c std::endl; 32} 种子管理 std::random_device 是一个均匀分布的整数随机数生成器，它产生非确定性随机数。\nstd::seed_seq 是 C++11 \u003crandom\u003e 库中用于生成高质量随机数种子的工具，特别适合初始化多个随机数引擎或需要从多个种子值生成单个种子的场景。",
+    "description": "`` 库是 C++11 引入的标准库，提供了多种随机数生成器和分布。",
+    "tags": [
+      "C++"
+    ],
+    "title": "伪随机数",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/%E6%A0%87%E5%87%86%E5%BA%93/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html"
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 类别",

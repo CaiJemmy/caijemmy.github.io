@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="print">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.157.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+    <meta name="description" content="Docker ps 命令详解 docker ps 是 Docker 中最常用、最重要的命令之一，用于查看和管理容器状态。
+📋 基本用法 1# 查看正在运行的容器 2docker ps 3 4# 查看所有容器（包括已停止的） 5docker ps -a 6 7# 查看最近创建的容器 8docker ps -l 9 10# 查看最后 n 个创建的容器 11docker ps -n 3 12 13# 查看容器大小 14docker ps -s 15 16# 查看完整输出（不截断） 17docker ps --no-trunc 📊 输出字段说明 1$ docker ps 2CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES 3c3f279d17e0a ubuntu:22.04 &#34;/bin/bash&#34; 2 days ago Up 2 hours 0.0.0.0:80-&gt;8080/tcp, :::80-&gt;8080/tcp web-server 4b6f3c5d8e2f1 postgres:15 &#34;docker-entrypoint.s…&#34; 3 weeks ago Up 3 weeks 0.0.0.0:5432-&gt;5432/tcp, :::5432-&gt;5432/tcp db-primary 各字段详细说明： 字段 说明 示例 CONTAINER ID 容器唯一标识符（前12个字符） c3f279d17e0a IMAGE 容器使用的镜像 ubuntu:22.04, nginx:latest COMMAND 容器启动时执行的命令 &#34;/bin/bash&#34;, &#34;nginx -g &#39;daemon off;&#39;&#34; CREATED 容器创建时间 2 days ago, 3 weeks ago STATUS 容器状态 Up 2 hours（运行中）, Exited (0) 5 hours ago（已停止） PORTS 端口映射 0.0.0.0:80-&gt;8080/tcp（主机80映射到容器8080） NAMES 容器名称 web-server, db-primary 🎯 实用选项详解 1. 过滤容器 1# 按状态过滤 2docker ps --filter &#34;status=running&#34; 3docker ps --filter &#34;status=exited&#34; 4docker ps --filter &#34;status=created&#34; 5docker ps --filter &#34;status=paused&#34; 6docker ps --filter &#34;status=restarting&#34; 7 8# 按标签过滤 9docker ps --filter &#34;label=environment=production&#34; 10docker ps --filter &#34;label=app=web&#34; 11 12# 按名称过滤 13docker ps --filter &#34;name=web&#34; 14docker ps --filter &#34;name=^web.*&#34; # 正则表达式 15 16# 按镜像过滤 17docker ps --filter &#34;ancestor=nginx&#34; 18docker ps --filter &#34;ancestor=nginx:latest&#34; 19 20# 按退出码过滤 21docker ps -a --filter &#34;exited=0&#34; # 正常退出 22docker ps -a --filter &#34;exited=137&#34; # 被 SIGKILL 杀死 23docker ps -a --filter &#34;exited!=0&#34; # 异常退出 24 25# 多个过滤条件组合 26docker ps --filter &#34;status=running&#34; --filter &#34;label=app=api&#34; 27 28# 过滤最近创建 29docker ps -a --filter &#34;since=web-server&#34; # 在 web-server 之后创建的容器 30docker ps -a --filter &#34;before=db&#34; # 在 db 之前创建的容器 2. 格式化输出 1# 自定义输出格式 2docker ps --format &#34;table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Names}}&#34; 3 4# 只显示特定字段 5docker ps --format &#34;{{.Names}}: {{.Status}}&#34; 6 7# 显示所有字段（JSON格式） 8docker ps --format json 9 10# 常用格式化模板 11docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}&#34; 12docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.RunningFor}} ago\t{{.Command}}&#34; 13 14# Go模板高级用法 15docker ps --format &#39;{{.ID}} {{.Names}} {{.Status}}&#39; | column -t 3. 查看详细信息 1# 显示完整容器ID 2docker ps --no-trunc 3 4# 显示容器大小（磁盘使用） 5docker ps -s 6 7# 输出字段说明： 8# SIZE: 容器可写层的大小 9# VIRTUAL SIZE: 容器总大小（镜像&#43;可写层） 10 11# 安静模式（只显示容器ID） 12docker ps -q 13 14# 安静模式配合其他命令 15docker ps -aq | xargs docker stop # 停止所有容器 16docker ps -q --filter &#34;status=exited&#34; | xargs docker rm # 删除所有已停止容器 🔧 高级用法和技巧 1. 实时监控容器 1# 实时查看容器状态（类似 top 命令） 2docker stats 3 4# 持续监控容器列表（每秒刷新） 5watch -n 1 docker ps 6 7# 监控特定容器 8watch -n 1 &#39;docker ps --filter &#34;name=web&#34;&#39; 9 10# 使用别名简化命令 11alias dps=&#39;docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}&#34;&#39; 2. 批量操作 1# 获取所有运行中容器的ID 2docker ps -q 3 4# 停止所有运行中的容器 5docker ps -q | xargs docker stop 6 7# 删除所有已停止的容器 8docker ps -aq --filter &#34;status=exited&#34; | xargs docker rm 9 10# 删除所有容器（强制） 11docker ps -aq | xargs docker rm -f 12 13# 重启所有运行中的容器 14docker ps -q | xargs docker restart 15 16# 更新所有容器的重启策略 17docker ps -q | xargs docker update --restart=unless-stopped 3. 诊断和调试 1# 查看异常退出的容器 2docker ps -a --filter &#34;exited!=0&#34; 3 4# 查看容器的运行时长 5docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.RunningFor}}&#34; 6 7# 查看容器使用的端口 8docker ps --format &#34;table {{.Names}}\t{{.Ports}}&#34; | grep -v &#34;^\s*$&#34; 9 10# 查看容器占用的资源 11docker ps -q | xargs docker stats --no-stream 12 13# 检查容器健康状态 14docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Health}}&#34; 4. 实用脚本示例 1#!/bin/bash 2# container-info.sh 3 4# 显示详细的容器信息 5echo &#34;=== 容器状态概览 ===&#34; 6docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Ports}}\t{{.Image}}&#34; 7 8echo -e &#34;\n=== 资源使用情况 ===&#34; 9docker ps -q | xargs docker stats --no-stream --format \ 10 &#34;table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}&#34; 11 12echo -e &#34;\n=== 异常容器检查 ===&#34; 13docker ps -a --filter &#34;exited!=0&#34; --format \ 14 &#34;table {{.Names}}\t{{.Status}}\t{{.ExitCode}}\t{{.Command}}&#34; 15 16echo -e &#34;\n=== 容器数量统计 ===&#34; 17echo &#34;运行中: $(docker ps -q | wc -l)&#34; 18echo &#34;已停止: $(docker ps -aq --filter &#34;status=exited&#34; | wc -l)&#34; 19echo &#34;总数: $(docker ps -aq | wc -l)&#34; 1#!/bin/bash 2# container-monitor.sh 3 4# 实时监控容器状态 5watch -n 2 -c &#39; 6clear 7echo &#34;🕐 $(date)&#34; 8echo &#34;==========================================&#34; 9echo &#34;📦 容器状态&#34; 10echo &#34;==========================================&#34; 11docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.RunningFor}}\t{{.Ports}}&#34; | tail -n &#43;2 12echo &#34;&#34; 13echo &#34;💾 资源使用&#34; 14echo &#34;==========================================&#34; 15docker stats --no-stream --format &#34;table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}&#34; 16&#39; 📝 常用命令组合 日常维护 1# 清理所有已停止的容器 2docker ps -aq --filter &#34;status=exited&#34; | xargs docker rm 3 4# 清理所有未使用的容器（包括停止的、未使用的网络、构建缓存等） 5docker system prune -a 6 7# 查看容器日志 8docker ps | grep nginx | awk &#39;{print $1}&#39; | xargs docker logs -f 9 10# 进入容器 11docker ps | grep web | awk &#39;{print $1}&#39; | xargs -I {} docker exec -it {} bash 安全检查 1# 检查特权容器 2docker ps --filter &#34;label=privileged=true&#34; 3 4# 检查以 root 用户运行的容器 5docker ps --format &#34;table {{.Names}}\t{{.Command}}&#34; | grep &#34;root&#34; 6 7# 检查未限制资源的容器 8docker ps --format &#34;table {{.Names}}\t{{.Status}}&#34; | grep -E &#34;(unlimited|no limit)&#34; 网络相关 1# 查看容器使用的网络 2docker ps --format &#34;table {{.Names}}\t{{.Networks}}&#34; 3 4# 查看暴露的端口 5docker ps --format &#34;table {{.Names}}\t{{.Ports}}&#34; | grep -v &#34;^\s*$&#34; 6 7# 查找使用特定端口的容器 8docker ps | grep &#34;:80-&gt;&#34; 🎨 自定义输出格式 可用的占位符 1# 完整列表 2docker ps --format &#34;table {{.ID}}\t{{.Image}}\t{{.Command}}\t{{.CreatedAt}}\t{{.RunningFor}}\t{{.Ports}}\t{{.Status}}\t{{.Size}}\t{{.Names}}\t{{.Labels}}\t{{.Mounts}}\t{{.Networks}}&#34; 3 4# 常用占位符说明： 5.ID 容器ID 6.Image 镜像名称 7.Command 启动命令 8.CreatedAt 创建时间 9.RunningFor 运行时长 10.Ports 端口映射 11.Status 状态 12.Size 容器大小 13.Names 容器名称 14.Labels 标签 15.Mounts 挂载点 16.Networks 网络 17.Health 健康状态 美化输出示例 1# 彩色输出（需要安装 lolcat 或使用 awk 着色） 2docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Ports}}&#34; | awk &#39; 3 BEGIN { 4 printf &#34;\033[1;36m%-20s %-20s %-30s\033[0m\n&#34;, &#34;容器名称&#34;, &#34;状态&#34;, &#34;端口&#34; 5 printf &#34;%-20s %-20s %-30s\n&#34;, &#34;--------------------&#34;, &#34;--------------------&#34;, &#34;------------------------------&#34; 6 } 7 { 8 if ($2 ~ /^Up/) 9 printf &#34;\033[1;32m%-20s %-20s %-30s\033[0m\n&#34;, $1, $2, $3 10 else 11 printf &#34;\033[1;31m%-20s %-20s %-30s\033[0m\n&#34;, $1, $2, $3 12 }&#39; 💡 最佳实践 使用有意义的容器名称">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:description" content="Docker ps 命令详解 docker ps 是 Docker 中最常用、最重要的命令之一，用于查看和管理容器状态。
+📋 基本用法 1# 查看正在运行的容器 2docker ps 3 4# 查看所有容器（包括已停止的） 5docker ps -a 6 7# 查看最近创建的容器 8docker ps -l 9 10# 查看最后 n 个创建的容器 11docker ps -n 3 12 13# 查看容器大小 14docker ps -s 15 16# 查看完整输出（不截断） 17docker ps --no-trunc 📊 输出字段说明 1$ docker ps 2CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES 3c3f279d17e0a ubuntu:22.04 &#34;/bin/bash&#34; 2 days ago Up 2 hours 0.0.0.0:80-&gt;8080/tcp, :::80-&gt;8080/tcp web-server 4b6f3c5d8e2f1 postgres:15 &#34;docker-entrypoint.s…&#34; 3 weeks ago Up 3 weeks 0.0.0.0:5432-&gt;5432/tcp, :::5432-&gt;5432/tcp db-primary 各字段详细说明： 字段 说明 示例 CONTAINER ID 容器唯一标识符（前12个字符） c3f279d17e0a IMAGE 容器使用的镜像 ubuntu:22.04, nginx:latest COMMAND 容器启动时执行的命令 &#34;/bin/bash&#34;, &#34;nginx -g &#39;daemon off;&#39;&#34; CREATED 容器创建时间 2 days ago, 3 weeks ago STATUS 容器状态 Up 2 hours（运行中）, Exited (0) 5 hours ago（已停止） PORTS 端口映射 0.0.0.0:80-&gt;8080/tcp（主机80映射到容器8080） NAMES 容器名称 web-server, db-primary 🎯 实用选项详解 1. 过滤容器 1# 按状态过滤 2docker ps --filter &#34;status=running&#34; 3docker ps --filter &#34;status=exited&#34; 4docker ps --filter &#34;status=created&#34; 5docker ps --filter &#34;status=paused&#34; 6docker ps --filter &#34;status=restarting&#34; 7 8# 按标签过滤 9docker ps --filter &#34;label=environment=production&#34; 10docker ps --filter &#34;label=app=web&#34; 11 12# 按名称过滤 13docker ps --filter &#34;name=web&#34; 14docker ps --filter &#34;name=^web.*&#34; # 正则表达式 15 16# 按镜像过滤 17docker ps --filter &#34;ancestor=nginx&#34; 18docker ps --filter &#34;ancestor=nginx:latest&#34; 19 20# 按退出码过滤 21docker ps -a --filter &#34;exited=0&#34; # 正常退出 22docker ps -a --filter &#34;exited=137&#34; # 被 SIGKILL 杀死 23docker ps -a --filter &#34;exited!=0&#34; # 异常退出 24 25# 多个过滤条件组合 26docker ps --filter &#34;status=running&#34; --filter &#34;label=app=api&#34; 27 28# 过滤最近创建 29docker ps -a --filter &#34;since=web-server&#34; # 在 web-server 之后创建的容器 30docker ps -a --filter &#34;before=db&#34; # 在 db 之前创建的容器 2. 格式化输出 1# 自定义输出格式 2docker ps --format &#34;table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Names}}&#34; 3 4# 只显示特定字段 5docker ps --format &#34;{{.Names}}: {{.Status}}&#34; 6 7# 显示所有字段（JSON格式） 8docker ps --format json 9 10# 常用格式化模板 11docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}&#34; 12docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.RunningFor}} ago\t{{.Command}}&#34; 13 14# Go模板高级用法 15docker ps --format &#39;{{.ID}} {{.Names}} {{.Status}}&#39; | column -t 3. 查看详细信息 1# 显示完整容器ID 2docker ps --no-trunc 3 4# 显示容器大小（磁盘使用） 5docker ps -s 6 7# 输出字段说明： 8# SIZE: 容器可写层的大小 9# VIRTUAL SIZE: 容器总大小（镜像&#43;可写层） 10 11# 安静模式（只显示容器ID） 12docker ps -q 13 14# 安静模式配合其他命令 15docker ps -aq | xargs docker stop # 停止所有容器 16docker ps -q --filter &#34;status=exited&#34; | xargs docker rm # 删除所有已停止容器 🔧 高级用法和技巧 1. 实时监控容器 1# 实时查看容器状态（类似 top 命令） 2docker stats 3 4# 持续监控容器列表（每秒刷新） 5watch -n 1 docker ps 6 7# 监控特定容器 8watch -n 1 &#39;docker ps --filter &#34;name=web&#34;&#39; 9 10# 使用别名简化命令 11alias dps=&#39;docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}&#34;&#39; 2. 批量操作 1# 获取所有运行中容器的ID 2docker ps -q 3 4# 停止所有运行中的容器 5docker ps -q | xargs docker stop 6 7# 删除所有已停止的容器 8docker ps -aq --filter &#34;status=exited&#34; | xargs docker rm 9 10# 删除所有容器（强制） 11docker ps -aq | xargs docker rm -f 12 13# 重启所有运行中的容器 14docker ps -q | xargs docker restart 15 16# 更新所有容器的重启策略 17docker ps -q | xargs docker update --restart=unless-stopped 3. 诊断和调试 1# 查看异常退出的容器 2docker ps -a --filter &#34;exited!=0&#34; 3 4# 查看容器的运行时长 5docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.RunningFor}}&#34; 6 7# 查看容器使用的端口 8docker ps --format &#34;table {{.Names}}\t{{.Ports}}&#34; | grep -v &#34;^\s*$&#34; 9 10# 查看容器占用的资源 11docker ps -q | xargs docker stats --no-stream 12 13# 检查容器健康状态 14docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Health}}&#34; 4. 实用脚本示例 1#!/bin/bash 2# container-info.sh 3 4# 显示详细的容器信息 5echo &#34;=== 容器状态概览 ===&#34; 6docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Ports}}\t{{.Image}}&#34; 7 8echo -e &#34;\n=== 资源使用情况 ===&#34; 9docker ps -q | xargs docker stats --no-stream --format \ 10 &#34;table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}&#34; 11 12echo -e &#34;\n=== 异常容器检查 ===&#34; 13docker ps -a --filter &#34;exited!=0&#34; --format \ 14 &#34;table {{.Names}}\t{{.Status}}\t{{.ExitCode}}\t{{.Command}}&#34; 15 16echo -e &#34;\n=== 容器数量统计 ===&#34; 17echo &#34;运行中: $(docker ps -q | wc -l)&#34; 18echo &#34;已停止: $(docker ps -aq --filter &#34;status=exited&#34; | wc -l)&#34; 19echo &#34;总数: $(docker ps -aq | wc -l)&#34; 1#!/bin/bash 2# container-monitor.sh 3 4# 实时监控容器状态 5watch -n 2 -c &#39; 6clear 7echo &#34;🕐 $(date)&#34; 8echo &#34;==========================================&#34; 9echo &#34;📦 容器状态&#34; 10echo &#34;==========================================&#34; 11docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.RunningFor}}\t{{.Ports}}&#34; | tail -n &#43;2 12echo &#34;&#34; 13echo &#34;💾 资源使用&#34; 14echo &#34;==========================================&#34; 15docker stats --no-stream --format &#34;table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}&#34; 16&#39; 📝 常用命令组合 日常维护 1# 清理所有已停止的容器 2docker ps -aq --filter &#34;status=exited&#34; | xargs docker rm 3 4# 清理所有未使用的容器（包括停止的、未使用的网络、构建缓存等） 5docker system prune -a 6 7# 查看容器日志 8docker ps | grep nginx | awk &#39;{print $1}&#39; | xargs docker logs -f 9 10# 进入容器 11docker ps | grep web | awk &#39;{print $1}&#39; | xargs -I {} docker exec -it {} bash 安全检查 1# 检查特权容器 2docker ps --filter &#34;label=privileged=true&#34; 3 4# 检查以 root 用户运行的容器 5docker ps --format &#34;table {{.Names}}\t{{.Command}}&#34; | grep &#34;root&#34; 6 7# 检查未限制资源的容器 8docker ps --format &#34;table {{.Names}}\t{{.Status}}&#34; | grep -E &#34;(unlimited|no limit)&#34; 网络相关 1# 查看容器使用的网络 2docker ps --format &#34;table {{.Names}}\t{{.Networks}}&#34; 3 4# 查看暴露的端口 5docker ps --format &#34;table {{.Names}}\t{{.Ports}}&#34; | grep -v &#34;^\s*$&#34; 6 7# 查找使用特定端口的容器 8docker ps | grep &#34;:80-&gt;&#34; 🎨 自定义输出格式 可用的占位符 1# 完整列表 2docker ps --format &#34;table {{.ID}}\t{{.Image}}\t{{.Command}}\t{{.CreatedAt}}\t{{.RunningFor}}\t{{.Ports}}\t{{.Status}}\t{{.Size}}\t{{.Names}}\t{{.Labels}}\t{{.Mounts}}\t{{.Networks}}&#34; 3 4# 常用占位符说明： 5.ID 容器ID 6.Image 镜像名称 7.Command 启动命令 8.CreatedAt 创建时间 9.RunningFor 运行时长 10.Ports 端口映射 11.Status 状态 12.Size 容器大小 13.Names 容器名称 14.Labels 标签 15.Mounts 挂载点 16.Networks 网络 17.Health 健康状态 美化输出示例 1# 彩色输出（需要安装 lolcat 或使用 awk 着色） 2docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Ports}}&#34; | awk &#39; 3 BEGIN { 4 printf &#34;\033[1;36m%-20s %-20s %-30s\033[0m\n&#34;, &#34;容器名称&#34;, &#34;状态&#34;, &#34;端口&#34; 5 printf &#34;%-20s %-20s %-30s\n&#34;, &#34;--------------------&#34;, &#34;--------------------&#34;, &#34;------------------------------&#34; 6 } 7 { 8 if ($2 ~ /^Up/) 9 printf &#34;\033[1;32m%-20s %-20s %-30s\033[0m\n&#34;, $1, $2, $3 10 else 11 printf &#34;\033[1;31m%-20s %-20s %-30s\033[0m\n&#34;, $1, $2, $3 12 }&#39; 💡 最佳实践 使用有意义的容器名称">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/docker-ps/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:description" content="Docker ps 命令详解 docker ps 是 Docker 中最常用、最重要的命令之一，用于查看和管理容器状态。
+📋 基本用法 1# 查看正在运行的容器 2docker ps 3 4# 查看所有容器（包括已停止的） 5docker ps -a 6 7# 查看最近创建的容器 8docker ps -l 9 10# 查看最后 n 个创建的容器 11docker ps -n 3 12 13# 查看容器大小 14docker ps -s 15 16# 查看完整输出（不截断） 17docker ps --no-trunc 📊 输出字段说明 1$ docker ps 2CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES 3c3f279d17e0a ubuntu:22.04 &#34;/bin/bash&#34; 2 days ago Up 2 hours 0.0.0.0:80-&gt;8080/tcp, :::80-&gt;8080/tcp web-server 4b6f3c5d8e2f1 postgres:15 &#34;docker-entrypoint.s…&#34; 3 weeks ago Up 3 weeks 0.0.0.0:5432-&gt;5432/tcp, :::5432-&gt;5432/tcp db-primary 各字段详细说明： 字段 说明 示例 CONTAINER ID 容器唯一标识符（前12个字符） c3f279d17e0a IMAGE 容器使用的镜像 ubuntu:22.04, nginx:latest COMMAND 容器启动时执行的命令 &#34;/bin/bash&#34;, &#34;nginx -g &#39;daemon off;&#39;&#34; CREATED 容器创建时间 2 days ago, 3 weeks ago STATUS 容器状态 Up 2 hours（运行中）, Exited (0) 5 hours ago（已停止） PORTS 端口映射 0.0.0.0:80-&gt;8080/tcp（主机80映射到容器8080） NAMES 容器名称 web-server, db-primary 🎯 实用选项详解 1. 过滤容器 1# 按状态过滤 2docker ps --filter &#34;status=running&#34; 3docker ps --filter &#34;status=exited&#34; 4docker ps --filter &#34;status=created&#34; 5docker ps --filter &#34;status=paused&#34; 6docker ps --filter &#34;status=restarting&#34; 7 8# 按标签过滤 9docker ps --filter &#34;label=environment=production&#34; 10docker ps --filter &#34;label=app=web&#34; 11 12# 按名称过滤 13docker ps --filter &#34;name=web&#34; 14docker ps --filter &#34;name=^web.*&#34; # 正则表达式 15 16# 按镜像过滤 17docker ps --filter &#34;ancestor=nginx&#34; 18docker ps --filter &#34;ancestor=nginx:latest&#34; 19 20# 按退出码过滤 21docker ps -a --filter &#34;exited=0&#34; # 正常退出 22docker ps -a --filter &#34;exited=137&#34; # 被 SIGKILL 杀死 23docker ps -a --filter &#34;exited!=0&#34; # 异常退出 24 25# 多个过滤条件组合 26docker ps --filter &#34;status=running&#34; --filter &#34;label=app=api&#34; 27 28# 过滤最近创建 29docker ps -a --filter &#34;since=web-server&#34; # 在 web-server 之后创建的容器 30docker ps -a --filter &#34;before=db&#34; # 在 db 之前创建的容器 2. 格式化输出 1# 自定义输出格式 2docker ps --format &#34;table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Names}}&#34; 3 4# 只显示特定字段 5docker ps --format &#34;{{.Names}}: {{.Status}}&#34; 6 7# 显示所有字段（JSON格式） 8docker ps --format json 9 10# 常用格式化模板 11docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}&#34; 12docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.RunningFor}} ago\t{{.Command}}&#34; 13 14# Go模板高级用法 15docker ps --format &#39;{{.ID}} {{.Names}} {{.Status}}&#39; | column -t 3. 查看详细信息 1# 显示完整容器ID 2docker ps --no-trunc 3 4# 显示容器大小（磁盘使用） 5docker ps -s 6 7# 输出字段说明： 8# SIZE: 容器可写层的大小 9# VIRTUAL SIZE: 容器总大小（镜像&#43;可写层） 10 11# 安静模式（只显示容器ID） 12docker ps -q 13 14# 安静模式配合其他命令 15docker ps -aq | xargs docker stop # 停止所有容器 16docker ps -q --filter &#34;status=exited&#34; | xargs docker rm # 删除所有已停止容器 🔧 高级用法和技巧 1. 实时监控容器 1# 实时查看容器状态（类似 top 命令） 2docker stats 3 4# 持续监控容器列表（每秒刷新） 5watch -n 1 docker ps 6 7# 监控特定容器 8watch -n 1 &#39;docker ps --filter &#34;name=web&#34;&#39; 9 10# 使用别名简化命令 11alias dps=&#39;docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}&#34;&#39; 2. 批量操作 1# 获取所有运行中容器的ID 2docker ps -q 3 4# 停止所有运行中的容器 5docker ps -q | xargs docker stop 6 7# 删除所有已停止的容器 8docker ps -aq --filter &#34;status=exited&#34; | xargs docker rm 9 10# 删除所有容器（强制） 11docker ps -aq | xargs docker rm -f 12 13# 重启所有运行中的容器 14docker ps -q | xargs docker restart 15 16# 更新所有容器的重启策略 17docker ps -q | xargs docker update --restart=unless-stopped 3. 诊断和调试 1# 查看异常退出的容器 2docker ps -a --filter &#34;exited!=0&#34; 3 4# 查看容器的运行时长 5docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.RunningFor}}&#34; 6 7# 查看容器使用的端口 8docker ps --format &#34;table {{.Names}}\t{{.Ports}}&#34; | grep -v &#34;^\s*$&#34; 9 10# 查看容器占用的资源 11docker ps -q | xargs docker stats --no-stream 12 13# 检查容器健康状态 14docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Health}}&#34; 4. 实用脚本示例 1#!/bin/bash 2# container-info.sh 3 4# 显示详细的容器信息 5echo &#34;=== 容器状态概览 ===&#34; 6docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Ports}}\t{{.Image}}&#34; 7 8echo -e &#34;\n=== 资源使用情况 ===&#34; 9docker ps -q | xargs docker stats --no-stream --format \ 10 &#34;table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}&#34; 11 12echo -e &#34;\n=== 异常容器检查 ===&#34; 13docker ps -a --filter &#34;exited!=0&#34; --format \ 14 &#34;table {{.Names}}\t{{.Status}}\t{{.ExitCode}}\t{{.Command}}&#34; 15 16echo -e &#34;\n=== 容器数量统计 ===&#34; 17echo &#34;运行中: $(docker ps -q | wc -l)&#34; 18echo &#34;已停止: $(docker ps -aq --filter &#34;status=exited&#34; | wc -l)&#34; 19echo &#34;总数: $(docker ps -aq | wc -l)&#34; 1#!/bin/bash 2# container-monitor.sh 3 4# 实时监控容器状态 5watch -n 2 -c &#39; 6clear 7echo &#34;🕐 $(date)&#34; 8echo &#34;==========================================&#34; 9echo &#34;📦 容器状态&#34; 10echo &#34;==========================================&#34; 11docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.RunningFor}}\t{{.Ports}}&#34; | tail -n &#43;2 12echo &#34;&#34; 13echo &#34;💾 资源使用&#34; 14echo &#34;==========================================&#34; 15docker stats --no-stream --format &#34;table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}&#34; 16&#39; 📝 常用命令组合 日常维护 1# 清理所有已停止的容器 2docker ps -aq --filter &#34;status=exited&#34; | xargs docker rm 3 4# 清理所有未使用的容器（包括停止的、未使用的网络、构建缓存等） 5docker system prune -a 6 7# 查看容器日志 8docker ps | grep nginx | awk &#39;{print $1}&#39; | xargs docker logs -f 9 10# 进入容器 11docker ps | grep web | awk &#39;{print $1}&#39; | xargs -I {} docker exec -it {} bash 安全检查 1# 检查特权容器 2docker ps --filter &#34;label=privileged=true&#34; 3 4# 检查以 root 用户运行的容器 5docker ps --format &#34;table {{.Names}}\t{{.Command}}&#34; | grep &#34;root&#34; 6 7# 检查未限制资源的容器 8docker ps --format &#34;table {{.Names}}\t{{.Status}}&#34; | grep -E &#34;(unlimited|no limit)&#34; 网络相关 1# 查看容器使用的网络 2docker ps --format &#34;table {{.Names}}\t{{.Networks}}&#34; 3 4# 查看暴露的端口 5docker ps --format &#34;table {{.Names}}\t{{.Ports}}&#34; | grep -v &#34;^\s*$&#34; 6 7# 查找使用特定端口的容器 8docker ps | grep &#34;:80-&gt;&#34; 🎨 自定义输出格式 可用的占位符 1# 完整列表 2docker ps --format &#34;table {{.ID}}\t{{.Image}}\t{{.Command}}\t{{.CreatedAt}}\t{{.RunningFor}}\t{{.Ports}}\t{{.Status}}\t{{.Size}}\t{{.Names}}\t{{.Labels}}\t{{.Mounts}}\t{{.Networks}}&#34; 3 4# 常用占位符说明： 5.ID 容器ID 6.Image 镜像名称 7.Command 启动命令 8.CreatedAt 创建时间 9.RunningFor 运行时长 10.Ports 端口映射 11.Status 状态 12.Size 容器大小 13.Names 容器名称 14.Labels 标签 15.Mounts 挂载点 16.Networks 网络 17.Health 健康状态 美化输出示例 1# 彩色输出（需要安装 lolcat 或使用 awk 着色） 2docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Ports}}&#34; | awk &#39; 3 BEGIN { 4 printf &#34;\033[1;36m%-20s %-20s %-30s\033[0m\n&#34;, &#34;容器名称&#34;, &#34;状态&#34;, &#34;端口&#34; 5 printf &#34;%-20s %-20s %-30s\n&#34;, &#34;--------------------&#34;, &#34;--------------------&#34;, &#34;------------------------------&#34; 6 } 7 { 8 if ($2 ~ /^Up/) 9 printf &#34;\033[1;32m%-20s %-20s %-30s\033[0m\n&#34;, $1, $2, $3 10 else 11 printf &#34;\033[1;31m%-20s %-20s %-30s\033[0m\n&#34;, $1, $2, $3 12 }&#39; 💡 最佳实践 使用有意义的容器名称">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="程序员技能">
+    <meta itemprop="description" content="Docker ps 命令详解 docker ps 是 Docker 中最常用、最重要的命令之一，用于查看和管理容器状态。
+📋 基本用法 1# 查看正在运行的容器 2docker ps 3 4# 查看所有容器（包括已停止的） 5docker ps -a 6 7# 查看最近创建的容器 8docker ps -l 9 10# 查看最后 n 个创建的容器 11docker ps -n 3 12 13# 查看容器大小 14docker ps -s 15 16# 查看完整输出（不截断） 17docker ps --no-trunc 📊 输出字段说明 1$ docker ps 2CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES 3c3f279d17e0a ubuntu:22.04 &#34;/bin/bash&#34; 2 days ago Up 2 hours 0.0.0.0:80-&gt;8080/tcp, :::80-&gt;8080/tcp web-server 4b6f3c5d8e2f1 postgres:15 &#34;docker-entrypoint.s…&#34; 3 weeks ago Up 3 weeks 0.0.0.0:5432-&gt;5432/tcp, :::5432-&gt;5432/tcp db-primary 各字段详细说明： 字段 说明 示例 CONTAINER ID 容器唯一标识符（前12个字符） c3f279d17e0a IMAGE 容器使用的镜像 ubuntu:22.04, nginx:latest COMMAND 容器启动时执行的命令 &#34;/bin/bash&#34;, &#34;nginx -g &#39;daemon off;&#39;&#34; CREATED 容器创建时间 2 days ago, 3 weeks ago STATUS 容器状态 Up 2 hours（运行中）, Exited (0) 5 hours ago（已停止） PORTS 端口映射 0.0.0.0:80-&gt;8080/tcp（主机80映射到容器8080） NAMES 容器名称 web-server, db-primary 🎯 实用选项详解 1. 过滤容器 1# 按状态过滤 2docker ps --filter &#34;status=running&#34; 3docker ps --filter &#34;status=exited&#34; 4docker ps --filter &#34;status=created&#34; 5docker ps --filter &#34;status=paused&#34; 6docker ps --filter &#34;status=restarting&#34; 7 8# 按标签过滤 9docker ps --filter &#34;label=environment=production&#34; 10docker ps --filter &#34;label=app=web&#34; 11 12# 按名称过滤 13docker ps --filter &#34;name=web&#34; 14docker ps --filter &#34;name=^web.*&#34; # 正则表达式 15 16# 按镜像过滤 17docker ps --filter &#34;ancestor=nginx&#34; 18docker ps --filter &#34;ancestor=nginx:latest&#34; 19 20# 按退出码过滤 21docker ps -a --filter &#34;exited=0&#34; # 正常退出 22docker ps -a --filter &#34;exited=137&#34; # 被 SIGKILL 杀死 23docker ps -a --filter &#34;exited!=0&#34; # 异常退出 24 25# 多个过滤条件组合 26docker ps --filter &#34;status=running&#34; --filter &#34;label=app=api&#34; 27 28# 过滤最近创建 29docker ps -a --filter &#34;since=web-server&#34; # 在 web-server 之后创建的容器 30docker ps -a --filter &#34;before=db&#34; # 在 db 之前创建的容器 2. 格式化输出 1# 自定义输出格式 2docker ps --format &#34;table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Names}}&#34; 3 4# 只显示特定字段 5docker ps --format &#34;{{.Names}}: {{.Status}}&#34; 6 7# 显示所有字段（JSON格式） 8docker ps --format json 9 10# 常用格式化模板 11docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}&#34; 12docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.RunningFor}} ago\t{{.Command}}&#34; 13 14# Go模板高级用法 15docker ps --format &#39;{{.ID}} {{.Names}} {{.Status}}&#39; | column -t 3. 查看详细信息 1# 显示完整容器ID 2docker ps --no-trunc 3 4# 显示容器大小（磁盘使用） 5docker ps -s 6 7# 输出字段说明： 8# SIZE: 容器可写层的大小 9# VIRTUAL SIZE: 容器总大小（镜像&#43;可写层） 10 11# 安静模式（只显示容器ID） 12docker ps -q 13 14# 安静模式配合其他命令 15docker ps -aq | xargs docker stop # 停止所有容器 16docker ps -q --filter &#34;status=exited&#34; | xargs docker rm # 删除所有已停止容器 🔧 高级用法和技巧 1. 实时监控容器 1# 实时查看容器状态（类似 top 命令） 2docker stats 3 4# 持续监控容器列表（每秒刷新） 5watch -n 1 docker ps 6 7# 监控特定容器 8watch -n 1 &#39;docker ps --filter &#34;name=web&#34;&#39; 9 10# 使用别名简化命令 11alias dps=&#39;docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}&#34;&#39; 2. 批量操作 1# 获取所有运行中容器的ID 2docker ps -q 3 4# 停止所有运行中的容器 5docker ps -q | xargs docker stop 6 7# 删除所有已停止的容器 8docker ps -aq --filter &#34;status=exited&#34; | xargs docker rm 9 10# 删除所有容器（强制） 11docker ps -aq | xargs docker rm -f 12 13# 重启所有运行中的容器 14docker ps -q | xargs docker restart 15 16# 更新所有容器的重启策略 17docker ps -q | xargs docker update --restart=unless-stopped 3. 诊断和调试 1# 查看异常退出的容器 2docker ps -a --filter &#34;exited!=0&#34; 3 4# 查看容器的运行时长 5docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.RunningFor}}&#34; 6 7# 查看容器使用的端口 8docker ps --format &#34;table {{.Names}}\t{{.Ports}}&#34; | grep -v &#34;^\s*$&#34; 9 10# 查看容器占用的资源 11docker ps -q | xargs docker stats --no-stream 12 13# 检查容器健康状态 14docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Health}}&#34; 4. 实用脚本示例 1#!/bin/bash 2# container-info.sh 3 4# 显示详细的容器信息 5echo &#34;=== 容器状态概览 ===&#34; 6docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Ports}}\t{{.Image}}&#34; 7 8echo -e &#34;\n=== 资源使用情况 ===&#34; 9docker ps -q | xargs docker stats --no-stream --format \ 10 &#34;table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}&#34; 11 12echo -e &#34;\n=== 异常容器检查 ===&#34; 13docker ps -a --filter &#34;exited!=0&#34; --format \ 14 &#34;table {{.Names}}\t{{.Status}}\t{{.ExitCode}}\t{{.Command}}&#34; 15 16echo -e &#34;\n=== 容器数量统计 ===&#34; 17echo &#34;运行中: $(docker ps -q | wc -l)&#34; 18echo &#34;已停止: $(docker ps -aq --filter &#34;status=exited&#34; | wc -l)&#34; 19echo &#34;总数: $(docker ps -aq | wc -l)&#34; 1#!/bin/bash 2# container-monitor.sh 3 4# 实时监控容器状态 5watch -n 2 -c &#39; 6clear 7echo &#34;🕐 $(date)&#34; 8echo &#34;==========================================&#34; 9echo &#34;📦 容器状态&#34; 10echo &#34;==========================================&#34; 11docker ps --format &#34;table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.RunningFor}}\t{{.Ports}}&#34; | tail -n &#43;2 12echo &#34;&#34; 13echo &#34;💾 资源使用&#34; 14echo &#34;==========================================&#34; 15docker stats --no-stream --format &#34;table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}&#34; 16&#39; 📝 常用命令组合 日常维护 1# 清理所有已停止的容器 2docker ps -aq --filter &#34;status=exited&#34; | xargs docker rm 3 4# 清理所有未使用的容器（包括停止的、未使用的网络、构建缓存等） 5docker system prune -a 6 7# 查看容器日志 8docker ps | grep nginx | awk &#39;{print $1}&#39; | xargs docker logs -f 9 10# 进入容器 11docker ps | grep web | awk &#39;{print $1}&#39; | xargs -I {} docker exec -it {} bash 安全检查 1# 检查特权容器 2docker ps --filter &#34;label=privileged=true&#34; 3 4# 检查以 root 用户运行的容器 5docker ps --format &#34;table {{.Names}}\t{{.Command}}&#34; | grep &#34;root&#34; 6 7# 检查未限制资源的容器 8docker ps --format &#34;table {{.Names}}\t{{.Status}}&#34; | grep -E &#34;(unlimited|no limit)&#34; 网络相关 1# 查看容器使用的网络 2docker ps --format &#34;table {{.Names}}\t{{.Networks}}&#34; 3 4# 查看暴露的端口 5docker ps --format &#34;table {{.Names}}\t{{.Ports}}&#34; | grep -v &#34;^\s*$&#34; 6 7# 查找使用特定端口的容器 8docker ps | grep &#34;:80-&gt;&#34; 🎨 自定义输出格式 可用的占位符 1# 完整列表 2docker ps --format &#34;table {{.ID}}\t{{.Image}}\t{{.Command}}\t{{.CreatedAt}}\t{{.RunningFor}}\t{{.Ports}}\t{{.Status}}\t{{.Size}}\t{{.Names}}\t{{.Labels}}\t{{.Mounts}}\t{{.Networks}}&#34; 3 4# 常用占位符说明： 5.ID 容器ID 6.Image 镜像名称 7.Command 启动命令 8.CreatedAt 创建时间 9.RunningFor 运行时长 10.Ports 端口映射 11.Status 状态 12.Size 容器大小 13.Names 容器名称 14.Labels 标签 15.Mounts 挂载点 16.Networks 网络 17.Health 健康状态 美化输出示例 1# 彩色输出（需要安装 lolcat 或使用 awk 着色） 2docker ps --format &#34;table {{.Names}}\t{{.Status}}\t{{.Ports}}&#34; | awk &#39; 3 BEGIN { 4 printf &#34;\033[1;36m%-20s %-20s %-30s\033[0m\n&#34;, &#34;容器名称&#34;, &#34;状态&#34;, &#34;端口&#34; 5 printf &#34;%-20s %-20s %-30s\n&#34;, &#34;--------------------&#34;, &#34;--------------------&#34;, &#34;------------------------------&#34; 6 } 7 { 8 if ($2 ~ /^Up/) 9 printf &#34;\033[1;32m%-20s %-20s %-30s\033[0m\n&#34;, $1, $2, $3 10 else 11 printf &#34;\033[1;31m%-20s %-20s %-30s\033[0m\n&#34;, $1, $2, $3 12 }&#39; 💡 最佳实践 使用有意义的容器名称">
+    <meta itemprop="wordCount" content="942">
+    <title></title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/docker-ps/index.html" rel="canonical" type="text/html" title="">
+    <link href="/images/favicon.png?1773589997" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1773589997" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1773589997" defer></script>
+    <script src="/js/search-lunr.min.js?1773589997" defer></script>
+    <script src="/js/search.min.js?1773589997" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1773589997";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1773589997" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1773589997" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1773589997" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1773589997" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1773589997" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1773589997" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1773589997" rel="stylesheet">
+    <link href="/css/theme.min.css?1773589997" rel="stylesheet">
+    <link href="/css/format-print.min.css?1773589997" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/docker\/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4\/docker-ps\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1773589997" rel="stylesheet">
+  </head>
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/docker-ps/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#-基本用法">📋 <strong>基本用法</strong></a></li>
+    <li><a href="#-输出字段说明">📊 <strong>输出字段说明</strong></a>
+      <ul>
+        <li><a href="#各字段详细说明"><strong>各字段详细说明：</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-实用选项详解">🎯 <strong>实用选项详解</strong></a>
+      <ul>
+        <li><a href="#1-过滤容器"><strong>1. 过滤容器</strong></a></li>
+        <li><a href="#2-格式化输出"><strong>2. 格式化输出</strong></a></li>
+        <li><a href="#3-查看详细信息"><strong>3. 查看详细信息</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-高级用法和技巧">🔧 <strong>高级用法和技巧</strong></a>
+      <ul>
+        <li><a href="#1-实时监控容器"><strong>1. 实时监控容器</strong></a></li>
+        <li><a href="#2-批量操作"><strong>2. 批量操作</strong></a></li>
+        <li><a href="#3-诊断和调试"><strong>3. 诊断和调试</strong></a></li>
+        <li><a href="#4-实用脚本示例"><strong>4. 实用脚本示例</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-常用命令组合">📝 <strong>常用命令组合</strong></a>
+      <ul>
+        <li><a href="#日常维护"><strong>日常维护</strong></a></li>
+        <li><a href="#安全检查"><strong>安全检查</strong></a></li>
+        <li><a href="#网络相关"><strong>网络相关</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-自定义输出格式">🎨 <strong>自定义输出格式</strong></a>
+      <ul>
+        <li><a href="#可用的占位符"><strong>可用的占位符</strong></a></li>
+        <li><a href="#美化输出示例"><strong>美化输出示例</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#-最佳实践">💡 <strong>最佳实践</strong></a></li>
+    <li><a href="#-故障排查">🔍 <strong>故障排查</strong></a></li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"><span itemprop="name">Docker</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/docker-ps/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html" title="Docker (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html" title="Docker 入门 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+        </div>
+      </main>
+    </div>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1773589997"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1773589997" defer></script>
+    <script src="/js/theme.min.js?1773589997" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>
