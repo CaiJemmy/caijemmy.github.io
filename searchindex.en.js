@@ -41,13 +41,23 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Docker \u003e Docker 入门",
-    "content": "常见问题 Premission denied 在挂载目录后增加--privileged=true，扩大容器权限。\n1docker run -d -p 5000:5000 -v /data/myregistry/:/var/lib/registry/ --privileged=true registry",
+    "content": "一、什么是 Docker 卷？ Docker 卷（Volumes）是持久化 Docker 容器生成和使用的数据的首选机制。与绑定挂载（bind mounts）相比，卷完全由 Docker 管理，具有更好的可移植性和安全性。\n二、为什么需要卷？ 数据持久化需求 1# 没有卷的情况：数据会丢失 2docker run -d --name web nginx 3# 容器删除后，所有数据（日志、配置文件等）都会丢失 4 5# 使用卷：数据持久化 6docker run -d --name web -v mydata:/usr/share/nginx/html nginx 7# 即使容器删除，数据仍然保存在卷中 主要优势 持久性：独立于容器生命周期 可移植性：可在容器间共享和重用 性能：通常比绑定挂载性能更好 安全性：容器无法直接修改宿主机文件系统 三、卷的类型 1. 命名卷（Named Volumes） - 最常用 1# 创建命名卷 2docker volume create mydata 3 4# 使用命名卷 5docker run -d \\ 6 --name myapp \\ 7 -v mydata:/app/data \\ 8 nginx 9 10# 查看卷信息 11docker volume inspect mydata 2. 匿名卷（Anonymous Volumes） 1# Docker 自动创建，名称随机 2docker run -d \\ 3 --name myapp \\ 4 -v /app/data \\ # 匿名卷 5 nginx 6 7# 查看所有卷（包括匿名卷） 8docker volume ls 3. 绑定挂载（Bind Mounts）- 不是真正的卷 1# 挂载宿主机目录到容器 2docker run -d \\ 3 --name myapp \\ 4 -v /host/path:/container/path \\ 5 nginx 四、卷的基本操作 创建和管理卷 1# 1. 创建卷 2docker volume create db_data 3 4# 2. 列出所有卷 5docker volume ls 6# DRIVER VOLUME NAME 7# local db_data 8 9# 3. 查看卷详细信息 10docker volume inspect db_data 11# [ 12# { 13# \"CreatedAt\": \"2023-10-01T10:00:00Z\", 14# \"Driver\": \"local\", 15# \"Labels\": {}, 16# \"Mountpoint\": \"/var/lib/docker/volumes/db_data/_data\", 17# \"Name\": \"db_data\", 18# \"Options\": {}, 19# \"Scope\": \"local\" 20# } 21# ] 22 23# 4. 删除卷 24docker volume rm db_data 25 26# 5. 删除所有未使用的卷 27docker volume prune 在容器中使用卷 1# 方式1：-v 或 --volume（旧方式） 2docker run -d \\ 3 --name mysql \\ 4 -v mysql_data:/var/lib/mysql \\ 5 -e MYSQL_ROOT_PASSWORD=secret \\ 6 mysql:8.0 7 8# 方式2：--mount（新方式，推荐） 9docker run -d \\ 10 --name mysql \\ 11 --mount source=mysql_data,target=/var/lib/mysql \\ 12 -e MYSQL_ROOT_PASSWORD=secret \\ 13 mysql:8.0 五、高级使用场景 1. 数据容器模式（已过时，但需了解） 1# 创建专门的数据容器 2docker create -v /data --name datacontainer busybox 3 4# 其他容器使用这个数据容器 5docker run --volumes-from datacontainer --name app1 nginx 6docker run --volumes-from datacontainer --name app2 nginx 2. 只读卷 1# 容器只能读取，不能写入。ro：read only 2docker run -d \\ 3 --name web \\ 4 -v config:/etc/nginx:ro \\ 5 nginx 6 7# 使用 --mount 8docker run -d \\ 9 --name web \\ 10 --mount source=config,target=/etc/nginx,readonly \\ 11 nginx 3. 多容器共享卷 1# 创建共享卷 2docker volume create shared_data 3 4# 容器1：写入数据 5docker run -d \\ 6 --name writer \\ 7 -v shared_data:/data \\ 8 alpine sh -c \"echo 'Hello from writer' \u003e /data/message.txt \u0026\u0026 sleep 3600\" 9 10# 容器2：读取数据 11docker run -d \\ 12 --name reader \\ 13 -v shared_data:/data \\ 14 alpine sh -c \"cat /data/message.txt \u0026\u0026 sleep 3600\" 15 16# 查看输出 17docker logs reader 18# Hello from writer 4. 卷驱动插件 1# 使用第三方卷驱动 2docker volume create \\ 3 --driver vieux/sshfs \\ 4 --opt sshcmd=user@host:/remote/path \\ 5 --opt password=secret \\ 6 sshvolume 7 8# 使用 9docker run -d \\ 10 --name web \\ 11 -v sshvolume:/app \\ 12 nginx 5. 容器卷的继承 参数：–volume-from，卷继承配置参数。\n1# app2 的卷继承app1的配置。 2docker run --privileged=true -v /host/data:/container/data --name app1 nginx 3docker run --privileged=true --volumes-from app1 --name app2 nginx 常见问题 Premission denied 在挂载目录后增加--privileged=true，扩大容器权限。\n1docker run -d -p 5000:5000 -v /data/myregistry/:/var/lib/registry/ --privileged=true registry",
     "description": "docker入门之容器卷。",
     "tags": [
       "Docker"
     ],
     "title": "03 容器卷",
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Docker \u003e Docker 入门",
+    "content": "",
+    "description": "docker入门之常用软件安装。",
+    "tags": [
+      "Docker"
+    ],
+    "title": "04 常用软件安装",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/04-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/index.html"
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 书香笔记",
@@ -221,7 +231,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Docker",
-    "content": "01 docker常用命令\ndocker入门之docker常用命令。\n02 容器镜像\ndocker入门之容器镜像。\n03 容器卷\ndocker入门之容器卷。",
+    "content": "01 docker常用命令\ndocker入门之docker常用命令。\n02 容器镜像\ndocker入门之容器镜像。\n03 容器卷\ndocker入门之容器卷。\n04 常用软件安装\ndocker入门之常用软件安装。",
     "description": "开启Docker之旅。",
     "tags": [],
     "title": "Docker 入门",
