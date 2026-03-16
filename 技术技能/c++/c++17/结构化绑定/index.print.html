@@ -23,27 +23,27 @@
     <title>C&#43;&#43;17之结构化绑定 :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/c++17/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A/index.html" rel="canonical" type="text/html" title="C++17之结构化绑定 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/c++17/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A/index.xml" rel="alternate" type="application/rss+xml" title="C++17之结构化绑定 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1773589997" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1773589997" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1773589997" defer></script>
-    <script src="/js/search-lunr.min.js?1773589997" defer></script>
-    <script src="/js/search.min.js?1773589997" defer></script>
+    <link href="/images/favicon.png?1773667281" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1773667281" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1773667281" defer></script>
+    <script src="/js/search-lunr.min.js?1773667281" defer></script>
+    <script src="/js/search.min.js?1773667281" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1773589997";
+      window.relearn.index_js_url="/searchindex.en.js?1773667281";
     </script>
-    <script src="/js/lunr/lunr.min.js?1773589997" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1773589997" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1773589997" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1773589997" defer></script>
+    <script src="/js/lunr/lunr.min.js?1773667281" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1773667281" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1773667281" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1773667281" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1773589997" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1773589997" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1773589997" rel="stylesheet">
-    <link href="/css/theme.min.css?1773589997" rel="stylesheet">
-    <link href="/css/format-print.min.css?1773589997" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1773667281" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1773667281" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1773667281" rel="stylesheet">
+    <link href="/css/theme.min.css?1773667281" rel="stylesheet">
+    <link href="/css/format-print.min.css?1773667281" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1773589997" rel="stylesheet">
+    <link href="/css/custom.css?1773667281" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/c&#43;&#43;17/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A/index.html">
     <div id="R-body" class="default-animation">
@@ -218,21 +218,21 @@
 <li><strong>零运行时开销</strong>：编译期展开，不引入任何性能代价</li>
 <li><strong>通用性</strong>：统一处理数组、结构体、tuple等复合类型</li>
 </ol>
-<div class="tab-panel" data-tab-group="R-tabs-2b1c73a53b2f55f6ba040ecfa1fbd518">
+<div class="tab-panel" data-tab-group="R-tabs-29601eb519cee932ce751d132475b309">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-e21ff529787c2962347a2e2d143342b8" aria-expanded="true"
+      aria-controls="R-tab-id-71a20821668ed4ba27a8a840abedc658" aria-expanded="true"
       data-tab-item="R-tab-c0d3e75f26d4909d2fa50a328d4d6e54"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-2b1c73a53b2f55f6ba040ecfa1fbd518','R-tab-c0d3e75f26d4909d2fa50a328d4d6e54')"
+      onclick="switchTab('R-tabs-29601eb519cee932ce751d132475b309','R-tab-c0d3e75f26d4909d2fa50a328d4d6e54')"
     >
       <span class="tab-nav-text">对比示例</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-e21ff529787c2962347a2e2d143342b8"
+      id="R-tab-id-71a20821668ed4ba27a8a840abedc658"
       data-tab-item="R-tab-c0d3e75f26d4909d2fa50a328d4d6e54"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -255,21 +255,21 @@
 </span></span></span></code></pre></div>
 <h3 id="实用场景示例">实用场景示例<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <h4 id="场景1遍历关联容器c17">场景1：遍历关联容器（C++17+）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-9bd6357bb4d6976fa59a741311d06a60">
+<div class="tab-panel" data-tab-group="R-tabs-66ac2ca7763bbeab12350ee439a2a8f3">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-391e99147d77fe3cc632780d08ab59b5" aria-expanded="true"
+      aria-controls="R-tab-id-5037cdf84d86431c44810c1f62699a9b" aria-expanded="true"
       data-tab-item="R-tab-737c1a1ad138060c6227d895fcfceaba"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-9bd6357bb4d6976fa59a741311d06a60','R-tab-737c1a1ad138060c6227d895fcfceaba')"
+      onclick="switchTab('R-tabs-66ac2ca7763bbeab12350ee439a2a8f3','R-tab-737c1a1ad138060c6227d895fcfceaba')"
     >
       <span class="tab-nav-text">遍历关联容器</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-391e99147d77fe3cc632780d08ab59b5"
+      id="R-tab-id-5037cdf84d86431c44810c1f62699a9b"
       data-tab-item="R-tab-737c1a1ad138060c6227d895fcfceaba"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -298,21 +298,21 @@
     </div>
   </div>
 </div><h4 id="场景2解构多返回值c17">场景2：解构多返回值（C++17+）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-bb05f46f49d0144ba3939ab3c21a1733">
+<div class="tab-panel" data-tab-group="R-tabs-f0cf595c57a382a2c3e474a9ed5ec867">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-f483dad5751e8613edbf17c6c7b3f099" aria-expanded="true"
+      aria-controls="R-tab-id-e349972f6ca423a416f7e04fbb4da747" aria-expanded="true"
       data-tab-item="R-tab-76e85373954bf85ed30ce5fc83b485a8"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-bb05f46f49d0144ba3939ab3c21a1733','R-tab-76e85373954bf85ed30ce5fc83b485a8')"
+      onclick="switchTab('R-tabs-f0cf595c57a382a2c3e474a9ed5ec867','R-tab-76e85373954bf85ed30ce5fc83b485a8')"
     >
       <span class="tab-nav-text">解构多返回值</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-f483dad5751e8613edbf17c6c7b3f099"
+      id="R-tab-id-e349972f6ca423a416f7e04fbb4da747"
       data-tab-item="R-tab-76e85373954bf85ed30ce5fc83b485a8"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -342,21 +342,21 @@
     </div>
   </div>
 </div><h4 id="场景3处理结构体数据c17">场景3：处理结构体数据（C++17+）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-bf72fced0105878ca7feb9b15d045cf7">
+<div class="tab-panel" data-tab-group="R-tabs-e90e7783d0e1190a6dd000ed4518c89c">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-7f2b299ff19ee2d8e93e79251e73ca34" aria-expanded="true"
+      aria-controls="R-tab-id-03d3c8e5472972a6f04843f5c33ca67e" aria-expanded="true"
       data-tab-item="R-tab-033c300de6398c4853edd07192bb70e9"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-bf72fced0105878ca7feb9b15d045cf7','R-tab-033c300de6398c4853edd07192bb70e9')"
+      onclick="switchTab('R-tabs-e90e7783d0e1190a6dd000ed4518c89c','R-tab-033c300de6398c4853edd07192bb70e9')"
     >
       <span class="tab-nav-text">处理结构体数据</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-7f2b299ff19ee2d8e93e79251e73ca34"
+      id="R-tab-id-03d3c8e5472972a6f04843f5c33ca67e"
       data-tab-item="R-tab-033c300de6398c4853edd07192bb70e9"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -391,21 +391,21 @@
     </div>
   </div>
 </div><h4 id="场景4数组解构c17">场景4：数组解构（C++17+）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-3e3d1e2605f91cb96322e5c43912b93b">
+<div class="tab-panel" data-tab-group="R-tabs-a6bbbfe7de96407fa6bcdc677dc6fbe0">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-df1af7112eabca57826e21bd7bb93192" aria-expanded="true"
+      aria-controls="R-tab-id-9066d1c43a7b4e3e7fa70e8a8cfd9836" aria-expanded="true"
       data-tab-item="R-tab-3171f0c697c90343f7077d2d407ef555"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-3e3d1e2605f91cb96322e5c43912b93b','R-tab-3171f0c697c90343f7077d2d407ef555')"
+      onclick="switchTab('R-tabs-a6bbbfe7de96407fa6bcdc677dc6fbe0','R-tab-3171f0c697c90343f7077d2d407ef555')"
     >
       <span class="tab-nav-text">数组解构</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-df1af7112eabca57826e21bd7bb93192"
+      id="R-tab-id-9066d1c43a7b4e3e7fa70e8a8cfd9836"
       data-tab-item="R-tab-3171f0c697c90343f7077d2d407ef555"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -425,21 +425,21 @@
     </div>
   </div>
 </div><h4 id="场景5引用绑定修改原数据c17">场景5：引用绑定修改原数据（C++17+）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-e14818da6cb2d06526478ef91fe51c47">
+<div class="tab-panel" data-tab-group="R-tabs-43220360f7b61d76642fb3b9d0c03998">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-057e29c3392202e43e4799e351dbdfb4" aria-expanded="true"
+      aria-controls="R-tab-id-a099b4922a3253024afabe0cb4431854" aria-expanded="true"
       data-tab-item="R-tab-dd0e3b0f1898512e5b4513eb3a8491de"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-e14818da6cb2d06526478ef91fe51c47','R-tab-dd0e3b0f1898512e5b4513eb3a8491de')"
+      onclick="switchTab('R-tabs-43220360f7b61d76642fb3b9d0c03998','R-tab-dd0e3b0f1898512e5b4513eb3a8491de')"
     >
       <span class="tab-nav-text">引用绑定修改原数据</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-057e29c3392202e43e4799e351dbdfb4"
+      id="R-tab-id-a099b4922a3253024afabe0cb4431854"
       data-tab-item="R-tab-dd0e3b0f1898512e5b4513eb3a8491de"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -471,21 +471,21 @@
 <h3 id="if-constexpr的编译期条件判断">if constexpr的编译期条件判断<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <p><code>if constexpr</code>是C++17的另一项重要特性，它在编译期评估条件，根据结果选择要编译的代码分支，未被选择的分支在编译时会被完全忽略。</p>
 <h3 id="案例1类型安全的统一接口c17">案例1：类型安全的统一接口（C++17+）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-0ce181c34d896344ffd3b4c4c65c40b2">
+<div class="tab-panel" data-tab-group="R-tabs-17b9282e40997b1ba57d1ff9c541d0dc">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-473e15d323219f90ac3e7cca75007e9f" aria-expanded="true"
+      aria-controls="R-tab-id-8d96fd88a1ff8c5d0c5ddb2a8a3c1541" aria-expanded="true"
       data-tab-item="R-tab-3a22466a9504343cfaa7bb811676c287"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-0ce181c34d896344ffd3b4c4c65c40b2','R-tab-3a22466a9504343cfaa7bb811676c287')"
+      onclick="switchTab('R-tabs-17b9282e40997b1ba57d1ff9c541d0dc','R-tab-3a22466a9504343cfaa7bb811676c287')"
     >
       <span class="tab-nav-text">类型安全的统一接口</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-473e15d323219f90ac3e7cca75007e9f"
+      id="R-tab-id-8d96fd88a1ff8c5d0c5ddb2a8a3c1541"
       data-tab-item="R-tab-3a22466a9504343cfaa7bb811676c287"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -715,9 +715,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1773589997"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1773589997" defer></script>
-    <script src="/js/theme.min.js?1773589997" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1773667281"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1773667281" defer></script>
+    <script src="/js/theme.min.js?1773667281" defer></script>
 
 <style>
     .highlight {

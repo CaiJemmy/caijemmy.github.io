@@ -30,6 +30,34 @@ var relearn_searchindex = [
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"
   },
   {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Docker \u003e Docker 入门",
+    "content": "Docker 镜像原理深度解析 1. 镜像是什么？ 镜像是只读的、分层的、轻量级的文件系统模板，包含运行容器所需的所有文件和配置。\n1# 查看镜像结构 2docker history nginx:alpine 2. 镜像的层叠结构（UnionFS） Docker 使用 Union File System（联合文件系统）实现分层存储。\n1┌─────────────────────────────────────┐ 2│ 容器可写层 (Container) │ 3├─────────────────────────────────────┤ 4│ 镜像层 3 (Image Layer 3) │ 5├─────────────────────────────────────┤ 6│ 镜像层 2 (Image Layer 2) │ 7├─────────────────────────────────────┤ 8│ 镜像层 1 (Image Layer 1) │ 9├─────────────────────────────────────┤ 10│ 基础镜像 (Base Image) │ 11└─────────────────────────────────────┘ 3. 镜像如何存储？ 1# 查看镜像存储位置（Linux） 2ls /var/lib/docker/image/overlay2/ 3 4# 目录结构示例 5/var/lib/docker/ 6├── image/ # 镜像元数据 7├── overlay2/ # 镜像层数据（存储驱动） 8└── containers/ # 容器数据 4. 镜像分层的优势 1# 示例：构建镜像时分层 2FROM ubuntu:20.04 # 层1：基础镜像（100MB） 3RUN apt-get update # 层2：更新包列表（1MB） 4RUN apt-get install -y curl # 层3：安装curl（5MB） 5COPY app.py /app/ # 层4：复制应用（0.1MB） 6 7# 多个镜像共享基础层 8镜像A: ubuntu层 + python层 + app层 9镜像B: ubuntu层 + node层 + app层 10# ubuntu层只存储一次！ 5. 镜像的组成 1# 镜像 = 多个只读层 + 元数据 2镜像包含： 31. JSON 配置文件（镜像元数据） 42. Layer 文件系统（实际文件内容） 53. Manifest 文件（镜像清单） 64. Config 文件（运行时配置） 常用存储驱动对比 驱动 原理 性能 适用场景 overlay2 联合挂载 ⭐⭐⭐⭐⭐ 默认推荐 aufs 联合挂载 ⭐⭐⭐⭐ 旧系统兼容 devicemapper 块设备 ⭐⭐⭐ 企业存储 btrfs 写时复制 ⭐⭐ 高级特性 zfs 写时复制 ⭐⭐ 数据完整性 查看当前存储驱动 1docker info | grep \"Storage Driver\" 2# Storage Driver: overlay2 docker commit 基本语法 1docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]] 常用选项 1-a, --author string # 指定作者 2-c, --change list # 应用Dockerfile指令 3-m, --message string # 提交消息 4-p, --pause # 提交时暂停容器（默认true） 保存容器修改 1# 1. 启动一个基础容器 2docker run -it --name test-container ubuntu:20.04 bash 3 4# 2. 在容器内进行修改 5root@container:/# apt-get update 6root@container:/# apt-get install -y vim curl 7root@container:/# echo \"custom config\" \u003e /etc/myconfig.conf 8 9# 3. 在另一个终端提交修改 10docker commit \\ 11 -a \"Your Name \u003cemail@example.com\u003e\" \\ 12 -m \"Added vim, curl and custom config\" \\ 13 test-container \\ 14 my-custom-ubuntu:v1 15 16# 4. 验证新镜像 17docker images | grep my-custom-ubuntu 18docker history my-custom-ubuntu:v1 19 20# 5. 使用新镜像运行容器 21docker run -it --rm my-custom-ubuntu:v1 bash 22# 已包含之前安装的软件 创建开发快照 1#!/bin/bash 2# create-snapshot.sh 3 4CONTAINER=\"dev-environment\" 5TIMESTAMP=$(date +%Y%m%d_%H%M%S) 6 7echo \"=== Creating development snapshot ===\" 8 9# 1. 暂停容器确保一致性 10docker pause $CONTAINER 11 12# 2. 创建快照 13docker commit \\ 14 -m \"Dev snapshot at $TIMESTAMP\" \\ 15 -a \"$(git config user.name)\" \\ 16 $CONTAINER \\ 17 dev-snapshot:$TIMESTAMP 18 19# 3. 恢复容器 20docker unpause $CONTAINER 21 22# 4. 标记为最新 23docker tag dev-snapshot:$TIMESTAMP dev-snapshot:latest 24 25echo \"Snapshot created: dev-snapshot:$TIMESTAMP\" 26echo \"Size: $(docker images dev-snapshot:$TIMESTAMP --format \"{{.Size}}\")\" 27 28# 5. 推送到镜像仓库（可选） 29# docker tag dev-snapshot:$TIMESTAMP myregistry/dev-snapshot:$TIMESTAMP 30# docker push myregistry/dev-snapshot:$TIMESTAMP 本地镜像发布到阿里云 前期准备 阿里云上创建资源 在阿里云控制台的”容器镜像服 \u003e 实例列表 \u003e 个人版实例 \u003e 仓库管理“中，创建”命名空间“ 和 ”仓库镜像“。\n准备镜像 1# 1. 启动一个基础容器 2docker run -it --name test-container ubuntu:20.04 bash 3 4# 2. 在容器内进行修改 5root@container:/# apt-get update 6root@container:/# apt-get install -y vim 7root@container:/# echo \"custom config\" \u003e /etc/myconfig.conf 8 9# 3. 在另一个终端提交修改 10docker commit \\ 11 -a \"Your Name \u003cemail@example.com\u003e\" \\ 12 -m \"Added vim, curl and custom config\" \\ 13 test-container \\ 14 myubuntu:0.1 15 16# 4. 验证新镜像 17docker images | grep myubuntu 将镜像推送到阿里云Registry 请根据实际镜像信息替换示例中的[ImageId]和[镜像版本号]参数。\n​ 阿里云参考 1docker login --username=hi348*****@aliyun.com crpi-rpphihht7hjgcy9f.cn-hangzhou.personal.cr.aliyuncs.com 2docker tag [ImageId] crpi-rpphihht7hjgcy9f.cn-hangzhou.personal.cr.aliyuncs.com/ooxxfake/fake_xx:[镜像版本号] 3docker push crpi-rpphihht7hjgcy9f.cn-hangzhou.personal.cr.aliyuncs.com/ooxxfake/fake_xx:[镜像版本号] 验证云上镜像 ​ 验证云上镜像 1# 1. 首先删除所有使用该镜像的容器 2docker rm -f $(docker ps -a | grep d84edeb5d147 | awk '{print $1}') 3 4# 2. 删除所有相关标签 5docker rmi $(docker images --digests | grep d84edeb5d147 | grep none | awk '{print $1\":\"$2}') 6 7# 3. 最后删除镜像ID 8docker rmi d84edeb5d147 9 10# 4. 验证环境 11docker images 12 13# 5. 拉取云上镜像 14docker pull crpi-rpphihht7hjgcy9f.cn-hangzhou.personal.cr.aliyuncs.com/ooxxfake/fake_xx:0.1 15 16# 6. 验证镜像 17docker images 18docker run -it --name=myubuntu d84edeb5d147 /bin/bash 镜像推送到私服 搭建私服Registry 1# 1. 拉取registry镜像 2docker pull registry 3 4# 2. 启动registry容器 5docker run -d -p 5000:5000 -v /data/myregistry/:/var/lib/registry/ --privileged=true registry 6 7# 3. 验证私服上镜像情况 8curl -XGET http://192.168.52.60:5000/v2/_catalog 准备镜像 1# 1. 启动一个基础容器 2docker run -it --name test-container ubuntu:20.04 bash 3 4# 2. 在容器内进行修改 5root@container:/# apt-get update 6root@container:/# apt-get install -y vim 7root@container:/# echo \"custom config\" \u003e /etc/myconfig.conf 8 9# 3. 在另一个终端提交修改 10docker commit \\ 11 -a \"Your Name \u003cemail@example.com\u003e\" \\ 12 -m \"Added vim, curl and custom config\" \\ 13 test-container \\ 14 myubuntu:0.1 15 16# 4. 验证新镜像 17docker images | grep myubuntu 18 19# 5. 给镜像打tag 20# 公式 docker tag 镜像:tag Host:Port/Registry:tag 21docker tag myubuntu:0.1 192.168.52.60:5000/myubuntu:0.1 22docker images --digests 上传到私服 解决默认不支持http的限制 修改/etc/docker/daemon.json中的配置，增加insecure-registries配置项\n1{ 2 \"registry-mirrors\": [\"https://4h3dhlnn.mirror.aliyuncs.com\"], 3 \"insecure-registries\": [\"192.168.52.60:5000\"] 4} 重启docker 及 registry容器\n1systemctl restart docker 2systemctl status docker 3docker start f090c4f3fead 推送镜像到私服 1# 1. 推送镜像 2docker push 192.168.52.60:5000/myubuntu:0.1 3 4# 2. 验证推送结果 5curl -XGET http://192.168.52.60:5000/v2/_catalog 验证私服镜像 1# 1. 删除本地tag及镜像 2docker rmi -f 192.168.52.60:5000/myubuntu:0.1 3docker rmi -f myubuntu:0.1 4 5# 2. 拉取私服上的镜像 6docker pull 192.168.52.60:5000/myubuntu:0.1 7 8# 3. 验证镜像 9docker run -it ed0f9c0f2e86 /bin/bash 验证数据卷映射情况 容器中查看数据卷内容 1# 1. 进入registry容器 2docker exec -it f090c4f3fead sh 3 4# 2. 进入/var/lib/registry查看 5cd /var/lib/registry \u0026\u0026 ls -l 主机上查看映射文件 1cd /data/myregistry/ \u0026\u0026 ls -l 删除registry容器后，再启动registry容器 1# 1. 删除容器 2docker stop fce06d0c4b11 3docker rm fce06d0c4b11 4 5# 2. 启动容器 6docker run -d -p 5000:5000 -v /data/myregistry/:/var/lib/registry/ --privileged=true registry 7 8# 3. 验证数据卷 9curl -XGET http://192.168.52.60:5000/v2/_catalog",
+    "description": "docker入门之容器镜像。",
+    "tags": [
+      "Docker"
+    ],
+    "title": "02 容器镜像",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Docker \u003e Docker 入门",
+    "content": "常见问题 Premission denied 在挂载目录后增加--privileged=true，扩大容器权限。\n1docker run -d -p 5000:5000 -v /data/myregistry/:/var/lib/registry/ --privileged=true registry",
+    "description": "docker入门之容器卷。",
+    "tags": [
+      "Docker"
+    ],
+    "title": "03 容器卷",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 书香笔记",
+    "content": "警告 安装前先断开网络链接。 安装前先备份C盘下个人数据。 安装win11 启动安装 在非 C 盘下，解压win11系统文件，例如：D:\\win11 下解压系统文件 进入D:\\win11目录后，双击setup文件 程序启动后，按上图操作。 按照上图选择后点击”下一步“。 按上图选择。 按上图选择。 根据情况选择是否保留文件，然后点击”下一步“。 点击”安装“。 漫长的等待后，进入如下界面。\n选择”是“，进入下一步。 选择”是“，进入下一步。 按照上图操作。 出现上图界面后，同时按下 Shift + F10 或 Fn + Shift + F10 打开命令提示符。 1# 输入命令： 2OOBE\\BYPASSNRO 3# 或者 4oobe\\bypassnro 然后按回车键”Enter“，等待系统重启。\n系统重启后，同样的界面同样的操作后会看到如下界面。 点击”我没有 Internet 连接“选项。\n输入设备名称。 输入密码。 输入安全问题。 关闭隐私设置。 点击”下一步“。 安装后设置 连接到网络 设置计算机图标 在设置中点击”个性化 \u003e 主题 \u003e 桌面图标设置“，勾选”计算机“后点击”应用“。\n设置右键菜单为win10风格 ”以管理员身份运行“运行命令窗口，在窗口中输入如下内容：\n1reg.exe add \"HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32\" /f /ve 2 3tskill explorer 如果想修改为win11菜单，按下面的步骤恢复\n1reg.exe delete \"HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32\" /va /f 2 3tskill explorer 设置查看文件名后缀 这个选项打勾\n系统激活 创建一个文本文件，里面填写如下内容：\n1slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX 2slmgr /skms kms.03k.org 3slmgr /ato 保存后修改文件名称为激活系统.bat，然后右键”以管理员身份运行“运行，之后一直点击”确认“即可。\n调整电脑休眠，锁屏时间 桌面右键选择”个性化“，在设置中点击”系统 \u003e 电源 \u003e 屏幕和睡眠超时“，根据情况设置。\n调整任务栏靠左",
+    "description": "警告 安装前先断开网络链接。 安装前先备份C盘下个人数据。 安装win11 启动安装 在非 C 盘下，解压win11系统文件，例如：D:\\win11 下解压系统文件 进入D:\\win11目录后，双击setup文件 程序启动后，按上图操作。",
+    "tags": [],
+    "title": "win11安装",
+    "uri": "/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html"
+  },
+  {
     "breadcrumb": "暮鼓晨钟",
     "content": "记录日常生活中的感悟、趣事。\n日常感悟\r记录日常感悟、生活感悟。",
     "description": "记录日常生活中的感悟、趣事。",
@@ -69,8 +97,8 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟",
-    "content": "",
-    "description": "",
+    "content": "win11安装\r警告 安装前先断开网络链接。 安装前先备份C盘下个人数据。 安装win11 启动安装 在非 C 盘下，解压win11系统文件，例如：D:\\win11 下解压系统文件 进入D:\\win11目录后，双击setup文件 程序启动后，按上图操作。",
+    "description": "win11安装\r警告 安装前先断开网络链接。 安装前先备份C盘下个人数据。 安装win11 启动安装 在非 C 盘下，解压win11系统文件，例如：D:\\win11 下解压系统文件 进入D:\\win11目录后，双击setup文件 程序启动后，按上图操作。",
     "tags": [],
     "title": "书香笔记",
     "uri": "/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"
@@ -193,7 +221,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Docker",
-    "content": "01 docker常用命令\ndocker入门之docker常用命令。",
+    "content": "01 docker常用命令\ndocker入门之docker常用命令。\n02 容器镜像\ndocker入门之容器镜像。\n03 容器卷\ndocker入门之容器卷。",
     "description": "开启Docker之旅。",
     "tags": [],
     "title": "Docker 入门",

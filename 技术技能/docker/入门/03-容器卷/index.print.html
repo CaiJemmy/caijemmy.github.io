@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="print">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.157.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="description" content="docker入门之容器卷。">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="03 容器卷 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="docker入门之容器卷。">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:title" content="03 容器卷 :: 暮鼓晨钟">
+    <meta property="og:description" content="docker入门之容器卷。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="03 容器卷 :: 暮鼓晨钟">
+    <meta itemprop="description" content="docker入门之容器卷。">
+    <meta itemprop="wordCount" content="13">
+    <meta itemprop="keywords" content="Docker">
+    <title>03 容器卷 :: 暮鼓晨钟</title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html" rel="canonical" type="text/html" title="03 容器卷 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.xml" rel="alternate" type="application/rss+xml" title="03 容器卷 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1773667281" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1773667281" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1773667281" defer></script>
+    <script src="/js/search-lunr.min.js?1773667281" defer></script>
+    <script src="/js/search.min.js?1773667281" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1773667281";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1773667281" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1773667281" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1773667281" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1773667281" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1773667281" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1773667281" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1773667281" rel="stylesheet">
+    <link href="/css/theme.min.css?1773667281" rel="stylesheet">
+    <link href="/css/format-print.min.css?1773667281" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/docker\/%E5%85%A5%E9%97%A8\/03-%E5%AE%B9%E5%99%A8%E5%8D%B7\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1773667281" rel="stylesheet">
+  </head>
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#常见问题">常见问题</a>
+      <ul>
+        <li><a href="#premission-denied">Premission denied</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"><span itemprop="name">Docker</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html"><span itemprop="name">Docker 入门</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">03 容器卷</span><meta itemprop="position" content="5"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.html" title="02 容器镜像 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html" title="shell (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/docker/index.html">Docker</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="03-容器卷">03 容器卷</h1>
+
+<h2 id="常见问题">常见问题<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="premission-denied">Premission denied<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<p>在挂载目录后增加<code>--privileged=true</code>，扩大容器权限。</p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>docker run -d -p 5000:5000 -v /data/myregistry/:/var/lib/registry/ --privileged<span style="color:#f92672">=</span>true registry</span></span></code></pre></div>
+
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/devops/index.html">Devops</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1773667281"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1773667281" defer></script>
+    <script src="/js/theme.min.js?1773667281" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>

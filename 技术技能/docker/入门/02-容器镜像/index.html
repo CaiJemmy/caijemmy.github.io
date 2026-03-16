@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.157.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="description" content="docker入门之容器镜像。">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="02 容器镜像 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="docker入门之容器镜像。">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:title" content="02 容器镜像 :: 暮鼓晨钟">
+    <meta property="og:description" content="docker入门之容器镜像。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="02 容器镜像 :: 暮鼓晨钟">
+    <meta itemprop="description" content="docker入门之容器镜像。">
+    <meta itemprop="wordCount" content="762">
+    <meta itemprop="keywords" content="Docker">
+    <title>02 容器镜像 :: 暮鼓晨钟</title>
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.xml" rel="alternate" type="application/rss+xml" title="02 容器镜像 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.print.html" rel="alternate" type="text/html" title="02 容器镜像 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1773667281" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1773667281" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1773667281" defer></script>
+    <script src="/js/search-lunr.min.js?1773667281" defer></script>
+    <script src="/js/search.min.js?1773667281" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1773667281";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1773667281" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1773667281" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1773667281" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1773667281" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1773667281" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1773667281" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1773667281" rel="stylesheet">
+    <link href="/css/theme.min.css?1773667281" rel="stylesheet">
+    <link href="/css/format-html.min.css?1773667281" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/docker\/%E5%85%A5%E9%97%A8\/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1773667281" rel="stylesheet">
+  </head>
+  <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#docker-镜像原理深度解析">Docker 镜像原理深度解析</a>
+      <ul>
+        <li><a href="#1-镜像是什么">1. 镜像是什么？</a></li>
+        <li><a href="#2-镜像的层叠结构unionfs">2. 镜像的层叠结构（UnionFS）</a></li>
+        <li><a href="#3-镜像如何存储">3. 镜像如何存储？</a></li>
+        <li><a href="#4-镜像分层的优势">4. 镜像分层的优势</a></li>
+        <li><a href="#5-镜像的组成">5. 镜像的组成</a></li>
+        <li><a href="#常用存储驱动对比">常用存储驱动对比</a></li>
+        <li><a href="#查看当前存储驱动">查看当前存储驱动</a></li>
+      </ul>
+    </li>
+    <li><a href="#docker-commit">docker commit</a>
+      <ul>
+        <li><a href="#基本语法">基本语法</a></li>
+        <li><a href="#常用选项">常用选项</a></li>
+        <li><a href="#保存容器修改">保存容器修改</a></li>
+        <li><a href="#创建开发快照">创建开发快照</a></li>
+      </ul>
+    </li>
+    <li><a href="#本地镜像发布到阿里云">本地镜像发布到阿里云</a>
+      <ul>
+        <li><a href="#前期准备">前期准备</a>
+          <ul>
+            <li><a href="#阿里云上创建资源">阿里云上创建资源</a></li>
+            <li><a href="#准备镜像">准备镜像</a></li>
+          </ul>
+        </li>
+        <li><a href="#将镜像推送到阿里云registry">将镜像推送到阿里云Registry</a></li>
+        <li><a href="#验证云上镜像">验证云上镜像</a></li>
+      </ul>
+    </li>
+    <li><a href="#镜像推送到私服">镜像推送到私服</a>
+      <ul>
+        <li><a href="#搭建私服registry">搭建私服Registry</a></li>
+        <li><a href="#准备镜像-1">准备镜像</a></li>
+        <li><a href="#上传到私服">上传到私服</a>
+          <ul>
+            <li><a href="#解决默认不支持http的限制">解决默认不支持http的限制</a></li>
+            <li><a href="#推送镜像到私服">推送镜像到私服</a></li>
+          </ul>
+        </li>
+        <li><a href="#验证私服镜像">验证私服镜像</a></li>
+        <li><a href="#验证数据卷映射情况">验证数据卷映射情况</a>
+          <ul>
+            <li><a href="#容器中查看数据卷内容">容器中查看数据卷内容</a></li>
+            <li><a href="#主机上查看映射文件">主机上查看映射文件</a></li>
+            <li><a href="#删除registry容器后再启动registry容器">删除registry容器后，再启动registry容器</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"><span itemprop="name">Docker</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html"><span itemprop="name">Docker 入门</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">02 容器镜像</span><meta itemprop="position" content="5"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html" title="01 docker常用命令 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html" title="03 容器卷 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/docker/index.html">Docker</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="02-容器镜像">02 容器镜像</h1>
+
+<h2 id="docker-镜像原理深度解析">Docker 镜像原理深度解析<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="1-镜像是什么">1. 镜像是什么？<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<p>镜像是<strong>只读的、分层的、轻量级的文件系统模板</strong>，包含运行容器所需的所有文件和配置。</p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 查看镜像结构</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>docker history nginx:alpine</span></span></code></pre></div>
+<h3 id="2-镜像的层叠结构unionfs">2. 镜像的层叠结构（UnionFS）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<p>Docker 使用 Union File System（联合文件系统）实现分层存储。</p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>┌─────────────────────────────────────┐
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>│           容器可写层 (Container)     │
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>├─────────────────────────────────────┤
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>│     镜像层 3 (Image Layer 3)        │
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>├─────────────────────────────────────┤
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>│     镜像层 2 (Image Layer 2)        │
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>├─────────────────────────────────────┤
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>│     镜像层 1 (Image Layer 1)        │
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>├─────────────────────────────────────┤
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>│        基础镜像 (Base Image)         │
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>└─────────────────────────────────────┘</span></span></code></pre></div>
+<h3 id="3-镜像如何存储">3. 镜像如何存储？<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 查看镜像存储位置（Linux）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>ls /var/lib/docker/image/overlay2/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#75715e"># 目录结构示例</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>/var/lib/docker/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>├── image/           <span style="color:#75715e"># 镜像元数据</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>├── overlay2/        <span style="color:#75715e"># 镜像层数据（存储驱动）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>└── containers/      <span style="color:#75715e"># 容器数据</span></span></span></code></pre></div>
+<h3 id="4-镜像分层的优势">4. 镜像分层的优势<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 示例：构建镜像时分层</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>FROM ubuntu:20.04           <span style="color:#75715e"># 层1：基础镜像（100MB）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>RUN apt-get update          <span style="color:#75715e"># 层2：更新包列表（1MB）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>RUN apt-get install -y curl <span style="color:#75715e"># 层3：安装curl（5MB）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>COPY app.py /app/           <span style="color:#75715e"># 层4：复制应用（0.1MB）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#75715e"># 多个镜像共享基础层</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>镜像A: ubuntu层 + python层 + app层
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>镜像B: ubuntu层 + node层 + app层
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#75715e"># ubuntu层只存储一次！</span></span></span></code></pre></div>
+<h3 id="5-镜像的组成">5. 镜像的组成<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 镜像 = 多个只读层 + 元数据</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>镜像包含：
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>1. JSON 配置文件（镜像元数据）
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>2. Layer 文件系统（实际文件内容）
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>3. Manifest 文件（镜像清单）
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>4. Config 文件（运行时配置）</span></span></code></pre></div>
+<h3 id="常用存储驱动对比">常用存储驱动对比<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<table>
+  <thead>
+      <tr>
+          <th>驱动</th>
+          <th>原理</th>
+          <th>性能</th>
+          <th>适用场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>overlay2</strong></td>
+          <td>联合挂载</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>默认推荐</td>
+      </tr>
+      <tr>
+          <td><strong>aufs</strong></td>
+          <td>联合挂载</td>
+          <td>⭐⭐⭐⭐</td>
+          <td>旧系统兼容</td>
+      </tr>
+      <tr>
+          <td><strong>devicemapper</strong></td>
+          <td>块设备</td>
+          <td>⭐⭐⭐</td>
+          <td>企业存储</td>
+      </tr>
+      <tr>
+          <td><strong>btrfs</strong></td>
+          <td>写时复制</td>
+          <td>⭐⭐</td>
+          <td>高级特性</td>
+      </tr>
+      <tr>
+          <td><strong>zfs</strong></td>
+          <td>写时复制</td>
+          <td>⭐⭐</td>
+          <td>数据完整性</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="查看当前存储驱动">查看当前存储驱动<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>docker info | grep <span style="color:#e6db74">&#34;Storage Driver&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#75715e"># Storage Driver: overlay2</span></span></span></code></pre></div>
+<h2 id="docker-commit">docker commit<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="基本语法">基本语法<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>docker commit <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> CONTAINER <span style="color:#f92672">[</span>REPOSITORY<span style="color:#f92672">[</span>:TAG<span style="color:#f92672">]]</span></span></span></code></pre></div>
+<h3 id="常用选项">常用选项<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>-a, --author string     <span style="color:#75715e"># 指定作者</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>-c, --change list       <span style="color:#75715e"># 应用Dockerfile指令</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>-m, --message string    <span style="color:#75715e"># 提交消息</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>-p, --pause             <span style="color:#75715e"># 提交时暂停容器（默认true）</span></span></span></code></pre></div>
+<h3 id="保存容器修改">保存容器修改<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 1. 启动一个基础容器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>docker run -it --name test-container ubuntu:20.04 bash
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e"># 2. 在容器内进行修改</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>root@container:/# apt-get update
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>root@container:/# apt-get install -y vim curl
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>root@container:/# echo <span style="color:#e6db74">&#34;custom config&#34;</span> &gt; /etc/myconfig.conf
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#75715e"># 3. 在另一个终端提交修改</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>docker commit <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  -a <span style="color:#e6db74">&#34;Your Name &lt;email@example.com&gt;&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>  -m <span style="color:#e6db74">&#34;Added vim, curl and custom config&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>  test-container <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>  my-custom-ubuntu:v1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#75715e"># 4. 验证新镜像</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>docker images | grep my-custom-ubuntu
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>docker history my-custom-ubuntu:v1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#75715e"># 5. 使用新镜像运行容器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>docker run -it --rm my-custom-ubuntu:v1 bash
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span><span style="color:#75715e"># 已包含之前安装的软件</span></span></span></code></pre></div>
+<h3 id="创建开发快照">创建开发快照<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#75715e"># create-snapshot.sh</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>CONTAINER<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dev-environment&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>TIMESTAMP<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>date +%Y%m%d_%H%M%S<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>echo <span style="color:#e6db74">&#34;=== Creating development snapshot ===&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#75715e"># 1. 暂停容器确保一致性</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>docker pause $CONTAINER
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#75715e"># 2. 创建快照</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>docker commit <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>  -m <span style="color:#e6db74">&#34;Dev snapshot at </span>$TIMESTAMP<span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>  -a <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>git config user.name<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>  $CONTAINER <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>  dev-snapshot:$TIMESTAMP
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#75715e"># 3. 恢复容器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>docker unpause $CONTAINER
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span><span style="color:#75715e"># 4. 标记为最新</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>docker tag dev-snapshot:$TIMESTAMP dev-snapshot:latest
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>echo <span style="color:#e6db74">&#34;Snapshot created: dev-snapshot:</span>$TIMESTAMP<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>echo <span style="color:#e6db74">&#34;Size: </span><span style="color:#66d9ef">$(</span>docker images dev-snapshot:$TIMESTAMP --format <span style="color:#e6db74">&#34;{{.Size}}&#34;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span><span style="color:#75715e"># 5. 推送到镜像仓库（可选）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span><span style="color:#75715e"># docker tag dev-snapshot:$TIMESTAMP myregistry/dev-snapshot:$TIMESTAMP</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span><span style="color:#75715e"># docker push myregistry/dev-snapshot:$TIMESTAMP</span></span></span></code></pre></div>
+<h2 id="本地镜像发布到阿里云">本地镜像发布到阿里云<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="前期准备">前期准备<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h4 id="阿里云上创建资源">阿里云上创建资源<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<p>在阿里云控制台的”容器镜像服 &gt; 实例列表 &gt; 个人版实例 &gt; 仓库管理“中，创建”命名空间“ 和 ”仓库镜像“。</p>
+<h4 id="准备镜像">准备镜像<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 1. 启动一个基础容器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>docker run -it --name test-container ubuntu:20.04 bash
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e"># 2. 在容器内进行修改</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>root@container:/# apt-get update
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>root@container:/# apt-get install -y vim
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>root@container:/# echo <span style="color:#e6db74">&#34;custom config&#34;</span> &gt; /etc/myconfig.conf
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#75715e"># 3. 在另一个终端提交修改</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>docker commit <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  -a <span style="color:#e6db74">&#34;Your Name &lt;email@example.com&gt;&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>  -m <span style="color:#e6db74">&#34;Added vim, curl and custom config&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>  test-container <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>  myubuntu:0.1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#75715e"># 4. 验证新镜像</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>docker images | grep myubuntu</span></span></code></pre></div>
+<h3 id="将镜像推送到阿里云registry">将镜像推送到阿里云Registry<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<p>请根据实际镜像信息替换示例中的[ImageId]和[镜像版本号]参数。</p>
+<div class="tab-panel" data-tab-group="R-tabs-17fd1cd22baf769da271b50e36759bfe">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-de7928bdebe416c58d97fc942c59d2f3" aria-expanded="true"
+      data-tab-item="R-tab-f93a0afc6d5fe74ffd084a4c3524d051"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-17fd1cd22baf769da271b50e36759bfe','R-tab-f93a0afc6d5fe74ffd084a4c3524d051')"
+    >
+      <span class="tab-nav-text">阿里云参考</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-de7928bdebe416c58d97fc942c59d2f3"
+      data-tab-item="R-tab-f93a0afc6d5fe74ffd084a4c3524d051"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>docker login --username<span style="color:#f92672">=</span>hi348*****@aliyun.com crpi-rpphihht7hjgcy9f.cn-hangzhou.personal.cr.aliyuncs.com
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>docker tag <span style="color:#f92672">[</span>ImageId<span style="color:#f92672">]</span> crpi-rpphihht7hjgcy9f.cn-hangzhou.personal.cr.aliyuncs.com/ooxxfake/fake_xx:<span style="color:#f92672">[</span>镜像版本号<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>docker push crpi-rpphihht7hjgcy9f.cn-hangzhou.personal.cr.aliyuncs.com/ooxxfake/fake_xx:<span style="color:#f92672">[</span>镜像版本号<span style="color:#f92672">]</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h3 id="验证云上镜像">验证云上镜像<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-0f4ee5f7daeff138d7e83a6b7a65ece2">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-9d01dfefa0e927b660d899acc3463632" aria-expanded="true"
+      data-tab-item="R-tab-0a06b4c63329fa8b3ba40f4af08e8757"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-0f4ee5f7daeff138d7e83a6b7a65ece2','R-tab-0a06b4c63329fa8b3ba40f4af08e8757')"
+    >
+      <span class="tab-nav-text">验证云上镜像</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-9d01dfefa0e927b660d899acc3463632"
+      data-tab-item="R-tab-0a06b4c63329fa8b3ba40f4af08e8757"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 1. 首先删除所有使用该镜像的容器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>docker rm -f <span style="color:#66d9ef">$(</span>docker ps -a | grep d84edeb5d147 | awk <span style="color:#e6db74">&#39;{print $1}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e"># 2. 删除所有相关标签</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>docker rmi <span style="color:#66d9ef">$(</span>docker images --digests | grep d84edeb5d147 | grep none | awk <span style="color:#e6db74">&#39;{print $1&#34;:&#34;$2}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#75715e"># 3. 最后删除镜像ID</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>docker rmi d84edeb5d147
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#75715e"># 4. 验证环境</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>docker images
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#75715e"># 5. 拉取云上镜像</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>docker pull crpi-rpphihht7hjgcy9f.cn-hangzhou.personal.cr.aliyuncs.com/ooxxfake/fake_xx:0.1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#75715e"># 6. 验证镜像</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>docker images
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>docker run -it --name<span style="color:#f92672">=</span>myubuntu d84edeb5d147 /bin/bash</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h2 id="镜像推送到私服">镜像推送到私服<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="搭建私服registry">搭建私服Registry<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 1. 拉取registry镜像</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>docker pull registry
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#75715e"># 2. 启动registry容器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>docker run -d -p 5000:5000 -v /data/myregistry/:/var/lib/registry/ --privileged<span style="color:#f92672">=</span>true registry
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#75715e"># 3. 验证私服上镜像情况</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>curl -XGET http://192.168.52.60:5000/v2/_catalog</span></span></code></pre></div>
+<h3 id="准备镜像-1">准备镜像<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 1. 启动一个基础容器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>docker run -it --name test-container ubuntu:20.04 bash
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e"># 2. 在容器内进行修改</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>root@container:/# apt-get update
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>root@container:/# apt-get install -y vim
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>root@container:/# echo <span style="color:#e6db74">&#34;custom config&#34;</span> &gt; /etc/myconfig.conf
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#75715e"># 3. 在另一个终端提交修改</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>docker commit <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  -a <span style="color:#e6db74">&#34;Your Name &lt;email@example.com&gt;&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>  -m <span style="color:#e6db74">&#34;Added vim, curl and custom config&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>  test-container <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>  myubuntu:0.1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#75715e"># 4. 验证新镜像</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>docker images | grep myubuntu
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#75715e"># 5. 给镜像打tag</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#75715e"># 公式 docker tag 镜像:tag Host:Port/Registry:tag</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>docker tag myubuntu:0.1 192.168.52.60:5000/myubuntu:0.1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>docker images --digests</span></span></code></pre></div>
+<h3 id="上传到私服">上传到私服<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h4 id="解决默认不支持http的限制">解决默认不支持http的限制<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<p>修改<code>/etc/docker/daemon.json</code>中的配置，增加<code>insecure-registries</code>配置项</p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>  <span style="color:#f92672">&#34;registry-mirrors&#34;</span>: [<span style="color:#e6db74">&#34;https://4h3dhlnn.mirror.aliyuncs.com&#34;</span>],
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  <span style="color:#f92672">&#34;insecure-registries&#34;</span>: [<span style="color:#e6db74">&#34;192.168.52.60:5000&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}</span></span></code></pre></div>
+<p>重启docker 及 registry容器</p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>systemctl restart docker
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>systemctl status docker
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>docker start f090c4f3fead</span></span></code></pre></div>
+<h4 id="推送镜像到私服">推送镜像到私服<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 1. 推送镜像</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>docker push 192.168.52.60:5000/myubuntu:0.1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#75715e"># 2. 验证推送结果</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>curl -XGET http://192.168.52.60:5000/v2/_catalog</span></span></code></pre></div>
+<h3 id="验证私服镜像">验证私服镜像<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 1. 删除本地tag及镜像</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>docker rmi -f 192.168.52.60:5000/myubuntu:0.1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>docker rmi -f myubuntu:0.1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#75715e"># 2. 拉取私服上的镜像</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>docker pull 192.168.52.60:5000/myubuntu:0.1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#75715e"># 3. 验证镜像</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>docker run -it ed0f9c0f2e86 /bin/bash</span></span></code></pre></div>
+<h3 id="验证数据卷映射情况">验证数据卷映射情况<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h4 id="容器中查看数据卷内容">容器中查看数据卷内容<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 1. 进入registry容器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>docker exec -it f090c4f3fead sh
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#75715e"># 2. 进入/var/lib/registry查看</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>cd /var/lib/registry <span style="color:#f92672">&amp;&amp;</span> ls -l</span></span></code></pre></div>
+<h4 id="主机上查看映射文件">主机上查看映射文件<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>cd /data/myregistry/ <span style="color:#f92672">&amp;&amp;</span> ls -l</span></span></code></pre></div>
+<h4 id="删除registry容器后再启动registry容器">删除registry容器后，再启动registry容器<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 1. 删除容器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>docker stop fce06d0c4b11
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>docker rm fce06d0c4b11
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#75715e"># 2. 启动容器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>docker run -d -p 5000:5000 -v /data/myregistry/:/var/lib/registry/ --privileged<span style="color:#f92672">=</span>true registry
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#75715e"># 3. 验证数据卷</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>curl -XGET http://192.168.52.60:5000/v2/_catalog</span></span></code></pre></div>
+
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/devops/index.html">Devops</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <a id="R-logo" class="R-default direction-row" href="/index.html">
+          <span class="logo-image default-animation" data-r-logo-variant="learn relearn-dark relearn-light">
+<img class="lazy figure-image" loading="lazy" src="/images/logo.png" style="height: auto;width: auto;">
+          </span>
+          <span class="logo-title default-animation">暮鼓晨钟<p style="font-size: small">盛世之牛马，乱世之炮灰；平安榨其身，战时用其命。</p></span>
+        </a>
+        <search><form action="/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="搜索 (CTRL+ALT+f)"><i class="fas fa-fw fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">搜索</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="搜索...">
+            <button class="search-clear" type="button" data-search-clear="" title="清除搜索"><i class="fas fa-fw fa-times" title="清除搜索"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks default-animation">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols default-animation">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main default-animation">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/index.html"><input type="checkbox" id="R-section-ea901636dff8018c5f1c03f9c780a1eb" aria-controls="R-subsections-ea901636dff8018c5f1c03f9c780a1eb"><label for="R-section-ea901636dff8018c5f1c03f9c780a1eb"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单日常拾趣</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/index.html"><i class="fa-solid fa-face-smile"></i>日常拾趣<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-ea901636dff8018c5f1c03f9c780a1eb" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-a7e4371e0d818d2afaed8790c1e552d1" aria-controls="R-subsections-a7e4371e0d818d2afaed8790c1e552d1"><label for="R-section-a7e4371e0d818d2afaed8790c1e552d1"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单日常感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/index.html">日常感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a7e4371e0d818d2afaed8790c1e552d1" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><input type="checkbox" id="R-section-21b164580b14ca784734c2afe862cd51" aria-controls="R-subsections-21b164580b14ca784734c2afe862cd51"><label for="R-section-21b164580b14ca784734c2afe862cd51"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单亲子</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><i class="fa-solid fa-hands-holding-child"></i>亲子<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-21b164580b14ca784734c2afe862cd51" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html">管孩子<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-3332d5c03f8527837f94b80748c083f2" aria-controls="R-subsections-3332d5c03f8527837f94b80748c083f2"><label for="R-section-3332d5c03f8527837f94b80748c083f2"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html">感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3332d5c03f8527837f94b80748c083f2" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html">聪明、听话、努力<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><input type="checkbox" id="R-section-5514417afb636335d911822c29826333" aria-controls="R-subsections-5514417afb636335d911822c29826333"><label for="R-section-5514417afb636335d911822c29826333"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单书香笔记</span></label><a class="padding default-animation" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-5514417afb636335d911822c29826333" class="collapsible-menu">
+            <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html">win11安装<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" checked><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/index.html"><input type="checkbox" id="R-section-ca6b7d760e59dfa34365ccc27dc3bf23" aria-controls="R-subsections-ca6b7d760e59dfa34365ccc27dc3bf23"><label for="R-section-ca6b7d760e59dfa34365ccc27dc3bf23"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单C&#43;&#43;</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/index.html">C&#43;&#43;<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-ca6b7d760e59dfa34365ccc27dc3bf23" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/c&#43;&#43;17/index.html"><input type="checkbox" id="R-section-0df002b38d77a7be38a1c7cca728c83a" aria-controls="R-subsections-0df002b38d77a7be38a1c7cca728c83a"><label for="R-section-0df002b38d77a7be38a1c7cca728c83a"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单C&#43;&#43;17</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/c++17/index.html">C&#43;&#43;17<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-0df002b38d77a7be38a1c7cca728c83a" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/c&#43;&#43;17/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/c++17/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A/index.html">C&#43;&#43;17之结构化绑定<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/%E6%A0%87%E5%87%86%E5%BA%93/index.html"><input type="checkbox" id="R-section-4bb335381728fc315abe3c794c7a2041" aria-controls="R-subsections-4bb335381728fc315abe3c794c7a2041"><label for="R-section-4bb335381728fc315abe3c794c7a2041"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单C&#43;&#43;标准库</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/%E6%A0%87%E5%87%86%E5%BA%93/index.html">C&#43;&#43;标准库<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-4bb335381728fc315abe3c794c7a2041" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/%E6%A0%87%E5%87%86%E5%BA%93/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/%E6%A0%87%E5%87%86%E5%BA%93/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html">伪随机数<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html"><input type="checkbox" id="R-section-6cec2bec8b46e20834f6dad4f5e25a33" aria-controls="R-subsections-6cec2bec8b46e20834f6dad4f5e25a33"><label for="R-section-6cec2bec8b46e20834f6dad4f5e25a33"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单CMake</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html">CMake<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-6cec2bec8b46e20834f6dad4f5e25a33" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html"><input type="checkbox" id="R-section-e3896758175d5ca3bb3393bfa1972c83" aria-controls="R-subsections-e3896758175d5ca3bb3393bfa1972c83"><label for="R-section-e3896758175d5ca3bb3393bfa1972c83"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01.从可执行文件到库</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html">01.从可执行文件到库<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-e3896758175d5ca3bb3393bfa1972c83" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">01单个源文件生成可执行文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"><input type="checkbox" id="R-section-f714aa8935e88da0fd464af80a18f2e9" aria-controls="R-subsections-f714aa8935e88da0fd464af80a18f2e9" checked><label for="R-section-f714aa8935e88da0fd464af80a18f2e9"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html">Docker<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-f714aa8935e88da0fd464af80a18f2e9" class="collapsible-menu">
+            <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html"><input type="checkbox" id="R-section-3de5b49d7e58e22c3d763ec2d32213d6" aria-controls="R-subsections-3de5b49d7e58e22c3d763ec2d32213d6" checked><label for="R-section-3de5b49d7e58e22c3d763ec2d32213d6"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker 入门</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html">Docker 入门<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3de5b49d7e58e22c3d763ec2d32213d6" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01 docker常用命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="active " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.html">02 容器镜像<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html">03 容器卷<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><input type="checkbox" id="R-section-304846f73ad6d6a97cc461dcfbcd5e89" aria-controls="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89"><label for="R-section-304846f73ad6d6a97cc461dcfbcd5e89"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html">shell<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html"><input type="checkbox" id="R-section-89ae1b5e52ee2fb92d25853d1938dbc3" aria-controls="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3"><label for="R-section-89ae1b5e52ee2fb92d25853d1938dbc3"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单linux 核心命令</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html">linux 核心命令<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01、常用命令<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/index.html"><input type="checkbox" id="R-section-6fe0a03ac9c213c95fd8431d286e7919" aria-controls="R-subsections-6fe0a03ac9c213c95fd8431d286e7919"><label for="R-section-6fe0a03ac9c213c95fd8431d286e7919"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell编程技巧</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/index.html">shell编程技巧<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-6fe0a03ac9c213c95fd8431d286e7919" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html">01、严格模式<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html">02、参数解析<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts default-animation">
+          <div class="nav-title padding">更多</div>
+          <ul class="space collapsible-menu">
+            <li class="" data-nav-id="/tags/"><a class="padding" href="/tags/"><i class="fa-solid fa-tags"></i> 标签<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/categories/"><a class="padding" href="/categories/"><i class="fa-solid fa-layer-group"></i> 类别<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/about/"><a class="padding" href="/about/"><i class="fa-solid fa-circle-question"></i> 关于<i class="fa-fw fas fa-check read-icon"></i></a></li>
+          </ul>
+        </div>
+        <div id="R-footer-margin" class="default-animation"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols default-animation">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">主题</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-relearn-light" value="relearn-light" selected>浅色模式</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">暗色模式</option>
+                    <option id="R-select-variant-learn" value="learn">浅紫模式</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+            <li class="R-historyclearer">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-history"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <button>清理历史记录</button>
+                </div>
+                <div class="clear"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer" class="default-animation"><p>Built with <a href="https://github.com/McShelby/hugo-theme-relearn" title="love"><i class="fas fa-heart"></i></a> by <a href="https://gohugo.io/">Hugo</a></p></div>
+      </div>
+    </aside>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1773667281"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1773667281" defer></script>
+    <script src="/js/theme.min.js?1773667281" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>
