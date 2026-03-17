@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.157.0">
+    <meta name="generator" content="Hugo 0.158.0">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="命令行参数解析是每个脚本都要面对的问题。">
     <meta name="author" content="">
@@ -23,27 +23,27 @@
     <title>02、参数解析 :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.xml" rel="alternate" type="application/rss+xml" title="02、参数解析 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.print.html" rel="alternate" type="text/html" title="02、参数解析 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1773680675" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1773680675" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1773680675" defer></script>
-    <script src="/js/search-lunr.min.js?1773680675" defer></script>
-    <script src="/js/search.min.js?1773680675" defer></script>
+    <link href="/images/favicon.png?1773760442" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1773760442" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1773760442" defer></script>
+    <script src="/js/search-lunr.min.js?1773760442" defer></script>
+    <script src="/js/search.min.js?1773760442" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1773680675";
+      window.relearn.index_js_url="/searchindex.en.js?1773760442";
     </script>
-    <script src="/js/lunr/lunr.min.js?1773680675" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1773680675" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1773680675" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1773680675" defer></script>
+    <script src="/js/lunr/lunr.min.js?1773760442" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1773760442" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1773760442" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1773760442" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1773680675" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1773680675" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1773680675" rel="stylesheet">
-    <link href="/css/theme.min.css?1773680675" rel="stylesheet">
-    <link href="/css/format-html.min.css?1773680675" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1773760442" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1773760442" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1773760442" rel="stylesheet">
+    <link href="/css/theme.min.css?1773760442" rel="stylesheet">
+    <link href="/css/format-html.min.css?1773760442" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1773680675" rel="stylesheet">
+    <link href="/css/custom.css?1773760442" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html">
     <div id="R-body" class="default-animation">
@@ -236,21 +236,21 @@
 <p>下一个要处理的参数的索引</p>
 <h3 id="getopts脚本模板">getopts脚本模板<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <h4 id="支持长选项模板">支持长选项模板<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-e4f264259963ece0d80a0592ec16d4be">
+<div class="tab-panel" data-tab-group="R-tabs-d8e4bfdd0b002d4bbdd0301776cadd7a">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-c34da251160e0ceed92c7858694f5f7c" aria-expanded="true"
+      aria-controls="R-tab-id-3be89290f8e6bf6ffefd0903b754c327" aria-expanded="true"
       data-tab-item="R-tab-9f18b2813a9d35616e19e139bc06f82f"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-e4f264259963ece0d80a0592ec16d4be','R-tab-9f18b2813a9d35616e19e139bc06f82f')"
+      onclick="switchTab('R-tabs-d8e4bfdd0b002d4bbdd0301776cadd7a','R-tab-9f18b2813a9d35616e19e139bc06f82f')"
     >
       <span class="tab-nav-text">getopts 参数解析</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-c34da251160e0ceed92c7858694f5f7c"
+      id="R-tab-id-3be89290f8e6bf6ffefd0903b754c327"
       data-tab-item="R-tab-9f18b2813a9d35616e19e139bc06f82f"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -670,21 +670,21 @@
 <li>对于可选参数，没有参数时，<code>getopt</code> 解析时<code>$2</code>是空串，代码处理逻辑要是<code>shift 2</code>，否则参数处理报错。</li>
 <li>对于可选参数，调用时传参要注意。</li>
 </ol>
-<div class="tab-panel" data-tab-group="R-tabs-015ab2decb9ad71bee67ea63e4efc7e5">
+<div class="tab-panel" data-tab-group="R-tabs-725693356eb5de6ac65207c3d5bc0e38">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-8bcfb3cc0c72ef729a9110c91c928bd2" aria-expanded="true"
+      aria-controls="R-tab-id-a92fbfb42a0fdc441d235c3b22bc1a3e" aria-expanded="true"
       data-tab-item="R-tab-4c17ad21d027e93babfbe426990f2123"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-015ab2decb9ad71bee67ea63e4efc7e5','R-tab-4c17ad21d027e93babfbe426990f2123')"
+      onclick="switchTab('R-tabs-725693356eb5de6ac65207c3d5bc0e38','R-tab-4c17ad21d027e93babfbe426990f2123')"
     >
       <span class="tab-nav-text">测试脚本</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-8bcfb3cc0c72ef729a9110c91c928bd2"
+      id="R-tab-id-a92fbfb42a0fdc441d235c3b22bc1a3e"
       data-tab-item="R-tab-4c17ad21d027e93babfbe426990f2123"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1013,9 +1013,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1773680675"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1773680675" defer></script>
-    <script src="/js/theme.min.js?1773680675" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1773760442"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1773760442" defer></script>
+    <script src="/js/theme.min.js?1773760442" defer></script>
 
 <style>
     .highlight {
