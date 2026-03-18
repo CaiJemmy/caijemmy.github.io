@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.158.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="description" content="通过对数据的哈希值进行取模运算。">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="哈希取余算法详解 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="通过对数据的哈希值进行取模运算。">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%B2%BE%E8%BF%9B/%E7%AE%97%E6%B3%95/%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:title" content="哈希取余算法详解 :: 暮鼓晨钟">
+    <meta property="og:description" content="通过对数据的哈希值进行取模运算。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="哈希取余算法详解 :: 暮鼓晨钟">
+    <meta itemprop="description" content="通过对数据的哈希值进行取模运算。">
+    <meta itemprop="wordCount" content="1238">
+    <meta itemprop="keywords" content="Docker">
+    <title>哈希取余算法详解 :: 暮鼓晨钟</title>
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%B2%BE%E8%BF%9B/%E7%AE%97%E6%B3%95/%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99/index.xml" rel="alternate" type="application/rss+xml" title="哈希取余算法详解 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%B2%BE%E8%BF%9B/%E7%AE%97%E6%B3%95/%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99/index.print.html" rel="alternate" type="text/html" title="哈希取余算法详解 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1773854175" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1773854175" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1773854175" defer></script>
+    <script src="/js/search-lunr.min.js?1773854175" defer></script>
+    <script src="/js/search.min.js?1773854175" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1773854175";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1773854175" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1773854175" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1773854175" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1773854175" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1773854175" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1773854175" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1773854175" rel="stylesheet">
+    <link href="/css/theme.min.css?1773854175" rel="stylesheet">
+    <link href="/css/format-html.min.css?1773854175" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/%E7%B2%BE%E8%BF%9B\/%E7%AE%97%E6%B3%95\/%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1773854175" rel="stylesheet">
+  </head>
+  <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%B2%BE%E8%BF%9B/%E7%AE%97%E6%B3%95/%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#一算法原理">一、算法原理</a>
+      <ul>
+        <li><a href="#1-基本概念">1. 基本概念</a></li>
+        <li><a href="#2-算法公式">2. 算法公式</a></li>
+        <li><a href="#3-工作流程">3. 工作流程</a></li>
+        <li><a href="#4-哈希函数选择">4. 哈希函数选择</a></li>
+      </ul>
+    </li>
+    <li><a href="#二算法优点">二、算法优点</a>
+      <ul>
+        <li><a href="#1-数据分布均匀性">1. 数据分布均匀性</a></li>
+        <li><a href="#2-简单高效">2. 简单高效</a></li>
+        <li><a href="#3-确定性路由">3. 确定性路由</a></li>
+        <li><a href="#4-无状态设计">4. 无状态设计</a></li>
+      </ul>
+    </li>
+    <li><a href="#三算法缺点">三、算法缺点</a>
+      <ul>
+        <li><a href="#1-节点数量变化导致大规模数据迁移">1. 节点数量变化导致大规模数据迁移</a></li>
+        <li><a href="#2-数据倾斜问题">2. 数据倾斜问题</a></li>
+        <li><a href="#3-节点负载不均衡的连锁反应">3. 节点负载不均衡的连锁反应</a></li>
+        <li><a href="#4-不支持范围查询">4. 不支持范围查询</a></li>
+      </ul>
+    </li>
+    <li><a href="#四实际应用场景">四、实际应用场景</a>
+      <ul>
+        <li><a href="#1-适用场景">1. 适用场景</a></li>
+        <li><a href="#2-不适用场景">2. 不适用场景</a></li>
+      </ul>
+    </li>
+    <li><a href="#五改进方案">五、改进方案</a>
+      <ul>
+        <li><a href="#1-一致性哈希算法"><strong>1. 一致性哈希算法</strong></a></li>
+        <li><a href="#2-虚拟节点技术"><strong>2. 虚拟节点技术</strong></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">哈希取余算法详解</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%B2%BE%E8%BF%9B/%E7%AE%97%E6%B3%95/%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html" title="程序员技能 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/index.html" title="C++ (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/docker/index.html">Docker</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="哈希取余算法详解">哈希取余算法详解</h1>
+
+<h2 id="一算法原理">一、算法原理<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="1-基本概念">1. 基本概念<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<p>哈希取余算法是一种<strong>数据分片策略</strong>，通过对数据的<strong>哈希值进行取模运算</strong>来决定数据应该分配到哪个分区/节点。</p>
+<h3 id="2-算法公式">2. 算法公式<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>节点编号 = hash(key) % N</span></span></code></pre></div>
+<p>其中：</p>
+<ul>
+<li><code>hash(key)</code>：对键值进行哈希运算，得到一个整数</li>
+<li><code>N</code>：节点总数</li>
+<li><code>%</code>：取模运算符</li>
+<li>结果：0 到 N-1 之间的整数，表示数据应该存储的节点编号</li>
+</ul>
+<h3 id="3-工作流程">3. 工作流程<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#f92672">import</span> hashlib
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hash_mod</span>(key, node_count):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    hash_obj <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>md5(str(key)<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    hash_int <span style="color:#f92672">=</span> int(hash_obj<span style="color:#f92672">.</span>hexdigest(), <span style="color:#ae81ff">16</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#66d9ef">return</span> hash_int <span style="color:#f92672">%</span> node_count
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>nodes <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>data_items <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;user_001&#34;</span>, <span style="color:#e6db74">&#34;user_002&#34;</span>, <span style="color:#e6db74">&#34;user_003&#34;</span>, <span style="color:#e6db74">&#34;user_004&#34;</span>, <span style="color:#e6db74">&#34;user_005&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> data_items:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    node <span style="color:#f92672">=</span> hash_mod(item, nodes)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;数据 &#39;</span><span style="color:#e6db74">{</span>item<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; -&gt; 节点 </span><span style="color:#e6db74">{</span>node<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)</span></span></code></pre></div>
+<h3 id="4-哈希函数选择">4. 哈希函数选择<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<p>常见的哈希函数：</p>
+<ul>
+<li><strong>MD5</strong>：128位，已不推荐用于安全，但分片可用</li>
+<li><strong>SHA-1</strong>：160位</li>
+<li><strong>SHA-256</strong>：256位，更均匀</li>
+<li><strong>MurmurHash</strong>：非加密哈希，性能好</li>
+<li><strong>CRC32</strong>：简单快速</li>
+</ul>
+<h2 id="二算法优点">二、算法优点<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="1-数据分布均匀性">1. 数据分布均匀性<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-d21b6cb15acb8672b568673ea18f2188">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-2973ab4362ff666216938ab83c6173d3" aria-expanded="true"
+      data-tab-item="R-tab-8160d3e49905c03e2469b3ea0cfde94c"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-d21b6cb15acb8672b568673ea18f2188','R-tab-8160d3e49905c03e2469b3ea0cfde94c')"
+    >
+      <span class="tab-nav-text">模拟10000个键的分布</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-2973ab4362ff666216938ab83c6173d3"
+      data-tab-item="R-tab-8160d3e49905c03e2469b3ea0cfde94c"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#f92672">import</span> collections
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#f92672">import</span> hashlib
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">analyze_distribution</span>(keys, nodes):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    distribution <span style="color:#f92672">=</span> collections<span style="color:#f92672">.</span>defaultdict(int)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> keys:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        hash_bytes <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha256(str(key)<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>digest()
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        hash_int <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(hash_bytes, <span style="color:#e6db74">&#39;big&#39;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        node <span style="color:#f92672">=</span> hash_int <span style="color:#f92672">%</span> nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        distribution[node] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    <span style="color:#66d9ef">return</span> distribution
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#75715e"># 测试</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>keys <span style="color:#f92672">=</span> [<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;key_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10000</span>)]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>nodes <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>dist <span style="color:#f92672">=</span> analyze_distribution(keys, nodes)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>print(<span style="color:#e6db74">&#34;节点分布统计：&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span><span style="color:#66d9ef">for</span> node, value <span style="color:#f92672">in</span> sorted(dist<span style="color:#f92672">.</span>items()):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>    percentage <span style="color:#f92672">=</span> (value <span style="color:#f92672">/</span> <span style="color:#ae81ff">10000</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;节点 </span><span style="color:#e6db74">{</span>node<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>value<span style="color:#e6db74">}</span><span style="color:#e6db74"> 条数据 (</span><span style="color:#e6db74">{</span>percentage<span style="color:#e6db74">:</span><span style="color:#e6db74">.1f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%)&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span><span style="color:#75715e"># 计算标准差</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span><span style="color:#f92672">import</span> statistics
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>std_dev <span style="color:#f92672">=</span> statistics<span style="color:#f92672">.</span>stdev(list(dist<span style="color:#f92672">.</span>values()))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">分布标准差: </span><span style="color:#e6db74">{</span>std_dev<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;理想情况: 每个节点 1000 条数据&#34;</span>)</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p><strong>优点体现</strong>：</p>
+<ul>
+<li>好的哈希函数能保证数据<strong>均匀分布</strong></li>
+<li>每个节点数据量大致相等</li>
+<li>避免热点节问题</li>
+</ul>
+<h3 id="2-简单高效">2. 简单高效<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HashModShard</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, node_count):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        self<span style="color:#f92672">.</span>node_count <span style="color:#f92672">=</span> node_count
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_node</span>(self, key):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        <span style="color:#66d9ef">return</span> hash(key) <span style="color:#f92672">%</span> self<span style="color:#f92672">.</span>node_count
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">batch_get_nodes</span>(self, keys):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        <span style="color:#66d9ef">return</span> [self<span style="color:#f92672">.</span>get_node(key) <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> keys]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>shard <span style="color:#f92672">=</span> HashModShard(<span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>test_keys <span style="color:#f92672">=</span> [<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;user_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100000</span>)]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>start <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> test_keys:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    shard<span style="color:#f92672">.</span>get_node(key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>end <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;处理 100,000 个键耗时: </span><span style="color:#e6db74">{</span>end <span style="color:#f92672">-</span> start<span style="color:#e6db74">:</span><span style="color:#e6db74">.3f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> 秒&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;平均每个键: </span><span style="color:#e6db74">{</span>(end <span style="color:#f92672">-</span> start) <span style="color:#f92672">/</span> <span style="color:#ae81ff">100000</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span><span style="color:#e6db74">:</span><span style="color:#e6db74">.3f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> 毫秒&#34;</span>)</span></span></code></pre></div>
+<h3 id="3-确定性路由">3. 确定性路由<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-4c5b2794c3124b9a0e632011b6a165d4">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-868b30eadbc49647243b16407e7b9b6a" aria-expanded="true"
+      data-tab-item="R-tab-eb9b81715df5ba7609ca4d60ac45c8f4"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-4c5b2794c3124b9a0e632011b6a165d4','R-tab-eb9b81715df5ba7609ca4d60ac45c8f4')"
+    >
+      <span class="tab-nav-text">相同键总是路由到相同节点</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-868b30eadbc49647243b16407e7b9b6a"
+      data-tab-item="R-tab-eb9b81715df5ba7609ca4d60ac45c8f4"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConsistentRouting</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, nodes):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        self<span style="color:#f92672">.</span>nodes <span style="color:#f92672">=</span> nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">route</span>(self, key):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        node_id <span style="color:#f92672">=</span> hash(key) <span style="color:#f92672">%</span> len(self<span style="color:#f92672">.</span>nodes)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>nodes[node_id]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>nodes <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;node1&#34;</span>, <span style="color:#e6db74">&#34;node2&#34;</span>, <span style="color:#e6db74">&#34;node3&#34;</span>, <span style="color:#e6db74">&#34;node4&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>router <span style="color:#f92672">=</span> ConsistentRouting(nodes)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>test_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;user_12345&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>first_route <span style="color:#f92672">=</span> router<span style="color:#f92672">.</span>route(test_key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">5</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    route <span style="color:#f92672">=</span> router<span style="color:#f92672">.</span>route(test_key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;第 </span><span style="color:#e6db74">{</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> 次路由: </span><span style="color:#e6db74">{</span>route<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    <span style="color:#66d9ef">assert</span> route <span style="color:#f92672">==</span> first_route, <span style="color:#e6db74">&#34;路由不一致！&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">键 &#39;</span><span style="color:#e6db74">{</span>test_key<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; 总是路由到: </span><span style="color:#e6db74">{</span>first_route<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h3 id="4-无状态设计">4. 无状态设计<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-08941aba540ace08159a2c449f1df411">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-b880876eb6466d5a8083bf29f6455cba" aria-expanded="true"
+      data-tab-item="R-tab-4cbc9c253b70bacace849a49902decde"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-08941aba540ace08159a2c449f1df411','R-tab-4cbc9c253b70bacace849a49902decde')"
+    >
+      <span class="tab-nav-text">不同客户端计算结果相同</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-b880876eb6466d5a8083bf29f6455cba"
+      data-tab-item="R-tab-4cbc9c253b70bacace849a49902decde"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StatelessRouter</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#a6e22e">@staticmethod</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">route</span>(key, node_count):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        <span style="color:#66d9ef">return</span> hash(key) <span style="color:#f92672">%</span> node_count
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;data_001&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>nodes <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>client1_result <span style="color:#f92672">=</span> StatelessRouter<span style="color:#f92672">.</span>route(key, nodes)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>client2_result <span style="color:#f92672">=</span> StatelessRouter<span style="color:#f92672">.</span>route(key, nodes)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>client3_result <span style="color:#f92672">=</span> hash(key) <span style="color:#f92672">%</span> nodes  <span style="color:#75715e"># 直接计算</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;客户端1: </span><span style="color:#e6db74">{</span>client1_result<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;客户端2: </span><span style="color:#e6db74">{</span>client2_result<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;客户端3: </span><span style="color:#e6db74">{</span>client3_result<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;结果一致: </span><span style="color:#e6db74">{</span>client1_result <span style="color:#f92672">==</span> client2_result <span style="color:#f92672">==</span> client3_result<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h2 id="三算法缺点">三、算法缺点<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="1-节点数量变化导致大规模数据迁移">1. 节点数量变化导致大规模数据迁移<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-39e8e73c8554c2edfe49935c48471300">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-98b4fe8d582231a5bf90f496406e71d2" aria-expanded="true"
+      data-tab-item="R-tab-2b0f61b2dc2e001b20d60d7c531bd5a9"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-39e8e73c8554c2edfe49935c48471300','R-tab-2b0f61b2dc2e001b20d60d7c531bd5a9')"
+    >
+      <span class="tab-nav-text">节点扩容时的数据迁移</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-98b4fe8d582231a5bf90f496406e71d2"
+      data-tab-item="R-tab-2b0f61b2dc2e001b20d60d7c531bd5a9"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculate_migration</span>(old_nodes, new_nodes, key_count<span style="color:#f92672">=</span><span style="color:#ae81ff">10000</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#e6db74">&#34;&#34;&#34;计算扩容时的数据迁移比例&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    migrated <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(key_count):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        key <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;key_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        old_node <span style="color:#f92672">=</span> hash(key) <span style="color:#f92672">%</span> old_nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        new_node <span style="color:#f92672">=</span> hash(key) <span style="color:#f92672">%</span> new_nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#66d9ef">if</span> old_node <span style="color:#f92672">!=</span> new_node:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>            migrated <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    migration_rate <span style="color:#f92672">=</span> (migrated <span style="color:#f92672">/</span> key_count) <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    <span style="color:#66d9ef">return</span> migration_rate
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>test_cases <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>),  <span style="color:#75715e"># 3-&gt;4 节点</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    (<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>),  <span style="color:#75715e"># 4-&gt;5 节点</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>),  <span style="color:#75715e"># 10-&gt;11 节点</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>    (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">20</span>),  <span style="color:#75715e"># 10-&gt;20 节点（翻倍）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    (<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">101</span>),  <span style="color:#75715e"># 100-&gt;101 节点</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>print(<span style="color:#e6db74">&#34;节点扩容数据迁移比例：&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>print(<span style="color:#e6db74">&#34;-&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">40</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span><span style="color:#66d9ef">for</span> old_n, new_n <span style="color:#f92672">in</span> test_cases:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>    rate <span style="color:#f92672">=</span> calculate_migration(old_n, new_n)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>old_n<span style="color:#e6db74">}</span><span style="color:#e6db74"> 节点 -&gt; </span><span style="color:#e6db74">{</span>new_n<span style="color:#e6db74">}</span><span style="color:#e6db74"> 节点: </span><span style="color:#e6db74">{</span>rate<span style="color:#e6db74">:</span><span style="color:#e6db74">.1f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">% 数据需要迁移&#34;</span>)</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p><strong>问题分析</strong>：</p>
+<ul>
+<li><strong>普通取模</strong>：<code>(N+1)/N</code> 的数据需要重新分配</li>
+<li><strong>3节点→4节点</strong>：约 75% 的数据需要迁移</li>
+<li><strong>10节点→11节点</strong>：约 91% 的数据需要迁移</li>
+<li><strong>100节点→101节点</strong>：约 99% 的数据需要迁移</li>
+</ul>
+<h3 id="2-数据倾斜问题">2. 数据倾斜问题<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-793e4462edd4820af2ffc5eac31881e7">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-beab2712db2c619f4e56843e155d269c" aria-expanded="true"
+      data-tab-item="R-tab-317b33d28e38c06c950e515588e3d887"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-793e4462edd4820af2ffc5eac31881e7','R-tab-317b33d28e38c06c950e515588e3d887')"
+    >
+      <span class="tab-nav-text">特定数据模式导致的倾斜</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-beab2712db2c619f4e56843e155d269c"
+      data-tab-item="R-tab-317b33d28e38c06c950e515588e3d887"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">skewed_hash</span>(key):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#e6db74">&#34;&#34;&#34;模拟有偏的哈希（实际中可能由于数据特性导致）&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#75715e"># 假设某些用户ID有特定模式</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#66d9ef">if</span> key<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#34;vip_&#34;</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        <span style="color:#75715e"># VIP用户ID哈希后低位经常为0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        <span style="color:#66d9ef">return</span> int(key<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;_&#34;</span>)[<span style="color:#ae81ff">1</span>]) <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        <span style="color:#66d9ef">return</span> hash(key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#75715e"># 测试数据倾斜</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>keys <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">9000</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    keys<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;normal_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1000</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    keys<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;vip_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>nodes <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>distribution <span style="color:#f92672">=</span> {i: <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(nodes)}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> keys:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    <span style="color:#66d9ef">if</span> key<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#34;vip_&#34;</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>        h <span style="color:#f92672">=</span> skewed_hash(key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>        h <span style="color:#f92672">=</span> hash(key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>    node <span style="color:#f92672">=</span> h <span style="color:#f92672">%</span> nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>    distribution[node] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>print(<span style="color:#e6db74">&#34;数据倾斜测试结果：&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>print(<span style="color:#e6db74">&#34;-&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">40</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span><span style="color:#66d9ef">for</span> node <span style="color:#f92672">in</span> sorted(distribution<span style="color:#f92672">.</span>keys()):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>    count <span style="color:#f92672">=</span> distribution[node]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>    vip_count <span style="color:#f92672">=</span> sum(<span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> keys <span style="color:#66d9ef">if</span> k<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#34;vip_&#34;</span>) <span style="color:#f92672">and</span> skewed_hash(k) <span style="color:#f92672">%</span> nodes <span style="color:#f92672">==</span> node)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;节点 </span><span style="color:#e6db74">{</span>node<span style="color:#e6db74">}</span><span style="color:#e6db74">: 总数据 </span><span style="color:#e6db74">{</span>count<span style="color:#e6db74">}</span><span style="color:#e6db74">, 其中VIP数据 </span><span style="color:#e6db74">{</span>vip_count<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h3 id="3-节点负载不均衡的连锁反应">3. 节点负载不均衡的连锁反应<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 演示一个节点故障对其他节点的影响</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HashModCluster</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, node_count):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        self<span style="color:#f92672">.</span>node_count <span style="color:#f92672">=</span> node_count
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        self<span style="color:#f92672">.</span>node_loads <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> node_count
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_data</span>(self, key, data_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        node <span style="color:#f92672">=</span> hash(key) <span style="color:#f92672">%</span> self<span style="color:#f92672">.</span>node_count
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        self<span style="color:#f92672">.</span>node_loads[node] <span style="color:#f92672">+=</span> data_size
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#66d9ef">return</span> node
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">node_failure</span>(self, failed_node):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        <span style="color:#e6db74">&#34;&#34;&#34;模拟节点故障&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">节点 </span><span style="color:#e6db74">{</span>failed_node<span style="color:#e6db74">}</span><span style="color:#e6db74"> 故障！&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>        <span style="color:#75715e"># 故障节点的数据需要重新分配</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        failed_load <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>node_loads[failed_node]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>        self<span style="color:#f92672">.</span>node_loads[failed_node] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>        <span style="color:#75715e"># 重新分配到其他节点（简化的重新哈希）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>        total_load_redistributed <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(failed_load):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>            <span style="color:#75715e"># 模拟重新哈希</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>            new_node <span style="color:#f92672">=</span> hash(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;rehash_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>) <span style="color:#f92672">%</span> (self<span style="color:#f92672">.</span>node_count <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>            <span style="color:#66d9ef">if</span> new_node <span style="color:#f92672">&gt;=</span> failed_node:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>                new_node <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>            self<span style="color:#f92672">.</span>node_loads[new_node] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>            total_load_redistributed <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;重新分配了 </span><span style="color:#e6db74">{</span>total_load_redistributed<span style="color:#e6db74">}</span><span style="color:#e6db74"> 单位负载&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>node_loads
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span><span style="color:#75715e"># 测试</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>cluster <span style="color:#f92672">=</span> HashModCluster(<span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span><span style="color:#75715e"># 添加初始数据</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1000</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span>    cluster<span style="color:#f92672">.</span>add_data(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;key_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>print(<span style="color:#e6db74">&#34;初始负载分布:&#34;</span>, cluster<span style="color:#f92672">.</span>node_loads)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span><span style="color:#75715e"># 模拟节点2故障</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>new_loads <span style="color:#f92672">=</span> cluster<span style="color:#f92672">.</span>node_failure(<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>print(<span style="color:#e6db74">&#34;故障后负载分布:&#34;</span>, new_loads)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span><span><span style="color:#75715e"># 计算负载不均衡度</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span><span>max_load <span style="color:#f92672">=</span> max(new_loads)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span><span>min_load <span style="color:#f92672">=</span> min(new_loads)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span><span>avg_load <span style="color:#f92672">=</span> sum(new_loads) <span style="color:#f92672">/</span> len(new_loads)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span><span>imbalance <span style="color:#f92672">=</span> (max_load <span style="color:#f92672">-</span> min_load) <span style="color:#f92672">/</span> avg_load <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;最大负载: </span><span style="color:#e6db74">{</span>max_load<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;最小负载: </span><span style="color:#e6db74">{</span>min_load<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;平均负载: </span><span style="color:#e6db74">{</span>avg_load<span style="color:#e6db74">:</span><span style="color:#e6db74">.1f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;不均衡度: </span><span style="color:#e6db74">{</span>imbalance<span style="color:#e6db74">:</span><span style="color:#e6db74">.1f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%&#34;</span>)</span></span></code></pre></div>
+<h3 id="4-不支持范围查询">4. 不支持范围查询<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 演示哈希取余不支持范围查询的问题</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HashShardedStorage</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, nodes):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        self<span style="color:#f92672">.</span>nodes <span style="color:#f92672">=</span> nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        self<span style="color:#f92672">.</span>data <span style="color:#f92672">=</span> {node: {} <span style="color:#66d9ef">for</span> node <span style="color:#f92672">in</span> range(nodes)}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">put</span>(self, key, value):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        node <span style="color:#f92672">=</span> hash(key) <span style="color:#f92672">%</span> self<span style="color:#f92672">.</span>nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        self<span style="color:#f92672">.</span>data[node][key] <span style="color:#f92672">=</span> value
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(self, key):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        node <span style="color:#f92672">=</span> hash(key) <span style="color:#f92672">%</span> self<span style="color:#f92672">.</span>nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>data[node]<span style="color:#f92672">.</span>get(key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">range_query</span>(self, start_key, end_key):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>        <span style="color:#e6db74">&#34;&#34;&#34;尝试范围查询 - 效率极低&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        results <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>        <span style="color:#75715e"># 需要查询所有节点</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>        <span style="color:#66d9ef">for</span> node <span style="color:#f92672">in</span> range(self<span style="color:#f92672">.</span>nodes):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>            <span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>data[node]<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>                <span style="color:#66d9ef">if</span> start_key <span style="color:#f92672">&lt;=</span> key <span style="color:#f92672">&lt;=</span> end_key:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>                    results<span style="color:#f92672">.</span>append((key, value))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>        <span style="color:#66d9ef">return</span> sorted(results)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span><span style="color:#75715e"># 测试</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>storage <span style="color:#f92672">=</span> HashShardedStorage(<span style="color:#ae81ff">3</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span><span style="color:#75715e"># 插入有序数据</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>    key <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;user_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">:</span><span style="color:#e6db74">03d</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>  <span style="color:#75715e"># user_000, user_001, ..., user_099</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>    storage<span style="color:#f92672">.</span>put(key, <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;data_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span><span style="color:#75715e"># 点查询 - 高效</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>print(<span style="color:#e6db74">&#34;点查询 user_050:&#34;</span>, storage<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;user_050&#34;</span>))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span><span style="color:#75715e"># 范围查询 - 低效</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>start <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>results <span style="color:#f92672">=</span> storage<span style="color:#f92672">.</span>range_query(<span style="color:#e6db74">&#34;user_020&#34;</span>, <span style="color:#e6db74">&#34;user_029&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span>end <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">范围查询 user_020 到 user_029:&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;找到 </span><span style="color:#e6db74">{</span>len(results)<span style="color:#e6db74">}</span><span style="color:#e6db74"> 条记录&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;耗时: </span><span style="color:#e6db74">{</span>end<span style="color:#f92672">-</span>start<span style="color:#e6db74">:</span><span style="color:#e6db74">.4f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> 秒&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span><span>print(<span style="color:#e6db74">&#34;结果:&#34;</span>, [r[<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> r <span style="color:#f92672">in</span> results])</span></span></code></pre></div>
+<h2 id="四实际应用场景">四、实际应用场景<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="1-适用场景">1. 适用场景<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<ul>
+<li>场景1：静态集群，节点数固定（适合节点数基本不变的场景）</li>
+<li>场景2：无状态会话路由（会话ID路由到固定服务器）</li>
+<li>场景3：简单的负载均衡（请求分发，不涉及数据存储）</li>
+</ul>
+<h3 id="2-不适用场景">2. 不适用场景<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<ul>
+<li>场景1：需要弹性伸缩的数据库分片</li>
+<li>场景2：需要范围查询的存储</li>
+</ul>
+<h2 id="五改进方案">五、改进方案<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="1-一致性哈希算法"><strong>1. 一致性哈希算法</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 一致性哈希解决节点变化问题</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#f92672">import</span> bisect
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConsistentHash</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, nodes, replica_count<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        self<span style="color:#f92672">.</span>replica_count <span style="color:#f92672">=</span> replica_count
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        self<span style="color:#f92672">.</span>ring <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        self<span style="color:#f92672">.</span>sorted_keys <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#66d9ef">for</span> node <span style="color:#f92672">in</span> nodes:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>            self<span style="color:#f92672">.</span>add_node(node)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_node</span>(self, node):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        <span style="color:#e6db74">&#34;&#34;&#34;添加节点，只影响部分数据&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(self<span style="color:#f92672">.</span>replica_count):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>            key <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_hash(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>node<span style="color:#e6db74">}</span><span style="color:#e6db74">:</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>            self<span style="color:#f92672">.</span>ring[key] <span style="color:#f92672">=</span> node
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>            bisect<span style="color:#f92672">.</span>insort(self<span style="color:#f92672">.</span>sorted_keys, key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">remove_node</span>(self, node):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>        <span style="color:#e6db74">&#34;&#34;&#34;移除节点&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(self<span style="color:#f92672">.</span>replica_count):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>            key <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_hash(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>node<span style="color:#e6db74">}</span><span style="color:#e6db74">:</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>            <span style="color:#66d9ef">if</span> key <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>ring:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>                <span style="color:#66d9ef">del</span> self<span style="color:#f92672">.</span>ring[key]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>                self<span style="color:#f92672">.</span>sorted_keys<span style="color:#f92672">.</span>remove(key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_node</span>(self, data_key):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>        <span style="color:#e6db74">&#34;&#34;&#34;获取数据所在节点&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> self<span style="color:#f92672">.</span>ring:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>        hash_key <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_hash(data_key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>        idx <span style="color:#f92672">=</span> bisect<span style="color:#f92672">.</span>bisect(self<span style="color:#f92672">.</span>sorted_keys, hash_key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>        <span style="color:#66d9ef">if</span> idx <span style="color:#f92672">==</span> len(self<span style="color:#f92672">.</span>sorted_keys):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>            idx <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span>        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>ring[self<span style="color:#f92672">.</span>sorted_keys[idx]]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_hash</span>(self, key):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span>        <span style="color:#e6db74">&#34;&#34;&#34;哈希函数&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>        <span style="color:#66d9ef">return</span> hash(key) <span style="color:#f92672">%</span> (<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">32</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span><span><span style="color:#75715e"># 测试一致性哈希</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span><span>nodes <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;node1&#34;</span>, <span style="color:#e6db74">&#34;node2&#34;</span>, <span style="color:#e6db74">&#34;node3&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span><span>ch <span style="color:#f92672">=</span> ConsistentHash(nodes)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span><span><span style="color:#75715e"># 测试数据分布</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span><span>test_keys <span style="color:#f92672">=</span> [<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;data_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1000</span>)]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span><span>distribution <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span><span><span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> test_keys:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span><span>    node <span style="color:#f92672">=</span> ch<span style="color:#f92672">.</span>get_node(key)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span><span>    distribution[node] <span style="color:#f92672">=</span> distribution<span style="color:#f92672">.</span>get(node, <span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57</span><span>print(<span style="color:#e6db74">&#34;一致性哈希分布:&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58</span><span><span style="color:#66d9ef">for</span> node <span style="color:#f92672">in</span> nodes:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59</span><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>node<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>distribution<span style="color:#f92672">.</span>get(node, <span style="color:#ae81ff">0</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74"> 条数据&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61</span><span><span style="color:#75715e"># 添加节点</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62</span><span>print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">添加 node4...&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63</span><span>ch<span style="color:#f92672">.</span>add_node(<span style="color:#e6db74">&#34;node4&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65</span><span><span style="color:#75715e"># 检查数据迁移</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66</span><span>migrated <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67</span><span><span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> test_keys:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68</span><span>    old_node <span style="color:#f92672">=</span> distribution_node <span style="color:#f92672">=</span> ch<span style="color:#f92672">.</span>get_node(key)  <span style="color:#75715e"># 重新计算</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69</span><span>    <span style="color:#75715e"># 实际中需要比较添加前后的节点</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;数据迁移比例远低于普通哈希取余&#34;</span>)</span></span></code></pre></div>
+<h3 id="2-虚拟节点技术"><strong>2. 虚拟节点技术</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 虚拟节点改善数据分布均匀性</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">VirtualNodeHash</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, physical_nodes, virtual_per_node<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        self<span style="color:#f92672">.</span>physical_nodes <span style="color:#f92672">=</span> physical_nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        self<span style="color:#f92672">.</span>virtual_per_node <span style="color:#f92672">=</span> virtual_per_node
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        self<span style="color:#f92672">.</span>virtual_to_physical <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        self<span style="color:#f92672">.</span>virtual_nodes <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        <span style="color:#75715e"># 创建虚拟节点</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#66d9ef">for</span> node <span style="color:#f92672">in</span> physical_nodes:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(virtual_per_node):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>                virtual_key <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>node<span style="color:#e6db74">}</span><span style="color:#e6db74">#</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>                hash_val<span style="color:#75715e">#</span></span></span></code></pre></div>
+
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/devops/index.html">Devops</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <a id="R-logo" class="R-default direction-row" href="/index.html">
+          <span class="logo-image default-animation" data-r-logo-variant="learn relearn-dark relearn-light">
+<img class="lazy figure-image" loading="lazy" src="/images/logo.png" style="height: auto;width: auto;">
+          </span>
+          <span class="logo-title default-animation">暮鼓晨钟<p style="font-size: small">盛世之牛马，乱世之炮灰；平安榨其身，战时用其命。</p></span>
+        </a>
+        <search><form action="/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="搜索 (CTRL+ALT+f)"><i class="fas fa-fw fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">搜索</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="搜索...">
+            <button class="search-clear" type="button" data-search-clear="" title="清除搜索"><i class="fas fa-fw fa-times" title="清除搜索"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks default-animation">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols default-animation">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main default-animation">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/index.html"><input type="checkbox" id="R-section-ea901636dff8018c5f1c03f9c780a1eb" aria-controls="R-subsections-ea901636dff8018c5f1c03f9c780a1eb"><label for="R-section-ea901636dff8018c5f1c03f9c780a1eb"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单日常拾趣</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/index.html"><i class="fa-solid fa-face-smile"></i>日常拾趣<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-ea901636dff8018c5f1c03f9c780a1eb" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-a7e4371e0d818d2afaed8790c1e552d1" aria-controls="R-subsections-a7e4371e0d818d2afaed8790c1e552d1"><label for="R-section-a7e4371e0d818d2afaed8790c1e552d1"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单日常感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/index.html">日常感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a7e4371e0d818d2afaed8790c1e552d1" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><input type="checkbox" id="R-section-21b164580b14ca784734c2afe862cd51" aria-controls="R-subsections-21b164580b14ca784734c2afe862cd51"><label for="R-section-21b164580b14ca784734c2afe862cd51"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单亲子</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><i class="fa-solid fa-hands-holding-child"></i>亲子<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-21b164580b14ca784734c2afe862cd51" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html">管孩子<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-3332d5c03f8527837f94b80748c083f2" aria-controls="R-subsections-3332d5c03f8527837f94b80748c083f2"><label for="R-section-3332d5c03f8527837f94b80748c083f2"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html">感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3332d5c03f8527837f94b80748c083f2" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html">聪明、听话、努力<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><input type="checkbox" id="R-section-5514417afb636335d911822c29826333" aria-controls="R-subsections-5514417afb636335d911822c29826333"><label for="R-section-5514417afb636335d911822c29826333"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单书香笔记</span></label><a class="padding default-animation" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-5514417afb636335d911822c29826333" class="collapsible-menu">
+            <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html">win11安装<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" checked><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
+            <li class="active " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%B2%BE%E8%BF%9B/%E7%AE%97%E6%B3%95/%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%B2%BE%E8%BF%9B/%E7%AE%97%E6%B3%95/%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99/index.html">哈希取余算法详解<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/index.html"><input type="checkbox" id="R-section-ca6b7d760e59dfa34365ccc27dc3bf23" aria-controls="R-subsections-ca6b7d760e59dfa34365ccc27dc3bf23"><label for="R-section-ca6b7d760e59dfa34365ccc27dc3bf23"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单C&#43;&#43;</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/index.html">C&#43;&#43;<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-ca6b7d760e59dfa34365ccc27dc3bf23" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/c&#43;&#43;17/index.html"><input type="checkbox" id="R-section-0df002b38d77a7be38a1c7cca728c83a" aria-controls="R-subsections-0df002b38d77a7be38a1c7cca728c83a"><label for="R-section-0df002b38d77a7be38a1c7cca728c83a"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单C&#43;&#43;17</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/c++17/index.html">C&#43;&#43;17<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-0df002b38d77a7be38a1c7cca728c83a" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/c&#43;&#43;17/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/c++17/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A/index.html">C&#43;&#43;17之结构化绑定<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/%E6%A0%87%E5%87%86%E5%BA%93/index.html"><input type="checkbox" id="R-section-4bb335381728fc315abe3c794c7a2041" aria-controls="R-subsections-4bb335381728fc315abe3c794c7a2041"><label for="R-section-4bb335381728fc315abe3c794c7a2041"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单C&#43;&#43;标准库</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/%E6%A0%87%E5%87%86%E5%BA%93/index.html">C&#43;&#43;标准库<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-4bb335381728fc315abe3c794c7a2041" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/%E6%A0%87%E5%87%86%E5%BA%93/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/%E6%A0%87%E5%87%86%E5%BA%93/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html">伪随机数<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html"><input type="checkbox" id="R-section-6cec2bec8b46e20834f6dad4f5e25a33" aria-controls="R-subsections-6cec2bec8b46e20834f6dad4f5e25a33"><label for="R-section-6cec2bec8b46e20834f6dad4f5e25a33"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单CMake</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html">CMake<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-6cec2bec8b46e20834f6dad4f5e25a33" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html"><input type="checkbox" id="R-section-e3896758175d5ca3bb3393bfa1972c83" aria-controls="R-subsections-e3896758175d5ca3bb3393bfa1972c83"><label for="R-section-e3896758175d5ca3bb3393bfa1972c83"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01.从可执行文件到库</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html">01.从可执行文件到库<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-e3896758175d5ca3bb3393bfa1972c83" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">01单个源文件生成可执行文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"><input type="checkbox" id="R-section-f714aa8935e88da0fd464af80a18f2e9" aria-controls="R-subsections-f714aa8935e88da0fd464af80a18f2e9"><label for="R-section-f714aa8935e88da0fd464af80a18f2e9"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html">Docker<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-f714aa8935e88da0fd464af80a18f2e9" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html"><input type="checkbox" id="R-section-3de5b49d7e58e22c3d763ec2d32213d6" aria-controls="R-subsections-3de5b49d7e58e22c3d763ec2d32213d6"><label for="R-section-3de5b49d7e58e22c3d763ec2d32213d6"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker 入门</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html">Docker 入门<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3de5b49d7e58e22c3d763ec2d32213d6" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01 docker常用命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.html">02 容器镜像<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html">03 容器卷<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/04-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/04-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/index.html">04 常用软件安装<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/index.html"><input type="checkbox" id="R-section-f324a38d4faac03c4757f331975e7120" aria-controls="R-subsections-f324a38d4faac03c4757f331975e7120"><label for="R-section-f324a38d4faac03c4757f331975e7120"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker 进阶</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/index.html">Docker 进阶<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-f324a38d4faac03c4757f331975e7120" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html">01 Mysql主从复制<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><input type="checkbox" id="R-section-304846f73ad6d6a97cc461dcfbcd5e89" aria-controls="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89"><label for="R-section-304846f73ad6d6a97cc461dcfbcd5e89"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html">shell<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html"><input type="checkbox" id="R-section-89ae1b5e52ee2fb92d25853d1938dbc3" aria-controls="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3"><label for="R-section-89ae1b5e52ee2fb92d25853d1938dbc3"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单linux 核心命令</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html">linux 核心命令<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01、常用命令<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/index.html"><input type="checkbox" id="R-section-6fe0a03ac9c213c95fd8431d286e7919" aria-controls="R-subsections-6fe0a03ac9c213c95fd8431d286e7919"><label for="R-section-6fe0a03ac9c213c95fd8431d286e7919"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell编程技巧</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/index.html">shell编程技巧<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-6fe0a03ac9c213c95fd8431d286e7919" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html">01、严格模式<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html">02、参数解析<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts default-animation">
+          <div class="nav-title padding">更多</div>
+          <ul class="space collapsible-menu">
+            <li class="" data-nav-id="/tags/"><a class="padding" href="/tags/"><i class="fa-solid fa-tags"></i> 标签<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/categories/"><a class="padding" href="/categories/"><i class="fa-solid fa-layer-group"></i> 类别<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/about/"><a class="padding" href="/about/"><i class="fa-solid fa-circle-question"></i> 关于<i class="fa-fw fas fa-check read-icon"></i></a></li>
+          </ul>
+        </div>
+        <div id="R-footer-margin" class="default-animation"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols default-animation">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">主题</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-relearn-light" value="relearn-light" selected>浅色模式</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">暗色模式</option>
+                    <option id="R-select-variant-learn" value="learn">浅紫模式</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+            <li class="R-historyclearer">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-history"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <button>清理历史记录</button>
+                </div>
+                <div class="clear"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer" class="default-animation"><p>Built with <a href="https://github.com/McShelby/hugo-theme-relearn" title="love"><i class="fas fa-heart"></i></a> by <a href="https://gohugo.io/">Hugo</a></p></div>
+      </div>
+    </aside>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1773854175"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1773854175" defer></script>
+    <script src="/js/theme.min.js?1773854175" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>
