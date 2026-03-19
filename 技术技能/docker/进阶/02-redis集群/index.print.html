@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="print">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.158.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="description" content="docker精进之redis集群。">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="02 redis集群 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="docker精进之redis集群。">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:title" content="02 redis集群 :: 暮鼓晨钟">
+    <meta property="og:description" content="docker精进之redis集群。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="02 redis集群 :: 暮鼓晨钟">
+    <meta itemprop="description" content="docker精进之redis集群。">
+    <meta itemprop="wordCount" content="1486">
+    <meta itemprop="keywords" content="Docker">
+    <title>02 redis集群 :: 暮鼓晨钟</title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.html" rel="canonical" type="text/html" title="02 redis集群 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.xml" rel="alternate" type="application/rss+xml" title="02 redis集群 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1773934487" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1773934487" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1773934487" defer></script>
+    <script src="/js/search-lunr.min.js?1773934487" defer></script>
+    <script src="/js/search.min.js?1773934487" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1773934487";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1773934487" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1773934487" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1773934487" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1773934487" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1773934487" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1773934487" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1773934487" rel="stylesheet">
+    <link href="/css/theme.min.css?1773934487" rel="stylesheet">
+    <link href="/css/format-print.min.css?1773934487" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/docker\/%E8%BF%9B%E9%98%B6\/02-redis%E9%9B%86%E7%BE%A4\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1773934487" rel="stylesheet">
+  </head>
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#三主三从集群">三主三从集群</a>
+      <ul>
+        <li><a href="#搭建集群">搭建集群</a>
+          <ul>
+            <li><a href="#集群架构">集群架构</a></li>
+            <li><a href="#容器启动配置">容器启动配置</a></li>
+            <li><a href="#构建主从关系">构建主从关系</a></li>
+            <li><a href="#查看集群信息">查看集群信息</a></li>
+            <li><a href="#集群验证">集群验证</a></li>
+          </ul>
+        </li>
+        <li><a href="#运维场景">运维场景</a>
+          <ul>
+            <li><a href="#主从切换">主从切换</a></li>
+            <li><a href="#集群扩容">集群扩容</a></li>
+            <li><a href="#集群缩容">集群缩容</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"><span itemprop="name">Docker</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/index.html"><span itemprop="name">Docker 进阶</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">02 redis集群</span><meta itemprop="position" content="5"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html" title="01 Mysql主从复制 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html" title="shell (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/docker/index.html">Docker</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="02-redis集群">02 redis集群</h1>
+
+<h2 id="三主三从集群">三主三从集群<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="搭建集群">搭建集群<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h4 id="集群架构">集群架构<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<p><a href="#R-image-e1614d48ba6b7e16c4a892f9ad54eece" class="lightbox-link"><img alt="image-20260319193009840" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319193009840.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-e1614d48ba6b7e16c4a892f9ad54eece"><img alt="image-20260319193009840" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319193009840.png"></a></p>
+<p>图中的port是理想状态，部署时以实际情况为准。</p>
+<h4 id="容器启动配置">容器启动配置<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<div class="tab-panel" data-tab-group="R-tabs-efa062372e652fc92f8e85f038c31097">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-2cd5e46019ac1f2bd7e50b356c40a743" aria-expanded="true"
+      data-tab-item="R-tab-456ed78d545eb75a05b57f0ac7d9d61f"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-efa062372e652fc92f8e85f038c31097','R-tab-456ed78d545eb75a05b57f0ac7d9d61f')"
+    >
+      <span class="tab-nav-text">启动服务命令</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-2cd5e46019ac1f2bd7e50b356c40a743"
+      data-tab-item="R-tab-456ed78d545eb75a05b57f0ac7d9d61f"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># Redis 服务器参数:--cluster-enabled (集群) --appendonly (AOF) --port (Redis 服务监听端口，默认6379)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>docker run -d --net host --privileged<span style="color:#f92672">=</span>true -v /app/redis/share/redis-node-1/data:/data --name redis-node-1 redis:latest --cluster-enabled yes --appendonly yes --port <span style="color:#ae81ff">6381</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>docker run -d --net host --privileged<span style="color:#f92672">=</span>true -v /app/redis/share/redis-node-2/data:/data --name redis-node-2 redis:latest --cluster-enabled yes --appendonly yes --port <span style="color:#ae81ff">6382</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>docker run -d --net host --privileged<span style="color:#f92672">=</span>true -v /app/redis/share/redis-node-3/data:/data --name redis-node-3 redis:latest --cluster-enabled yes --appendonly yes --port <span style="color:#ae81ff">6383</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>docker run -d --net host --privileged<span style="color:#f92672">=</span>true -v /app/redis/share/redis-node-4/data:/data --name redis-node-4 redis:latest --cluster-enabled yes --appendonly yes --port <span style="color:#ae81ff">6384</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>docker run -d --net host --privileged<span style="color:#f92672">=</span>true -v /app/redis/share/redis-node-5/data:/data --name redis-node-5 redis:latest --cluster-enabled yes --appendonly yes --port <span style="color:#ae81ff">6385</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>docker run -d --net host --privileged<span style="color:#f92672">=</span>true -v /app/redis/share/redis-node-6/data:/data --name redis-node-6 redis:latest --cluster-enabled yes --appendonly yes --port <span style="color:#ae81ff">6386</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h4 id="构建主从关系">构建主从关系<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<p>参数说明：</p>
+<ul>
+<li><code>--cluster-replicas 1</code> 指定每个主节点的从节点数量。</li>
+<li><code>--cluster-yes</code>自动回答 &ldquo;yes&rdquo; 确认提示</li>
+</ul>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 通过docker exec 命令进入任意一个容器实例，构建主从集群。本次选择node-1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>docker exec -it redis-node-1 /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>redis-cli --cluster create 10.0.0.16:6381 10.0.0.16:6382 10.0.0.16:6383 10.0.0.16:6384 10.0.0.16:6385 10.0.0.16:6386 --cluster-replicas <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e"># 以下是命令回显，根据提示输入 yes</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>&gt;&gt;&gt; Performing hash slots allocation on <span style="color:#ae81ff">6</span> nodes...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>Master<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> -&gt; Slots <span style="color:#ae81ff">0</span> - <span style="color:#ae81ff">5460</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>Master<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span> -&gt; Slots <span style="color:#ae81ff">5461</span> - <span style="color:#ae81ff">10922</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>Master<span style="color:#f92672">[</span>2<span style="color:#f92672">]</span> -&gt; Slots <span style="color:#ae81ff">10923</span> - <span style="color:#ae81ff">16383</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>Adding replica 10.0.0.16:6385 to 10.0.0.16:6381
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>Adding replica 10.0.0.16:6386 to 10.0.0.16:6382
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>Adding replica 10.0.0.16:6384 to 10.0.0.16:6383
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>Can I set the above configuration? <span style="color:#f92672">(</span>type <span style="color:#e6db74">&#39;yes&#39;</span> to accept<span style="color:#f92672">)</span>: yes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All nodes agree about slots configuration.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>&gt;&gt;&gt; Check <span style="color:#66d9ef">for</span> open slots...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>&gt;&gt;&gt; Check slots coverage...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.</span></span></code></pre></div>
+<h4 id="查看集群信息">查看集群信息<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<div class="tab-panel" data-tab-group="R-tabs-815ddffd26390ad5dd6d195ce8677370">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-e33bad98b8ac963ec1800fa40c6a082d" aria-expanded="true"
+      data-tab-item="R-tab-e1dc7e3a67a4d872c699c3478bcb1496"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-815ddffd26390ad5dd6d195ce8677370','R-tab-e1dc7e3a67a4d872c699c3478bcb1496')"
+    >
+      <span class="tab-nav-text">查看集群信息</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-e33bad98b8ac963ec1800fa40c6a082d"
+      data-tab-item="R-tab-e1dc7e3a67a4d872c699c3478bcb1496"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 容器中执行命令</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>redis-cli -p <span style="color:#ae81ff">6381</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>127.0.0.1:6381&gt; cluster info
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e"># 回显信息</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>cluster_state:ok <span style="color:#75715e"># 状态</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>cluster_slots_assigned:16384
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>cluster_slots_ok:16384 <span style="color:#75715e"># 槽位</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>cluster_known_nodes:6 <span style="color:#75715e"># 集群节点</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>...</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-121e43f0f0672c30bf7f5aeeea64db66">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-20d2df2ebd6a49f706dae8b70bdd67df" aria-expanded="true"
+      data-tab-item="R-tab-d99542537da3b408232c33811782d1ef"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-121e43f0f0672c30bf7f5aeeea64db66','R-tab-d99542537da3b408232c33811782d1ef')"
+    >
+      <span class="tab-nav-text">查看集群节点</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-20d2df2ebd6a49f706dae8b70bdd67df"
+      data-tab-item="R-tab-d99542537da3b408232c33811782d1ef"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 容器中执行命令</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>redis-cli -p <span style="color:#ae81ff">6381</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>127.0.0.1:6381&gt; cluster nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e"># 回显信息，主从关系</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>657c3b89c1983d109ec6e381ac7acaa682ca8d41 10.0.0.16:6384@16384 slave ec22dbd80ce8ef411cffe8efd00a3ec1cc79169d <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773923378403</span> <span style="color:#ae81ff">1</span> connected
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>aba4086cdd75c65e18d2f55fd56ccc849030c779 10.0.0.16:6383@16383 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773923381414</span> <span style="color:#ae81ff">3</span> connected 10923-16383
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>0e9cb6303e819e1137bacdafbed13a3af8dfaa9a 10.0.0.16:6382@16382 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773923380411</span> <span style="color:#ae81ff">2</span> connected 5461-10922
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>02f988f852358a4ef9a6b2b1a0cd3005cbf7ed86 10.0.0.16:6386@16386 slave aba4086cdd75c65e18d2f55fd56ccc849030c779 <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773923379407</span> <span style="color:#ae81ff">3</span> connected
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>0ee1c6ffc560e806886f63998d2460f81e31e157 10.0.0.16:6385@16385 slave 0e9cb6303e819e1137bacdafbed13a3af8dfaa9a <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773923380000</span> <span style="color:#ae81ff">2</span> connected
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>ec22dbd80ce8ef411cffe8efd00a3ec1cc79169d 10.0.0.16:6381@16381 myself,master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> connected 0-5460</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h4 id="集群验证">集群验证<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<div class="tab-panel" data-tab-group="R-tabs-d47616fa08d7b213518bb21d61ec56eb">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-5b0fe3c92f055d9f6a1c7f4955cb3078" aria-expanded="true"
+      data-tab-item="R-tab-bf27a3484d84424deac4e66bb8c01d6a"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-d47616fa08d7b213518bb21d61ec56eb','R-tab-bf27a3484d84424deac4e66bb8c01d6a')"
+    >
+      <span class="tab-nav-text">单机登录命令验证</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-5b0fe3c92f055d9f6a1c7f4955cb3078"
+      data-tab-item="R-tab-bf27a3484d84424deac4e66bb8c01d6a"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 容器中执行命令</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>redis-cli -p <span style="color:#ae81ff">6381</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>127.0.0.1:6381&gt; set k1 v1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#f92672">(</span>error<span style="color:#f92672">)</span> MOVED <span style="color:#ae81ff">12706</span> 10.0.0.16:6383 <span style="color:#75715e"># key值计算后超出 6381 redis容器的槽位</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>127.0.0.1:6381&gt; set k2 v2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>OK
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>127.0.0.1:6381&gt; set k4 v4
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#f92672">(</span>error<span style="color:#f92672">)</span> MOVED <span style="color:#ae81ff">8455</span> 10.0.0.16:6382 <span style="color:#75715e"># key值计算后超出 6381 redis容器的槽位</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-c50030a18d2db163dfc2af4d21e33050">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-391d094ad578317bdb828e9d09a74b8c" aria-expanded="true"
+      data-tab-item="R-tab-dd2980132162165820234240bde48ff6"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-c50030a18d2db163dfc2af4d21e33050','R-tab-dd2980132162165820234240bde48ff6')"
+    >
+      <span class="tab-nav-text">集群登录命令验证</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-391d094ad578317bdb828e9d09a74b8c"
+      data-tab-item="R-tab-dd2980132162165820234240bde48ff6"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 容器中执行命令</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>redis-cli -p <span style="color:#ae81ff">6381</span> -c
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>127.0.0.1:6381&gt; set k1 v1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>-&gt; Redirected to slot <span style="color:#f92672">[</span>12706<span style="color:#f92672">]</span> located at 10.0.0.16:6383 <span style="color:#75715e"># 根据key值计算的槽位，重定向redis机器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>OK
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>10.0.0.16:6383&gt; set k2 v2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>-&gt; Redirected to slot <span style="color:#f92672">[</span>449<span style="color:#f92672">]</span> located at 10.0.0.16:6381
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>OK
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>10.0.0.16:6381&gt; set k3 v3
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>OK
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>10.0.0.16:6381&gt; set k4 v4
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>-&gt; Redirected to slot <span style="color:#f92672">[</span>8455<span style="color:#f92672">]</span> located at 10.0.0.16:6382
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>OK</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-28b20136222c396709ba73cdf44d9372">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-458b80b8b5672b3d55cdf45d3a499657" aria-expanded="true"
+      data-tab-item="R-tab-dd5b34a69ebb7261566af82ef8b68d59"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-28b20136222c396709ba73cdf44d9372','R-tab-dd5b34a69ebb7261566af82ef8b68d59')"
+    >
+      <span class="tab-nav-text">redis集群检查</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-458b80b8b5672b3d55cdf45d3a499657"
+      data-tab-item="R-tab-dd5b34a69ebb7261566af82ef8b68d59"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># redis-cli --cluster help  查看详细子命令介绍</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>root@VM-0-16-debian:/data# redis-cli --cluster check 10.0.0.16:6381
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>10.0.0.16:6381 <span style="color:#f92672">(</span>ec22dbd8...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">2</span> keys | <span style="color:#ae81ff">5461</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>10.0.0.16:6383 <span style="color:#f92672">(</span>aba4086c...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">5461</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>10.0.0.16:6382 <span style="color:#f92672">(</span>0e9cb630...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">5462</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> <span style="color:#ae81ff">4</span> keys in <span style="color:#ae81ff">3</span> masters.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>0.00 keys per slot on average.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>&gt;&gt;&gt; Performing Cluster Check <span style="color:#f92672">(</span>using node 10.0.0.16:6381<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>M: ec22dbd80ce8ef411cffe8efd00a3ec1cc79169d 10.0.0.16:6381
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>   slots:<span style="color:#f92672">[</span>0-5460<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>S: 657c3b89c1983d109ec6e381ac7acaa682ca8d41 10.0.0.16:6384
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>   replicates ec22dbd80ce8ef411cffe8efd00a3ec1cc79169d
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>M: aba4086cdd75c65e18d2f55fd56ccc849030c779 10.0.0.16:6383
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>   slots:<span style="color:#f92672">[</span>10923-16383<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>M: 0e9cb6303e819e1137bacdafbed13a3af8dfaa9a 10.0.0.16:6382
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>   slots:<span style="color:#f92672">[</span>5461-10922<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5462</span> slots<span style="color:#f92672">)</span> master
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>S: 02f988f852358a4ef9a6b2b1a0cd3005cbf7ed86 10.0.0.16:6386
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>   replicates aba4086cdd75c65e18d2f55fd56ccc849030c779
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>S: 0ee1c6ffc560e806886f63998d2460f81e31e157 10.0.0.16:6385
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>   replicates 0e9cb6303e819e1137bacdafbed13a3af8dfaa9a
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All nodes agree about slots configuration.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>&gt;&gt;&gt; Check <span style="color:#66d9ef">for</span> open slots...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>&gt;&gt;&gt; Check slots coverage...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h3 id="运维场景">运维场景<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h4 id="主从切换">主从切换<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<p><a href="#R-image-dc0f8bfc73ca9b3d0bea93da37fa719a" class="lightbox-link"><img alt="image-20260319215424267" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319215424267.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-dc0f8bfc73ca9b3d0bea93da37fa719a"><img alt="image-20260319215424267" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319215424267.png"></a></p>
+<div class="tab-panel" data-tab-group="R-tabs-699a978fe31921efbb33dd8e45789fd8">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-e4242ebf4eb76e760082170acdbe6651" aria-expanded="true"
+      data-tab-item="R-tab-a8742b68f721b29feaa66c906455ebf6"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-699a978fe31921efbb33dd8e45789fd8','R-tab-a8742b68f721b29feaa66c906455ebf6')"
+    >
+      <span class="tab-nav-text">停容器验证</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-e4242ebf4eb76e760082170acdbe6651"
+      data-tab-item="R-tab-a8742b68f721b29feaa66c906455ebf6"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 停容器实例</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>docker stop redis-node-1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e"># 登录其他容器节点查看集群情况</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>docker exec -it redis-node-2 /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#75715e"># 容器内执行命令</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>redis-cli -p <span style="color:#ae81ff">6382</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>cluster nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#75715e"># 回显信息</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>0e9cb6303e819e1137bacdafbed13a3af8dfaa9a 10.0.0.16:6382@16382 myself,master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">2</span> connected 5461-10922
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>ec22dbd80ce8ef411cffe8efd00a3ec1cc79169d 10.0.0.16:6381@16381 master,fail - <span style="color:#ae81ff">1773925990613</span> <span style="color:#ae81ff">1773925987000</span> <span style="color:#ae81ff">1</span> disconnected
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>aba4086cdd75c65e18d2f55fd56ccc849030c779 10.0.0.16:6383@16383 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773926038000</span> <span style="color:#ae81ff">3</span> connected 10923-16383
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>02f988f852358a4ef9a6b2b1a0cd3005cbf7ed86 10.0.0.16:6386@16386 slave aba4086cdd75c65e18d2f55fd56ccc849030c779 <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773926036812</span> <span style="color:#ae81ff">3</span> connected
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>0ee1c6ffc560e806886f63998d2460f81e31e157 10.0.0.16:6385@16385 slave 0e9cb6303e819e1137bacdafbed13a3af8dfaa9a <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773926038821</span> <span style="color:#ae81ff">2</span> connected
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>657c3b89c1983d109ec6e381ac7acaa682ca8d41 10.0.0.16:6384@16384 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773926037817</span> <span style="color:#ae81ff">7</span> connected 0-5460</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>可以看到6381已下线，6384切换为master。</p>
+<div class="tab-panel" data-tab-group="R-tabs-0855899b37fe13fe09b104a907c51ec3">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-11e07fc0421ab08643cf5dbb0583b33d" aria-expanded="true"
+      data-tab-item="R-tab-94799dadec031e8e9b3b57ef960d4604"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-0855899b37fe13fe09b104a907c51ec3','R-tab-94799dadec031e8e9b3b57ef960d4604')"
+    >
+      <span class="tab-nav-text">验证业务数据</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-11e07fc0421ab08643cf5dbb0583b33d"
+      data-tab-item="R-tab-94799dadec031e8e9b3b57ef960d4604"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>root@VM-0-16-debian:/data# redis-cli -p <span style="color:#ae81ff">6382</span> -c
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>127.0.0.1:6382&gt; get k1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>-&gt; Redirected to slot <span style="color:#f92672">[</span>12706<span style="color:#f92672">]</span> located at 10.0.0.16:6383
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#e6db74">&#34;v1&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>10.0.0.16:6383&gt; get k2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>-&gt; Redirected to slot <span style="color:#f92672">[</span>449<span style="color:#f92672">]</span> located at 10.0.0.16:6384
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#e6db74">&#34;v2&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>10.0.0.16:6384&gt; get k3
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#e6db74">&#34;v3&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>10.0.0.16:6384&gt; get k4
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>-&gt; Redirected to slot <span style="color:#f92672">[</span>8455<span style="color:#f92672">]</span> located at 10.0.0.16:6382
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#e6db74">&#34;v4&#34;</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>原来6381上的业务数据，通过6384节点也可以正常查询到。</p>
+<div class="tab-panel" data-tab-group="R-tabs-49215520484805999741cea37a01e05f">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-cbb1b1b6e9ce16f8d0266bf7e3343bbe" aria-expanded="true"
+      data-tab-item="R-tab-03380b67220ef199f6611ed3b13d4869"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-49215520484805999741cea37a01e05f','R-tab-03380b67220ef199f6611ed3b13d4869')"
+    >
+      <span class="tab-nav-text">启容器验证</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-cbb1b1b6e9ce16f8d0266bf7e3343bbe"
+      data-tab-item="R-tab-03380b67220ef199f6611ed3b13d4869"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 启容器实例</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>docker start redis-node-1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e"># 登录其他容器节点查看集群情况</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>docker exec -it redis-node-2 /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#75715e"># 容器内执行命令</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>redis-cli -p <span style="color:#ae81ff">6382</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>cluster nodes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#75715e"># 回显信息</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>0e9cb6303e819e1137bacdafbed13a3af8dfaa9a 10.0.0.16:6382@16382 myself,master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">2</span> connected 5461-10922
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>ec22dbd80ce8ef411cffe8efd00a3ec1cc79169d 10.0.0.16:6381@16381 slave 657c3b89c1983d109ec6e381ac7acaa682ca8d41 <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773926572056</span> <span style="color:#ae81ff">7</span> connected
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>aba4086cdd75c65e18d2f55fd56ccc849030c779 10.0.0.16:6383@16383 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773926574062</span> <span style="color:#ae81ff">3</span> connected 10923-16383
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>02f988f852358a4ef9a6b2b1a0cd3005cbf7ed86 10.0.0.16:6386@16386 slave aba4086cdd75c65e18d2f55fd56ccc849030c779 <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773926572000</span> <span style="color:#ae81ff">3</span> connected
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>0ee1c6ffc560e806886f63998d2460f81e31e157 10.0.0.16:6385@16385 slave 0e9cb6303e819e1137bacdafbed13a3af8dfaa9a <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773926573000</span> <span style="color:#ae81ff">2</span> connected
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>657c3b89c1983d109ec6e381ac7acaa682ca8d41 10.0.0.16:6384@16384 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1773926573059</span> <span style="color:#ae81ff">7</span> connected 0-5460</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>6384为master，6381为从机。</p>
+<div class="tab-panel" data-tab-group="R-tabs-d4b208ba452bfd2f90c39ef3d055a690">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-327102ba1e19670cde56f54909fcf528" aria-expanded="true"
+      data-tab-item="R-tab-932da1962a9c4279a3f5ed0cf813e372"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-d4b208ba452bfd2f90c39ef3d055a690','R-tab-932da1962a9c4279a3f5ed0cf813e372')"
+    >
+      <span class="tab-nav-text">强迫症式恢复主从关系</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-327102ba1e19670cde56f54909fcf528"
+      data-tab-item="R-tab-932da1962a9c4279a3f5ed0cf813e372"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 在6384为master，6381为slave，都是正常状态运行情况下。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#75715e"># 1. stop 6384</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>docker stop redis-node-4
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e"># 2. 6381 节点切换为master后，start 6384，主从切换有个心跳检测的过程。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>docker start redis-node-4
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#75715e"># 3. 检查集群状态。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>docker exec -it redis-node-2 /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#75715e"># 容器内执行命令</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>redis-cli -p <span style="color:#ae81ff">6382</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>cluster nodes</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h4 id="集群扩容">集群扩容<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<div class="tab-panel" data-tab-group="R-tabs-d7c5fab99409328bd5731612b630dc3b">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-fbd9098e9cc40edb97f448a4320e8887" aria-expanded="true"
+      data-tab-item="R-tab-bf8e01a8b1668faa0e604484cde451ec"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-d7c5fab99409328bd5731612b630dc3b','R-tab-bf8e01a8b1668faa0e604484cde451ec')"
+    >
+      <span class="tab-nav-text">新建节点</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-fbd9098e9cc40edb97f448a4320e8887"
+      data-tab-item="R-tab-bf8e01a8b1668faa0e604484cde451ec"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>docker run -d --net host --privileged<span style="color:#f92672">=</span>true -v /app/redis/share/redis-node-7/data:/data --name redis-node-7 redis:latest --cluster-enabled yes --appendonly yes --port <span style="color:#ae81ff">6387</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>docker run -d --net host --privileged<span style="color:#f92672">=</span>true -v /app/redis/share/redis-node-8/data:/data --name redis-node-8 redis:latest --cluster-enabled yes --appendonly yes --port <span style="color:#ae81ff">6388</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>docker ps</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>通过领路人（6381）找到组织（集群），然后加入集群。</p>
+<div class="tab-panel" data-tab-group="R-tabs-d1204d0f5fe3e301c8f7a4b311c6296c">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-833e0a915054895bf680f6baa071afe8" aria-expanded="true"
+      data-tab-item="R-tab-a6dc87e49badbfdf3191a638534f8f5e"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-d1204d0f5fe3e301c8f7a4b311c6296c','R-tab-a6dc87e49badbfdf3191a638534f8f5e')"
+    >
+      <span class="tab-nav-text">6387作为master加入集群</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-833e0a915054895bf680f6baa071afe8"
+      data-tab-item="R-tab-a6dc87e49badbfdf3191a638534f8f5e"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 登录到redis新节点6387</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>docker exec -it redis-node-7 /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e"># redis-cli --cluster add-node 新节点IP:端口 领路人IP:端口</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>redis-cli --cluster add-node 10.0.0.16:6387 10.0.0.16:6381
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#75715e"># 命令回显</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All nodes agree about slots configuration.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>&gt;&gt;&gt; Check <span style="color:#66d9ef">for</span> open slots...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>&gt;&gt;&gt; Check slots coverage...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>&gt;&gt;&gt; Getting functions from cluster
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>&gt;&gt;&gt; Send FUNCTION LIST to 10.0.0.16:6387 to verify there is no functions in it
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>&gt;&gt;&gt; Send FUNCTION RESTORE to 10.0.0.16:6387
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>&gt;&gt;&gt; Send CLUSTER MEET to node 10.0.0.16:6387 to make it join the cluster.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> New node added correctly.</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-734c31fafcc30582676e375c2d68efb4">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-d4a6aa560a712019d27295ecbd6508a2" aria-expanded="true"
+      data-tab-item="R-tab-780d2f9fe120238afead63d68aa21fe6"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-734c31fafcc30582676e375c2d68efb4','R-tab-780d2f9fe120238afead63d68aa21fe6')"
+    >
+      <span class="tab-nav-text">集群检查</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-d4a6aa560a712019d27295ecbd6508a2"
+      data-tab-item="R-tab-780d2f9fe120238afead63d68aa21fe6"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>redis-cli --cluster check 10.0.0.16:6381
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e"># 命令回显</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>root@VM-0-16-debian:/data# redis-cli --cluster check 10.0.0.16:6381
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>10.0.0.16:6381 <span style="color:#f92672">(</span>ec22dbd8...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">2</span> keys | <span style="color:#ae81ff">5461</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>10.0.0.16:6382 <span style="color:#f92672">(</span>0e9cb630...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">5462</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>10.0.0.16:6387 <span style="color:#f92672">(</span>36054bac...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">0</span> keys | <span style="color:#ae81ff">0</span> slots | <span style="color:#ae81ff">0</span> slaves.  <span style="color:#75715e"># 6387 已经加入集群，未分配槽位，无从机</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>10.0.0.16:6383 <span style="color:#f92672">(</span>aba4086c...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">5461</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> <span style="color:#ae81ff">4</span> keys in <span style="color:#ae81ff">4</span> masters.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>0.00 keys per slot on average.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>M: 36054bac1321fe2fb9c1d145ac9db9a65a2aec06 10.0.0.16:6387   <span style="color:#75715e"># 6387 为Master节点</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> master
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>M: aba4086cdd75c65e18d2f55fd56ccc849030c779 10.0.0.16:6383
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>   slots:<span style="color:#f92672">[</span>10923-16383<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All nodes agree about slots configuration.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>&gt;&gt;&gt; Check <span style="color:#66d9ef">for</span> open slots...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>&gt;&gt;&gt; Check slots coverage...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-97147b9765e5ae21d6e4dcbb90dbd89f">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-dde8653ff2327b1ebbddfc04013e4208" aria-expanded="true"
+      data-tab-item="R-tab-31c494adf80a9c2378b48187d2be9082"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-97147b9765e5ae21d6e4dcbb90dbd89f','R-tab-31c494adf80a9c2378b48187d2be9082')"
+    >
+      <span class="tab-nav-text">重新分配槽号</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-dde8653ff2327b1ebbddfc04013e4208"
+      data-tab-item="R-tab-31c494adf80a9c2378b48187d2be9082"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># redis-cli --cluster reshard 10.0.0.16:6381</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>root@VM-0-16-debian:/data# redis-cli --cluster reshard 10.0.0.16:6381
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>M: 36054bac1321fe2fb9c1d145ac9db9a65a2aec06 10.0.0.16:6387
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> master
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>How many slots <span style="color:#66d9ef">do</span> you want to move <span style="color:#f92672">(</span>from <span style="color:#ae81ff">1</span> to 16384<span style="color:#f92672">)</span>? <span style="color:#ae81ff">4096</span>   <span style="color:#75715e"># 16384/集群主节点个数</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>What is the receiving node ID? 36054bac1321fe2fb9c1d145ac9db9a65a2aec06  <span style="color:#75715e"># 6387 节点ID</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>Please enter all the source node IDs.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  Type <span style="color:#e6db74">&#39;all&#39;</span> to use all the nodes as source nodes <span style="color:#66d9ef">for</span> the hash slots.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>  Type <span style="color:#e6db74">&#39;done&#39;</span> once you entered all the source nodes IDs.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>Source node <span style="color:#75715e">#1: all    # 选择all，所有节点重新分配</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>Ready to move <span style="color:#ae81ff">4096</span> slots.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>Do you want to proceed with the proposed reshard plan <span style="color:#f92672">(</span>yes/no<span style="color:#f92672">)</span>? yes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>...</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-e978e8121c6156248373bc132f213bbe">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-2d8eb86ec19f93a6fc559d45fd88b413" aria-expanded="true"
+      data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-e978e8121c6156248373bc132f213bbe','R-tab-1703e563642a8b981be3badda4867538')"
+    >
+      <span class="tab-nav-text">检查集群</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-2d8eb86ec19f93a6fc559d45fd88b413"
+      data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>redis-cli --cluster check 10.0.0.16:6381
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e"># 命令回显</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>root@VM-0-16-debian:/data# redis-cli --cluster check 10.0.0.16:6381
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>10.0.0.16:6381 <span style="color:#f92672">(</span>ec22dbd8...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">4096</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>10.0.0.16:6382 <span style="color:#f92672">(</span>0e9cb630...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">4096</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>10.0.0.16:6387 <span style="color:#f92672">(</span>36054bac...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">4096</span> slots | <span style="color:#ae81ff">0</span> slaves. <span style="color:#75715e"># 6387 已经分配槽位</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>10.0.0.16:6383 <span style="color:#f92672">(</span>aba4086c...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">4096</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>M: ec22dbd80ce8ef411cffe8efd00a3ec1cc79169d 10.0.0.16:6381
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>   slots:<span style="color:#f92672">[</span>1365-5460<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">4096</span> slots<span style="color:#f92672">)</span> master <span style="color:#75715e"># 每个主节点都匀一部分槽位出来</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>M: 0e9cb6303e819e1137bacdafbed13a3af8dfaa9a 10.0.0.16:6382
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>   slots:<span style="color:#f92672">[</span>6827-10922<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">4096</span> slots<span style="color:#f92672">)</span> master
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>M: 36054bac1321fe2fb9c1d145ac9db9a65a2aec06 10.0.0.16:6387
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>   slots:<span style="color:#f92672">[</span>0-1364<span style="color:#f92672">]</span>,<span style="color:#f92672">[</span>5461-6826<span style="color:#f92672">]</span>,<span style="color:#f92672">[</span>10923-12287<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">4096</span> slots<span style="color:#f92672">)</span> master <span style="color:#75715e"># 6387的槽位是从3个主节点匀来的</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>M: aba4086cdd75c65e18d2f55fd56ccc849030c779 10.0.0.16:6383
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>   slots:<span style="color:#f92672">[</span>12288-16383<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">4096</span> slots<span style="color:#f92672">)</span> master
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>新加入节点分配槽位，不是整个集群从头重新分配槽位，只是从之前的主节点匀一部分给新节点，满足分配规则即可。目的是为了集群稳定性。</p>
+<div class="tab-panel" data-tab-group="R-tabs-cc3c9657e6dbac1954e457e5551c4570">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-1061aec0be4a76f7b79103f2a9b0e477" aria-expanded="true"
+      data-tab-item="R-tab-b611578393970b7ed7c9847c70897f83"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-cc3c9657e6dbac1954e457e5551c4570','R-tab-b611578393970b7ed7c9847c70897f83')"
+    >
+      <span class="tab-nav-text">6388接入主机</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-1061aec0be4a76f7b79103f2a9b0e477"
+      data-tab-item="R-tab-b611578393970b7ed7c9847c70897f83"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 命令格式：redis-cli --cluster add-node 待挂载从机IP:端口 待挂载主机IP:端口 --cluster-slave --cluster-master-id 待挂载主机的集群ID</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>redis-cli --cluster add-node 10.0.0.16:6388 10.0.0.16:6387 --cluster-slave --cluster-master-id 36054bac1321fe2fb9c1d145ac9db9a65a2aec06
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e"># 命令回显</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>&gt;&gt;&gt; Adding node 10.0.0.16:6388 to cluster 10.0.0.16:6387
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>&gt;&gt;&gt; Performing Cluster Check <span style="color:#f92672">(</span>using node 10.0.0.16:6387<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All nodes agree about slots configuration.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>&gt;&gt;&gt; Check <span style="color:#66d9ef">for</span> open slots...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>&gt;&gt;&gt; Check slots coverage...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>&gt;&gt;&gt; Send CLUSTER MEET to node 10.0.0.16:6388 to make it join the cluster. <span style="color:#75715e"># 6388 加入到集群</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>Waiting <span style="color:#66d9ef">for</span> the cluster to join
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>&gt;&gt;&gt; Configure node as replica of 10.0.0.16:6387. <span style="color:#75715e"># 6388 从6387复制数据，即从机</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> New node added correctly.</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-d2f081dfa156942bdd7f805c61d1772c">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-cc6177c61e9e5eb506a8583abb5d5d41" aria-expanded="true"
+      data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-d2f081dfa156942bdd7f805c61d1772c','R-tab-1703e563642a8b981be3badda4867538')"
+    >
+      <span class="tab-nav-text">检查集群</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-cc6177c61e9e5eb506a8583abb5d5d41"
+      data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>redis-cli --cluster check 10.0.0.16:6382
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e"># 命令回显</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>root@VM-0-16-debian:/data# redis-cli --cluster check 10.0.0.16:6382
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>10.0.0.16:6382 <span style="color:#f92672">(</span>0e9cb630...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">4096</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>10.0.0.16:6381 <span style="color:#f92672">(</span>ec22dbd8...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">4096</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>10.0.0.16:6383 <span style="color:#f92672">(</span>aba4086c...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">4096</span> slots | <span style="color:#ae81ff">1</span> slaves.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>10.0.0.16:6387 <span style="color:#f92672">(</span>36054bac...<span style="color:#f92672">)</span> -&gt; <span style="color:#ae81ff">1</span> keys | <span style="color:#ae81ff">4096</span> slots | <span style="color:#ae81ff">1</span> slaves. <span style="color:#75715e"># 6387 下已有从机</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>S: 6bcc56caea65061f501f42601852f294aaa2912b 10.0.0.16:6388
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>   replicates 36054bac1321fe2fb9c1d145ac9db9a65a2aec06  <span style="color:#75715e"># 主机集群ID</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>M: 36054bac1321fe2fb9c1d145ac9db9a65a2aec06 10.0.0.16:6387
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>   slots:<span style="color:#f92672">[</span>0-1364<span style="color:#f92672">]</span>,<span style="color:#f92672">[</span>5461-6826<span style="color:#f92672">]</span>,<span style="color:#f92672">[</span>10923-12287<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">4096</span> slots<span style="color:#f92672">)</span> master
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All nodes agree about slots configuration.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>&gt;&gt;&gt; Check <span style="color:#66d9ef">for</span> open slots...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>&gt;&gt;&gt; Check slots coverage...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h4 id="集群缩容">集群缩容<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/devops/index.html">Devops</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1773934487"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1773934487" defer></script>
+    <script src="/js/theme.min.js?1773934487" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="print">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.158.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="description" content="一致性哈希（Consistent Hashing）是一种特殊的哈希技术，用于在分布式系统中将数据分布到多个节点上。">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="02 一致性哈希算法详解 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="一致性哈希（Consistent Hashing）是一种特殊的哈希技术，用于在分布式系统中将数据分布到多个节点上。">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/02-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:title" content="02 一致性哈希算法详解 :: 暮鼓晨钟">
+    <meta property="og:description" content="一致性哈希（Consistent Hashing）是一种特殊的哈希技术，用于在分布式系统中将数据分布到多个节点上。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="02 一致性哈希算法详解 :: 暮鼓晨钟">
+    <meta itemprop="description" content="一致性哈希（Consistent Hashing）是一种特殊的哈希技术，用于在分布式系统中将数据分布到多个节点上。">
+    <meta itemprop="wordCount" content="254">
+    <meta itemprop="keywords" content="Docker">
+    <title>02 一致性哈希算法详解 :: 暮鼓晨钟</title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/02-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/index.html" rel="canonical" type="text/html" title="02 一致性哈希算法详解 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/02-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/index.xml" rel="alternate" type="application/rss+xml" title="02 一致性哈希算法详解 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1773934487" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1773934487" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1773934487" defer></script>
+    <script src="/js/search-lunr.min.js?1773934487" defer></script>
+    <script src="/js/search.min.js?1773934487" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1773934487";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1773934487" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1773934487" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1773934487" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1773934487" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1773934487" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1773934487" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1773934487" rel="stylesheet">
+    <link href="/css/theme.min.css?1773934487" rel="stylesheet">
+    <link href="/css/format-print.min.css?1773934487" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/algorithms\/distributedsystems\/02-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1773934487" rel="stylesheet">
+  </head>
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/02-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一核心思想从离散映射到环形连续映射">一、核心思想：从“离散映射”到“环形连续映射”</a></li>
+        <li><a href="#二算法原理详解含虚拟节点优化">二、算法原理详解（含虚拟节点优化）</a>
+          <ul>
+            <li><a href="#步骤-1构建哈希环hash-ring">步骤 1：构建哈希环（Hash Ring）</a></li>
+            <li><a href="#步骤-2映射物理节点含虚拟节点">步骤 2：映射物理节点（含虚拟节点）</a></li>
+            <li><a href="#步骤-3映射数据key">步骤 3：映射数据（Key）</a></li>
+            <li><a href="#步骤-4节点变更处理">步骤 4：节点变更处理</a></li>
+          </ul>
+        </li>
+        <li><a href="#三核心优势优点">三、核心优势（优点）</a></li>
+        <li><a href="#四固有局限与挑战缺点">四、固有局限与挑战（缺点）</a></li>
+        <li><a href="#五典型应用场景">五、典型应用场景</a></li>
+        <li><a href="#六与其他分片算法对比">六、与其他分片算法对比</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html"><span itemprop="name">Algorithms</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/index.html"><span itemprop="name">Distributed Systems</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">02 一致性哈希算法详解</span><meta itemprop="position" content="5"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/02-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.html" title="01 哈希取余算法详解 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/index.html" title="C++ (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/docker/index.html">Docker</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="02-一致性哈希算法详解">02 一致性哈希算法详解</h1>
+
+<p>一致性哈希（Consistent Hashing）是一种在分布式系统中广泛应用的<strong>负载均衡与数据分片（sharding）技术</strong>，核心目标是：<strong>在节点（如缓存服务器、数据库分片、CDN节点等）动态增减时，尽可能减少数据重映射（rehash）带来的迁移开销</strong>。它由 David Karger 等人在 1997 年提出，已成为现代分布式架构（如 Redis Cluster、Cassandra、Dynamo、Kafka、负载均衡器等）的关键基础算法之一。</p>
+<hr>
+<h3 id="一核心思想从离散映射到环形连续映射">一、核心思想：从“离散映射”到“环形连续映射”<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<table>
+  <thead>
+      <tr>
+          <th>传统哈希（Modulo Hash）</th>
+          <th>一致性哈希（Consistent Hash）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>node = hash(key) % N</code>（N 为节点数）</td>
+          <td><code>node = 顺时针最近的节点</code>（在哈希环上）</td>
+      </tr>
+      <tr>
+          <td><strong>节点增减 → 全量重哈希</strong>：N→N+1 时，约 <code>(N+1)/N ≈ 100%</code> 的 key 映射关系改变</td>
+          <td><strong>节点增减 → 局部重映射</strong>：仅影响新节点与前一节点之间的 key，迁移比例 ≈ <code>1/N</code>（理想情况下）</td>
+      </tr>
+  </tbody>
+</table>
+<p>本质突破：<strong>将“节点数量”从哈希计算中解耦，使映射关系对节点规模变化具有鲁棒性</strong>。</p>
+<hr>
+<h3 id="二算法原理详解含虚拟节点优化">二、算法原理详解（含虚拟节点优化）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h4 id="步骤-1构建哈希环hash-ring">步骤 1：构建哈希环（Hash Ring）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<ul>
+<li>定义哈希空间：通常为 <code>[0, 2^32)</code> 的整数环（类比钟表 0~360°），首尾相连。</li>
+<li>选择<strong>均匀性好、抗碰撞强</strong>的哈希函数（如 MD5、SHA-1、MurmurHash3），将任意输入映射到该空间。</li>
+</ul>
+<h4 id="步骤-2映射物理节点含虚拟节点">步骤 2：映射物理节点（含虚拟节点）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<ul>
+<li><strong>物理节点 → 哈希环</strong>：对每个物理节点 <code>node_i</code>，计算其哈希值 <code>h(node_i)</code>，标记在环上。</li>
+<li><strong>引入虚拟节点（Virtual Nodes）</strong>（关键优化！）：
+<ul>
+<li>为每个物理节点生成 <code>K</code> 个虚拟节点（如 <code>node_i#0</code>, <code>node_i#1</code>, &hellip;, <code>node_i#K-1</code>）；</li>
+<li>分别哈希后映射到环上；</li>
+<li><strong>作用</strong>：显著改善哈希环上节点分布的均匀性，避免物理节点稀疏导致的负载倾斜。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>无虚拟节点：3 个节点可能集中在环的 1/4 区域 → 负载偏差大<br>
+有虚拟节点（K=100）：300 个点均匀散布 → 负载标准差降低 5–10 倍</p>
+</blockquote>
+<h4 id="步骤-3映射数据key">步骤 3：映射数据（Key）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<ul>
+<li>对任意数据 key，计算 <code>h(key)</code>，得到环上一点；</li>
+<li><strong>顺时针查找</strong>：从 <code>h(key)</code> 出发，找到环上第一个（最近的）节点哈希值；</li>
+<li>该节点即为 key 的归属节点（存储/服务节点）。</li>
+</ul>
+<blockquote>
+<p><em>为什么是“顺时针”？</em><br>
+约定方向，保证确定性；逆时针亦可，但需全局统一。</p>
+</blockquote>
+<h4 id="步骤-4节点变更处理">步骤 4：节点变更处理<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
+<table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>影响范围</th>
+          <th>迁移数据比例（理想）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>新增节点 X</strong></td>
+          <td>X 的前驱节点（逆时针最近）到 X 之间的所有 key</td>
+          <td>≈ <code>1/(N×K)</code>（K 为虚拟节点数）</td>
+      </tr>
+      <tr>
+          <td><strong>删除节点 Y</strong></td>
+          <td>Y 所负责的全部 key</td>
+          <td>≈ <code>1/(N×K)</code></td>
+      </tr>
+      <tr>
+          <td><strong>节点故障/网络分区</strong></td>
+          <td>同删除节点</td>
+          <td>可结合副本机制（如主从）保障可用性</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>关键洞察</strong>：迁移量与总节点数 <code>N</code> 成反比，与新增/删除节点数无关 —— 实现<strong>可预测、可伸缩的变更成本</strong>。</p>
+</blockquote>
+<hr>
+<h3 id="三核心优势优点">三、核心优势（优点）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<table>
+  <thead>
+      <tr>
+          <th>优势</th>
+          <th>说明</th>
+          <th>实际价值</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>极低的数据迁移开销</strong></td>
+          <td>节点变更仅影响局部 key，避免全量 rebalance</td>
+          <td>降低运维风险、减少延迟抖动、提升系统稳定性（如缓存雪崩防护）</td>
+      </tr>
+      <tr>
+          <td><strong>天然支持弹性伸缩</strong></td>
+          <td>无需停服、无需预估容量，可动态扩缩容</td>
+          <td>云原生架构基石（如 Serverless、自动伸缩组）</td>
+      </tr>
+      <tr>
+          <td><strong>负载相对均衡（尤其启用虚拟节点后）</strong></td>
+          <td>虚拟节点将物理节点“打散”，提升哈希环覆盖密度</td>
+          <td>避免热点节点，提升资源利用率</td>
+      </tr>
+      <tr>
+          <td><strong>实现简单，无中心依赖</strong></td>
+          <td>仅需客户端或轻量代理维护环结构，无全局协调</td>
+          <td>降低系统复杂度与单点故障风险</td>
+      </tr>
+      <tr>
+          <td><strong>兼容多种一致性模型</strong></td>
+          <td>可与副本策略（如 NWR）、读写分离、多数据中心部署结合</td>
+          <td>支撑高可用、低延迟、异地多活等高级场景</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h3 id="四固有局限与挑战缺点">四、固有局限与挑战（缺点）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<table>
+  <thead>
+      <tr>
+          <th>缺点</th>
+          <th>原因分析</th>
+          <th>应对方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>无法绝对均衡（尤其小规模集群）</strong></td>
+          <td>哈希函数的统计随机性 + 物理节点数量少 → 虚拟节点仍可能聚集</td>
+          <td>增大虚拟节点数（K=100~200）；使用更优哈希（如 Jump Hash、Rendezvous Hash）；运行时动态调优（如负载感知重分布）</td>
+      </tr>
+      <tr>
+          <td><strong>环结构维护开销</strong></td>
+          <td>节点变更需同步更新所有客户端的环信息，存在短暂不一致</td>
+          <td>引入服务发现（ZooKeeper/Etcd/Nacos）；客户端拉取+本地缓存+版本号校验；使用 gossip 协议传播变更</td>
+      </tr>
+      <tr>
+          <td><strong>单点故障影响局部数据</strong></td>
+          <td>若某节点宕机，其负责的 key 全部失效（无副本时）</td>
+          <td>必须配合副本机制（如主从、纠删码）；实现故障自动摘除与快速恢复</td>
+      </tr>
+      <tr>
+          <td><strong>范围查询（Range Query）不友好</strong></td>
+          <td>key 按哈希分布，逻辑相邻 key 可能落在不同节点 → 难以高效扫描</td>
+          <td>改用有序分片（如按 key 字典序分片）；引入二级索引；业务层聚合</td>
+      </tr>
+      <tr>
+          <td><strong>哈希冲突与环分裂风险</strong></td>
+          <td>极端情况下哈希碰撞导致节点重叠；环被“割裂”影响查找效率</td>
+          <td>使用高质量哈希函数；环结构采用平衡树/跳表优化查找（O(log N)）；客户端缓存 + 一致性校验</td>
+      </tr>
+  </tbody>
+</table>
+
+<details open class="box cstyle notices warning">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-exclamation-triangle"></i> 
+    警告
+  </summary>
+  <div class="box-content">
+<p>注意：<strong>一致性哈希 ≠ 强一致性</strong>！它解决的是“数据路由一致性”，与 CAP 中的 Consistency（强一致）无关。</p>
+  </div>
+</details>
+<hr>
+<h3 id="五典型应用场景">五、典型应用场景<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>分布式缓存（如 Redis Cluster）</strong></td>
+          <td>key 自动分片到不同 Redis 实例；扩容时仅迁移部分 slot（对应哈希段）</td>
+      </tr>
+      <tr>
+          <td><strong>分布式数据库分片（如 Vitess、CockroachDB）</strong></td>
+          <td>将表/行按 key 分布到不同存储节点，支持水平扩展</td>
+      </tr>
+      <tr>
+          <td><strong>CDN 与边缘计算节点路由</strong></td>
+          <td>用户请求哈希后定位最近边缘节点，节点增减不影响大部分用户</td>
+      </tr>
+      <tr>
+          <td><strong>负载均衡器（如 Nginx+Consistent Hash）</strong></td>
+          <td>将客户端 IP / Session ID 映射到后端服务，保障会话粘性</td>
+      </tr>
+      <tr>
+          <td><strong>P2P 网络（如 Chord、Kademlia）</strong></td>
+          <td>节点与数据均映射至环，实现去中心化查找</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h3 id="六与其他分片算法对比">六、与其他分片算法对比<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<table>
+  <thead>
+      <tr>
+          <th>算法</th>
+          <th>数据迁移量</th>
+          <th>负载均衡性</th>
+          <th>实现复杂度</th>
+          <th>适用场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>一致性哈希</strong></td>
+          <td>极低（O(1/N)）</td>
+          <td>中→高（依赖虚拟节点）</td>
+          <td>低</td>
+          <td>动态节点、缓存、无状态服务</td>
+      </tr>
+      <tr>
+          <td><strong>取模分片（Modulo）</strong></td>
+          <td>极高（O(100%)）</td>
+          <td>高（N 大时）</td>
+          <td>极低</td>
+          <td>静态集群、简单 KV 存储</td>
+      </tr>
+      <tr>
+          <td><strong>范围分片（Range Sharding）</strong></td>
+          <td>零（仅分裂/合并边界）</td>
+          <td>低（易热点）</td>
+          <td>中</td>
+          <td>有序查询多、业务可预估分布（如按时间/地区）</td>
+      </tr>
+      <tr>
+          <td>**Rendezvous Hash（最高</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/devops/index.html">Devops</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1773934487"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1773934487" defer></script>
+    <script src="/js/theme.min.js?1773934487" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>
