@@ -5,26 +5,24 @@
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="generator" content="Hugo 0.158.0">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
-    <meta name="description" content="记录日常感悟、生活感悟。">
+    <meta name="description" content="Linux 核心命令之iptables。">
     <meta name="author" content="">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://caijemmy.github.io/images/daily/daily-reflections/Insight/%E6%84%9F%E6%82%9F.jpg">
-    <meta name="twitter:title" content="感悟 :: 暮鼓晨钟">
-    <meta name="twitter:description" content="记录日常感悟、生活感悟。">
-    <meta property="og:url" content="https://caijemmy.github.io/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="iptables命令 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="Linux 核心命令之iptables。">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.html">
     <meta property="og:site_name" content="暮鼓晨钟">
-    <meta property="og:title" content="感悟 :: 暮鼓晨钟">
-    <meta property="og:description" content="记录日常感悟、生活感悟。">
+    <meta property="og:title" content="iptables命令 :: 暮鼓晨钟">
+    <meta property="og:description" content="Linux 核心命令之iptables。">
     <meta property="og:locale" content="zh_CN">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://caijemmy.github.io/images/daily/daily-reflections/Insight/%E6%84%9F%E6%82%9F.jpg">
-    <meta itemprop="name" content="感悟 :: 暮鼓晨钟">
-    <meta itemprop="description" content="记录日常感悟、生活感悟。">
-    <meta itemprop="wordCount" content="2">
-    <meta itemprop="image" content="https://caijemmy.github.io/images/daily/daily-reflections/Insight/%E6%84%9F%E6%82%9F.jpg">
-    <title>感悟 :: 暮鼓晨钟</title>
-    <link href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.xml" rel="alternate" type="application/rss+xml" title="感悟 :: 暮鼓晨钟">
-    <link href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.print.html" rel="alternate" type="text/html" title="感悟 :: 暮鼓晨钟">
+    <meta itemprop="name" content="iptables命令 :: 暮鼓晨钟">
+    <meta itemprop="description" content="Linux 核心命令之iptables。">
+    <meta itemprop="wordCount" content="259">
+    <meta itemprop="keywords" content="Shell">
+    <title>iptables命令 :: 暮鼓晨钟</title>
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.xml" rel="alternate" type="application/rss+xml" title="iptables命令 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.print.html" rel="alternate" type="text/html" title="iptables命令 :: 暮鼓晨钟">
     <link href="/images/favicon.png?1774112165" rel="icon" type="image/png">
     <link href="/css/auto-complete/auto-complete.min.css?1774112165" rel="stylesheet">
     <script src="/js/auto-complete/auto-complete.min.js?1774112165" defer></script>
@@ -50,9 +48,9 @@
       window.relearn = window.relearn || {};
       // configuration
       window.relearn.min = `.min`;
-      window.relearn.path='\/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3\/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F\/%E6%84%9F%E6%82%9F\/index.html';
-      window.relearn.relBasePath='..\/..\/..';
-      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/shell\/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4\/iptables\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..';
       window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
       window.relearn.disableInlineCopyToClipboard=false;
       window.relearn.enableBlockCodeWrap=false;
@@ -96,7 +94,7 @@
     </script>
     <link href="/css/custom.css?1774112165" rel="stylesheet">
   </head>
-  <body class="mobile-support html" data-origin="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html">
+  <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.html">
     <div id="R-body" class="default-animation">
       <div id="R-body-overlay"></div>
       <nav id="R-topbar" class="default-animation">
@@ -109,22 +107,34 @@
             <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
 <span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
               <div class="topbar-content">
-                <div class="topbar-content-wrapper"> 
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一数据包流经的-netfilter-钩子点5-个关键位置">一、数据包流经的 netfilter 钩子点（5 个关键位置）</a></li>
+        <li><a href="#二iptables-规则匹配与动作执行流程单条链内">二、iptables 规则匹配与动作执行流程（单条链内）</a></li>
+        <li><a href="#三典型场景示例本机访问外网-web-服务器">三、典型场景示例（本机访问外网 Web 服务器）</a></li>
+        <li><a href="#四重要补充说明">四、重要补充说明</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
                 </div>
               </div>
             </div>
           </div>
-          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/index.html"><span itemprop="name">日常拾趣</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/index.html"><span itemprop="name">日常感悟</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">感悟</span><meta itemprop="position" content="4"></li>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><span itemprop="name">shell</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html"><span itemprop="name">linux 核心命令</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">iptables命令</span><meta itemprop="position" content="5"></li>
           </ol>
           <div class="topbar-area topbar-area-end" data-area="end">
             <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html" title="管孩子 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html" title="01、常用命令 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html" title="聪明、听话、努力 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.html" title="ip命令 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
 <span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
@@ -139,22 +149,131 @@
         </div>
       </nav>
       <div id="R-main-overlay"></div>
-      <main id="R-body-inner" class="highlightable 日常拾趣" tabindex="-1">
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
         <div class="flex-block-wrapper">
 <article class="default">
   <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/shell/index.html">Shell</a></li>
+  </ul>
+</div>
   </header>
 
-<h1 id="感悟">感悟</h1>
+<h1 id="iptables命令">iptables命令</h1>
 
-<ul class="children children-type-tree children-sort-">
-<li>
-<p><a href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html">聪明、听话、努力</a></p>
-<p>一般孩子不可能同时具备的3个优点。</p>
+<p>iptables 是 Linux 内核中 netfilter 框架的用户态管理工具，其“执行过程”本质上是指数据包在内核网络协议栈中经过 netfilter 钩子（hook）时，如何被 iptables 规则匹配与处理。需注意：<strong>iptables 命令本身不“执行”数据包处理，而是配置规则；真正的匹配与动作发生在内核 netfilter 的钩子点上</strong>。以下是清晰、准确的执行过程说明（基于 IPv4，标准内核流程）：</p>
+<hr>
+<h3 id="一数据包流经的-netfilter-钩子点5-个关键位置">一、数据包流经的 netfilter 钩子点（5 个关键位置）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<p>数据包根据方向（入站/出站/转发）和协议栈阶段，依次经过以下内核 hook 点（按顺序）：</p>
+<table>
+  <thead>
+      <tr>
+          <th>钩子点（Hook）</th>
+          <th>触发时机</th>
+          <th>对应 iptables 表/链</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>NF_INET_PRE_ROUTING</strong></td>
+          <td>数据包刚进入网络栈，<strong>路由决策前</strong></td>
+          <td><code>raw</code> (PREROUTING), <code>mangle</code> (PREROUTING), <code>nat</code> (PREROUTING)</td>
+          <td>可修改包头（如 DNAT）、绕过连接跟踪（raw）</td>
+      </tr>
+      <tr>
+          <td><strong>NF_INET_LOCAL_IN</strong></td>
+          <td>目标是本机的数据包，<strong>路由后、交付给上层协议前</strong></td>
+          <td><code>mangle</code> (INPUT), <code>filter</code> (INPUT), <code>security</code> (INPUT)</td>
+          <td>入站主过滤点（如允许/拒绝 SSH）</td>
+      </tr>
+      <tr>
+          <td><strong>NF_INET_FORWARD</strong></td>
+          <td>目标非本机、需转发的数据包，<strong>路由后、转发前</strong></td>
+          <td><code>mangle</code> (FORWARD), <code>filter</code> (FORWARD), <code>security</code> (FORWARD)</td>
+          <td>网关/防火墙核心转发控制点</td>
+      </tr>
+      <tr>
+          <td><strong>NF_INET_LOCAL_OUT</strong></td>
+          <td>本机生成的、<strong>发出前</strong>的数据包（路由前）</td>
+          <td><code>raw</code> (OUTPUT), <code>mangle</code> (OUTPUT), <code>nat</code> (OUTPUT), <code>filter</code> (OUTPUT)</td>
+          <td>处理本机发出的包（如 SNAT、本地端口重定向）</td>
+      </tr>
+      <tr>
+          <td><strong>NF_INET_POST_ROUTING</strong></td>
+          <td>数据包<strong>即将离开本机前</strong>（无论本地生成或转发），路由已确定</td>
+          <td><code>mangle</code> (POSTROUTING), <code>nat</code> (POSTROUTING)</td>
+          <td>最后修改机会（如 SNAT、MASQUERADE）</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p>注：每个 hook 点按 <strong>表优先级</strong>（raw → mangle → nat → filter → security）和 <strong>链内规则顺序</strong>（从上到下）依次匹配。</p>
+</blockquote>
+<hr>
+<h3 id="二iptables-规则匹配与动作执行流程单条链内">二、iptables 规则匹配与动作执行流程（单条链内）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<p>当数据包到达某 hook 点（如 INPUT），内核按以下逻辑处理该链的规则：</p>
+<ol>
+<li><strong>顺序匹配</strong>：从链中第 1 条规则开始，逐条比对；</li>
+<li><strong>条件匹配</strong>：检查包的源/目的 IP、端口、协议、状态（conntrack）、接口、TCP 标志等是否满足规则条件；</li>
+<li><strong>匹配成功</strong>：
+<ul>
+<li>若目标（target）为 <strong>ACCEPT / DROP / REJECT / LOG</strong> 等内置动作 → <strong>立即终止该链匹配</strong>，执行对应动作（如丢弃或放行）；</li>
+<li>若目标为 <strong>自定义链</strong> → 跳入该链继续匹配；返回后继续执行下一条规则（除非自定义链中明确 <code>RETURN</code> 或终止动作）；</li>
+<li>若目标为 <strong>SNAT / DNAT / MASQUERADE</strong>（仅在 nat 表特定链）→ 执行地址转换，并<strong>继续后续 hook 链</strong>（nat 表不终止流程，仅修改包）；</li>
+</ul>
 </li>
+<li><strong>匹配失败</strong>：尝试下一条规则；</li>
+<li><strong>所有规则都不匹配</strong> → 执行该链的 <strong>默认策略（policy）</strong>（如 <code>iptables -P INPUT DROP</code>）。</li>
+</ol>
+<blockquote>
+<p>关键原则：</p>
+<ul>
+<li><strong>ACCEPT/DROP/REJECT 是终止动作</strong>（不继续后续规则）；</li>
+<li><strong>SNAT/DNAT 是修改动作，不终止匹配</strong>（但仅在 nat 表的 PREROUTING/OUTPUT/POSTROUTING 中生效）；</li>
+<li><strong>RETURN 用于从自定义链返回父链，继续执行父链的下一条规则</strong>。</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="三典型场景示例本机访问外网-web-服务器">三、典型场景示例（本机访问外网 Web 服务器）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>本机发出请求（curl http://example.com）：
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>1. 本地进程 → 协议栈 → NF_INET_LOCAL_OUT  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>   ├─ raw OUTPUT → mangle OUTPUT → nat OUTPUT（可做源地址转换）→ filter OUTPUT  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>   └─ 若 filter OUTPUT 允许 → 进入路由决策（查路由表）  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>2. 路由确定出口网卡（如 eth0）→ NF_INET_POST_ROUTING  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>   └─ mangle POSTROUTING → nat POSTROUTING（如 MASQUERADE）→ 发送至网络  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>响应包返回本机：
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>1. 入口网卡（eth0）→ NF_INET_PRE_ROUTING  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>   └─ raw PREROUTING → mangle PREROUTING → nat PREROUTING（DNAT）→ 连接跟踪确认为 ESTABLISHED  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>2. 路由判断 → 目标是本机 → NF_INET_LOCAL_IN  
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>   └─ mangle INPUT → filter INPUT（放行 ESTABLISHED）→ 交付给本地进程  </span></span></code></pre></div>
+<hr>
+<h3 id="四重要补充说明">四、重要补充说明<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<ul>
+<li><strong>状态化匹配（conntrack）</strong>：<code>-m state --state ESTABLISHED,RELATED</code> 或现代推荐的 <code>-m conntrack --ctstate</code>，依赖内核 <code>nf_conntrack</code> 模块，是高效防火墙的基础；</li>
+<li><strong>规则优化建议</strong>：将高匹配频率规则（如 ESTABLISHED）放在链顶部；避免使用 <code>-j LOG</code> 在大量规则前（影响性能）；</li>
+<li><strong>表与链的对应关系</strong>：
+<ul>
+<li><code>raw</code>：绕过连接跟踪（<code>NOTRACK</code>）；</li>
+<li><code>mangle</code>：修改包头（TTL、TOS、MARK）；</li>
+<li><code>nat</code>：地址/端口转换（仅在 PREROUTING/OUTPUT/POSTROUTING）；</li>
+<li><code>filter</code>：核心过滤（INPUT/FORWARD/OUTPUT）；</li>
+<li><code>security</code>：SELinux/MAC 相关（较少使用）；</li>
+</ul>
+</li>
+<li><strong>iptables 命令不实时处理包</strong>：<code>iptables -A INPUT ...</code> 仅向内核 netfilter 注册规则；包处理完全由内核在数据路径中完成，无用户态参与。</li>
 </ul>
 
   <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/%E7%BC%96%E7%A8%8B/index.html">编程</a></li>
+  </ul>
+</div>
 
 <p>工欲善其事，必先利其器。</p>
   </footer>
@@ -202,15 +321,15 @@
       <div id="R-content-wrapper" class="highlightable">
         <div class="R-sidebarmenu R-shortcutmenu-main default-animation">
           <ul class="enlarge morespace collapsible-menu">
-            <li class="parent " data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/index.html"><input type="checkbox" id="R-section-ea901636dff8018c5f1c03f9c780a1eb" aria-controls="R-subsections-ea901636dff8018c5f1c03f9c780a1eb" checked><label for="R-section-ea901636dff8018c5f1c03f9c780a1eb"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单日常拾趣</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/index.html"><i class="fa-solid fa-face-smile"></i>日常拾趣<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-ea901636dff8018c5f1c03f9c780a1eb" class="collapsible-menu">
-            <li class="parent " data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-a7e4371e0d818d2afaed8790c1e552d1" aria-controls="R-subsections-a7e4371e0d818d2afaed8790c1e552d1" checked><label for="R-section-a7e4371e0d818d2afaed8790c1e552d1"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单日常感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/index.html">日常感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a7e4371e0d818d2afaed8790c1e552d1" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/index.html"><input type="checkbox" id="R-section-ea901636dff8018c5f1c03f9c780a1eb" aria-controls="R-subsections-ea901636dff8018c5f1c03f9c780a1eb"><label for="R-section-ea901636dff8018c5f1c03f9c780a1eb"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单日常拾趣</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/index.html"><i class="fa-solid fa-face-smile"></i>日常拾趣<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-ea901636dff8018c5f1c03f9c780a1eb" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-a7e4371e0d818d2afaed8790c1e552d1" aria-controls="R-subsections-a7e4371e0d818d2afaed8790c1e552d1"><label for="R-section-a7e4371e0d818d2afaed8790c1e552d1"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单日常感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/index.html">日常感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a7e4371e0d818d2afaed8790c1e552d1" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><input type="checkbox" id="R-section-21b164580b14ca784734c2afe862cd51" aria-controls="R-subsections-21b164580b14ca784734c2afe862cd51"><label for="R-section-21b164580b14ca784734c2afe862cd51"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单亲子</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><i class="fa-solid fa-hands-holding-child"></i>亲子<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-21b164580b14ca784734c2afe862cd51" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html">管孩子<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
-            <li class="active parent " data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-3332d5c03f8527837f94b80748c083f2" aria-controls="R-subsections-3332d5c03f8527837f94b80748c083f2" checked><label for="R-section-3332d5c03f8527837f94b80748c083f2"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html">感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3332d5c03f8527837f94b80748c083f2" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-3332d5c03f8527837f94b80748c083f2" aria-controls="R-subsections-3332d5c03f8527837f94b80748c083f2"><label for="R-section-3332d5c03f8527837f94b80748c083f2"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html">感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3332d5c03f8527837f94b80748c083f2" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html">聪明、听话、努力<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><input type="checkbox" id="R-section-5514417afb636335d911822c29826333" aria-controls="R-subsections-5514417afb636335d911822c29826333"><label for="R-section-5514417afb636335d911822c29826333"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单书香笔记</span></label><a class="padding default-animation" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-5514417afb636335d911822c29826333" class="collapsible-menu">
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html">win11安装<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f"><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
+            <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" checked><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html"><input type="checkbox" id="R-section-8ccf0f449d5b18651f34402c6b220482" aria-controls="R-subsections-8ccf0f449d5b18651f34402c6b220482"><label for="R-section-8ccf0f449d5b18651f34402c6b220482"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Algorithms</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html">Algorithms<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-8ccf0f449d5b18651f34402c6b220482" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/index.html"><input type="checkbox" id="R-section-ea340b7e93cf2d6fef86ae60ce6e9523" aria-controls="R-subsections-ea340b7e93cf2d6fef86ae60ce6e9523"><label for="R-section-ea340b7e93cf2d6fef86ae60ce6e9523"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Distributed Systems</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/index.html">Distributed Systems<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-ea340b7e93cf2d6fef86ae60ce6e9523" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.html">01 哈希取余算法详解<i class="fa-fw fas fa-check read-icon"></i></a></li>
@@ -233,10 +352,10 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html">01 Mysql主从复制<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.html">02 redis集群<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.html">03 Dockerfile<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><input type="checkbox" id="R-section-304846f73ad6d6a97cc461dcfbcd5e89" aria-controls="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89"><label for="R-section-304846f73ad6d6a97cc461dcfbcd5e89"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html">shell<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89" class="collapsible-menu">
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html"><input type="checkbox" id="R-section-89ae1b5e52ee2fb92d25853d1938dbc3" aria-controls="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3"><label for="R-section-89ae1b5e52ee2fb92d25853d1938dbc3"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单linux 核心命令</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html">linux 核心命令<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3" class="collapsible-menu">
+            <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><input type="checkbox" id="R-section-304846f73ad6d6a97cc461dcfbcd5e89" aria-controls="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89" checked><label for="R-section-304846f73ad6d6a97cc461dcfbcd5e89"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html">shell<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89" class="collapsible-menu">
+            <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html"><input type="checkbox" id="R-section-89ae1b5e52ee2fb92d25853d1938dbc3" aria-controls="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3" checked><label for="R-section-89ae1b5e52ee2fb92d25853d1938dbc3"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单linux 核心命令</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html">linux 核心命令<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01、常用命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.html">iptables命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="active " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.html">iptables命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.html">ip命令<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/index.html"><input type="checkbox" id="R-section-6fe0a03ac9c213c95fd8431d286e7919" aria-controls="R-subsections-6fe0a03ac9c213c95fd8431d286e7919"><label for="R-section-6fe0a03ac9c213c95fd8431d286e7919"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell编程技巧</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/index.html">shell编程技巧<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-6fe0a03ac9c213c95fd8431d286e7919" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html">01、严格模式<i class="fa-fw fas fa-check read-icon"></i></a></li>
