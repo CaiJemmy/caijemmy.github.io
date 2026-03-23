@@ -18,32 +18,32 @@
     <meta property="og:type" content="website">
     <meta itemprop="name" content="ip命令 :: 暮鼓晨钟">
     <meta itemprop="description" content="Linux 核心命令之ip。">
-    <meta itemprop="wordCount" content="5254">
+    <meta itemprop="wordCount" content="5548">
     <meta itemprop="keywords" content="Shell">
     <title>ip命令 :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.xml" rel="alternate" type="application/rss+xml" title="ip命令 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.print.html" rel="alternate" type="text/html" title="ip命令 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1774112165" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1774112165" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1774112165" defer></script>
-    <script src="/js/search-lunr.min.js?1774112165" defer></script>
-    <script src="/js/search.min.js?1774112165" defer></script>
+    <link href="/images/favicon.png?1774279958" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1774279958" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1774279958" defer></script>
+    <script src="/js/search-lunr.min.js?1774279958" defer></script>
+    <script src="/js/search.min.js?1774279958" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1774112165";
+      window.relearn.index_js_url="/searchindex.en.js?1774279958";
     </script>
-    <script src="/js/lunr/lunr.min.js?1774112165" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1774112165" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1774112165" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1774112165" defer></script>
+    <script src="/js/lunr/lunr.min.js?1774279958" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1774279958" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1774279958" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1774279958" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1774112165" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774112165" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774112165" rel="stylesheet">
-    <link href="/css/theme.min.css?1774112165" rel="stylesheet">
-    <link href="/css/format-html.min.css?1774112165" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1774279958" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774279958" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774279958" rel="stylesheet">
+    <link href="/css/theme.min.css?1774279958" rel="stylesheet">
+    <link href="/css/format-html.min.css?1774279958" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1774112165" rel="stylesheet">
+    <link href="/css/custom.css?1774279958" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.html">
     <div id="R-body" class="default-animation">
@@ -110,6 +110,7 @@
                 <div class="topbar-content-wrapper">
 <nav class="TableOfContents">
   <ul>
+    <li><a href="#网络管理命令">网络管理命令</a></li>
     <li><a href="#一iproute2-概览">一、iproute2 概览</a>
       <ul>
         <li><a href="#1-iproute2-vs-传统-net-tools"><strong>1. iproute2 vs 传统 net-tools</strong></a></li>
@@ -227,6 +228,108 @@
 
 <h1 id="ip命令">ip命令</h1>
 
+<h2 id="网络管理命令">网络管理命令<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<table>
+  <thead>
+      <tr>
+          <th>需求</th>
+          <th>iproute</th>
+          <th>net-tools</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>显示所有已连接的网络接口</td>
+          <td>ip link show 或 ip a</td>
+          <td>ifconfig 或 ifconfig -a</td>
+      </tr>
+      <tr>
+          <td>激活或停用网络接口</td>
+          <td>ip link set down eth1<br>ip link set up lo</td>
+          <td>ipconfig eth1 up<br>ipconfig eth1 down</td>
+      </tr>
+      <tr>
+          <td>为网络接口分配IPv4地址</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>给同一个接口分配多个IP地址</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>移除网络接口的IPv4地址</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>显示网络接口的IPv4地址</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>查看IP路由表</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>添加或修改默认路由</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>添加或移除静态路由</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>查看套接字统计信息</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>查看ARP表</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>添加或删除静态ARP项</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>添加，删除和查看多播地址</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>为网络接口分配IPv6地址</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>显示网络接口的IPv6地址</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>移除网络接口的IPv6地址</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>改变网络接口的MAC地址</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
 <h2 id="一iproute2-概览">一、iproute2 概览<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="1-iproute2-vs-传统-net-tools"><strong>1. iproute2 vs 传统 net-tools</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <table>
@@ -361,6 +464,139 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span><span style="color:#75715e"># 监控地址变化</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>$ ip monitor address</span></span></code></pre></div>
+<div class="tab-panel" data-tab-group="R-tabs-902699baec9ce187d1d101d780aac9f2">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-c41fc367fc44e2960cbd41248557ddcd" aria-expanded="true"
+      data-tab-item="R-tab-2953043b0813f9cc7e6344bd7ce92f4d"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-902699baec9ce187d1d101d780aac9f2','R-tab-2953043b0813f9cc7e6344bd7ce92f4d')"
+    >
+      <span class="tab-nav-text">docker 虚拟网卡信息</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-c41fc367fc44e2960cbd41248557ddcd"
+      data-tab-item="R-tab-2953043b0813f9cc7e6344bd7ce92f4d"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@6f2c0dc55d26:/app# ip a s eth0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>106: eth0@if107: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span style="color:#ae81ff">1500</span> qdisc noqueue state UP group default
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    link/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff link-netnsid <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    inet 172.17.0.3/16 brd 172.17.255.255 scope global eth0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>       valid_lft forever preferred_lft forever</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>**<code>eth0@if107</code>**本质是一个 veth 虚拟网卡的容器侧端口，与宿主机上的一个 veth 接口成对存在。Docker 默认 <code>bridge</code> 网络模式（通过 <code>docker0</code> 网桥连接容器与宿主机）</p>
+<table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>说明</th>
+          <th>解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>106</td>
+          <td><strong>接口索引号（interface index）</strong>，内核为该网络设备分配的唯一整数 ID，用于内部管理（如 <code>ip link set dev 106 down</code> 可用，但通常用名字更安全）。</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>eth0</td>
+          <td><strong>该容器内看到的网卡名称</strong>，是容器命名空间（network namespace）中的名字</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>@if107</td>
+          <td>表示这是一个 <strong>veth（virtual ethernet）对的一端</strong>，<code>@if107</code> 指向<strong>对端接口在宿主机网络命名空间中的索引号是 107</strong>（即宿主机上有一个名为 <code>vethxxxxxx@if106</code> 的接口，其对端索引为 106 —— 这里数字对应关系是“互指”的）</td>
+          <td><code>eth0@if107</code> 表示：<br/> <strong>“我在容器里叫 eth0，我的另一头（宿主机侧）的网卡接口在宿主机上编号是 107”</strong>。<br/> 这是一个 <strong>veth-pair（虚拟以太网对）</strong> 的容器侧视图。</td>
+      </tr>
+      <tr>
+          <td>BROADCAST</td>
+          <td>支持广播（如 IPv4 ARP、DHCP）</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>MULTICAST</td>
+          <td>支持组播（如 mDNS、IGMP）</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>UP</td>
+          <td>接口已启用（<code>ip link set eth0 up</code> 后置位）</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>LOWER_UP</td>
+          <td><strong>物理链路层已就绪</strong>（veth 对端已连接且 UP）→ 表示 veth pair 已正确建立并激活</td>
+          <td>注意：<code>LOWER_UP</code> 是 veth 的关键健康指标 —— 若缺失，说明容器与宿主机网络未连通</td>
+      </tr>
+      <tr>
+          <td>mtu 1500</td>
+          <td><strong>Maximum Transmission Unit</strong>：最大传输单元，即该接口能发送/接收的最大 IP 数据包大小（不含以太网头）</td>
+          <td><code>1500</code> 是以太网标准值，Docker 默认 bridge 网络使用此值。</td>
+      </tr>
+      <tr>
+          <td>qdisc noqueue</td>
+          <td><strong>qdisc</strong> = queueing discipline（排队规则），即 Linux 流量控制（TC）的队列机制。</td>
+          <td>veth 设备的默认行为 <code>noqueue</code> 表示：<strong>该接口不启用排队（无缓冲队列）</strong>，数据包直接发送（适用于 veth 这类低延迟、高吞吐的虚拟设备）。</td>
+      </tr>
+      <tr>
+          <td>state UP</td>
+          <td>接口的<strong>操作状态（operstate）</strong>，表示该接口当前已启用且链路就绪</td>
+          <td>其他常见值：<code>DOWN</code>（禁用）、<code>NO-CARRIER</code>（物理断开，veth 中极少出现）、<code>LOWERLAYERDOWN</code>（对端 down）等</td>
+      </tr>
+      <tr>
+          <td>group default</td>
+          <td>接口所属的 <strong>link group</strong>（分组），用于批量操作（如 <code>ip link set group default down</code>）</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><code>link/ether 02:42:ac:11:00:03</code></td>
+          <td>接口的 <strong>MAC 地址</strong>，<code>02:42:ac:11:00:03</code> 是 Docker 自动生成的 MAC（格式：<code>02:42:&lt;网络前缀&gt;</code>）</td>
+          <td><code>ac:11:00:03</code> → 十六进制转十进制：<code>172.17.0.3</code> → 正好对应下面的 IPv4 地址</td>
+      </tr>
+      <tr>
+          <td>brd ff:ff:ff:ff:ff:ff</td>
+          <td><strong>Broadcast MAC address</strong>：以太网广播地址（全 F），所有设备都会接收目的为此地址的帧。</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>link-netnsid 0</td>
+          <td>表示该接口的 <strong>对端（peer）位于宿主机的网络命名空间中</strong>，且该命名空间在内核中被标记为 ID <code>0</code>。Docker 使用 <code>netnsid</code>（network namespace ID）来快速定位对端命名空间。 <code>0</code> 通常代表 <strong>初始/宿主机网络命名空间</strong>（即 <code>host</code> netns）。</td>
+          <td>这是确认“该容器使用 host 网络之外的独立网络栈（bridge 模式）”的关键证据。</td>
+      </tr>
+      <tr>
+          <td>inet 172.17.0.3/16</td>
+          <td>容器的 IPv4 地址 + 子网掩码（即 <code>255.255.0.0</code>），属于 Docker 默认网桥 <code>docker0</code> 的网段 <code>172.17.0.0/16</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>brd 172.17.255.255</td>
+          <td>该子网的广播地址（<code>172.17.0.0/16</code> 的广播地址 = 网络地址 + 全 1 主机位）</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>scope global</td>
+          <td>该地址是全局有效的（非链路本地 <code>link</code> 或主机本地 <code>host</code>），可被外部路由（在 Docker bridge 模式下，需通过 <code>docker0</code> 网桥转发）</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>valid_lft forever</td>
+          <td>地址有效生命周期（过期后不再使用）</td>
+          <td><code>forever</code>：表示该地址是<strong>静态配置、永不失效</strong>（符合 Docker 容器 IP 分配行为）。</td>
+      </tr>
+      <tr>
+          <td>preferred_lft forever</td>
+          <td>首选生命周期（过期后不再作为新连接的源地址，但旧连接仍可用）</td>
+          <td><code>forever</code>：表示该地址是<strong>静态配置、永不失效</strong>（符合 Docker 容器 IP 分配行为）。</td>
+      </tr>
+  </tbody>
+</table>
 <h3 id="3"><strong>3. <code>ip route</code> - 路由表管理</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 查看路由表</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>$ ip route show
@@ -1622,6 +1858,8 @@
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><input type="checkbox" id="R-section-5514417afb636335d911822c29826333" aria-controls="R-subsections-5514417afb636335d911822c29826333"><label for="R-section-5514417afb636335d911822c29826333"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单书香笔记</span></label><a class="padding default-animation" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-5514417afb636335d911822c29826333" class="collapsible-menu">
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html">win11安装<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" checked><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/index.html">虚拟网络设备<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ccna/%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ccna/%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/index.html">网络接口的命名规则<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html"><input type="checkbox" id="R-section-8ccf0f449d5b18651f34402c6b220482" aria-controls="R-subsections-8ccf0f449d5b18651f34402c6b220482"><label for="R-section-8ccf0f449d5b18651f34402c6b220482"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Algorithms</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html">Algorithms<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-8ccf0f449d5b18651f34402c6b220482" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/index.html"><input type="checkbox" id="R-section-ea340b7e93cf2d6fef86ae60ce6e9523" aria-controls="R-subsections-ea340b7e93cf2d6fef86ae60ce6e9523"><label for="R-section-ea340b7e93cf2d6fef86ae60ce6e9523"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Distributed Systems</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/index.html">Distributed Systems<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-ea340b7e93cf2d6fef86ae60ce6e9523" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.html">01 哈希取余算法详解<i class="fa-fw fas fa-check read-icon"></i></a></li>
@@ -1643,7 +1881,8 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/index.html"><input type="checkbox" id="R-section-f324a38d4faac03c4757f331975e7120" aria-controls="R-subsections-f324a38d4faac03c4757f331975e7120"><label for="R-section-f324a38d4faac03c4757f331975e7120"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker 进阶</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/index.html">Docker 进阶<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-f324a38d4faac03c4757f331975e7120" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html">01 Mysql主从复制<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.html">02 redis集群<i class="fa-fw fas fa-check read-icon"></i></a></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.html">03 Dockerfile<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.html">03 Dockerfile<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/04-network/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/04-network/index.html">04 network<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><input type="checkbox" id="R-section-304846f73ad6d6a97cc461dcfbcd5e89" aria-controls="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89" checked><label for="R-section-304846f73ad6d6a97cc461dcfbcd5e89"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html">shell<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89" class="collapsible-menu">
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html"><input type="checkbox" id="R-section-89ae1b5e52ee2fb92d25853d1938dbc3" aria-controls="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3" checked><label for="R-section-89ae1b5e52ee2fb92d25853d1938dbc3"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单linux 核心命令</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html">linux 核心命令<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01、常用命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
@@ -1710,9 +1949,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774112165"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774112165" defer></script>
-    <script src="/js/theme.min.js?1774112165" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774279958"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774279958" defer></script>
+    <script src="/js/theme.min.js?1774279958" defer></script>
 
 <style>
     .highlight {
