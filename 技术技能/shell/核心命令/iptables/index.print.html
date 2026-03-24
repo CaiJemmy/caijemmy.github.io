@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.158.0">
+    <meta name="generator" content="Hugo 0.159.0">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="Linux 核心命令之iptables。">
     <meta name="author" content="">
@@ -18,32 +18,32 @@
     <meta property="og:type" content="website">
     <meta itemprop="name" content="iptables命令 :: 暮鼓晨钟">
     <meta itemprop="description" content="Linux 核心命令之iptables。">
-    <meta itemprop="wordCount" content="259">
+    <meta itemprop="wordCount" content="296">
     <meta itemprop="keywords" content="Shell">
     <title>iptables命令 :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.html" rel="canonical" type="text/html" title="iptables命令 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.xml" rel="alternate" type="application/rss+xml" title="iptables命令 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1774279958" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1774279958" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1774279958" defer></script>
-    <script src="/js/search-lunr.min.js?1774279958" defer></script>
-    <script src="/js/search.min.js?1774279958" defer></script>
+    <link href="/images/favicon.png?1774373024" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1774373024" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1774373024" defer></script>
+    <script src="/js/search-lunr.min.js?1774373024" defer></script>
+    <script src="/js/search.min.js?1774373024" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1774279958";
+      window.relearn.index_js_url="/searchindex.en.js?1774373024";
     </script>
-    <script src="/js/lunr/lunr.min.js?1774279958" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1774279958" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1774279958" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1774279958" defer></script>
+    <script src="/js/lunr/lunr.min.js?1774373024" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1774373024" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1774373024" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1774373024" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1774279958" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774279958" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774279958" rel="stylesheet">
-    <link href="/css/theme.min.css?1774279958" rel="stylesheet">
-    <link href="/css/format-print.min.css?1774279958" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1774373024" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774373024" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774373024" rel="stylesheet">
+    <link href="/css/theme.min.css?1774373024" rel="stylesheet">
+    <link href="/css/format-print.min.css?1774373024" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1774279958" rel="stylesheet">
+    <link href="/css/custom.css?1774373024" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.html">
     <div id="R-body" class="default-animation">
@@ -163,6 +163,8 @@
 
 <h1 id="iptables命令">iptables命令</h1>
 
+<p><a href="#R-image-8db8c0149ec1dbbc70f89a093495e7ad" class="lightbox-link"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-8db8c0149ec1dbbc70f89a093495e7ad"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png"></a></p>
 <p>iptables 是 Linux 内核中 netfilter 框架的用户态管理工具，其“执行过程”本质上是指数据包在内核网络协议栈中经过 netfilter 钩子（hook）时，如何被 iptables 规则匹配与处理。需注意：<strong>iptables 命令本身不“执行”数据包处理，而是配置规则；真正的匹配与动作发生在内核 netfilter 的钩子点上</strong>。以下是清晰、准确的执行过程说明（基于 IPv4，标准内核流程）：</p>
 <hr>
 <h3 id="一数据包流经的-netfilter-钩子点5-个关键位置">一、数据包流经的 netfilter 钩子点（5 个关键位置）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
@@ -211,7 +213,63 @@
 </table>
 <blockquote>
 <p>注：每个 hook 点按 <strong>表优先级</strong>（raw → mangle → nat → filter → security）和 <strong>链内规则顺序</strong>（从上到下）依次匹配。</p>
+<p>PREROUTING &ndash;&gt; INPUT &ndash;&gt; FORWARD &ndash;&gt; OUTPUT &ndash;&gt; POSTROUTING</p>
 </blockquote>
+<p><strong>表和链之间的关系</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>tables</th>
+          <th style="text-align: center">PREROUTING</th>
+          <th style="text-align: center">INPUT</th>
+          <th style="text-align: center">FORWARD</th>
+          <th style="text-align: center">OUTPUT</th>
+          <th style="text-align: center">POSTROUTING</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>raw</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center"></td>
+      </tr>
+      <tr>
+          <td>mangle</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center">✅</td>
+      </tr>
+      <tr>
+          <td>nat</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center">✅</td>
+      </tr>
+      <tr>
+          <td>filter</td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center"></td>
+      </tr>
+      <tr>
+          <td>security</td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center"></td>
+      </tr>
+  </tbody>
+</table>
 <hr>
 <h3 id="二iptables-规则匹配与动作执行流程单条链内">二、iptables 规则匹配与动作执行流程（单条链内）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <p>当数据包到达某 hook 点（如 INPUT），内核按以下逻辑处理该链的规则：</p>
@@ -292,9 +350,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774279958"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774279958" defer></script>
-    <script src="/js/theme.min.js?1774279958" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774373024"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774373024" defer></script>
+    <script src="/js/theme.min.js?1774373024" defer></script>
 
 <style>
     .highlight {
