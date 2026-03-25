@@ -10,7 +10,7 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="iptables命令 :: 暮鼓晨钟">
     <meta name="twitter:description" content="Linux 核心命令之iptables。">
-    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.html">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/netfilter/iptables/index.html">
     <meta property="og:site_name" content="暮鼓晨钟">
     <meta property="og:title" content="iptables命令 :: 暮鼓晨钟">
     <meta property="og:description" content="Linux 核心命令之iptables。">
@@ -21,36 +21,36 @@
     <meta itemprop="wordCount" content="296">
     <meta itemprop="keywords" content="Shell">
     <title>iptables命令 :: 暮鼓晨钟</title>
-    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.html" rel="canonical" type="text/html" title="iptables命令 :: 暮鼓晨钟">
-    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.xml" rel="alternate" type="application/rss+xml" title="iptables命令 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1774373024" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1774373024" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1774373024" defer></script>
-    <script src="/js/search-lunr.min.js?1774373024" defer></script>
-    <script src="/js/search.min.js?1774373024" defer></script>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/netfilter/iptables/index.html" rel="canonical" type="text/html" title="iptables命令 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/netfilter/iptables/index.xml" rel="alternate" type="application/rss+xml" title="iptables命令 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1774464561" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1774464561" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1774464561" defer></script>
+    <script src="/js/search-lunr.min.js?1774464561" defer></script>
+    <script src="/js/search.min.js?1774464561" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1774373024";
+      window.relearn.index_js_url="/searchindex.en.js?1774464561";
     </script>
-    <script src="/js/lunr/lunr.min.js?1774373024" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1774373024" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1774373024" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1774373024" defer></script>
+    <script src="/js/lunr/lunr.min.js?1774464561" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1774464561" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1774464561" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1774464561" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1774373024" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774373024" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774373024" rel="stylesheet">
-    <link href="/css/theme.min.css?1774373024" rel="stylesheet">
-    <link href="/css/format-print.min.css?1774373024" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1774464561" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774464561" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774464561" rel="stylesheet">
+    <link href="/css/theme.min.css?1774464561" rel="stylesheet">
+    <link href="/css/format-print.min.css?1774464561" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
       window.relearn.min = `.min`;
-      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/shell\/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4\/iptables\/index.html';
-      window.relearn.relBasePath='..\/..\/..\/..';
-      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/linux\/linux%E7%BD%91%E7%BB%9C\/netfilter\/iptables\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..\/..';
       window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
       window.relearn.disableInlineCopyToClipboard=false;
       window.relearn.enableBlockCodeWrap=false;
@@ -92,9 +92,9 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1774373024" rel="stylesheet">
+    <link href="/css/custom.css?1774464561" rel="stylesheet">
   </head>
-  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.html">
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/netfilter/iptables/index.html">
     <div id="R-body" class="default-animation">
       <div id="R-body-overlay"></div>
       <nav id="R-topbar" class="default-animation">
@@ -124,17 +124,17 @@
               </div>
             </div>
           </div>
-          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><span itemprop="name">shell</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html"><span itemprop="name">linux 核心命令</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">iptables命令</span><meta itemprop="position" content="5"></li>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html"><span itemprop="name">Linux</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/index.html"><span itemprop="name">Linux 网络</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/netfilter/index.html"><span itemprop="name">netfilter</span></a><meta itemprop="position" content="5">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">iptables命令</span><meta itemprop="position" content="6"></li>
           </ol>
           <div class="topbar-area topbar-area-end" data-area="end">
             <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/netfilter/iptables/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html" title="01、常用命令 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/netfilter/index.html" title="netfilter (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.html" title="ip命令 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html" title="shell (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
 <span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
@@ -163,8 +163,8 @@
 
 <h1 id="iptables命令">iptables命令</h1>
 
-<p><a href="#R-image-8db8c0149ec1dbbc70f89a093495e7ad" class="lightbox-link"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-8db8c0149ec1dbbc70f89a093495e7ad"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/iptables/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png"></a></p>
+<p><a href="#R-image-d9c98b9e087615663365e911b16a2470" class="lightbox-link"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/netfilter/iptables/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-d9c98b9e087615663365e911b16a2470"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/netfilter/iptables/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png"></a></p>
 <p>iptables 是 Linux 内核中 netfilter 框架的用户态管理工具，其“执行过程”本质上是指数据包在内核网络协议栈中经过 netfilter 钩子（hook）时，如何被 iptables 规则匹配与处理。需注意：<strong>iptables 命令本身不“执行”数据包处理，而是配置规则；真正的匹配与动作发生在内核 netfilter 的钩子点上</strong>。以下是清晰、准确的执行过程说明（基于 IPv4，标准内核流程）：</p>
 <hr>
 <h3 id="一数据包流经的-netfilter-钩子点5-个关键位置">一、数据包流经的 netfilter 钩子点（5 个关键位置）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
@@ -350,9 +350,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774373024"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774373024" defer></script>
-    <script src="/js/theme.min.js?1774373024" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774464561"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774464561" defer></script>
+    <script src="/js/theme.min.js?1774464561" defer></script>
 
 <style>
     .highlight {
