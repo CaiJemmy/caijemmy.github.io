@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="print">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="description" content="介绍iptables的表和链，filter表的基本命令及一个简单的实验。">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="iptables filter表基本命令 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="介绍iptables的表和链，filter表的基本命令及一个简单的实验。">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:title" content="iptables filter表基本命令 :: 暮鼓晨钟">
+    <meta property="og:description" content="介绍iptables的表和链，filter表的基本命令及一个简单的实验。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="iptables filter表基本命令 :: 暮鼓晨钟">
+    <meta itemprop="description" content="介绍iptables的表和链，filter表的基本命令及一个简单的实验。">
+    <meta itemprop="wordCount" content="471">
+    <meta itemprop="keywords" content="防火墙">
+    <title>iptables filter表基本命令 :: 暮鼓晨钟</title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html" rel="canonical" type="text/html" title="iptables filter表基本命令 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.xml" rel="alternate" type="application/rss+xml" title="iptables filter表基本命令 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1774536704" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1774536704" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1774536704" defer></script>
+    <script src="/js/search-lunr.min.js?1774536704" defer></script>
+    <script src="/js/search.min.js?1774536704" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1774536704";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1774536704" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1774536704" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1774536704" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1774536704" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1774536704" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774536704" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774536704" rel="stylesheet">
+    <link href="/css/theme.min.css?1774536704" rel="stylesheet">
+    <link href="/css/format-print.min.css?1774536704" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/linux\/linux%E7%BD%91%E7%BB%9C\/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99\/iptables\/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1774536704" rel="stylesheet">
+  </head>
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#iptables的5个表">iptables的5个表</a></li>
+    <li><a href="#iptables的基本语法">iptables的基本语法</a></li>
+    <li><a href="#链管理">链管理</a></li>
+    <li><a href="#规则管理">规则管理</a></li>
+    <li><a href="#指定匹配条件">指定匹配条件</a></li>
+    <li><a href="#指定目标">指定目标</a></li>
+    <li><a href="#实验配置web服务器上的主机防火墙">实验：配置Web服务器上的主机防火墙</a></li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html"><span itemprop="name">Linux</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/index.html"><span itemprop="name">Linux 网络</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.html"><span itemprop="name">Linux安全防火墙</span></a><meta itemprop="position" content="5">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/index.html"><span itemprop="name">netfilter/iptables</span></a><meta itemprop="position" content="6">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">iptables filter表基本命令</span><meta itemprop="position" content="7"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/index.html" title="iptables总体介绍 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html" title="shell (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99/index.html">防火墙</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="iptables-filter表基本命令">iptables filter表基本命令</h1>
+
+<ul class="card-container">
+<li>
+  <article class="card" aria-labelledby="R-card-315c5c0c52b1b2e3dbf6d289702a4419">
+    <div class="card-content">
+      <div class="card-title" id="R-card-315c5c0c52b1b2e3dbf6d289702a4419">
+        iptables和netfilter的关系
+      </div>
+      <div class="card-content-text">
+          <a href="#R-image-0e5cbc5e68f3062c26b7a8e09cad7df3" class="lightbox-link"><img alt="image-20260326155730252" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326155730252.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-0e5cbc5e68f3062c26b7a8e09cad7df3"><img alt="image-20260326155730252" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326155730252.png"></a>
+      </div>
+    </div>
+  </article>
+</li>
+<li>
+  <article class="card" aria-labelledby="R-card-d64b0320ee446d999214f80535ca5553">
+    <div class="card-content">
+      <div class="card-title" id="R-card-d64b0320ee446d999214f80535ca5553">
+        iptables的5个链
+      </div>
+      <div class="card-content-text">
+          <p><a href="#R-image-3329f4fcb6a55216d6f0fd6742d508db" class="lightbox-link"><img alt="image-20260326170716441" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326170716441.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-3329f4fcb6a55216d6f0fd6742d508db"><img alt="image-20260326170716441" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326170716441.png"></a></p>
+<ul>
+<li>给本机某个进程的数据包：PREROUTING &ndash;&gt; INPUT</li>
+<li>由本机转发的数据包：PREROUTING &ndash;&gt; FORWARD &ndash;&gt; POSTROUTING</li>
+<li>由本机发出的数据包：OUTPUT &ndash;&gt; POSTROUTING</li>
+</ul>
+      </div>
+    </div>
+  </article>
+</li>
+<li>
+  <article class="card" aria-labelledby="R-card-59897cdbf958d01cd1d02c06c64a81c2">
+    <div class="card-content">
+      <div class="card-title" id="R-card-59897cdbf958d01cd1d02c06c64a81c2">
+        表和链的关系
+      </div>
+      <div class="card-content-text">
+          <p><a href="#R-image-91d97b44c7fc142f3c7b5ac6b7b41b43" class="lightbox-link"><img alt="image-20260326192831787" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326192831787.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-91d97b44c7fc142f3c7b5ac6b7b41b43"><img alt="image-20260326192831787" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326192831787.png"></a></p>
+<ul>
+<li>表是按功能分</li>
+<li>链是按时机分</li>
+<li>链容纳各种防火墙规则</li>
+<li>链将规则按照时机来分类</li>
+</ul>
+      </div>
+    </div>
+  </article>
+</li>
+</ul>
+<blockquote>
+<p>注意：老的系统（如CentOS7）中，nat还会出现在INPUT，更新系统已经不会了。</p>
+</blockquote>
+<h2 id="iptables的5个表">iptables的5个表<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<table>
+  <thead>
+      <tr>
+          <th>表名</th>
+          <th>主要用途</th>
+          <th>内核模块</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>filter</code></td>
+          <td>包过滤（防火墙核心），确认是否放行</td>
+          <td>iptables_filter</td>
+      </tr>
+      <tr>
+          <td><code>nat</code></td>
+          <td>网络地址转换（DNAT/SNAT/MASQUERADE）</td>
+          <td>iptables_nat</td>
+      </tr>
+      <tr>
+          <td><code>mangle</code></td>
+          <td>修改数据包头（TTL、TOS、MARK等），拆解、修改、重新封装数据包</td>
+          <td>iptables_mangle</td>
+      </tr>
+      <tr>
+          <td><code>raw</code></td>
+          <td>绕过连接跟踪（<code>NOTRACK</code>），是否对数据包进行状态跟踪</td>
+          <td>iptables_raw</td>
+      </tr>
+      <tr>
+          <td><code>security</code></td>
+          <td>强制访问控制（SELinux 相关，较少使用）</td>
+          <td>iptables_security</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="iptables的基本语法">iptables的基本语法<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<div class="tab-panel" data-tab-group="R-tabs-044732ea88c7a55ed02f7623af0f4fcd">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-16472c247a9ea8a97a41c94a8c7f33e8" aria-expanded="true"
+      data-tab-item="R-tab-14fb608d70b8dfdae4eb0325b2cce398"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-044732ea88c7a55ed02f7623af0f4fcd','R-tab-14fb608d70b8dfdae4eb0325b2cce398')"
+    >
+      <span class="tab-nav-text">man iptables</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-16472c247a9ea8a97a41c94a8c7f33e8"
+      data-tab-item="R-tab-14fb608d70b8dfdae4eb0325b2cce398"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>IPTABLES<span style="color:#f92672">(</span>8<span style="color:#f92672">)</span>          iptables 1.8.9                                            IPTABLES<span style="color:#f92672">(</span>8<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>NAME
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>       iptables/ip6tables — administration tool <span style="color:#66d9ef">for</span> IPv4/IPv6 packet filtering and NAT
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>SYNOPSIS
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>       iptables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> <span style="color:#f92672">{</span>-A|-C|-D|-V<span style="color:#f92672">}</span> chain rule-specification
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>       ip6tables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> <span style="color:#f92672">{</span>-A|-C|-D|-V<span style="color:#f92672">}</span> chain rule-specification
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>       iptables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> -I chain <span style="color:#f92672">[</span>rulenum<span style="color:#f92672">]</span> rule-specification
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>       iptables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> -R chain rulenum rule-specification
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>       iptables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> -D chain rulenum
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>       iptables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> -S <span style="color:#f92672">[</span>chain <span style="color:#f92672">[</span>rulenum<span style="color:#f92672">]]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>       iptables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> <span style="color:#f92672">{</span>-F|-L|-Z<span style="color:#f92672">}</span> <span style="color:#f92672">[</span>chain <span style="color:#f92672">[</span>rulenum<span style="color:#f92672">]]</span> <span style="color:#f92672">[</span>options...<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>       iptables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> -N chain
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>       iptables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> -X <span style="color:#f92672">[</span>chain<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>       iptables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> -P chain target
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>       iptables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> -E old-chain-name new-chain-name
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>       
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>       rule-specification <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>matches...<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>target<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>       match <span style="color:#f92672">=</span> -m matchname <span style="color:#f92672">[</span>per-match-options<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>       target <span style="color:#f92672">=</span> -j targetname <span style="color:#f92672">[</span>per-target-options<span style="color:#f92672">]</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p><strong>简化记忆</strong></p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>iptables <span style="color:#f92672">[</span>-t table<span style="color:#f92672">]</span> &lt;option&gt; &lt;chain&gt; &lt;matching criteria&gt; &lt;target&gt;</span></span></code></pre></div>
+<h2 id="链管理">链管理<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>-L, --list <span style="color:#f92672">[</span>chain<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  列出所有规则链的所有规则，或列出指定规则链的规则
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>-F, --flush <span style="color:#f92672">[</span>chain<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  清空所有内置规则链，或清空指定的内置规则链
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>-Z, --zero <span style="color:#f92672">[</span>chain <span style="color:#f92672">[</span>rulenum<span style="color:#f92672">]]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>  重置所有规则链包和字节的计数器，或重置指定规则链的包和字节的计数器
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>-N, --new-chain chain
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  创建一个新的自定义规则链
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>-X, --delete-chain <span style="color:#f92672">[</span>chain<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>  删除所有自定义规则链，或删除指定的自定义规则链
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>-P, --policy chain target
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>  为内置规则链设置默认策略（目标），可以是ACCEPT或DROP
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>-E, --rename-chain old-chain new-chain
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>  重命名自定义的规则链名称</span></span></code></pre></div>
+<div class="tab-panel" data-tab-group="R-tabs-6bcf33d270345f453711c40a9dcf0118">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-e802eee9a2fe270a586ede00111e8f8e" aria-expanded="true"
+      data-tab-item="R-tab-16035461f35402af95ad690023d1f40c"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-6bcf33d270345f453711c40a9dcf0118','R-tab-16035461f35402af95ad690023d1f40c')"
+    >
+      <span class="tab-nav-text">列表命令（-L）的选项</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-e802eee9a2fe270a586ede00111e8f8e"
+      data-tab-item="R-tab-16035461f35402af95ad690023d1f40c"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>-v, --verbose
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  列出每条规则的信息，例如字节和包计数器，规则选项和相应的网络接口
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>-n, --numeric
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  以数值而不是名字的形式列出IP地址和端口号
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>-x, --exact
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>  列出计数器的精确值，而不是估值
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>--line-numbers
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  列出规则在规则链中的行号</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h2 id="规则管理">规则管理<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>-A, --append chain rule-specification
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  添加一条规则到链尾
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>-D, --delete chain rule-specification
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  删除指定的规则
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>-D, --delete chain rulenum
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>  删除指定行号的规则
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>-I, --insert chain <span style="color:#f92672">[</span>rulenum<span style="color:#f92672">]</span> rule-specification
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  插入一条规则到链的头部，或指定行号的前面
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>-R, --replace chain rulenum rule-specification
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>  替换指定行号的规则</span></span></code></pre></div>
+<h2 id="指定匹配条件">指定匹配条件<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p><strong>通用匹配</strong></p>
+<ul>
+<li>可直接使用，不依赖于其他条件或扩展</li>
+<li>包括网络协议、IP地址、网络接口等条件</li>
+</ul>
+<p><strong>隐含匹配</strong></p>
+<ul>
+<li>要求以特定的协议匹配作为前提</li>
+<li>包括端口、TCP标记、ICMP类型等条件</li>
+</ul>
+<p><strong>显示匹配/扩展匹配</strong></p>
+<ul>
+<li>要求以&quot;-m 扩展模块&quot;的形式明确指出类型</li>
+<li>包括多端口、MAC地址、IP范围、数据包状态等条件</li>
+</ul>
+<div class="tab-panel" data-tab-group="R-tabs-a811d6810fb1a1bbc54c7105d068e0e4">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-3bd03fe6811c7fe6452b264e2a5ac559" aria-expanded="true"
+      data-tab-item="R-tab-79f0f5bb974ffdc958700cbee835857a"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-a811d6810fb1a1bbc54c7105d068e0e4','R-tab-79f0f5bb974ffdc958700cbee835857a')"
+    >
+      <span class="tab-nav-text">通用匹配</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-3bd03fe6811c7fe6452b264e2a5ac559"
+      data-tab-item="R-tab-79f0f5bb974ffdc958700cbee835857a"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> -i, --in-interface name
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> -o, --out-interface name
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> -p, --protocol protocol
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> -s, --source address<span style="color:#f92672">[</span>/mask<span style="color:#f92672">][</span>,...<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> -d, --destination address<span style="color:#f92672">[</span>/mask<span style="color:#f92672">][</span>,...<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> -f, --fragment</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-16b99e6642108c93e31e60961e5d877b">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-49490066b84511f117caac50a3ad3c1b" aria-expanded="true"
+      data-tab-item="R-tab-f2c31d91905f1f44e22bb7208206abf2"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-16b99e6642108c93e31e60961e5d877b','R-tab-f2c31d91905f1f44e22bb7208206abf2')"
+    >
+      <span class="tab-nav-text">[!] -p, &ndash;protocol tcp TCP头部通用选项</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-49490066b84511f117caac50a3ad3c1b"
+      data-tab-item="R-tab-f2c31d91905f1f44e22bb7208206abf2"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> --sport | --source-port port<span style="color:#f92672">[</span>:port<span style="color:#f92672">]</span>    <span style="color:#75715e"># 可以是个别端口，也可以是端口范围</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> --dport | --destination-port port<span style="color:#f92672">[</span>:port<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> --tcp-flags mask comp
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> --syn
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> --tcp-option number
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#75715e"># --sport 和 --dport 必须配合 -p 使用</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-e8e377e6ebff06a694f48fe1cd78c50c">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-eb93b172d554110e58e11c23238d54ac" aria-expanded="true"
+      data-tab-item="R-tab-87dce88e50a4b2ad25cd198c15440257"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-e8e377e6ebff06a694f48fe1cd78c50c','R-tab-87dce88e50a4b2ad25cd198c15440257')"
+    >
+      <span class="tab-nav-text">[!] -p, &ndash;protocol udp UDP头部通用选项</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-eb93b172d554110e58e11c23238d54ac"
+      data-tab-item="R-tab-87dce88e50a4b2ad25cd198c15440257"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> --sport | --source-port port<span style="color:#f92672">[</span>:port<span style="color:#f92672">]</span>    <span style="color:#75715e"># 可以是个别端口，也可以是端口范围</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> --dport | --destination-port port<span style="color:#f92672">[</span>:port<span style="color:#f92672">]</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-3485bf7885f6a7d73cdffcfbdea2f67c">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-48e91434fc6c6f94fd17eca2f611afd1" aria-expanded="true"
+      data-tab-item="R-tab-28be4ebbc5207f96b0a8ca3f9742d204"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-3485bf7885f6a7d73cdffcfbdea2f67c','R-tab-28be4ebbc5207f96b0a8ca3f9742d204')"
+    >
+      <span class="tab-nav-text">[!] -p, &ndash;protocol icmp ICMP头部通用选项</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-48e91434fc6c6f94fd17eca2f611afd1"
+      data-tab-item="R-tab-28be4ebbc5207f96b0a8ca3f9742d204"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> --icmp-type typename        match icmp type
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> --icmp-type type<span style="color:#f92672">[</span>/code<span style="color:#f92672">]</span>     <span style="color:#f92672">(</span>or numeric type or type/code<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e"># iptables -p icmp -h   查看匹配类型</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>Valid ICMP Types:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>any
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>echo-reply <span style="color:#f92672">(</span>pong<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>echo-request <span style="color:#f92672">(</span>ping<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>destination-unreachable
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>   network-unreachable
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>   host-unreachable
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>   protocol-unreachable
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>   port-unreachable
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>   fragmentation-needed
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>   source-route-failed
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>   network-unknown
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>   host-unknown
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>   network-prohibited
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>   host-prohibited
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>   TOS-network-unreachable
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>   TOS-host-unreachable
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>   communication-prohibited
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>   host-precedence-violation
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>   precedence-cutoff
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>source-quench
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>redirect
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>   network-redirect
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>   host-redirect
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>   TOS-network-redirect
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>   TOS-host-redirect
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>router-advertisement
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>router-solicitation
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>time-exceeded <span style="color:#f92672">(</span>ttl-exceeded<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>   ttl-zero-during-transit
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>   ttl-zero-during-reassembly
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>parameter-problem
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>   ip-header-bad
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span>   required-option-missing
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span>timestamp-request
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>timestamp-reply
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>address-mask-request
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span>address-mask-reply</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h2 id="指定目标">指定目标<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>-j, --jump target</span></span></code></pre></div>
+<p>filter表中的target可以是：</p>
+<ul>
+<li>内置的目标
+<ul>
+<li>ACCEPT：允许通过</li>
+<li>DROP：丢弃数据包</li>
+<li>RETURN：停止遍历此链，继续前一个调用链中的下一个规则</li>
+</ul>
+</li>
+<li>用户自定义链</li>
+<li>扩展目标：
+<ul>
+<li>参加 man iptables-extensions</li>
+</ul>
+</li>
+</ul>
+<h2 id="实验配置web服务器上的主机防火墙">实验：配置Web服务器上的主机防火墙<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p><strong>实验环境</strong>：LAMP</p>
+<p><strong>配置防火墙策略</strong></p>
+<ul>
+<li>使用nmap扫描未配置防火墙的Web服务器</li>
+<li>允许ssh连接</li>
+<li>允许Web客户端的连接</li>
+<li>修改默认防火墙策略（DROP）</li>
+<li>使用nmap扫描安全加固后的Web服务器</li>
+</ul>
+
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/linux/index.html">Linux</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774536704"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774536704" defer></script>
+    <script src="/js/theme.min.js?1774536704" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>

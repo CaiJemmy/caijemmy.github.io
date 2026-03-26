@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.159.0">
+    <meta name="generator" content="Hugo 0.159.1">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="docker精进之Mysql主从复制。">
     <meta name="author" content="">
@@ -23,27 +23,27 @@
     <title>01 Mysql主从复制 :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html" rel="canonical" type="text/html" title="01 Mysql主从复制 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.xml" rel="alternate" type="application/rss+xml" title="01 Mysql主从复制 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1774464561" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1774464561" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1774464561" defer></script>
-    <script src="/js/search-lunr.min.js?1774464561" defer></script>
-    <script src="/js/search.min.js?1774464561" defer></script>
+    <link href="/images/favicon.png?1774536704" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1774536704" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1774536704" defer></script>
+    <script src="/js/search-lunr.min.js?1774536704" defer></script>
+    <script src="/js/search.min.js?1774536704" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1774464561";
+      window.relearn.index_js_url="/searchindex.en.js?1774536704";
     </script>
-    <script src="/js/lunr/lunr.min.js?1774464561" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1774464561" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1774464561" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1774464561" defer></script>
+    <script src="/js/lunr/lunr.min.js?1774536704" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1774536704" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1774536704" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1774536704" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1774464561" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774464561" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774464561" rel="stylesheet">
-    <link href="/css/theme.min.css?1774464561" rel="stylesheet">
-    <link href="/css/format-print.min.css?1774464561" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1774536704" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774536704" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774536704" rel="stylesheet">
+    <link href="/css/theme.min.css?1774536704" rel="stylesheet">
+    <link href="/css/format-print.min.css?1774536704" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1774464561" rel="stylesheet">
+    <link href="/css/custom.css?1774536704" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html">
     <div id="R-body" class="default-animation">
@@ -341,21 +341,21 @@
 <ul>
 <li>这里有个坑，之前的命令<code>SHOW MASTER STATUS;</code>和<code>SHOW SOURCE STATUS;</code>都不能用，执行<code>HELP SHOW;</code>命令查看所有的show命令。</li>
 </ul>
-<div class="tab-panel" data-tab-group="R-tabs-50ba6c3f5a8f3c82d97669b1fa36b193">
+<div class="tab-panel" data-tab-group="R-tabs-6123a6cde1f5d4a417014956a8b10be5">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-019ea88a7177aec8af94d3767f8ce7fc" aria-expanded="true"
+      aria-controls="R-tab-id-3b2395dc53305ea8aa07bcafa8100355" aria-expanded="true"
       data-tab-item="R-tab-bec060354a28d5fbb1311b78cb1e44b5"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-50ba6c3f5a8f3c82d97669b1fa36b193','R-tab-bec060354a28d5fbb1311b78cb1e44b5')"
+      onclick="switchTab('R-tabs-6123a6cde1f5d4a417014956a8b10be5','R-tab-bec060354a28d5fbb1311b78cb1e44b5')"
     >
       <span class="tab-nav-text">主从复制命令模板</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-019ea88a7177aec8af94d3767f8ce7fc"
+      id="R-tab-id-3b2395dc53305ea8aa07bcafa8100355"
       data-tab-item="R-tab-bec060354a28d5fbb1311b78cb1e44b5"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -518,9 +518,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774464561"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774464561" defer></script>
-    <script src="/js/theme.min.js?1774464561" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774536704"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774536704" defer></script>
+    <script src="/js/theme.min.js?1774536704" defer></script>
 
 <style>
     .highlight {

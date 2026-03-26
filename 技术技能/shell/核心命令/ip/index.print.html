@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.159.0">
+    <meta name="generator" content="Hugo 0.159.1">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="Linux 核心命令之ip。">
     <meta name="author" content="">
@@ -23,27 +23,27 @@
     <title>ip命令 :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.html" rel="canonical" type="text/html" title="ip命令 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.xml" rel="alternate" type="application/rss+xml" title="ip命令 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1774464561" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1774464561" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1774464561" defer></script>
-    <script src="/js/search-lunr.min.js?1774464561" defer></script>
-    <script src="/js/search.min.js?1774464561" defer></script>
+    <link href="/images/favicon.png?1774536704" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1774536704" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1774536704" defer></script>
+    <script src="/js/search-lunr.min.js?1774536704" defer></script>
+    <script src="/js/search.min.js?1774536704" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1774464561";
+      window.relearn.index_js_url="/searchindex.en.js?1774536704";
     </script>
-    <script src="/js/lunr/lunr.min.js?1774464561" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1774464561" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1774464561" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1774464561" defer></script>
+    <script src="/js/lunr/lunr.min.js?1774536704" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1774536704" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1774536704" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1774536704" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1774464561" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774464561" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774464561" rel="stylesheet">
-    <link href="/css/theme.min.css?1774464561" rel="stylesheet">
-    <link href="/css/format-print.min.css?1774464561" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1774536704" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774536704" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774536704" rel="stylesheet">
+    <link href="/css/theme.min.css?1774536704" rel="stylesheet">
+    <link href="/css/format-print.min.css?1774536704" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1774464561" rel="stylesheet">
+    <link href="/css/custom.css?1774536704" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.html">
     <div id="R-body" class="default-animation">
@@ -464,21 +464,21 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span><span style="color:#75715e"># 监控地址变化</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>$ ip monitor address</span></span></code></pre></div>
-<div class="tab-panel" data-tab-group="R-tabs-14c9cb11ddf1c6afe9b9f19d898a160d">
+<div class="tab-panel" data-tab-group="R-tabs-817ac58ae3c9c6da37c42fa367c3b2d8">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-8ec1f3cf2b5e6070fddb5666b23cb674" aria-expanded="true"
+      aria-controls="R-tab-id-cfe7b8ff5bcdc8585ecfc62305e61417" aria-expanded="true"
       data-tab-item="R-tab-2953043b0813f9cc7e6344bd7ce92f4d"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-14c9cb11ddf1c6afe9b9f19d898a160d','R-tab-2953043b0813f9cc7e6344bd7ce92f4d')"
+      onclick="switchTab('R-tabs-817ac58ae3c9c6da37c42fa367c3b2d8','R-tab-2953043b0813f9cc7e6344bd7ce92f4d')"
     >
       <span class="tab-nav-text">docker 虚拟网卡信息</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-8ec1f3cf2b5e6070fddb5666b23cb674"
+      id="R-tab-id-cfe7b8ff5bcdc8585ecfc62305e61417"
       data-tab-item="R-tab-2953043b0813f9cc7e6344bd7ce92f4d"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1820,9 +1820,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774464561"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774464561" defer></script>
-    <script src="/js/theme.min.js?1774464561" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774536704"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774536704" defer></script>
+    <script src="/js/theme.min.js?1774536704" defer></script>
 
 <style>
     .highlight {
