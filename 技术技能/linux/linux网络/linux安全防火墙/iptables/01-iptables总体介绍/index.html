@@ -23,27 +23,27 @@
     <title>iptables总体介绍 :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/index.xml" rel="alternate" type="application/rss+xml" title="iptables总体介绍 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/index.print.html" rel="alternate" type="text/html" title="iptables总体介绍 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1774536704" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1774536704" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1774536704" defer></script>
-    <script src="/js/search-lunr.min.js?1774536704" defer></script>
-    <script src="/js/search.min.js?1774536704" defer></script>
+    <link href="/images/favicon.png?1774626781" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1774626781" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1774626781" defer></script>
+    <script src="/js/search-lunr.min.js?1774626781" defer></script>
+    <script src="/js/search.min.js?1774626781" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1774536704";
+      window.relearn.index_js_url="/searchindex.en.js?1774626781";
     </script>
-    <script src="/js/lunr/lunr.min.js?1774536704" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1774536704" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1774536704" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1774536704" defer></script>
+    <script src="/js/lunr/lunr.min.js?1774626781" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1774626781" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1774626781" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1774626781" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1774536704" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774536704" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774536704" rel="stylesheet">
-    <link href="/css/theme.min.css?1774536704" rel="stylesheet">
-    <link href="/css/format-html.min.css?1774536704" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1774626781" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774626781" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774626781" rel="stylesheet">
+    <link href="/css/theme.min.css?1774626781" rel="stylesheet">
+    <link href="/css/format-html.min.css?1774626781" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1774536704" rel="stylesheet">
+    <link href="/css/custom.css?1774626781" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/index.html">
     <div id="R-body" class="default-animation">
@@ -170,8 +170,8 @@
 
 <h1 id="iptables总体介绍">iptables总体介绍</h1>
 
-<p><a href="#R-image-b94aa4d74d0a807879dae59b03df2a4e" class="lightbox-link"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-b94aa4d74d0a807879dae59b03df2a4e"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png"></a></p>
+<p><a href="#R-image-15111bd7e051ea0455cfe485ed67be29" class="lightbox-link"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-15111bd7e051ea0455cfe485ed67be29"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png"></a></p>
 <p>iptables 是 Linux 内核中 netfilter 框架的用户态管理工具，其“执行过程”本质上是指数据包在内核网络协议栈中经过 netfilter 钩子（hook）时，如何被 iptables 规则匹配与处理。需注意：<strong>iptables 命令本身不“执行”数据包处理，而是配置规则；真正的匹配与动作发生在内核 netfilter 的钩子点上</strong>。以下是清晰、准确的执行过程说明（基于 IPv4，标准内核流程）：</p>
 <hr>
 <h2 id="iptables-工具体系概述">iptables 工具体系概述<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
@@ -468,9 +468,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774536704"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774536704" defer></script>
-    <script src="/js/theme.min.js?1774536704" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774626781"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774626781" defer></script>
+    <script src="/js/theme.min.js?1774626781" defer></script>
 
 <style>
     .highlight {
