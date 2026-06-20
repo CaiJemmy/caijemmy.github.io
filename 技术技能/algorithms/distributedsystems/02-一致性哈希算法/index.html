@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="generator" content="Hugo 0.163.3">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="一致性哈希（Consistent Hashing）是一种特殊的哈希技术，用于在分布式系统中将数据分布到多个节点上。">
     <meta name="author" content="">
@@ -23,27 +23,27 @@
     <title>02 一致性哈希算法详解 :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/02-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/index.xml" rel="alternate" type="application/rss+xml" title="02 一致性哈希算法详解 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/02-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/index.print.html" rel="alternate" type="text/html" title="02 一致性哈希算法详解 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1774626781" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1774626781" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1774626781" defer></script>
-    <script src="/js/search-lunr.min.js?1774626781" defer></script>
-    <script src="/js/search.min.js?1774626781" defer></script>
+    <link href="/images/favicon.png?1781975876" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1781975876" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1781975876" defer></script>
+    <script src="/js/search-lunr.min.js?1781975876" defer></script>
+    <script src="/js/search.min.js?1781975876" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1774626781";
+      window.relearn.index_js_url="/searchindex.en.js?1781975876";
     </script>
-    <script src="/js/lunr/lunr.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1774626781" defer></script>
+    <script src="/js/lunr/lunr.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1781975876" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1774626781" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774626781" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774626781" rel="stylesheet">
-    <link href="/css/theme.min.css?1774626781" rel="stylesheet">
-    <link href="/css/format-html.min.css?1774626781" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1781975876" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1781975876" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1781975876" rel="stylesheet">
+    <link href="/css/theme.min.css?1781975876" rel="stylesheet">
+    <link href="/css/format-html.min.css?1781975876" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1774626781" rel="stylesheet">
+    <link href="/css/custom.css?1781975876" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/02-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/index.html">
     <div id="R-body" class="default-animation">
@@ -176,22 +176,22 @@
 <hr>
 <h3 id="一核心思想从离散映射到环形连续映射">一、核心思想：从“离散映射”到“环形连续映射”<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <table>
-  <thead>
-      <tr>
-          <th>传统哈希（Modulo Hash）</th>
-          <th>一致性哈希（Consistent Hash）</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><code>node = hash(key) % N</code>（N 为节点数）</td>
-          <td><code>node = 顺时针最近的节点</code>（在哈希环上）</td>
-      </tr>
-      <tr>
-          <td><strong>节点增减 → 全量重哈希</strong>：N→N+1 时，约 <code>(N+1)/N ≈ 100%</code> 的 key 映射关系改变</td>
-          <td><strong>节点增减 → 局部重映射</strong>：仅影响新节点与前一节点之间的 key，迁移比例 ≈ <code>1/N</code>（理想情况下）</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>传统哈希（Modulo Hash）</th>
+					<th>一致性哈希（Consistent Hash）</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>node = hash(key) % N</code>（N 为节点数）</td>
+					<td><code>node = 顺时针最近的节点</code>（在哈希环上）</td>
+			</tr>
+			<tr>
+					<td><strong>节点增减 → 全量重哈希</strong>：N→N+1 时，约 <code>(N+1)/N ≈ 100%</code> 的 key 映射关系改变</td>
+					<td><strong>节点增减 → 局部重映射</strong>：仅影响新节点与前一节点之间的 key，迁移比例 ≈ <code>1/N</code>（理想情况下）</td>
+			</tr>
+	</tbody>
 </table>
 <p>本质突破：<strong>将“节点数量”从哈希计算中解耦，使映射关系对节点规模变化具有鲁棒性</strong>。</p>
 <hr>
@@ -228,30 +228,30 @@
 </blockquote>
 <h4 id="步骤-4节点变更处理">步骤 4：节点变更处理<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
 <table>
-  <thead>
-      <tr>
-          <th>场景</th>
-          <th>影响范围</th>
-          <th>迁移数据比例（理想）</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>新增节点 X</strong></td>
-          <td>X 的前驱节点（逆时针最近）到 X 之间的所有 key</td>
-          <td>≈ <code>1/(N×K)</code>（K 为虚拟节点数）</td>
-      </tr>
-      <tr>
-          <td><strong>删除节点 Y</strong></td>
-          <td>Y 所负责的全部 key</td>
-          <td>≈ <code>1/(N×K)</code></td>
-      </tr>
-      <tr>
-          <td><strong>节点故障/网络分区</strong></td>
-          <td>同删除节点</td>
-          <td>可结合副本机制（如主从）保障可用性</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>场景</th>
+					<th>影响范围</th>
+					<th>迁移数据比例（理想）</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>新增节点 X</strong></td>
+					<td>X 的前驱节点（逆时针最近）到 X 之间的所有 key</td>
+					<td>≈ <code>1/(N×K)</code>（K 为虚拟节点数）</td>
+			</tr>
+			<tr>
+					<td><strong>删除节点 Y</strong></td>
+					<td>Y 所负责的全部 key</td>
+					<td>≈ <code>1/(N×K)</code></td>
+			</tr>
+			<tr>
+					<td><strong>节点故障/网络分区</strong></td>
+					<td>同删除节点</td>
+					<td>可结合副本机制（如主从）保障可用性</td>
+			</tr>
+	</tbody>
 </table>
 <blockquote>
 <p><strong>关键洞察</strong>：迁移量与总节点数 <code>N</code> 成反比，与新增/删除节点数无关 —— 实现<strong>可预测、可伸缩的变更成本</strong>。</p>
@@ -259,78 +259,78 @@
 <hr>
 <h3 id="三核心优势优点">三、核心优势（优点）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <table>
-  <thead>
-      <tr>
-          <th>优势</th>
-          <th>说明</th>
-          <th>实际价值</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>极低的数据迁移开销</strong></td>
-          <td>节点变更仅影响局部 key，避免全量 rebalance</td>
-          <td>降低运维风险、减少延迟抖动、提升系统稳定性（如缓存雪崩防护）</td>
-      </tr>
-      <tr>
-          <td><strong>天然支持弹性伸缩</strong></td>
-          <td>无需停服、无需预估容量，可动态扩缩容</td>
-          <td>云原生架构基石（如 Serverless、自动伸缩组）</td>
-      </tr>
-      <tr>
-          <td><strong>负载相对均衡（尤其启用虚拟节点后）</strong></td>
-          <td>虚拟节点将物理节点“打散”，提升哈希环覆盖密度</td>
-          <td>避免热点节点，提升资源利用率</td>
-      </tr>
-      <tr>
-          <td><strong>实现简单，无中心依赖</strong></td>
-          <td>仅需客户端或轻量代理维护环结构，无全局协调</td>
-          <td>降低系统复杂度与单点故障风险</td>
-      </tr>
-      <tr>
-          <td><strong>兼容多种一致性模型</strong></td>
-          <td>可与副本策略（如 NWR）、读写分离、多数据中心部署结合</td>
-          <td>支撑高可用、低延迟、异地多活等高级场景</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>优势</th>
+					<th>说明</th>
+					<th>实际价值</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>极低的数据迁移开销</strong></td>
+					<td>节点变更仅影响局部 key，避免全量 rebalance</td>
+					<td>降低运维风险、减少延迟抖动、提升系统稳定性（如缓存雪崩防护）</td>
+			</tr>
+			<tr>
+					<td><strong>天然支持弹性伸缩</strong></td>
+					<td>无需停服、无需预估容量，可动态扩缩容</td>
+					<td>云原生架构基石（如 Serverless、自动伸缩组）</td>
+			</tr>
+			<tr>
+					<td><strong>负载相对均衡（尤其启用虚拟节点后）</strong></td>
+					<td>虚拟节点将物理节点“打散”，提升哈希环覆盖密度</td>
+					<td>避免热点节点，提升资源利用率</td>
+			</tr>
+			<tr>
+					<td><strong>实现简单，无中心依赖</strong></td>
+					<td>仅需客户端或轻量代理维护环结构，无全局协调</td>
+					<td>降低系统复杂度与单点故障风险</td>
+			</tr>
+			<tr>
+					<td><strong>兼容多种一致性模型</strong></td>
+					<td>可与副本策略（如 NWR）、读写分离、多数据中心部署结合</td>
+					<td>支撑高可用、低延迟、异地多活等高级场景</td>
+			</tr>
+	</tbody>
 </table>
 <hr>
 <h3 id="四固有局限与挑战缺点">四、固有局限与挑战（缺点）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <table>
-  <thead>
-      <tr>
-          <th>缺点</th>
-          <th>原因分析</th>
-          <th>应对方案</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>无法绝对均衡（尤其小规模集群）</strong></td>
-          <td>哈希函数的统计随机性 + 物理节点数量少 → 虚拟节点仍可能聚集</td>
-          <td>增大虚拟节点数（K=100~200）；使用更优哈希（如 Jump Hash、Rendezvous Hash）；运行时动态调优（如负载感知重分布）</td>
-      </tr>
-      <tr>
-          <td><strong>环结构维护开销</strong></td>
-          <td>节点变更需同步更新所有客户端的环信息，存在短暂不一致</td>
-          <td>引入服务发现（ZooKeeper/Etcd/Nacos）；客户端拉取+本地缓存+版本号校验；使用 gossip 协议传播变更</td>
-      </tr>
-      <tr>
-          <td><strong>单点故障影响局部数据</strong></td>
-          <td>若某节点宕机，其负责的 key 全部失效（无副本时）</td>
-          <td>必须配合副本机制（如主从、纠删码）；实现故障自动摘除与快速恢复</td>
-      </tr>
-      <tr>
-          <td><strong>范围查询（Range Query）不友好</strong></td>
-          <td>key 按哈希分布，逻辑相邻 key 可能落在不同节点 → 难以高效扫描</td>
-          <td>改用有序分片（如按 key 字典序分片）；引入二级索引；业务层聚合</td>
-      </tr>
-      <tr>
-          <td><strong>哈希冲突与环分裂风险</strong></td>
-          <td>极端情况下哈希碰撞导致节点重叠；环被“割裂”影响查找效率</td>
-          <td>使用高质量哈希函数；环结构采用平衡树/跳表优化查找（O(log N)）；客户端缓存 + 一致性校验</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>缺点</th>
+					<th>原因分析</th>
+					<th>应对方案</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>无法绝对均衡（尤其小规模集群）</strong></td>
+					<td>哈希函数的统计随机性 + 物理节点数量少 → 虚拟节点仍可能聚集</td>
+					<td>增大虚拟节点数（K=100~200）；使用更优哈希（如 Jump Hash、Rendezvous Hash）；运行时动态调优（如负载感知重分布）</td>
+			</tr>
+			<tr>
+					<td><strong>环结构维护开销</strong></td>
+					<td>节点变更需同步更新所有客户端的环信息，存在短暂不一致</td>
+					<td>引入服务发现（ZooKeeper/Etcd/Nacos）；客户端拉取+本地缓存+版本号校验；使用 gossip 协议传播变更</td>
+			</tr>
+			<tr>
+					<td><strong>单点故障影响局部数据</strong></td>
+					<td>若某节点宕机，其负责的 key 全部失效（无副本时）</td>
+					<td>必须配合副本机制（如主从、纠删码）；实现故障自动摘除与快速恢复</td>
+			</tr>
+			<tr>
+					<td><strong>范围查询（Range Query）不友好</strong></td>
+					<td>key 按哈希分布，逻辑相邻 key 可能落在不同节点 → 难以高效扫描</td>
+					<td>改用有序分片（如按 key 字典序分片）；引入二级索引；业务层聚合</td>
+			</tr>
+			<tr>
+					<td><strong>哈希冲突与环分裂风险</strong></td>
+					<td>极端情况下哈希碰撞导致节点重叠；环被“割裂”影响查找效率</td>
+					<td>使用高质量哈希函数；环结构采用平衡树/跳表优化查找（O(log N)）；客户端缓存 + 一致性校验</td>
+			</tr>
+	</tbody>
 </table>
 
 <details open class="box cstyle notices warning">
@@ -345,77 +345,77 @@
 <hr>
 <h3 id="五典型应用场景">五、典型应用场景<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <table>
-  <thead>
-      <tr>
-          <th>场景</th>
-          <th>说明</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>分布式缓存（如 Redis Cluster）</strong></td>
-          <td>key 自动分片到不同 Redis 实例；扩容时仅迁移部分 slot（对应哈希段）</td>
-      </tr>
-      <tr>
-          <td><strong>分布式数据库分片（如 Vitess、CockroachDB）</strong></td>
-          <td>将表/行按 key 分布到不同存储节点，支持水平扩展</td>
-      </tr>
-      <tr>
-          <td><strong>CDN 与边缘计算节点路由</strong></td>
-          <td>用户请求哈希后定位最近边缘节点，节点增减不影响大部分用户</td>
-      </tr>
-      <tr>
-          <td><strong>负载均衡器（如 Nginx+Consistent Hash）</strong></td>
-          <td>将客户端 IP / Session ID 映射到后端服务，保障会话粘性</td>
-      </tr>
-      <tr>
-          <td><strong>P2P 网络（如 Chord、Kademlia）</strong></td>
-          <td>节点与数据均映射至环，实现去中心化查找</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>场景</th>
+					<th>说明</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>分布式缓存（如 Redis Cluster）</strong></td>
+					<td>key 自动分片到不同 Redis 实例；扩容时仅迁移部分 slot（对应哈希段）</td>
+			</tr>
+			<tr>
+					<td><strong>分布式数据库分片（如 Vitess、CockroachDB）</strong></td>
+					<td>将表/行按 key 分布到不同存储节点，支持水平扩展</td>
+			</tr>
+			<tr>
+					<td><strong>CDN 与边缘计算节点路由</strong></td>
+					<td>用户请求哈希后定位最近边缘节点，节点增减不影响大部分用户</td>
+			</tr>
+			<tr>
+					<td><strong>负载均衡器（如 Nginx+Consistent Hash）</strong></td>
+					<td>将客户端 IP / Session ID 映射到后端服务，保障会话粘性</td>
+			</tr>
+			<tr>
+					<td><strong>P2P 网络（如 Chord、Kademlia）</strong></td>
+					<td>节点与数据均映射至环，实现去中心化查找</td>
+			</tr>
+	</tbody>
 </table>
 <hr>
 <h3 id="六与其他分片算法对比">六、与其他分片算法对比<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <table>
-  <thead>
-      <tr>
-          <th>算法</th>
-          <th>数据迁移量</th>
-          <th>负载均衡性</th>
-          <th>实现复杂度</th>
-          <th>适用场景</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>一致性哈希</strong></td>
-          <td>极低（O(1/N)）</td>
-          <td>中→高（依赖虚拟节点）</td>
-          <td>低</td>
-          <td>动态节点、缓存、无状态服务</td>
-      </tr>
-      <tr>
-          <td><strong>取模分片（Modulo）</strong></td>
-          <td>极高（O(100%)）</td>
-          <td>高（N 大时）</td>
-          <td>极低</td>
-          <td>静态集群、简单 KV 存储</td>
-      </tr>
-      <tr>
-          <td><strong>范围分片（Range Sharding）</strong></td>
-          <td>零（仅分裂/合并边界）</td>
-          <td>低（易热点）</td>
-          <td>中</td>
-          <td>有序查询多、业务可预估分布（如按时间/地区）</td>
-      </tr>
-      <tr>
-          <td>**Rendezvous Hash（最高</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>算法</th>
+					<th>数据迁移量</th>
+					<th>负载均衡性</th>
+					<th>实现复杂度</th>
+					<th>适用场景</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>一致性哈希</strong></td>
+					<td>极低（O(1/N)）</td>
+					<td>中→高（依赖虚拟节点）</td>
+					<td>低</td>
+					<td>动态节点、缓存、无状态服务</td>
+			</tr>
+			<tr>
+					<td><strong>取模分片（Modulo）</strong></td>
+					<td>极高（O(100%)）</td>
+					<td>高（N 大时）</td>
+					<td>极低</td>
+					<td>静态集群、简单 KV 存储</td>
+			</tr>
+			<tr>
+					<td><strong>范围分片（Range Sharding）</strong></td>
+					<td>零（仅分裂/合并边界）</td>
+					<td>低（易热点）</td>
+					<td>中</td>
+					<td>有序查询多、业务可预估分布（如按时间/地区）</td>
+			</tr>
+			<tr>
+					<td>**Rendezvous Hash（最高</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+	</tbody>
 </table>
 
   <footer class="footline">
@@ -477,7 +477,8 @@
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><input type="checkbox" id="R-section-21b164580b14ca784734c2afe862cd51" aria-controls="R-subsections-21b164580b14ca784734c2afe862cd51"><label for="R-section-21b164580b14ca784734c2afe862cd51"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单亲子</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><i class="fa-solid fa-hands-holding-child"></i>亲子<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-21b164580b14ca784734c2afe862cd51" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html">管孩子<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-3332d5c03f8527837f94b80748c083f2" aria-controls="R-subsections-3332d5c03f8527837f94b80748c083f2"><label for="R-section-3332d5c03f8527837f94b80748c083f2"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html">感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3332d5c03f8527837f94b80748c083f2" class="collapsible-menu">
-            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html">聪明、听话、努力<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html">聪明、听话、努力<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E9%9D%A2%E5%AD%90%E6%9C%80%E6%B2%A1%E7%94%A8%E7%9A%84%E4%B8%9C%E8%A5%BF/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E9%9D%A2%E5%AD%90%E6%9C%80%E6%B2%A1%E7%94%A8%E7%9A%84%E4%B8%9C%E8%A5%BF/index.html">面子，最没用的东西<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><input type="checkbox" id="R-section-5514417afb636335d911822c29826333" aria-controls="R-subsections-5514417afb636335d911822c29826333"><label for="R-section-5514417afb636335d911822c29826333"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单书香笔记</span></label><a class="padding default-animation" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-5514417afb636335d911822c29826333" class="collapsible-menu">
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html">win11安装<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" checked><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
@@ -493,7 +494,8 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/%E6%A0%87%E5%87%86%E5%BA%93/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/%E6%A0%87%E5%87%86%E5%BA%93/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html">伪随机数<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html"><input type="checkbox" id="R-section-6cec2bec8b46e20834f6dad4f5e25a33" aria-controls="R-subsections-6cec2bec8b46e20834f6dad4f5e25a33"><label for="R-section-6cec2bec8b46e20834f6dad4f5e25a33"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单CMake</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html">CMake<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-6cec2bec8b46e20834f6dad4f5e25a33" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html"><input type="checkbox" id="R-section-e3896758175d5ca3bb3393bfa1972c83" aria-controls="R-subsections-e3896758175d5ca3bb3393bfa1972c83"><label for="R-section-e3896758175d5ca3bb3393bfa1972c83"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01.从可执行文件到库</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html">01.从可执行文件到库<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-e3896758175d5ca3bb3393bfa1972c83" class="collapsible-menu">
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">01单个源文件生成可执行文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">01单个源文件生成可执行文件<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/2-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/2-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">02单个源文件生成可执行文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"><input type="checkbox" id="R-section-f714aa8935e88da0fd464af80a18f2e9" aria-controls="R-subsections-f714aa8935e88da0fd464af80a18f2e9"><label for="R-section-f714aa8935e88da0fd464af80a18f2e9"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html">Docker<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-f714aa8935e88da0fd464af80a18f2e9" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html"><input type="checkbox" id="R-section-3de5b49d7e58e22c3d763ec2d32213d6" aria-controls="R-subsections-3de5b49d7e58e22c3d763ec2d32213d6"><label for="R-section-3de5b49d7e58e22c3d763ec2d32213d6"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker 入门</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html">Docker 入门<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3de5b49d7e58e22c3d763ec2d32213d6" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01 docker常用命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
@@ -507,12 +509,16 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/04-network/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/04-network/index.html">04 network<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/05-compose/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/05-compose/index.html">05 compose<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html"><input type="checkbox" id="R-section-78e8052c19acfaadd24c63525115a88c" aria-controls="R-subsections-78e8052c19acfaadd24c63525115a88c"><label for="R-section-78e8052c19acfaadd24c63525115a88c"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html">Linux<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-78e8052c19acfaadd24c63525115a88c" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html"><input type="checkbox" id="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e" aria-controls="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e"><label for="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux之文件处理</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html">Linux之文件处理<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html">创建测试文件<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5/index.html">软链接和硬链接<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/index.html"><input type="checkbox" id="R-section-138bf277a91cd826875005faf528d4ec" aria-controls="R-subsections-138bf277a91cd826875005faf528d4ec"><label for="R-section-138bf277a91cd826875005faf528d4ec"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux 网络</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/index.html">Linux 网络<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-138bf277a91cd826875005faf528d4ec" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/index.html">虚拟网络设备<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.html"><input type="checkbox" id="R-section-97ad7f28e9bbf2b6424a203ce59d76b2" aria-controls="R-subsections-97ad7f28e9bbf2b6424a203ce59d76b2"><label for="R-section-97ad7f28e9bbf2b6424a203ce59d76b2"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux安全防火墙</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.html">Linux安全防火墙<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-97ad7f28e9bbf2b6424a203ce59d76b2" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/index.html"><input type="checkbox" id="R-section-23d2a3431effd44185701bb407f3074f" aria-controls="R-subsections-23d2a3431effd44185701bb407f3074f"><label for="R-section-23d2a3431effd44185701bb407f3074f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单netfilter/iptables</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/index.html">netfilter/iptables<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-23d2a3431effd44185701bb407f3074f" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/index.html">iptables总体介绍<i class="fa-fw fas fa-check read-icon"></i></a></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html">iptables filter表基本命令<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html">iptables filter表基本命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/03-iptables-%E6%89%A9%E5%B1%95/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/03-iptables-%E6%89%A9%E5%B1%95/index.html">iptables 扩展<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><input type="checkbox" id="R-section-304846f73ad6d6a97cc461dcfbcd5e89" aria-controls="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89"><label for="R-section-304846f73ad6d6a97cc461dcfbcd5e89"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html">shell<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html"><input type="checkbox" id="R-section-89ae1b5e52ee2fb92d25853d1938dbc3" aria-controls="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3"><label for="R-section-89ae1b5e52ee2fb92d25853d1938dbc3"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单linux 核心命令</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html">linux 核心命令<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01、常用命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
@@ -578,9 +584,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774626781"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774626781" defer></script>
-    <script src="/js/theme.min.js?1774626781" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1781975876"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1781975876" defer></script>
+    <script src="/js/theme.min.js?1781975876" defer></script>
 
 <style>
     .highlight {

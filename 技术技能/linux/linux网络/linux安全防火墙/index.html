@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="generator" content="Hugo 0.163.3">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="Linux安全防火墙之netfilter。">
     <meta name="author" content="">
@@ -22,27 +22,27 @@
     <title>Linux安全防火墙 :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.xml" rel="alternate" type="application/rss+xml" title="Linux安全防火墙 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.print.html" rel="alternate" type="text/html" title="Linux安全防火墙 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1774626781" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1774626781" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1774626781" defer></script>
-    <script src="/js/search-lunr.min.js?1774626781" defer></script>
-    <script src="/js/search.min.js?1774626781" defer></script>
+    <link href="/images/favicon.png?1781975876" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1781975876" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1781975876" defer></script>
+    <script src="/js/search-lunr.min.js?1781975876" defer></script>
+    <script src="/js/search.min.js?1781975876" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1774626781";
+      window.relearn.index_js_url="/searchindex.en.js?1781975876";
     </script>
-    <script src="/js/lunr/lunr.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1774626781" defer></script>
+    <script src="/js/lunr/lunr.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1781975876" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1774626781" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774626781" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774626781" rel="stylesheet">
-    <link href="/css/theme.min.css?1774626781" rel="stylesheet">
-    <link href="/css/format-html.min.css?1774626781" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1781975876" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1781975876" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1781975876" rel="stylesheet">
+    <link href="/css/theme.min.css?1781975876" rel="stylesheet">
+    <link href="/css/format-html.min.css?1781975876" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -91,7 +91,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1774626781" rel="stylesheet">
+    <link href="/css/custom.css?1781975876" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.html">
     <div id="R-body" class="default-animation">
@@ -182,8 +182,8 @@
 <p>类比理解：Netfilter ≈ “交通检查站的预留岗亭位置”，而 <code>iptables</code>/<code>nftables</code> ≈ “在岗亭里执勤的交警”（用户空间策略配置工具）。</p>
 </blockquote>
 <p><strong>TCP/IP参考模型中包过滤防火墙的位置</strong></p>
-<p><a href="#R-image-d7212525c2208ea40e1d3fbb4711c4cd" class="lightbox-link"><img alt="image-20260326130237015" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/image-20260326130237015.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-d7212525c2208ea40e1d3fbb4711c4cd"><img alt="image-20260326130237015" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/image-20260326130237015.png"></a></p>
+<p><a href="#R-image-29bd26c50b999a84f3e705b81d232211" class="lightbox-link"><img alt="image-20260326130237015" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/image-20260326130237015.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-29bd26c50b999a84f3e705b81d232211"><img alt="image-20260326130237015" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/image-20260326130237015.png"></a></p>
 <h2 id="过滤入站数据包">过滤入站数据包<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="1-对远程源地址进行过滤">1. 对远程源地址进行过滤<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <ul>
@@ -193,34 +193,34 @@
 <li>
 <p>来自互联网包中源地址，以下为源地址欺骗和非法地址：</p>
 <table>
-  <thead>
-      <tr>
-          <th>场景1</th>
-          <th>场景2</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>你自己的IP地址</td>
-          <td>回环接口地址      127.0.0.0~127.255.255.255</td>
-      </tr>
-      <tr>
-          <td>你所在的局域网地址</td>
-          <td>畸形广播地址      0.0.0.0</td>
-      </tr>
-      <tr>
-          <td>A、B、C类中的私有IP地址</td>
-          <td>A类网络的0地址  0.0.0.0~0.255.255.255</td>
-      </tr>
-      <tr>
-          <td>D类多播IP地址</td>
-          <td>APIPA地址          169.254.0.0~169.254.255.255</td>
-      </tr>
-      <tr>
-          <td>E类保留地址</td>
-          <td>网络测试地址       192.0.2.0~192.0.2.255</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>场景1</th>
+					<th>场景2</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>你自己的IP地址</td>
+					<td>回环接口地址      127.0.0.0~127.255.255.255</td>
+			</tr>
+			<tr>
+					<td>你所在的局域网地址</td>
+					<td>畸形广播地址      0.0.0.0</td>
+			</tr>
+			<tr>
+					<td>A、B、C类中的私有IP地址</td>
+					<td>A类网络的0地址  0.0.0.0~0.255.255.255</td>
+			</tr>
+			<tr>
+					<td>D类多播IP地址</td>
+					<td>APIPA地址          169.254.0.0~169.254.255.255</td>
+			</tr>
+			<tr>
+					<td>E类保留地址</td>
+					<td>网络测试地址       192.0.2.0~192.0.2.255</td>
+			</tr>
+	</tbody>
 </table>
 </li>
 <li>
@@ -298,46 +298,46 @@
 <h2 id="netfilter-架构核心5-个-hook-点钩子">Netfilter 架构核心：5 个 Hook 点（钩子）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <p>Netfilter 在 IPv4 协议栈中定义了 <strong>5 个预设的 hook 点</strong>（IPv6、ARP、DECnet 等也有对应版本），数据包按固定顺序经过这些点。每个 hook 是一个<strong>函数指针链表</strong>，可挂载多个规则模块。</p>
 <table>
-  <thead>
-      <tr>
-          <th>Hook 名称</th>
-          <th>触发时机（数据包流向）</th>
-          <th>典型用途</th>
-          <th>是否可修改包内容</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>NF_INET_PRE_ROUTING</strong></td>
-          <td>数据包刚进入网络栈，<strong>尚未进行路由决策</strong>（即不知是发给本机还是转发）</td>
-          <td>• DNAT（目标地址转换）<br>• <code>conntrack</code> 初始化（首次见到新连接）</td>
-          <td>✅ 是</td>
-      </tr>
-      <tr>
-          <td><strong>NF_INET_LOCAL_IN</strong></td>
-          <td>数据包<strong>目的地是本机</strong>（路由后），即将交给上层协议（如 TCP/UDP）</td>
-          <td>• 主机防火墙（INPUT 链）<br>• 限速、封禁 IP</td>
-          <td>✅ 是</td>
-      </tr>
-      <tr>
-          <td><strong>NF_INET_FORWARD</strong></td>
-          <td>数据包<strong>需转发给其他主机</strong>（非本机，且 <code>ip_forward=1</code>）</td>
-          <td>• 转发防火墙（FORWARD 链）<br>• 网关/NAT 设备策略</td>
-          <td>✅ 是</td>
-      </tr>
-      <tr>
-          <td><strong>NF_INET_LOCAL_OUT</strong></td>
-          <td>本机<strong>主动发出</strong>的数据包，<strong>尚未路由</strong>（如 <code>curl http://example.com</code>）</td>
-          <td>• 主机防火墙（OUTPUT 链）<br>• SNAT（源地址转换，较少在此做）</td>
-          <td>✅ 是</td>
-      </tr>
-      <tr>
-          <td><strong>NF_INET_POST_ROUTING</strong></td>
-          <td>数据包<strong>即将离开本机</strong>（路由已完成，确定出口设备），最后修改机会</td>
-          <td>• SNAT（最常用位置）<br>• 修改 TOS、TTL、出口 MAC（如 <code>mangle</code>）</td>
-          <td>✅ 是</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>Hook 名称</th>
+					<th>触发时机（数据包流向）</th>
+					<th>典型用途</th>
+					<th>是否可修改包内容</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>NF_INET_PRE_ROUTING</strong></td>
+					<td>数据包刚进入网络栈，<strong>尚未进行路由决策</strong>（即不知是发给本机还是转发）</td>
+					<td>• DNAT（目标地址转换）<br>• <code>conntrack</code> 初始化（首次见到新连接）</td>
+					<td>✅ 是</td>
+			</tr>
+			<tr>
+					<td><strong>NF_INET_LOCAL_IN</strong></td>
+					<td>数据包<strong>目的地是本机</strong>（路由后），即将交给上层协议（如 TCP/UDP）</td>
+					<td>• 主机防火墙（INPUT 链）<br>• 限速、封禁 IP</td>
+					<td>✅ 是</td>
+			</tr>
+			<tr>
+					<td><strong>NF_INET_FORWARD</strong></td>
+					<td>数据包<strong>需转发给其他主机</strong>（非本机，且 <code>ip_forward=1</code>）</td>
+					<td>• 转发防火墙（FORWARD 链）<br>• 网关/NAT 设备策略</td>
+					<td>✅ 是</td>
+			</tr>
+			<tr>
+					<td><strong>NF_INET_LOCAL_OUT</strong></td>
+					<td>本机<strong>主动发出</strong>的数据包，<strong>尚未路由</strong>（如 <code>curl http://example.com</code>）</td>
+					<td>• 主机防火墙（OUTPUT 链）<br>• SNAT（源地址转换，较少在此做）</td>
+					<td>✅ 是</td>
+			</tr>
+			<tr>
+					<td><strong>NF_INET_POST_ROUTING</strong></td>
+					<td>数据包<strong>即将离开本机</strong>（路由已完成，确定出口设备），最后修改机会</td>
+					<td>• SNAT（最常用位置）<br>• 修改 TOS、TTL、出口 MAC（如 <code>mangle</code>）</td>
+					<td>✅ 是</td>
+			</tr>
+	</tbody>
 </table>
 <blockquote>
 <p><strong>关键规律</strong>：</p>
@@ -351,35 +351,35 @@
 <h2 id="netfilter-的核心支撑模块">Netfilter 的核心支撑模块<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <p>Netfilter 本身是框架，其能力依赖以下内核模块协同工作：</p>
 <table>
-  <thead>
-      <tr>
-          <th>模块</th>
-          <th>功能说明</th>
-          <th>关联用户工具</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong><code>nf_conntrack</code></strong>（连接跟踪）</td>
-          <td>为每个连接（TCP/UDP/ICMP 等）建立并维护状态条目（如 <code>ESTABLISHED</code>, <code>RELATED</code>, <code>INVALID</code>），是 <code>state</code>/<code>conntrack</code> 匹配的基础。所有 <code>--state ESTABLISHED</code> 规则都依赖它。</td>
-          <td><code>iptables -m state</code>, <code>nft ct state</code></td>
-      </tr>
-      <tr>
-          <td><strong><code>nf_nat</code></strong>（网络地址转换）</td>
-          <td>提供 NAT 核心逻辑（SNAT/DNAT/MASQUERADE/REDIRECT），与 <code>nf_conntrack</code> 深度集成（NAT 后需更新连接跟踪状态）。</td>
-          <td><code>iptables -t nat</code>, <code>nft add rule ip nat</code></td>
-      </tr>
-      <tr>
-          <td><strong><code>nf_tables</code></strong>（自 4.18+）</td>
-          <td>新一代通用规则表框架，替代旧 <code>ip_tables</code>，支持更高效匹配、原子提交、统一语法。<code>nftables</code> 的内核后端。</td>
-          <td><code>nft</code> 命令</td>
-      </tr>
-      <tr>
-          <td><strong><code>xt_*</code> 系列模块</strong>（eXtended Tables）</td>
-          <td>扩展匹配（<code>xt_multiport</code>, <code>xt_limit</code>, <code>xt_iprange</code>）和目标（<code>xt_LOG</code>, <code>xt_REJECT</code>, <code>xt_REDIRECT</code>）的内核模块，按需加载。</td>
-          <td><code>iptables -m multiport</code>, <code>iptables -j LOG</code></td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>模块</th>
+					<th>功能说明</th>
+					<th>关联用户工具</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong><code>nf_conntrack</code></strong>（连接跟踪）</td>
+					<td>为每个连接（TCP/UDP/ICMP 等）建立并维护状态条目（如 <code>ESTABLISHED</code>, <code>RELATED</code>, <code>INVALID</code>），是 <code>state</code>/<code>conntrack</code> 匹配的基础。所有 <code>--state ESTABLISHED</code> 规则都依赖它。</td>
+					<td><code>iptables -m state</code>, <code>nft ct state</code></td>
+			</tr>
+			<tr>
+					<td><strong><code>nf_nat</code></strong>（网络地址转换）</td>
+					<td>提供 NAT 核心逻辑（SNAT/DNAT/MASQUERADE/REDIRECT），与 <code>nf_conntrack</code> 深度集成（NAT 后需更新连接跟踪状态）。</td>
+					<td><code>iptables -t nat</code>, <code>nft add rule ip nat</code></td>
+			</tr>
+			<tr>
+					<td><strong><code>nf_tables</code></strong>（自 4.18+）</td>
+					<td>新一代通用规则表框架，替代旧 <code>ip_tables</code>，支持更高效匹配、原子提交、统一语法。<code>nftables</code> 的内核后端。</td>
+					<td><code>nft</code> 命令</td>
+			</tr>
+			<tr>
+					<td><strong><code>xt_*</code> 系列模块</strong>（eXtended Tables）</td>
+					<td>扩展匹配（<code>xt_multiport</code>, <code>xt_limit</code>, <code>xt_iprange</code>）和目标（<code>xt_LOG</code>, <code>xt_REJECT</code>, <code>xt_REDIRECT</code>）的内核模块，按需加载。</td>
+					<td><code>iptables -m multiport</code>, <code>iptables -j LOG</code></td>
+			</tr>
+	</tbody>
 </table>
 <blockquote>
 <p>注：<code>iptables</code> 是用户空间命令，其规则最终由 <code>ip_tables</code> 内核模块解析并注册到 Netfilter hook；而 <code>nftables</code> 使用更现代的 <code>nf_tables</code> 模块，性能与可维护性更优。</p>
@@ -387,45 +387,45 @@
 <hr>
 <h2 id="用户空间工具演进iptables--nftableslinux-418-推荐">用户空间工具演进：iptables → nftables（Linux 4.18+ 推荐）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <table>
-  <thead>
-      <tr>
-          <th>维度</th>
-          <th><code>iptables</code></th>
-          <th><code>nftables</code></th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>内核后端</strong></td>
-          <td><code>ip_tables</code>, <code>iptable_nat</code>, <code>xt_*</code></td>
-          <td><code>nf_tables</code>（统一框架）</td>
-      </tr>
-      <tr>
-          <td><strong>规则存储</strong></td>
-          <td>每个表（filter/nat/mangle）独立内存结构</td>
-          <td>单一、可嵌套的规则集（tables/chains/rules）</td>
-      </tr>
-      <tr>
-          <td><strong>性能</strong></td>
-          <td>每条规则线性匹配，规则多时性能下降</td>
-          <td>使用高效查找结构（如 hash、radix tree），支持批量操作</td>
-      </tr>
-      <tr>
-          <td><strong>语法统一性</strong></td>
-          <td><code>iptables</code>/<code>ip6tables</code>/<code>arptables</code>/<code>ebtables</code> 四套命令</td>
-          <td><code>nft</code> 单一命令支持 IPv4/IPv6/ARP/bridge 等</td>
-      </tr>
-      <tr>
-          <td><strong>原子性</strong></td>
-          <td><code>iptables-restore</code> 支持，但非默认</td>
-          <td>原生支持规则集原子替换（避免中间不一致状态）</td>
-      </tr>
-      <tr>
-          <td><strong>现状</strong></td>
-          <td>仍广泛使用，但已被标记为“legacy”</td>
-          <td><strong>Linux 官方推荐，新系统默认启用（如 RHEL 8+, Debian 11+, Ubuntu 20.04+）</strong></td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>维度</th>
+					<th><code>iptables</code></th>
+					<th><code>nftables</code></th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>内核后端</strong></td>
+					<td><code>ip_tables</code>, <code>iptable_nat</code>, <code>xt_*</code></td>
+					<td><code>nf_tables</code>（统一框架）</td>
+			</tr>
+			<tr>
+					<td><strong>规则存储</strong></td>
+					<td>每个表（filter/nat/mangle）独立内存结构</td>
+					<td>单一、可嵌套的规则集（tables/chains/rules）</td>
+			</tr>
+			<tr>
+					<td><strong>性能</strong></td>
+					<td>每条规则线性匹配，规则多时性能下降</td>
+					<td>使用高效查找结构（如 hash、radix tree），支持批量操作</td>
+			</tr>
+			<tr>
+					<td><strong>语法统一性</strong></td>
+					<td><code>iptables</code>/<code>ip6tables</code>/<code>arptables</code>/<code>ebtables</code> 四套命令</td>
+					<td><code>nft</code> 单一命令支持 IPv4/IPv6/ARP/bridge 等</td>
+			</tr>
+			<tr>
+					<td><strong>原子性</strong></td>
+					<td><code>iptables-restore</code> 支持，但非默认</td>
+					<td>原生支持规则集原子替换（避免中间不一致状态）</td>
+			</tr>
+			<tr>
+					<td><strong>现状</strong></td>
+					<td>仍广泛使用，但已被标记为“legacy”</td>
+					<td><strong>Linux 官方推荐，新系统默认启用（如 RHEL 8+, Debian 11+, Ubuntu 20.04+）</strong></td>
+			</tr>
+	</tbody>
 </table>
 <blockquote>
 <p>提示：<code>iptables</code> 命令在新内核中通常通过 <code>iptables-nft</code>（兼容层）调用 <code>nftables</code> 后端，<strong>非原生 <code>ip_tables</code></strong>。可通过 <code>iptables -V</code> 查看是否含 <code>nf_tables</code>。</p>
@@ -433,45 +433,45 @@
 <hr>
 <h2 id="典型应用场景netfilter-的实际价值">典型应用场景（Netfilter 的实际价值）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <table>
-  <thead>
-      <tr>
-          <th>场景</th>
-          <th>实现方式</th>
-          <th>依赖 Netfilter 特性</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>主机防火墙</strong></td>
-          <td><code>nft add rule ip filter input ct state established,related accept</code></td>
-          <td><code>nf_conntrack</code> + <code>NF_INET_LOCAL_IN</code> hook</td>
-      </tr>
-      <tr>
-          <td><strong>Docker 容器网络</strong></td>
-          <td><code>docker0</code> 网桥 + <code>iptables -t nat -A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE</code></td>
-          <td><code>nf_nat</code> + <code>NF_INET_POST_ROUTING</code></td>
-      </tr>
-      <tr>
-          <td><strong>Kubernetes Service（iptables 模式）</strong></td>
-          <td>为每个 Service 生成 DNAT 规则，转发到 Pod IP</td>
-          <td><code>nf_nat</code> + <code>NF_INET_PRE_ROUTING</code></td>
-      </tr>
-      <tr>
-          <td><strong>端口映射（端口转发）</strong></td>
-          <td><code>nft add rule ip nat prerouting tcp dport 8080 dnat to 192.168.1.10:80</code></td>
-          <td><code>nf_nat</code> + <code>NF_INET_PRE_ROUTING</code></td>
-      </tr>
-      <tr>
-          <td><strong>流量限速/限流</strong></td>
-          <td><code>nft add rule ip filter output @netdevname meter httpout { ip saddr 10.0.0.0/8 limit rate 100 kbytes/second }</code></td>
-          <td><code>xt_limit</code> / <code>nft meter</code> + <code>NF_INET_LOCAL_OUT</code></td>
-      </tr>
-      <tr>
-          <td><strong>入侵检测日志</strong></td>
-          <td><code>nft add rule ip filter input ip saddr 1.2.3.4 log prefix &quot;BLOCKED:&quot; drop</code></td>
-          <td><code>xt_LOG</code> / <code>nft log</code> + `NF_INET_LOCAL_IN</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>场景</th>
+					<th>实现方式</th>
+					<th>依赖 Netfilter 特性</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>主机防火墙</strong></td>
+					<td><code>nft add rule ip filter input ct state established,related accept</code></td>
+					<td><code>nf_conntrack</code> + <code>NF_INET_LOCAL_IN</code> hook</td>
+			</tr>
+			<tr>
+					<td><strong>Docker 容器网络</strong></td>
+					<td><code>docker0</code> 网桥 + <code>iptables -t nat -A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE</code></td>
+					<td><code>nf_nat</code> + <code>NF_INET_POST_ROUTING</code></td>
+			</tr>
+			<tr>
+					<td><strong>Kubernetes Service（iptables 模式）</strong></td>
+					<td>为每个 Service 生成 DNAT 规则，转发到 Pod IP</td>
+					<td><code>nf_nat</code> + <code>NF_INET_PRE_ROUTING</code></td>
+			</tr>
+			<tr>
+					<td><strong>端口映射（端口转发）</strong></td>
+					<td><code>nft add rule ip nat prerouting tcp dport 8080 dnat to 192.168.1.10:80</code></td>
+					<td><code>nf_nat</code> + <code>NF_INET_PRE_ROUTING</code></td>
+			</tr>
+			<tr>
+					<td><strong>流量限速/限流</strong></td>
+					<td><code>nft add rule ip filter output @netdevname meter httpout { ip saddr 10.0.0.0/8 limit rate 100 kbytes/second }</code></td>
+					<td><code>xt_limit</code> / <code>nft meter</code> + <code>NF_INET_LOCAL_OUT</code></td>
+			</tr>
+			<tr>
+					<td><strong>入侵检测日志</strong></td>
+					<td><code>nft add rule ip filter input ip saddr 1.2.3.4 log prefix &quot;BLOCKED:&quot; drop</code></td>
+					<td><code>xt_LOG</code> / <code>nft log</code> + `NF_INET_LOCAL_IN</td>
+			</tr>
+	</tbody>
 </table>
 
   <footer class="footline">
@@ -527,7 +527,8 @@
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><input type="checkbox" id="R-section-21b164580b14ca784734c2afe862cd51" aria-controls="R-subsections-21b164580b14ca784734c2afe862cd51"><label for="R-section-21b164580b14ca784734c2afe862cd51"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单亲子</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><i class="fa-solid fa-hands-holding-child"></i>亲子<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-21b164580b14ca784734c2afe862cd51" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html">管孩子<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-3332d5c03f8527837f94b80748c083f2" aria-controls="R-subsections-3332d5c03f8527837f94b80748c083f2"><label for="R-section-3332d5c03f8527837f94b80748c083f2"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html">感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3332d5c03f8527837f94b80748c083f2" class="collapsible-menu">
-            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html">聪明、听话、努力<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html">聪明、听话、努力<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E9%9D%A2%E5%AD%90%E6%9C%80%E6%B2%A1%E7%94%A8%E7%9A%84%E4%B8%9C%E8%A5%BF/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E9%9D%A2%E5%AD%90%E6%9C%80%E6%B2%A1%E7%94%A8%E7%9A%84%E4%B8%9C%E8%A5%BF/index.html">面子，最没用的东西<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><input type="checkbox" id="R-section-5514417afb636335d911822c29826333" aria-controls="R-subsections-5514417afb636335d911822c29826333"><label for="R-section-5514417afb636335d911822c29826333"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单书香笔记</span></label><a class="padding default-animation" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-5514417afb636335d911822c29826333" class="collapsible-menu">
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/win11%E5%AE%89%E8%A3%85/index.html">win11安装<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" checked><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
@@ -543,7 +544,8 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/%E6%A0%87%E5%87%86%E5%BA%93/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/%E6%A0%87%E5%87%86%E5%BA%93/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html">伪随机数<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html"><input type="checkbox" id="R-section-6cec2bec8b46e20834f6dad4f5e25a33" aria-controls="R-subsections-6cec2bec8b46e20834f6dad4f5e25a33"><label for="R-section-6cec2bec8b46e20834f6dad4f5e25a33"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单CMake</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html">CMake<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-6cec2bec8b46e20834f6dad4f5e25a33" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html"><input type="checkbox" id="R-section-e3896758175d5ca3bb3393bfa1972c83" aria-controls="R-subsections-e3896758175d5ca3bb3393bfa1972c83"><label for="R-section-e3896758175d5ca3bb3393bfa1972c83"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01.从可执行文件到库</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html">01.从可执行文件到库<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-e3896758175d5ca3bb3393bfa1972c83" class="collapsible-menu">
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">01单个源文件生成可执行文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">01单个源文件生成可执行文件<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/2-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/2-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">02单个源文件生成可执行文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"><input type="checkbox" id="R-section-f714aa8935e88da0fd464af80a18f2e9" aria-controls="R-subsections-f714aa8935e88da0fd464af80a18f2e9"><label for="R-section-f714aa8935e88da0fd464af80a18f2e9"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html">Docker<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-f714aa8935e88da0fd464af80a18f2e9" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html"><input type="checkbox" id="R-section-3de5b49d7e58e22c3d763ec2d32213d6" aria-controls="R-subsections-3de5b49d7e58e22c3d763ec2d32213d6"><label for="R-section-3de5b49d7e58e22c3d763ec2d32213d6"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker 入门</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html">Docker 入门<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3de5b49d7e58e22c3d763ec2d32213d6" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01 docker常用命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
@@ -557,12 +559,16 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/04-network/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/04-network/index.html">04 network<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/05-compose/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/05-compose/index.html">05 compose<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html"><input type="checkbox" id="R-section-78e8052c19acfaadd24c63525115a88c" aria-controls="R-subsections-78e8052c19acfaadd24c63525115a88c" checked><label for="R-section-78e8052c19acfaadd24c63525115a88c"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html">Linux<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-78e8052c19acfaadd24c63525115a88c" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html"><input type="checkbox" id="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e" aria-controls="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e"><label for="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux之文件处理</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html">Linux之文件处理<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html">创建测试文件<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5/index.html">软链接和硬链接<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/index.html"><input type="checkbox" id="R-section-138bf277a91cd826875005faf528d4ec" aria-controls="R-subsections-138bf277a91cd826875005faf528d4ec" checked><label for="R-section-138bf277a91cd826875005faf528d4ec"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux 网络</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/index.html">Linux 网络<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-138bf277a91cd826875005faf528d4ec" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/index.html">虚拟网络设备<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="active parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.html"><input type="checkbox" id="R-section-97ad7f28e9bbf2b6424a203ce59d76b2" aria-controls="R-subsections-97ad7f28e9bbf2b6424a203ce59d76b2" checked><label for="R-section-97ad7f28e9bbf2b6424a203ce59d76b2"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux安全防火墙</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.html">Linux安全防火墙<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-97ad7f28e9bbf2b6424a203ce59d76b2" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/index.html"><input type="checkbox" id="R-section-23d2a3431effd44185701bb407f3074f" aria-controls="R-subsections-23d2a3431effd44185701bb407f3074f"><label for="R-section-23d2a3431effd44185701bb407f3074f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单netfilter/iptables</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/index.html">netfilter/iptables<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-23d2a3431effd44185701bb407f3074f" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/index.html">iptables总体介绍<i class="fa-fw fas fa-check read-icon"></i></a></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html">iptables filter表基本命令<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html">iptables filter表基本命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/03-iptables-%E6%89%A9%E5%B1%95/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/03-iptables-%E6%89%A9%E5%B1%95/index.html">iptables 扩展<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><input type="checkbox" id="R-section-304846f73ad6d6a97cc461dcfbcd5e89" aria-controls="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89"><label for="R-section-304846f73ad6d6a97cc461dcfbcd5e89"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html">shell<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html"><input type="checkbox" id="R-section-89ae1b5e52ee2fb92d25853d1938dbc3" aria-controls="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3"><label for="R-section-89ae1b5e52ee2fb92d25853d1938dbc3"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单linux 核心命令</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html">linux 核心命令<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01、常用命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
@@ -628,9 +634,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774626781"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774626781" defer></script>
-    <script src="/js/theme.min.js?1774626781" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1781975876"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1781975876" defer></script>
+    <script src="/js/theme.min.js?1781975876" defer></script>
 
 <style>
     .highlight {

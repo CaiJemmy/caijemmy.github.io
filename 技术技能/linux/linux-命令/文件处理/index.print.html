@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="print">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="description" content="软链接和硬链接的区别。">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Linux之文件处理 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="软链接和硬链接的区别。">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:title" content="Linux之文件处理 :: 暮鼓晨钟">
+    <meta property="og:description" content="软链接和硬链接的区别。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="Linux之文件处理 :: 暮鼓晨钟">
+    <meta itemprop="description" content="软链接和硬链接的区别。">
+    <meta itemprop="wordCount" content="159">
+    <meta itemprop="keywords" content="Linux之文件处理">
+    <title>Linux之文件处理 :: 暮鼓晨钟</title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html" rel="canonical" type="text/html" title="Linux之文件处理 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.xml" rel="alternate" type="application/rss+xml" title="Linux之文件处理 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1781975876" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1781975876" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1781975876" defer></script>
+    <script src="/js/search-lunr.min.js?1781975876" defer></script>
+    <script src="/js/search.min.js?1781975876" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1781975876";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1781975876" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1781975876" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1781975876" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1781975876" rel="stylesheet">
+    <link href="/css/theme.min.css?1781975876" rel="stylesheet">
+    <link href="/css/format-print.min.css?1781975876" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/linux\/linux-%E5%91%BD%E4%BB%A4\/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1781975876" rel="stylesheet">
+  </head>
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#一项目概述">一、项目概述</a></li>
+    <li><a href="#二分阶段执行规划总周期6个月">二、分阶段执行规划（总周期：6个月）</a></li>
+    <li><a href="#三关键合规要点中国境内必备">三、关键合规要点（中国境内必备）</a></li>
+    <li><a href="#四产品差异化与安全背书">四、产品差异化与安全背书</a></li>
+    <li><a href="#五风险与应对预案">五、风险与应对预案</a></li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html"><span itemprop="name">Linux</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Linux之文件处理</span><meta itemprop="position" content="4"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html" title="Linux (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html" title="创建测试文件 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/linux%E4%B9%8B%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html">Linux之文件处理</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="linux之文件处理">Linux之文件处理</h1>
+
+<p>当然可以！以下是一份<strong>从0开始开发玉米糖零食的详细项目规划书</strong>，适用于初创食品品牌或个人创业者，内容涵盖市场调研、产品定义、配方研发、合规生产、包装设计、品牌建设、渠道策略及初期落地节奏，全程注重<strong>食品安全、法规合规（符合中国《食品安全法》《GB 17399-2018 糖果》等标准）及可执行性</strong>，不涉及任何敏感或违规内容。</p>
+<hr>
+<h1 id="金粒糖玉米糖零食项目规划书01落地版">🌽「金粒糖」玉米糖零食项目规划书（0→1落地版）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h1>
+<p><em>——天然玉米风味·非油炸·低添加·儿童友好型软糖/酥糖系列</em></p>
+<hr>
+<h2 id="一项目概述">一、项目概述<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<ul>
+<li><strong>产品定位</strong>：以优质非转基因甜玉米为基底，开发健康导向的休闲糖果，主打“真玉米味、少添加、有嚼劲/有酥感”，区别于传统明胶软糖或高糖硬糖。</li>
+<li><strong>核心形态（初期双线开发）</strong>：<br>
+✅ <strong>玉米酥粒糖</strong>（烘烤型）：酥脆微甜，含玉米胚芽粉+海藻糖+天然玉米汁浓缩液，0反式脂肪，可作零食/佐餐小食；<br>
+✅ <strong>玉米清甜软糖</strong>（胶质型）：以玉米淀粉糖浆+果胶+天然玉米黄质着色，不添加人工色素/香精，pH值稳定防粘连。</li>
+<li><strong>目标人群</strong>：6–12岁儿童（家长选购）、20–35岁健康零食偏好者、轻办公人群（替代高糖巧克力）。</li>
+</ul>
+<hr>
+<h2 id="二分阶段执行规划总周期6个月">二、分阶段执行规划（总周期：6个月）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<table>
+	<thead>
+			<tr>
+					<th>阶段</th>
+					<th>时间</th>
+					<th>关键任务</th>
+					<th>交付成果</th>
+					<th>责任方</th>
+					<th>预算参考（人民币）</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Phase 1：调研与定义</strong><br>（第1–2周）</td>
+					<td>W1–W2</td>
+					<td>• 竞品分析（市售玉米糖/棒棒糖/酥糖：如徐福记玉米糖、金丝猴玉米味、进口Malt-O-Meal玉米脆）<br>• 消费者问卷（N=300，聚焦口味接受度、价格敏感度、包装偏好）<br>• 原料供应链初筛（甜玉米粉、玉米汁浓缩液、天然甜味剂供应商）</td>
+					<td>《市场可行性报告》<br>《目标用户画像V1》<br>《原料白名单初稿》</td>
+					<td>创始人+兼职食品顾问</td>
+					<td>¥3,000</td>
+			</tr>
+			<tr>
+					<td><strong>Phase 2：配方研发与小试</strong><br>（第3–8周）</td>
+					<td>W3–W8</td>
+					<td>• 实验室级配方迭代（每款≥5版，重点解决：酥粒易碎性、软糖保质期≥9个月、玉米风味留存率）<br>• 感官评测（邀请20人盲测，记录甜度/风味强度/质地评分）<br>• 微生物与理化初检（委托CMA实验室：菌落总数、大肠菌群、水分、还原糖）</td>
+					<td>2款达标配方（含完整BOM表）<br>《感官评测报告》<br>《初检合格报告》</td>
+					<td>食品研发员（外包）+创始人</td>
+					<td>¥18,000</td>
+			</tr>
+			<tr>
+					<td><strong>Phase 3：合规与生产准备</strong><br>（第9–14周）</td>
+					<td>W9–W14</td>
+					<td>• 产品标准制定：备案企业标准（Q/XXX 001-2024，含感官、理化、微生物指标）<br>• SC生产许可咨询（选择代工厂合作，要求具备糖果SC证+洁净车间）<br>• 包装设计定稿（含营养成分表、配料表、SC编号预留位、过敏原提示）<br>• 首单试产（50kg/款，含包材打样）</td>
+					<td>《企业标准备案稿》<br>《SC代工厂合作协议》<br>《包材终稿+印刷文件》<br>50kg试产样品</td>
+					<td>创始人+合规顾问+设计外包</td>
+					<td>¥35,000</td>
+			</tr>
+			<tr>
+					<td><strong>Phase 4：测试与优化</strong><br>（第15–20周）</td>
+					<td>W15–W20</td>
+					<td>• 渠道测试：社区团购/私域社群发放200份试吃装（附反馈卡）<br>• 加速老化试验（40℃/75%RH，14天，验证质地与风味稳定性）<br>• 全项型式检验（GB 17399-2018全指标，含铅、砷、甜蜜素等）</td>
+					<td>《用户反馈分析报告》<br>《加速老化报告》<br>《型式检验合格报告》</td>
+					<td>创始人+检测机构</td>
+					<td>¥8,000</td>
+			</tr>
+			<tr>
+					<td><strong>Phase 5：上市启动</strong><br>（第21–24周）</td>
+					<td>W21–W24</td>
+					<td>• 首批量产（500kg，2款各250kg）<br>• 品牌视觉落地（Logo、主视觉、详情页、短视频脚本）<br>• 小程序商城上线+3个本地母婴社群首发<br>• 启动“玉米糖科普”内容（玉米营养价值、无添加工艺解读）</td>
+					<td>500kg成品入库<br>品牌全套视觉包<br>小程序MVP版+首发销售数据</td>
+					<td>创始人+运营/设计</td>
+					<td>¥42,000</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>✅ <strong>总启动预算（不含创始人薪资）：约 ¥106,000</strong><br>
+💡 <em>注：初期建议采用“轻资产模式”——不自建工厂，严选SC合规代工厂（如山东/广东/江苏具备糖果资质的OEM厂），聚焦产品研发与品牌建设。</em></p>
+</blockquote>
+<hr>
+<h2 id="三关键合规要点中国境内必备">三、关键合规要点（中国境内必备）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<ul>
+<li>✅ <strong>SC生产许可</strong>：必须由代工厂提供，产品标签须印制其SC编号；</li>
+<li>✅ <strong>执行标准</strong>：备案企业标准（Q/XXX），严于国标GB 17399（如：菌落总数≤1000 CFU/g，低于国标3000）；</li>
+<li>✅ <strong>标签规范</strong>：
+<ul>
+<li>配料表按添加量降序，玉米粉＞海藻糖＞果胶；</li>
+<li>营养成分表需标注“能量、蛋白质、脂肪、碳水化合物、钠”；</li>
+<li>如含玉米蛋白，需标注“含玉米过敏原”；</li>
+</ul>
+</li>
+<li>✅ <strong>添加剂使用</strong>：仅限GB 2760允许范围（例：果胶（E440）可用，甜蜜素禁用）；</li>
+<li>✅ <strong>出厂检验</strong>：每批次需有出厂检验报告（可委托第三方或代工厂提供）。</li>
+</ul>
+<hr>
+<h2 id="四产品差异化与安全背书">四、产品差异化与安全背书<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<table>
+	<thead>
+			<tr>
+					<th>维度</th>
+					<th>传统竞品</th>
+					<th>「金粒糖」方案</th>
+					<th>安全/健康价值</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>风味来源</strong></td>
+					<td>香精调配（玉米香精）</td>
+					<td>物理冷榨玉米汁+玉米胚芽粉</td>
+					<td>0人工香精，天然β-胡萝卜素（呈淡金黄色）</td>
+			</tr>
+			<tr>
+					<td><strong>甜味剂</strong></td>
+					<td>白砂糖+葡萄糖浆（高升糖）</td>
+					<td>海藻糖（低GI 32）+少量赤藓糖醇</td>
+					<td>血糖负荷低，儿童友好</td>
+			</tr>
+			<tr>
+					<td><strong>质构工艺</strong></td>
+					<td>高温熬煮易焦糊</td>
+					<td>酥粒：低温分段烘烤；软糖：真空低温浓缩</td>
+					<td>保留热敏营养素（如玉米黄质）</td>
+			</tr>
+			<tr>
+					<td><strong>防腐体系</strong></td>
+					<td>山梨酸钾为主</td>
+					<td>水分活度（Aw）控制≤0.65 + 充氮包装</td>
+					<td>0化学防腐剂，物理抑菌</td>
+			</tr>
+	</tbody>
+</table>
+<hr>
+<h2 id="五风险与应对预案">五、风险与应对预案<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<table>
+	<thead>
+			<tr>
+					<th>风险类型</th>
+					<th>应对措施</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>风味不稳定</strong></td>
+					<td>与高校食品学院合作，建立玉米汁冻干粉工艺，提升风味保留率；每批次做GC-MS风味图谱比对</td>
+			</tr>
+			<tr>
+					<td><strong>代工厂产能/品控波动</strong></td>
+					<td>签约2家备选SC工厂，首单分单生产；派驻兼职QC现场巡检（重点：投料配比、金属检测、包装密封性）</td>
+			</tr>
+			<tr>
+					<td><strong>儿童市场教育成本高</strong></td>
+					<td>联合儿科营养师制作《零食红黑榜》科普短视频，强调“真食材≠无糖”，淡化“健康”说教，强化“好吃有营养”认知</td>
+			</tr>
+			<tr>
+					<td><strong>季节性原料波动</strong></td>
+					<td>与玉米种植基地签订年度订单，要求甜玉米品种（如京科甜605）、采收期（乳熟期）、农残检测报告</td>
+			</tr>
+	</tbody>
+</table>
+
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/linux/index.html">Linux</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+          <section>
+            <h1 class="a11y-only">Linux之文件处理 的子部分</h1>
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/linux%E5%91%BD%E4%BB%A4/index.html">Linux命令</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="创建测试文件">创建测试文件</h1>
+
+<h2 id="fallocate">fallocate<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 命令语法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>fallocate -l 1G test_fallocate.log</span></span></code></pre></div>
+<p><strong>参数说明：</strong></p>
+<ul>
+<li>-l 1G ：指定文件长度为1GB（也可用 1M、1K或字节数如 1073741824）</li>
+<li>test_fallocate.log ：生成的文件名</li>
+</ul>
+<p><strong>特点:</strong></p>
+<ul>
+<li>速度极快（&lt;0.1秒），直接分配磁盘空间，实际占用大小 = 文件大小</li>
+<li>支持的文件系统：ext4、xfs、btrfs 等主流本地文件系统</li>
+</ul>
+<p><strong>验证：</strong></p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>ls -lh test_fallocate.log
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>du -h test_fallocate.log</span></span></code></pre></div>
+<p><strong>注意：</strong></p>
+<ul>
+<li>在tmpfs、NFS、FUSE、ext3等文件系统上可能报错 <code>operation not supported</code></li>
+<li>生成的文件内容为<strong>空洞</strong>（未初始化，读出来可能为零，但不会触发磁盘I/O分配）</li>
+</ul>
+<h2 id="dd">dd<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p>真实写入数据，速度较慢</p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 命令语法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/dev/zero of<span style="color:#f92672">=</span>test_dd.log bs<span style="color:#f92672">=</span>1M count<span style="color:#f92672">=</span><span style="color:#ae81ff">1024</span> status<span style="color:#f92672">=</span>progress
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/dev/urandom of<span style="color:#f92672">=</span>test_dd.log bs<span style="color:#f92672">=</span>1M count<span style="color:#f92672">=</span><span style="color:#ae81ff">1024</span> status<span style="color:#f92672">=</span>progress</span></span></code></pre></div>
+<p><strong>参数说明：</strong></p>
+<ul>
+<li>if=/dev/zero 输入文件为/dev/zero（无限输出零字节）</li>
+<li>of=test_dd.log 输出文件</li>
+<li>bs=1M 每次读写1MB的块大小（调大可略微提速）</li>
+<li>count=1024 总共写入1024个块 -&gt; 1024MB</li>
+<li>status=progress 实时显示已传输的字节数</li>
+</ul>
+<p><strong>特点：</strong></p>
+<ul>
+<li>真正执行写入操作，耗时与磁盘速度相关（机械硬盘约10-20秒，SSD几秒）</li>
+<li>生成的文件实际占用空间 = 1GB，且内容全为0</li>
+</ul>
+<p><strong>验证：</strong></p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>ls -lh test_dd.log
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>du -h test_dd.log</span></span></code></pre></div>
+<p><strong>注意：</strong></p>
+<ul>
+<li>若不指定count，dd会一直读到输入文件结束，需手动中断</li>
+<li>使用 <code>/dev/urandom</code>可生成随机内容：<code>if=/dev/urandom</code>，但速度更慢</li>
+</ul>
+<h2 id="truncate">truncate<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p>创建稀疏文件（瞬间完成，不占实际空间）</p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 命令语法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>truncate -s 1G test_truncate.log</span></span></code></pre></div>
+<p><strong>参数说明：</strong></p>
+<ul>
+<li>-s 1G 设置文件大小为1GB（支持K、M、G、T）</li>
+<li>test_turncate.log 文件名</li>
+</ul>
+<p><strong>特点：</strong></p>
+<ul>
+<li>速度极快，几乎不消耗磁盘空间（仅占用少量元数据）</li>
+<li>文件看起来是1GB，但实际占用几乎为0</li>
+</ul>
+<p><strong>验证：</strong></p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>ls -lh test_truncate.log <span style="color:#75715e">#显示1G</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>du -h test_truncate.log  <span style="color:#75715e"># 显示0</span></span></span></code></pre></div>
+<p><strong>注意：</strong></p>
+<ul>
+<li>若向该文件写入数据（例如用dd覆盖某段区域），会逐渐占用真实空间</li>
+<li>某些就程序（如scp、rsync）传输稀疏文件时可能自动扩展为完整大小，导致传输量剧增</li>
+<li>所有主流文件系统（ext4、xfs、btrfs、tmpfs）都支持稀疏文件</li>
+</ul>
+<h2 id="如何选择">如何选择<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<table>
+	<thead>
+			<tr>
+					<th>场景</th>
+					<th>推荐命令</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>快速生成一个大文件占位，用于测试路径、脚本逻辑</td>
+					<td>fallocate或truncate</td>
+			</tr>
+			<tr>
+					<td>需要真实占用磁盘空间（如I/O性能、磁盘容量）</td>
+					<td>fallocate</td>
+			</tr>
+			<tr>
+					<td>需要确保文件内容有实际数据</td>
+					<td>dd</td>
+			</tr>
+			<tr>
+					<td>文件系统不支持fallocate</td>
+					<td>dd 或 truncate</td>
+			</tr>
+	</tbody>
+</table>
+<p>如果需要进一步验证文件内容是否全为零，可以用下面命令查看</p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>hexdump -C test_fallocate.log | head</span></span></code></pre></div>
+
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/linux/index.html">Linux</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/linux%E5%91%BD%E4%BB%A4/index.html">Linux命令</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="软链接和硬链接">软链接和硬链接</h1>
+
+<h2 id="软链接">软链接<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p>软链接是一个<strong>特殊的独立文件</strong>，它的内容是目标文件的路径字符串</p>
+<ul>
+<li>软链接有自己的inode和文件类型<code>l</code>。</li>
+<li>访问软链接时，系统会读取其内容，然后跳转到目标路径。</li>
+</ul>
+<h3 id="创建与删除">创建与删除<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>ln -s 目标路径 软连接名</span></span></code></pre></div>
+<ul>
+<li>删除软链接本身：<code>rm softlink</code>，不影响目标</li>
+<li>删除目标文件，软链接变成“悬空链接”（指向不存在的路径），访问时报错。</li>
+</ul>
+<h3 id="特点与限制">特点与限制<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<ul>
+<li><strong>可以跨文件系统</strong>（因为只存储路径字符串）</li>
+<li><strong>可以对目录创建软链接</strong></li>
+<li><strong>可以指向不存在的路径</strong>（不检查目标是否存在）</li>
+<li>软链接的权限（lrwxrwxrwx）是固定的，实际访问时取决于目标文件的权限</li>
+<li>占用少量空间（存储路径字符串）</li>
+</ul>
+<h2 id="硬链接">硬链接<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p>硬链接是多个文件名指向同一个inode</p>
+<ul>
+<li>创建硬链接后，新文件名与旧文件名共享相同的inode编号</li>
+<li>硬链接计数会增加</li>
+</ul>
+<h3 id="创建与删除-1">创建与删除<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>ln 源文件 硬链接名</span></span></code></pre></div>
+<p>删除任意一个文件名，只要还有至少一个文件名指向该inode，文件数据就不会被真正删除。只有当硬链接计数为0时，磁盘空间才被释放。</p>
+<h3 id="特点与限制-1">特点与限制<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<ul>
+<li>**不能跨文件系统：**因为inode编号只在各自文件系统内唯一</li>
+<li>**不能对目录创建硬链接：**防止循环引用，虽然系统底层允许但普通用户禁止</li>
+<li><strong>修改任意一个链接</strong>，所有链接看到的内容都相同（因为共享数据块）</li>
+<li><strong>不占用额外空间</strong>（只增加一条目录项，约几个字节）</li>
+<li>硬链接文件与源文件的文件类型、权限、所有者、时间戳完全一致</li>
+</ul>
+<h2 id="对比表格">对比表格<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<table>
+	<thead>
+			<tr>
+					<th>特性</th>
+					<th>硬链接</th>
+					<th>软链接</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>inode</td>
+					<td>与源文件相同</td>
+					<td>自己的独立inode</td>
+			</tr>
+			<tr>
+					<td>文件类型</td>
+					<td>普通文件</td>
+					<td>符号链接</td>
+			</tr>
+			<tr>
+					<td>跨文件系统</td>
+					<td>不可以</td>
+					<td>可以</td>
+			</tr>
+			<tr>
+					<td>指向目录</td>
+					<td>不可以</td>
+					<td>可以</td>
+			</tr>
+			<tr>
+					<td>目标删除后</td>
+					<td>数据仍存在</td>
+					<td>链接失效</td>
+			</tr>
+			<tr>
+					<td>大小</td>
+					<td>仅目录项</td>
+					<td>存储路径字符串的大小</td>
+			</tr>
+			<tr>
+					<td>权限</td>
+					<td>与源文件完全相同</td>
+					<td>固定0777，实际由目标决定</td>
+			</tr>
+			<tr>
+					<td>相对路径</td>
+					<td>不支持</td>
+					<td>支持</td>
+			</tr>
+			<tr>
+					<td>查找所有链接</td>
+					<td>通过find -samefile 或 inode号</td>
+					<td>无法直接反向查找</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="使用场景">使用场景<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p><strong>硬链接适用场景</strong></p>
+<ul>
+<li>备份/快照 节省空间</li>
+<li>程序文件版本管理（多个名字指向同一可执行文件）</li>
+<li>需要多个路径访问同一份数据，且不关心文件是否被“移动”</li>
+</ul>
+<p><strong>软链接适用场景</strong></p>
+<ul>
+<li>快捷方式（跨分区、跨文件系统）</li>
+<li>动态库版本管理</li>
+<li>链接到目录</li>
+<li>需要指向可能变化的路径</li>
+</ul>
+<h2 id="注意">注意<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<ul>
+<li>
+<p>硬链接 != 复制：复制是新的inode + 新的数据块，硬链接共享数据块</p>
+</li>
+<li>
+<p>软链接相对路径问题：相对路径是相对于软链接所在目录解析，而不是当前工作目录</p>
+</li>
+<li>
+<p>删除原始文件</p>
+<ul>
+<li>硬链接：数据还在，其他链接可用</li>
+<li>软链接：变成断链</li>
+</ul>
+</li>
+<li>
+<p>目录硬链接：除非使用<code>mount --bind</code>，否则不要尝试。系统不允许，因为会导致目录循环和<code>rm -fr</code> 无限递归。</p>
+</li>
+</ul>
+
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/linux/index.html">Linux</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+          </section>
+        </div>
+      </main>
+    </div>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1781975876"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1781975876" defer></script>
+    <script src="/js/theme.min.js?1781975876" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>

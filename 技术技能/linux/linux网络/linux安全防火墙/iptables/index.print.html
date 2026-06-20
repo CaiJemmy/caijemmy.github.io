@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="generator" content="Hugo 0.163.3">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="Linux安全防火墙之netfilter。">
     <meta name="author" content="">
@@ -18,31 +18,31 @@
     <meta property="og:type" content="website">
     <meta itemprop="name" content="netfilter/iptables :: 暮鼓晨钟">
     <meta itemprop="description" content="Linux安全防火墙之netfilter。">
-    <meta itemprop="wordCount" content="5">
+    <meta itemprop="wordCount" content="8">
     <title>netfilter/iptables :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/index.html" rel="canonical" type="text/html" title="netfilter/iptables :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/index.xml" rel="alternate" type="application/rss+xml" title="netfilter/iptables :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1774626781" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1774626781" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1774626781" defer></script>
-    <script src="/js/search-lunr.min.js?1774626781" defer></script>
-    <script src="/js/search.min.js?1774626781" defer></script>
+    <link href="/images/favicon.png?1781975876" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1781975876" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1781975876" defer></script>
+    <script src="/js/search-lunr.min.js?1781975876" defer></script>
+    <script src="/js/search.min.js?1781975876" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1774626781";
+      window.relearn.index_js_url="/searchindex.en.js?1781975876";
     </script>
-    <script src="/js/lunr/lunr.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1774626781" defer></script>
+    <script src="/js/lunr/lunr.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1781975876" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1774626781" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774626781" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774626781" rel="stylesheet">
-    <link href="/css/theme.min.css?1774626781" rel="stylesheet">
-    <link href="/css/format-print.min.css?1774626781" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1781975876" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1781975876" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1781975876" rel="stylesheet">
+    <link href="/css/theme.min.css?1781975876" rel="stylesheet">
+    <link href="/css/format-print.min.css?1781975876" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -91,7 +91,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1774626781" rel="stylesheet">
+    <link href="/css/custom.css?1781975876" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/index.html">
     <div id="R-body" class="default-animation">
@@ -153,6 +153,10 @@
 <p><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html">iptables filter表基本命令</a></p>
 <p>介绍iptables的表和链，filter表的基本命令及一个简单的实验。</p>
 </li>
+<li>
+<p><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/03-iptables-%E6%89%A9%E5%B1%95/index.html">iptables 扩展</a></p>
+<p>介绍iptables的匹配扩展和目标扩展。</p>
+</li>
 </ul>
 
   <footer class="footline">
@@ -174,8 +178,8 @@
 
 <h1 id="iptables总体介绍">iptables总体介绍</h1>
 
-<p><a href="#R-image-7f2220bd43a13a94884386bb50dc15e0" class="lightbox-link"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-7f2220bd43a13a94884386bb50dc15e0"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png"></a></p>
+<p><a href="#R-image-effafa1d4cbc9940b8d1d57a145db524" class="lightbox-link"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-effafa1d4cbc9940b8d1d57a145db524"><img alt="数据包在netfilter中的执行流程" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8netfilter%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png"></a></p>
 <p>iptables 是 Linux 内核中 netfilter 框架的用户态管理工具，其“执行过程”本质上是指数据包在内核网络协议栈中经过 netfilter 钩子（hook）时，如何被 iptables 规则匹配与处理。需注意：<strong>iptables 命令本身不“执行”数据包处理，而是配置规则；真正的匹配与动作发生在内核 netfilter 的钩子点上</strong>。以下是清晰、准确的执行过程说明（基于 IPv4，标准内核流程）：</p>
 <hr>
 <h2 id="iptables-工具体系概述">iptables 工具体系概述<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
@@ -183,40 +187,40 @@
 <h3 id="1表tables与链chains">1、表（Tables）与链（Chains）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <p>iptables 将规则组织在不同**表（table）**中，每张表专注一类功能，各表包含预定义链（chains）：</p>
 <table>
-  <thead>
-      <tr>
-          <th>表名</th>
-          <th>主要用途</th>
-          <th>默认链（IPv4）</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><code>filter</code></td>
-          <td>包过滤（防火墙核心）</td>
-          <td><code>INPUT</code>、<code>FORWARD</code>、<code>OUTPUT</code></td>
-      </tr>
-      <tr>
-          <td><code>nat</code></td>
-          <td>网络地址转换（DNAT/SNAT/MASQUERADE）</td>
-          <td><code>PREROUTING</code>、<code>OUTPUT</code>、<code>POSTROUTING</code></td>
-      </tr>
-      <tr>
-          <td><code>mangle</code></td>
-          <td>修改数据包头（TTL、TOS、MARK等）</td>
-          <td><code>PREROUTING</code>、<code>INPUT</code>、<code>FORWARD</code>、<code>OUTPUT</code>、<code>POSTROUTING</code></td>
-      </tr>
-      <tr>
-          <td><code>raw</code></td>
-          <td>绕过连接跟踪（<code>NOTRACK</code>）</td>
-          <td><code>PREROUTING</code>、<code>OUTPUT</code></td>
-      </tr>
-      <tr>
-          <td><code>security</code></td>
-          <td>强制访问控制（SELinux 相关，较少使用）</td>
-          <td><code>INPUT</code>、<code>FORWARD</code>、<code>OUTPUT</code></td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>表名</th>
+					<th>主要用途</th>
+					<th>默认链（IPv4）</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>filter</code></td>
+					<td>包过滤（防火墙核心）</td>
+					<td><code>INPUT</code>、<code>FORWARD</code>、<code>OUTPUT</code></td>
+			</tr>
+			<tr>
+					<td><code>nat</code></td>
+					<td>网络地址转换（DNAT/SNAT/MASQUERADE）</td>
+					<td><code>PREROUTING</code>、<code>OUTPUT</code>、<code>POSTROUTING</code></td>
+			</tr>
+			<tr>
+					<td><code>mangle</code></td>
+					<td>修改数据包头（TTL、TOS、MARK等）</td>
+					<td><code>PREROUTING</code>、<code>INPUT</code>、<code>FORWARD</code>、<code>OUTPUT</code>、<code>POSTROUTING</code></td>
+			</tr>
+			<tr>
+					<td><code>raw</code></td>
+					<td>绕过连接跟踪（<code>NOTRACK</code>）</td>
+					<td><code>PREROUTING</code>、<code>OUTPUT</code></td>
+			</tr>
+			<tr>
+					<td><code>security</code></td>
+					<td>强制访问控制（SELinux 相关，较少使用）</td>
+					<td><code>INPUT</code>、<code>FORWARD</code>、<code>OUTPUT</code></td>
+			</tr>
+	</tbody>
 </table>
 <blockquote>
 <p>注：各表的链在 Netfilter hook 上按固定优先级顺序注册（如 <code>raw → mangle → nat → filter</code>），但<strong>同一 hook 上不同表的链是串行执行的</strong>，且规则按顺序匹配。</p>
@@ -343,8 +347,8 @@
         iptables和netfilter的关系
       </div>
       <div class="card-content-text">
-          <a href="#R-image-9be8e540b92f25a4777665c95f632a57" class="lightbox-link"><img alt="image-20260326155730252" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326155730252.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-9be8e540b92f25a4777665c95f632a57"><img alt="image-20260326155730252" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326155730252.png"></a>
+          <a href="#R-image-82d9a0175b7aed7a2ab57db82c84dcac" class="lightbox-link"><img alt="image-20260326155730252" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326155730252.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-82d9a0175b7aed7a2ab57db82c84dcac"><img alt="image-20260326155730252" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326155730252.png"></a>
       </div>
     </div>
   </article>
@@ -356,8 +360,8 @@
         iptables的5个链
       </div>
       <div class="card-content-text">
-          <p><a href="#R-image-bac2fe1f1a4c9bd2e3538921769cbf55" class="lightbox-link"><img alt="image-20260326170716441" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326170716441.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-bac2fe1f1a4c9bd2e3538921769cbf55"><img alt="image-20260326170716441" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326170716441.png"></a></p>
+          <p><a href="#R-image-0a58c99694e7485c8bfd6c453671f25c" class="lightbox-link"><img alt="image-20260326170716441" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326170716441.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-0a58c99694e7485c8bfd6c453671f25c"><img alt="image-20260326170716441" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326170716441.png"></a></p>
 <ul>
 <li>给本机某个进程的数据包：PREROUTING &ndash;&gt; INPUT</li>
 <li>由本机转发的数据包：PREROUTING &ndash;&gt; FORWARD &ndash;&gt; POSTROUTING</li>
@@ -374,8 +378,8 @@
         表和链的关系
       </div>
       <div class="card-content-text">
-          <p><a href="#R-image-ca59f5ff2a9e61744615995d7c4919bc" class="lightbox-link"><img alt="image-20260326192831787" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326192831787.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-ca59f5ff2a9e61744615995d7c4919bc"><img alt="image-20260326192831787" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326192831787.png"></a></p>
+          <p><a href="#R-image-c853dffa96232662af861d5c1743d0a7" class="lightbox-link"><img alt="image-20260326192831787" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326192831787.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-c853dffa96232662af861d5c1743d0a7"><img alt="image-20260326192831787" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326192831787.png"></a></p>
 <ul>
 <li>表是按功能分</li>
 <li>链是按时机分</li>
@@ -392,57 +396,57 @@
 </blockquote>
 <h2 id="iptables的5个表">iptables的5个表<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <table>
-  <thead>
-      <tr>
-          <th>表名</th>
-          <th>主要用途</th>
-          <th>内核模块</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><code>filter</code></td>
-          <td>包过滤（防火墙核心），确认是否放行</td>
-          <td>iptables_filter</td>
-      </tr>
-      <tr>
-          <td><code>nat</code></td>
-          <td>网络地址转换（DNAT/SNAT/MASQUERADE）</td>
-          <td>iptables_nat</td>
-      </tr>
-      <tr>
-          <td><code>mangle</code></td>
-          <td>修改数据包头（TTL、TOS、MARK等），拆解、修改、重新封装数据包</td>
-          <td>iptables_mangle</td>
-      </tr>
-      <tr>
-          <td><code>raw</code></td>
-          <td>绕过连接跟踪（<code>NOTRACK</code>），是否对数据包进行状态跟踪</td>
-          <td>iptables_raw</td>
-      </tr>
-      <tr>
-          <td><code>security</code></td>
-          <td>强制访问控制（SELinux 相关，较少使用）</td>
-          <td>iptables_security</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>表名</th>
+					<th>主要用途</th>
+					<th>内核模块</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>filter</code></td>
+					<td>包过滤（防火墙核心），确认是否放行</td>
+					<td>iptables_filter</td>
+			</tr>
+			<tr>
+					<td><code>nat</code></td>
+					<td>网络地址转换（DNAT/SNAT/MASQUERADE）</td>
+					<td>iptables_nat</td>
+			</tr>
+			<tr>
+					<td><code>mangle</code></td>
+					<td>修改数据包头（TTL、TOS、MARK等），拆解、修改、重新封装数据包</td>
+					<td>iptables_mangle</td>
+			</tr>
+			<tr>
+					<td><code>raw</code></td>
+					<td>绕过连接跟踪（<code>NOTRACK</code>），是否对数据包进行状态跟踪</td>
+					<td>iptables_raw</td>
+			</tr>
+			<tr>
+					<td><code>security</code></td>
+					<td>强制访问控制（SELinux 相关，较少使用）</td>
+					<td>iptables_security</td>
+			</tr>
+	</tbody>
 </table>
 <h2 id="iptables的基本语法">iptables的基本语法<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<div class="tab-panel" data-tab-group="R-tabs-436deb6d7d9ad2424506f393b3e3229b">
+<div class="tab-panel" data-tab-group="R-tabs-5612eb74b9f13a17421a800751f10d1f">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-8b7cfb2957f6d1c03b0fd0d85cda5edd" aria-expanded="true"
+      aria-controls="R-tab-id-b8188ae75d0b49b8d076551f8c7e1600" aria-expanded="true"
       data-tab-item="R-tab-14fb608d70b8dfdae4eb0325b2cce398"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-436deb6d7d9ad2424506f393b3e3229b','R-tab-14fb608d70b8dfdae4eb0325b2cce398')"
+      onclick="switchTab('R-tabs-5612eb74b9f13a17421a800751f10d1f','R-tab-14fb608d70b8dfdae4eb0325b2cce398')"
     >
       <span class="tab-nav-text">man iptables</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-8b7cfb2957f6d1c03b0fd0d85cda5edd"
+      id="R-tab-id-b8188ae75d0b49b8d076551f8c7e1600"
       data-tab-item="R-tab-14fb608d70b8dfdae4eb0325b2cce398"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -491,21 +495,21 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>-E, --rename-chain old-chain new-chain
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>  重命名自定义的规则链名称</span></span></code></pre></div>
-<div class="tab-panel" data-tab-group="R-tabs-a025a05d18a1724f584f1082c45c94d1">
+<div class="tab-panel" data-tab-group="R-tabs-a5c5cd35559513347e17dd71a46eb2a1">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-75b622c5bc642558a941669e33f35b5d" aria-expanded="true"
+      aria-controls="R-tab-id-f59fa4d435d62a2a9470dc7a1f5679c2" aria-expanded="true"
       data-tab-item="R-tab-16035461f35402af95ad690023d1f40c"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-a025a05d18a1724f584f1082c45c94d1','R-tab-16035461f35402af95ad690023d1f40c')"
+      onclick="switchTab('R-tabs-a5c5cd35559513347e17dd71a46eb2a1','R-tab-16035461f35402af95ad690023d1f40c')"
     >
       <span class="tab-nav-text">列表命令（-L）的选项</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-75b622c5bc642558a941669e33f35b5d"
+      id="R-tab-id-f59fa4d435d62a2a9470dc7a1f5679c2"
       data-tab-item="R-tab-16035461f35402af95ad690023d1f40c"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -554,21 +558,21 @@
 <li>要求以&quot;-m 扩展模块&quot;的形式明确指出类型</li>
 <li>包括多端口、MAC地址、IP范围、数据包状态等条件</li>
 </ul>
-<div class="tab-panel" data-tab-group="R-tabs-45730a333c7161a9d4e920a635ecebcf">
+<div class="tab-panel" data-tab-group="R-tabs-957fa733caa6c28727cfc563f97c96c9">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-54f5edfb7763061a0b27038513271ff7" aria-expanded="true"
+      aria-controls="R-tab-id-13128f93cc6767408dcf85294065c9ba" aria-expanded="true"
       data-tab-item="R-tab-79f0f5bb974ffdc958700cbee835857a"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-45730a333c7161a9d4e920a635ecebcf','R-tab-79f0f5bb974ffdc958700cbee835857a')"
+      onclick="switchTab('R-tabs-957fa733caa6c28727cfc563f97c96c9','R-tab-79f0f5bb974ffdc958700cbee835857a')"
     >
       <span class="tab-nav-text">通用匹配</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-54f5edfb7763061a0b27038513271ff7"
+      id="R-tab-id-13128f93cc6767408dcf85294065c9ba"
       data-tab-item="R-tab-79f0f5bb974ffdc958700cbee835857a"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -581,21 +585,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-eebe9883e45c4e7f1feefabec6b1a2d0">
+</div><div class="tab-panel" data-tab-group="R-tabs-6982115c1350c75435014aafd7a8106f">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-99a3ee128153aa68ef0b2976d62b2a69" aria-expanded="true"
+      aria-controls="R-tab-id-bc7b9c38971dd1208a4b9387ad782c1e" aria-expanded="true"
       data-tab-item="R-tab-f2c31d91905f1f44e22bb7208206abf2"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-eebe9883e45c4e7f1feefabec6b1a2d0','R-tab-f2c31d91905f1f44e22bb7208206abf2')"
+      onclick="switchTab('R-tabs-6982115c1350c75435014aafd7a8106f','R-tab-f2c31d91905f1f44e22bb7208206abf2')"
     >
       <span class="tab-nav-text">[!] -p, &ndash;protocol tcp TCP头部通用选项</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-99a3ee128153aa68ef0b2976d62b2a69"
+      id="R-tab-id-bc7b9c38971dd1208a4b9387ad782c1e"
       data-tab-item="R-tab-f2c31d91905f1f44e22bb7208206abf2"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -609,21 +613,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-d2d8eadce45c378ad0609a399267010b">
+</div><div class="tab-panel" data-tab-group="R-tabs-beee0af81ec93d6ca724cba9340fd33b">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-d7cbc45bbed3676ed1e13bfbea8ced3b" aria-expanded="true"
+      aria-controls="R-tab-id-0e9e38840b7eb7784bd2507885adb6e3" aria-expanded="true"
       data-tab-item="R-tab-87dce88e50a4b2ad25cd198c15440257"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-d2d8eadce45c378ad0609a399267010b','R-tab-87dce88e50a4b2ad25cd198c15440257')"
+      onclick="switchTab('R-tabs-beee0af81ec93d6ca724cba9340fd33b','R-tab-87dce88e50a4b2ad25cd198c15440257')"
     >
       <span class="tab-nav-text">[!] -p, &ndash;protocol udp UDP头部通用选项</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-d7cbc45bbed3676ed1e13bfbea8ced3b"
+      id="R-tab-id-0e9e38840b7eb7784bd2507885adb6e3"
       data-tab-item="R-tab-87dce88e50a4b2ad25cd198c15440257"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -632,21 +636,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-3e84e3b03ec0757f7e3d7e0fab29fd44">
+</div><div class="tab-panel" data-tab-group="R-tabs-0c4e786cf2eb98c2ed7d91f68d1b5b25">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-ecb21424a8a603f3859bc1bbc6a43648" aria-expanded="true"
+      aria-controls="R-tab-id-a71e65ab3a76d4c0917ea76d2a5ef979" aria-expanded="true"
       data-tab-item="R-tab-28be4ebbc5207f96b0a8ca3f9742d204"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-3e84e3b03ec0757f7e3d7e0fab29fd44','R-tab-28be4ebbc5207f96b0a8ca3f9742d204')"
+      onclick="switchTab('R-tabs-0c4e786cf2eb98c2ed7d91f68d1b5b25','R-tab-28be4ebbc5207f96b0a8ca3f9742d204')"
     >
       <span class="tab-nav-text">[!] -p, &ndash;protocol icmp ICMP头部通用选项</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-ecb21424a8a603f3859bc1bbc6a43648"
+      id="R-tab-id-a71e65ab3a76d4c0917ea76d2a5ef979"
       data-tab-item="R-tab-28be4ebbc5207f96b0a8ca3f9742d204"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -714,10 +718,10 @@
 </li>
 </ul>
 <h2 id="filter表脑图">filter表脑图<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<p><a href="#R-image-368d8a689ff6f7ef6641e9cb80004f92" class="lightbox-link"><img alt="image-20260327091425674" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327091425674.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-368d8a689ff6f7ef6641e9cb80004f92"><img alt="image-20260327091425674" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327091425674.png"></a></p>
+<p><a href="#R-image-585a22f48c904b247ec0739c73a28241" class="lightbox-link"><img alt="image-20260327091425674" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327091425674.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-585a22f48c904b247ec0739c73a28241"><img alt="image-20260327091425674" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327091425674.png"></a></p>
 <h2 id="实验配置web服务器上的主机防火墙">实验：配置Web服务器上的主机防火墙<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<p><strong>实验环境</strong>：LAMP</p>
+<p><strong>实验环境</strong>：LAMP（Debian）</p>
 <p><strong>配置防火墙策略</strong></p>
 <ul>
 <li>使用nmap扫描未配置防火墙的Web服务器</li>
@@ -748,8 +752,8 @@
         mysql客户端连接测试
       </div>
       <div class="card-content-text">
-          <p><a href="#R-image-01799b59aa679e78452fae937b6d7035" class="lightbox-link"><img alt="image-20260327010404704" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010404704.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-01799b59aa679e78452fae937b6d7035"><img alt="image-20260327010404704" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010404704.png"></a></p>
+          <p><a href="#R-image-f68c7bf66f6dd7af25998fa572579ef6" class="lightbox-link"><img alt="image-20260327010404704" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010404704.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-f68c7bf66f6dd7af25998fa572579ef6"><img alt="image-20260327010404704" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010404704.png"></a></p>
 <ul>
 <li>windows 客户端可以连接到服务器的mysql数据库</li>
 </ul>
@@ -764,8 +768,8 @@
         nginx服务测试
       </div>
       <div class="card-content-text">
-          <p><a href="#R-image-b24c0f6ffcdd77703236226d41fe1a2c" class="lightbox-link"><img alt="image-20260327010523698" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-b24c0f6ffcdd77703236226d41fe1a2c"><img alt="image-20260327010523698" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png"></a></p>
+          <p><a href="#R-image-509f18d7f532813498cb840050043f52" class="lightbox-link"><img alt="image-20260327010523698" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-509f18d7f532813498cb840050043f52"><img alt="image-20260327010523698" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png"></a></p>
 <ul>
 <li>其他主机可以访问80端口</li>
 </ul>
@@ -819,21 +823,21 @@
 <p>为防止ssh登录不上，建议配置前设置个定时器，清理配置，保证自己对主机的连接权。</p>
   </div>
 </details>
-<div class="tab-panel" data-tab-group="R-tabs-f40289f3692b83f408f8fd79f59687cc">
+<div class="tab-panel" data-tab-group="R-tabs-dfac77fe8fcd3ad0ac2028452dde6fe0">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-695055c6e99f7b6b2665ed32c7210bc0" aria-expanded="true"
+      aria-controls="R-tab-id-28a3d8d0746e15615bd8fdc323fa8a44" aria-expanded="true"
       data-tab-item="R-tab-b2d16594f0d3569b4e2b851b27f53dc3"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-f40289f3692b83f408f8fd79f59687cc','R-tab-b2d16594f0d3569b4e2b851b27f53dc3')"
+      onclick="switchTab('R-tabs-dfac77fe8fcd3ad0ac2028452dde6fe0','R-tab-b2d16594f0d3569b4e2b851b27f53dc3')"
     >
       <span class="tab-nav-text">恢复ssh的脚本</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-695055c6e99f7b6b2665ed32c7210bc0"
+      id="R-tab-id-28a3d8d0746e15615bd8fdc323fa8a44"
       data-tab-item="R-tab-b2d16594f0d3569b4e2b851b27f53dc3"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -870,21 +874,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-0e4a96d46651b0586e93cb4da8f3ded2">
+</div><div class="tab-panel" data-tab-group="R-tabs-69919d14e793ee3e80c7d7d965784378">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-d40d3629b97fd2caced63d43da2a1f7e" aria-expanded="true"
+      aria-controls="R-tab-id-207a188659db9985a378ae9d91353701" aria-expanded="true"
       data-tab-item="R-tab-430a2784a2a66dd5e5316b9582096bc1"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-0e4a96d46651b0586e93cb4da8f3ded2','R-tab-430a2784a2a66dd5e5316b9582096bc1')"
+      onclick="switchTab('R-tabs-69919d14e793ee3e80c7d7d965784378','R-tab-430a2784a2a66dd5e5316b9582096bc1')"
     >
       <span class="tab-nav-text">删除ssh定时器及脚本</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-d40d3629b97fd2caced63d43da2a1f7e"
+      id="R-tab-id-207a188659db9985a378ae9d91353701"
       data-tab-item="R-tab-430a2784a2a66dd5e5316b9582096bc1"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -892,21 +896,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-ee975ff2a82ab2c25671e066e0586607">
+</div><div class="tab-panel" data-tab-group="R-tabs-563b9c2d86d459f4fbdbaeacd41db679">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-e6f7605fe6a35c5b7be46fdccdc70c2a" aria-expanded="true"
+      aria-controls="R-tab-id-b8764f571905a11cdc80ec94b90fc1fd" aria-expanded="true"
       data-tab-item="R-tab-e50d6ad56e3afcb5d2551b2ec213090e"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-ee975ff2a82ab2c25671e066e0586607','R-tab-e50d6ad56e3afcb5d2551b2ec213090e')"
+      onclick="switchTab('R-tabs-563b9c2d86d459f4fbdbaeacd41db679','R-tab-e50d6ad56e3afcb5d2551b2ec213090e')"
     >
       <span class="tab-nav-text">命令错误排查</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-e6f7605fe6a35c5b7be46fdccdc70c2a"
+      id="R-tab-id-b8764f571905a11cdc80ec94b90fc1fd"
       data-tab-item="R-tab-e50d6ad56e3afcb5d2551b2ec213090e"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -924,7 +928,326 @@
       </div>
     </div>
   </div>
+</div><h3 id="5-再次端口扫描">5. 再次端口扫描<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>root@debian:~# nmap -sS -O 192.168.52.60
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>Starting Nmap 7.93 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2026-03-27 11:52 EDT
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>Nmap scan report <span style="color:#66d9ef">for</span> 192.168.52.60
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>Host is up <span style="color:#f92672">(</span>0.0012s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>Not shown: <span style="color:#ae81ff">998</span> filtered tcp ports <span style="color:#f92672">(</span>no-response<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>PORT   STATE SERVICE
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>22/tcp open  ssh
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>80/tcp open  http
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>MAC Address: 00:0C:29:DC:2D:71 <span style="color:#f92672">(</span>VMware<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>Warning: OSScan results may be unreliable because we could not find at least <span style="color:#ae81ff">1</span> open and <span style="color:#ae81ff">1</span> closed port
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>Device type: general purpose
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>Running: Linux 4.X|5.X
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>OS details: Linux 4.15 - 5.6, Linux 5.0 - 5.4
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>Network Distance: <span style="color:#ae81ff">1</span> hop
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>OS detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 10.02 seconds</span></span></code></pre></div>
+<ul class="card-container">
+<li>
+  <article class="card" aria-labelledby="R-card-c7a615fbcc24692142aa2f55b18c76df">
+    <div class="card-content">
+      <div class="card-title" id="R-card-c7a615fbcc24692142aa2f55b18c76df">
+        mysql客户端连接测试
+      </div>
+      <div class="card-content-text">
+          <p><a href="#R-image-0f6bbfc5b825f15e0631516d32f4bdff" class="lightbox-link"><img alt="image-20260328000604901" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260328000604901.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-0f6bbfc5b825f15e0631516d32f4bdff"><img alt="image-20260328000604901" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260328000604901.png"></a></p>
+<ul>
+<li>windows 客户端连接到服务器的mysql数据库<strong>失败</strong></li>
+</ul>
+      </div>
+    </div>
+  </article>
+</li>
+<li>
+  <article class="card" aria-labelledby="R-card-75255bd7a96fc6d4e2d7099dd3bb7ad8">
+    <div class="card-content">
+      <div class="card-title" id="R-card-75255bd7a96fc6d4e2d7099dd3bb7ad8">
+        nginx服务测试
+      </div>
+      <div class="card-content-text">
+          <p><a href="#R-image-a9dcd63709b9a9be5c647c903a1b0d1d" class="lightbox-link"><img alt="image-20260327010523698" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-a9dcd63709b9a9be5c647c903a1b0d1d"><img alt="image-20260327010523698" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png"></a></p>
+<ul>
+<li>其他主机可以访问80端口</li>
+</ul>
+      </div>
+    </div>
+  </article>
+</li>
+</ul>
+<ul>
+<li>从端口扫描和测试的结果看，已经满足了端口加固的要求。</li>
+<li>Not shown: 998 <strong>filtered</strong> tcp ports (no-response)，这个是filtered，和之前的closed是有区别的，后端的其他端口是否存在监听不知道，因为被filter规则过滤掉了。</li>
+</ul>
+<h3 id="6-主机数据库登录验证">6. 主机数据库登录验证<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@debian:~# mysql -uroot -p -h 127.0.0.1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Enter password:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>ERROR <span style="color:#ae81ff">2002</span> <span style="color:#f92672">(</span>HY000<span style="color:#f92672">)</span>: Can<span style="color:#e6db74">&#39;t connect to server on &#39;</span>127.0.0.1<span style="color:#960050;background-color:#1e0010">&#39;</span> <span style="color:#f92672">(</span>115<span style="color:#f92672">)</span></span></span></code></pre></div>
+<div class="tab-panel" data-tab-group="R-tabs-242944955a1c11bc0b1aaa43cab296e8">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-317bf96cec71776b99689744d4ec5bca" aria-expanded="true"
+      data-tab-item="R-tab-c2be289ccc7c48dd900e85ff7d9ce599"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-242944955a1c11bc0b1aaa43cab296e8','R-tab-c2be289ccc7c48dd900e85ff7d9ce599')"
+    >
+      <span class="tab-nav-text">失败原因分析</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-317bf96cec71776b99689744d4ec5bca"
+      data-tab-item="R-tab-c2be289ccc7c48dd900e85ff7d9ce599"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>root@debian:~# iptables -xvnL --line-numbers
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>Chain INPUT <span style="color:#f92672">(</span>policy DROP <span style="color:#ae81ff">49818</span> packets, <span style="color:#ae81ff">2053458</span> bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>num      pkts      bytes target     prot opt in     out     source               destination
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">223</span>    <span style="color:#ae81ff">19488</span> ACCEPT     <span style="color:#ae81ff">6</span>    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:22
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#ae81ff">2</span>          <span style="color:#ae81ff">30</span>     <span style="color:#ae81ff">2906</span> ACCEPT     <span style="color:#ae81ff">6</span>    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>Chain FORWARD <span style="color:#f92672">(</span>policy DROP <span style="color:#ae81ff">0</span> packets, <span style="color:#ae81ff">0</span> bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>num      pkts      bytes target     prot opt in     out     source               destination
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#ae81ff">1</span>           <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span> DOCKER-USER  <span style="color:#ae81ff">0</span>    --  *      *       0.0.0.0/0            0.0.0.0/0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#ae81ff">2</span>           <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span> DOCKER-FORWARD  <span style="color:#ae81ff">0</span>    --  *      *       0.0.0.0/0            0.0.0.0/0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>Chain OUTPUT <span style="color:#f92672">(</span>policy DROP <span style="color:#ae81ff">90177</span> packets, <span style="color:#ae81ff">4951367</span> bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>num      pkts      bytes target     prot opt in     out     source               destination
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">170</span>    <span style="color:#ae81ff">20068</span> ACCEPT     <span style="color:#ae81ff">6</span>    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp spt:22
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#ae81ff">2</span>          <span style="color:#ae81ff">22</span>     <span style="color:#ae81ff">3074</span> ACCEPT     <span style="color:#ae81ff">6</span>    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp spt:80
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#75715e"># 规则中没有127.0.0.1的规则</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-fa83c4a1104224b1634a70c6c4d9dd20">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-f1d6582a3ab1d4dd24fd4ec3747519cb" aria-expanded="true"
+      data-tab-item="R-tab-cab6e6e3004cea4c4402947b1fbfdb7d"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-fa83c4a1104224b1634a70c6c4d9dd20','R-tab-cab6e6e3004cea4c4402947b1fbfdb7d')"
+    >
+      <span class="tab-nav-text">放行lo网卡</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-f1d6582a3ab1d4dd24fd4ec3747519cb"
+      data-tab-item="R-tab-cab6e6e3004cea4c4402947b1fbfdb7d"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>iptables -A INPUT -i lo -j ACCEPT
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>iptables -A OUTPUT -o lo -j ACCEPT
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>root@debian:~# iptables -xvnL --line-numbers
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>Chain INPUT <span style="color:#f92672">(</span>policy DROP <span style="color:#ae81ff">50337</span> packets, <span style="color:#ae81ff">2074407</span> bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>num      pkts      bytes target     prot opt in     out     source               destination
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">338</span>    <span style="color:#ae81ff">27176</span> ACCEPT     <span style="color:#ae81ff">6</span>    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:22
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#ae81ff">2</span>          <span style="color:#ae81ff">30</span>     <span style="color:#ae81ff">2906</span> ACCEPT     <span style="color:#ae81ff">6</span>    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#ae81ff">3</span>          <span style="color:#ae81ff">15</span>     <span style="color:#ae81ff">1247</span> ACCEPT     <span style="color:#ae81ff">0</span>    --  lo     *       0.0.0.0/0            0.0.0.0/0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>Chain FORWARD <span style="color:#f92672">(</span>policy DROP <span style="color:#ae81ff">0</span> packets, <span style="color:#ae81ff">0</span> bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>num      pkts      bytes target     prot opt in     out     source               destination
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#ae81ff">1</span>           <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span> DOCKER-USER  <span style="color:#ae81ff">0</span>    --  *      *       0.0.0.0/0            0.0.0.0/0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#ae81ff">2</span>           <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span> DOCKER-FORWARD  <span style="color:#ae81ff">0</span>    --  *      *       0.0.0.0/0            0.0.0.0/0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>Chain OUTPUT <span style="color:#f92672">(</span>policy DROP <span style="color:#ae81ff">90702</span> packets, <span style="color:#ae81ff">4972507</span> bytes<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>num      pkts      bytes target     prot opt in     out     source               destination
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">259</span>    <span style="color:#ae81ff">28348</span> ACCEPT     <span style="color:#ae81ff">6</span>    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp spt:22
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#ae81ff">2</span>          <span style="color:#ae81ff">22</span>     <span style="color:#ae81ff">3074</span> ACCEPT     <span style="color:#ae81ff">6</span>    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp spt:80
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#ae81ff">3</span>          <span style="color:#ae81ff">15</span>     <span style="color:#ae81ff">1247</span> ACCEPT     <span style="color:#ae81ff">0</span>    --  *      lo      0.0.0.0/0            0.0.0.0/0</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
 </div>
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/linux/index.html">Linux</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99/index.html">防火墙</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="iptables-扩展">iptables 扩展</h1>
+
+<p>iptables 的匹配扩展（match extensions）是其强大功能的核心，它们通过 <code>-m &lt;module&gt;</code> 语法加载，用于在规则中实现更精细、更语义化的数据包匹配（如匹配端口范围、连接状态、字符串、IP 地址类型、速率、应用层特征等）。这些扩展由内核模块（<code>xt_*</code>）提供，需对应模块已加载（如 <code>xt_tcp</code>, <code>xt_conntrack</code>, <code>xt_string</code> 等）。</p>
+<p>以下为 <strong>iptables（基于 Linux 内核 4.x–6.x 主流版本，兼容 iptables-nft 和 legacy 模式）中常用且稳定的核心匹配扩展的详细分类列表</strong>。</p>
+<blockquote>
+<p>📌 注：所有扩展均作用于 <code>filter</code>、<code>nat</code>、<code>mangle</code>、<code>raw</code>、<code>security</code> 表中支持该扩展的链（如 <code>INPUT</code>、<code>OUTPUT</code>、<code>FORWARD</code>、<code>PREROUTING</code>、<code>POSTROUTING</code>），但<strong>并非所有扩展在所有表/链中都可用</strong>（例如 <code>DNAT</code>/<code>SNAT</code> 仅在 <code>nat</code> 表中有效，而 <code>string</code> 仅在 <code>filter</code> 表的 <code>INPUT</code>/<code>FORWARD</code>/<code>OUTPUT</code> 中常用）。</p>
+</blockquote>
+<hr>
+<h2 id="基础协议相关扩展无需--m隐式加载">基础协议相关扩展（无需 <code>-m</code>，隐式加载）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p>这些是协议内置匹配项，<strong>不需显式 <code>-m tcp</code> 等，但实际由对应 <code>xt_*</code> 模块支撑</strong>：</p>
+<table>
+	<thead>
+			<tr>
+					<th>协议</th>
+					<th>隐式匹配项</th>
+					<th>说明</th>
+					<th>示例</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>tcp</code></td>
+					<td><code>--sport</code>, <code>--dport</code>, <code>--tcp-flags</code>, <code>--syn</code> 等</td>
+					<td>匹配 TCP 头字段</td>
+					<td><code>iptables -A INPUT -p tcp --dport 22 -j ACCEPT</code></td>
+			</tr>
+			<tr>
+					<td><code>udp</code></td>
+					<td><code>--sport</code>, <code>--dport</code></td>
+					<td>匹配 UDP 端口</td>
+					<td><code>iptables -A INPUT -p udp --dport 53 -j ACCEPT</code></td>
+			</tr>
+			<tr>
+					<td><code>icmp</code></td>
+					<td><code>--icmp-type</code></td>
+					<td>匹配 ICMP 类型（如 <code>echo-request</code>）</td>
+					<td><code>iptables -A INPUT -p icmp --icmp-type 8 -j ACCEPT</code></td>
+			</tr>
+			<tr>
+					<td><code>icmpv6</code></td>
+					<td><code>--icmpv6-type</code></td>
+					<td>IPv6 ICMP 类型匹配</td>
+					<td><code>ip6tables -A INPUT -p icmpv6 --icmpv6-type 128 -j ACCEPT</code></td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>提示：<code>-p tcp</code> 自动加载 <code>xt_tcp</code> 模块；同理 <code>-p udp</code> → <code>xt_udp</code>，<code>-p icmp</code> → <code>xt_icmp</code>。</p>
+</blockquote>
+<hr>
+<h2 id="核心通用匹配扩展最常用">核心通用匹配扩展（最常用）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<table>
+	<thead>
+			<tr>
+					<th>模块名 (<code>-m</code>)</th>
+					<th>功能说明</th>
+					<th>典型选项与示例</th>
+					<th>注意事项</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong><code>conntrack</code></strong> <br>（推荐替代旧 <code>state</code>）</td>
+					<td>基于连接跟踪（conntrack）匹配连接状态、原始/回复方向、NAT 信息等</td>
+					<td><code>--ctstate ESTABLISHED,RELATED</code> <br> <code>--ctorigsrc 192.168.1.100</code> <br> <code>--ctdir ORIGINAL</code></td>
+					<td>✅ <strong>强烈推荐替代已废弃的 <code>state</code> 模块</strong>；需 <code>nf_conntrack</code> 内核支持；<code>iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT</code></td>
+			</tr>
+			<tr>
+					<td><strong><code>multiport</code></strong></td>
+					<td>匹配<strong>多个端口或端口范围</strong>（TCP/UDP），解决 <code>--dport</code> 只能单端口限制</td>
+					<td><code>--dports 22,80,443</code> <br> <code>--sports 1024:65535</code> <br> <code>--ports 53</code>（用于 UDP/TCP 同端口）</td>
+					<td>⚠️ 最多支持 15 个端口；仅支持 TCP/UDP；<br><code>iptables -A INPUT -p tcp -m multiport --dports 22,80,443 -j ACCEPT</code></td>
+			</tr>
+			<tr>
+					<td><strong><code>iprange</code></strong></td>
+					<td>按<strong>IP 地址范围</strong>（非 CIDR）匹配源/目的 IP</td>
+					<td><code>--src-range 192.168.1.10-192.168.1.50</code> <br> <code>--dst-range 203.0.113.1-203.0.113.254</code></td>
+					<td>✅ 灵活于 CIDR（如需连续但非网段的 IP）；<br><code>iptables -A INPUT -m iprange --src-range 10.0.0.5-10.0.0.20 -j DROP</code></td>
+			</tr>
+			<tr>
+					<td><strong><code>mac</code></strong></td>
+					<td>匹配<strong>源 MAC 地址</strong>（仅链路层有效，<code>INPUT</code>/<code>FORWARD</code> 有效）</td>
+					<td><code>--mac-source 00:11:22:33:44:55</code></td>
+					<td>⚠️ 仅对本地接收/转发的帧有效；<strong>无法匹配经路由转发后的 MAC</strong>（因 MAC 在每跳重写）；<br><code>iptables -A INPUT -m mac --mac-source aa:bb:cc:dd:ee:ff -j ACCEPT</code></td>
+			</tr>
+			<tr>
+					<td><strong><code>owner</code></strong> <br>（仅 <code>OUTPUT</code> 链）</td>
+					<td>匹配<strong>本地发起连接的进程 UID/GID/PID/进程名等</strong></td>
+					<td><code>--uid-owner 1000</code> <br> <code>--gid-owner www-data</code> <br> <code>--pid-owner 1234</code> <br> <code>--cmd-owner wget</code></td>
+					<td>⚠️ <strong>仅 <code>OUTPUT</code> 链可用</strong>；需 <code>CONFIG_NETFILTER_XT_MATCH_OWNER=y</code>；普通用户进程 UID 匹配需 root；<br><code>iptables -A OUTPUT -m owner --uid-owner nginx -j REJECT</code></td>
+			</tr>
+	</tbody>
+</table>
+<hr>
+<h3 id="-三网络层与连接行为扩展">🔹 三、网络层与连接行为扩展<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<table>
+	<thead>
+			<tr>
+					<th>模块名</th>
+					<th>功能说明</th>
+					<th>示例</th>
+					<th>注意事项</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong><code>addrtype</code></strong></td>
+					<td>匹配地址类型（如 <code>UNICAST</code>, <code>LOCAL</code>, <code>BROADCAST</code>, <code>ANYCAST</code>, <code>MULTICAST</code>, <code>UNSPEC</code>）</td>
+					<td><code>--src-type LOCAL</code>（匹配本机地址）<br><code>--dst-type UNICAST</code></td>
+					<td>✅ 常用于区分本机 vs 外部流量；<code>iptables -A OUTPUT -m addrtype --src-type LOCAL -j ACCEPT</code></td>
+			</tr>
+			<tr>
+					<td><strong><code>pkttype</code></strong></td>
+					<td>匹配数据包类型（<code>unicast</code>, <code>broadcast</code>, <code>multicast</code>）</td>
+					<td><code>--pkt-type broadcast</code></td>
+					<td>仅对 <code>INPUT</code>/<code>PREROUTING</code> 有效；<br><code>iptables -A INPUT -m pkttype --pkt-type broadcast -j DROP</code></td>
+			</tr>
+			<tr>
+					<td><strong><code>physdev</code></strong> <br>（桥接专用）</td>
+					<td>匹配桥接设备上的物理入/出接口（<code>--physdev-in</code>, <code>--physdev-out</code>, <code>--physdev-is-bridged</code>）</td>
+					<td><code>--physdev-in eth0</code></td>
+					<td>⚠️ <strong>仅用于 Linux bridge（如 <code>br0</code>）环境</strong>；需 <code>CONFIG_NETFILTER_XT_MATCH_PHYSDEV=y</code>；<br><code>iptables -A FORWARD -m physdev --physdev-in eth0 --physdev-out br0 -j ACCEPT</code></td>
+			</tr>
+			<tr>
+					<td><strong><code>pktowner</code></strong> <br>（较新）</td>
+					<td>类似 <code>owner</code>，但支持 <code>--socket-exists</code>（匹配已有 socket 的包）</td>
+					<td><code>--socket-exists</code></td>
+					<td>内核 ≥ 4.15；用于更精确的本地进程控制；</td>
+			</tr>
+	</tbody>
+</table>
+<hr>
+<h3 id="-四高级匹配与应用层扩展需谨慎启用">🔹 四、高级匹配与应用层扩展（需谨慎启用）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<table>
+	<thead>
+			<tr>
+					<th>模块名</th>
+					<th>功能说明</th>
+					<th>示例</th>
+					<th>注意事项</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong><code>string</code></strong></td>
+					<td><strong>深度包检测（DPI）</strong>：匹配数据包载荷（payload）中的 ASCII/HEX 字符串</td>
+					<td><code>--algo bm</code>（Boyer-Moore）<br><code>--from 40</code>（从第 40 字节开始）<br><code>--string &quot;GET /admin&quot;</code></td>
+					<td>⚠️ <strong>性能开销大，慎用于高流量链路</strong>；需 <code>CONFIG_NETFILTER_XT_MATCH_STRING=y</code>；<br><code>iptables -A FORWARD -p tcp --dport 80 -m string --algo bm --string &quot;sqlmap&quot; -j DROP</code></td>
+			</tr>
+			<tr>
+					<td><strong><code>time</code></strong></td>
+					<td>基于<strong>系统时间/日期</strong>匹配（支持周几、月份、时间范围）</td>
+					<td><code>--timestart 09:00</code> <br> <code>--timestop 17:00</code></td>
+					<td></td>
+			</tr>
+	</tbody>
+</table>
+
   <footer class="footline">
 <div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
   <i class="fa-fw fas fa-layer-group"></i>
@@ -951,9 +1274,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774626781"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774626781" defer></script>
-    <script src="/js/theme.min.js?1774626781" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1781975876"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1781975876" defer></script>
+    <script src="/js/theme.min.js?1781975876" defer></script>
 
 <style>
     .highlight {

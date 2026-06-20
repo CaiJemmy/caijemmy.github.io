@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="generator" content="Hugo 0.163.3">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="开启Docker之旅。">
     <meta name="author" content="">
@@ -22,27 +22,27 @@
     <title>Docker 入门 :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html" rel="canonical" type="text/html" title="Docker 入门 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.xml" rel="alternate" type="application/rss+xml" title="Docker 入门 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1774626781" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1774626781" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1774626781" defer></script>
-    <script src="/js/search-lunr.min.js?1774626781" defer></script>
-    <script src="/js/search.min.js?1774626781" defer></script>
+    <link href="/images/favicon.png?1781975876" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1781975876" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1781975876" defer></script>
+    <script src="/js/search-lunr.min.js?1781975876" defer></script>
+    <script src="/js/search.min.js?1781975876" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1774626781";
+      window.relearn.index_js_url="/searchindex.en.js?1781975876";
     </script>
-    <script src="/js/lunr/lunr.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1774626781" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1774626781" defer></script>
+    <script src="/js/lunr/lunr.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1781975876" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1781975876" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1774626781" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1774626781" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1774626781" rel="stylesheet">
-    <link href="/css/theme.min.css?1774626781" rel="stylesheet">
-    <link href="/css/format-print.min.css?1774626781" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1781975876" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1781975876" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1781975876" rel="stylesheet">
+    <link href="/css/theme.min.css?1781975876" rel="stylesheet">
+    <link href="/css/format-print.min.css?1781975876" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -91,7 +91,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1774626781" rel="stylesheet">
+    <link href="/css/custom.css?1781975876" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html">
     <div id="R-body" class="default-animation">
@@ -234,8 +234,8 @@ EXTRA - 额外信息（这里是 U 表示在使用中）</p>
 <h3 id="容器命令">容器命令<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <h4 id="docker-run">docker run<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
 <h5 id="docker-run-都做了什么">docker run 都做了什么<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h5>
-<p><a href="#R-image-6f8a4e747fc1da8cd382d04ec21b4c3a" class="lightbox-link"><img alt="docker简易架构图" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20260313191916576.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-6f8a4e747fc1da8cd382d04ec21b4c3a"><img alt="docker简易架构图" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20260313191916576.png"></a></p>
+<p><a href="#R-image-1a89981c25e0d72841e2056ea289f506" class="lightbox-link"><img alt="docker简易架构图" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20260313191916576.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-1a89981c25e0d72841e2056ea289f506"><img alt="docker简易架构图" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20260313191916576.png"></a></p>
 <pre class="mermaid actionbar-wrapper align-center zoomable">flowchart LR
 A[开始] --&gt; B(Docker在本机中寻找该镜像)
 B --&gt; C{本机是否有该镜像}
@@ -245,21 +245,21 @@ E --&gt; F{Hub能否找到}
 F --&gt;|是| G[下载该镜像到本地]
 F --&gt;|否| H[返回失败错误，查不到该镜像]
 G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
-<div class="tab-panel" data-tab-group="R-tabs-2e49441dbbf6117cacfd917fe0ab9bbf">
+<div class="tab-panel" data-tab-group="R-tabs-286052f86c78000fefb6a1f0c08da94c">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-97d939a1a145075d27b0dca0545deb2b" aria-expanded="true"
+      aria-controls="R-tab-id-edd1ae4418f2395e68e61af8157fb214" aria-expanded="true"
       data-tab-item="R-tab-c4dd97666174f10ea27f0ccd2b1e821c"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-2e49441dbbf6117cacfd917fe0ab9bbf','R-tab-c4dd97666174f10ea27f0ccd2b1e821c')"
+      onclick="switchTab('R-tabs-286052f86c78000fefb6a1f0c08da94c','R-tab-c4dd97666174f10ea27f0ccd2b1e821c')"
     >
       <span class="tab-nav-text">基本语法</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-97d939a1a145075d27b0dca0545deb2b"
+      id="R-tab-id-edd1ae4418f2395e68e61af8157fb214"
       data-tab-item="R-tab-c4dd97666174f10ea27f0ccd2b1e821c"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -415,45 +415,45 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>bashdocker exec <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> CONTAINER COMMAND <span style="color:#f92672">[</span>ARG...<span style="color:#f92672">]</span></span></span></code></pre></div>
 <p><strong>核心功能概述</strong></p>
 <table>
-  <thead>
-      <tr>
-          <th>功能</th>
-          <th>命令示例</th>
-          <th>说明</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>执行命令</strong></td>
-          <td><code>docker exec container ls -la</code></td>
-          <td>在容器内执行命令</td>
-      </tr>
-      <tr>
-          <td><strong>交互式会话</strong></td>
-          <td><code>docker exec -it container bash</code></td>
-          <td>进入容器交互式 shell</td>
-      </tr>
-      <tr>
-          <td><strong>后台执行</strong></td>
-          <td><code>docker exec -d container top</code></td>
-          <td>在后台执行命令</td>
-      </tr>
-      <tr>
-          <td><strong>指定用户</strong></td>
-          <td><code>docker exec -u root container whoami</code></td>
-          <td>以特定用户身份执行</td>
-      </tr>
-      <tr>
-          <td><strong>设置环境变量</strong></td>
-          <td><code>docker exec -e VAR=value container env</code></td>
-          <td>设置执行环境的环境变量</td>
-      </tr>
-      <tr>
-          <td><strong>指定工作目录</strong></td>
-          <td><code>docker exec -w /app container pwd</code></td>
-          <td>设置命令执行的工作目录</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>功能</th>
+					<th>命令示例</th>
+					<th>说明</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>执行命令</strong></td>
+					<td><code>docker exec container ls -la</code></td>
+					<td>在容器内执行命令</td>
+			</tr>
+			<tr>
+					<td><strong>交互式会话</strong></td>
+					<td><code>docker exec -it container bash</code></td>
+					<td>进入容器交互式 shell</td>
+			</tr>
+			<tr>
+					<td><strong>后台执行</strong></td>
+					<td><code>docker exec -d container top</code></td>
+					<td>在后台执行命令</td>
+			</tr>
+			<tr>
+					<td><strong>指定用户</strong></td>
+					<td><code>docker exec -u root container whoami</code></td>
+					<td>以特定用户身份执行</td>
+			</tr>
+			<tr>
+					<td><strong>设置环境变量</strong></td>
+					<td><code>docker exec -e VAR=value container env</code></td>
+					<td>设置执行环境的环境变量</td>
+			</tr>
+			<tr>
+					<td><strong>指定工作目录</strong></td>
+					<td><code>docker exec -w /app container pwd</code></td>
+					<td>设置命令执行的工作目录</td>
+			</tr>
+	</tbody>
 </table>
 <p><strong>与 <code>docker attach</code> 的区别</strong></p>
 <ul>
@@ -461,55 +461,55 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
 <li><strong><code>docker attach</code></strong>：连接到容器的主进程（PID 1），共享同一个进程，exit退出，<strong>会</strong>导致容器停止。</li>
 </ul>
 <table>
-  <thead>
-      <tr>
-          <th>特性</th>
-          <th><code>docker exec</code></th>
-          <th><code>docker attach</code></th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>创建新进程</strong></td>
-          <td>✅ 是</td>
-          <td>❌ 否（连接到现有进程）</td>
-      </tr>
-      <tr>
-          <td><strong>影响主进程</strong></td>
-          <td>❌ 不影响</td>
-          <td>✅ 直接影响</td>
-      </tr>
-      <tr>
-          <td><strong>退出方式</strong></td>
-          <td>命令结束或 <code>exit</code></td>
-          <td><code>Ctrl+P, Ctrl+Q</code>（分离）或主进程结束</td>
-      </tr>
-      <tr>
-          <td><strong>退出后容器</strong></td>
-          <td>继续运行</td>
-          <td>如果主进程退出，容器停止</td>
-      </tr>
-      <tr>
-          <td><strong>多个连接</strong></td>
-          <td>✅ 可同时多个 exec</td>
-          <td>❌ 只能一个 attach（或共享）</td>
-      </tr>
-      <tr>
-          <td><strong>适用场景</strong></td>
-          <td>调试、维护、执行临时命令</td>
-          <td>查看主进程输出、交互式程序</td>
-      </tr>
-      <tr>
-          <td><strong>默认终端</strong></td>
-          <td>需要 <code>-it</code> 指定</td>
-          <td>自动使用容器的 STDIN/STDOUT</td>
-      </tr>
-      <tr>
-          <td><strong>安全性</strong></td>
-          <td>高（隔离）</td>
-          <td>低（直接操作主进程）</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>特性</th>
+					<th><code>docker exec</code></th>
+					<th><code>docker attach</code></th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>创建新进程</strong></td>
+					<td>✅ 是</td>
+					<td>❌ 否（连接到现有进程）</td>
+			</tr>
+			<tr>
+					<td><strong>影响主进程</strong></td>
+					<td>❌ 不影响</td>
+					<td>✅ 直接影响</td>
+			</tr>
+			<tr>
+					<td><strong>退出方式</strong></td>
+					<td>命令结束或 <code>exit</code></td>
+					<td><code>Ctrl+P, Ctrl+Q</code>（分离）或主进程结束</td>
+			</tr>
+			<tr>
+					<td><strong>退出后容器</strong></td>
+					<td>继续运行</td>
+					<td>如果主进程退出，容器停止</td>
+			</tr>
+			<tr>
+					<td><strong>多个连接</strong></td>
+					<td>✅ 可同时多个 exec</td>
+					<td>❌ 只能一个 attach（或共享）</td>
+			</tr>
+			<tr>
+					<td><strong>适用场景</strong></td>
+					<td>调试、维护、执行临时命令</td>
+					<td>查看主进程输出、交互式程序</td>
+			</tr>
+			<tr>
+					<td><strong>默认终端</strong></td>
+					<td>需要 <code>-it</code> 指定</td>
+					<td>自动使用容器的 STDIN/STDOUT</td>
+			</tr>
+			<tr>
+					<td><strong>安全性</strong></td>
+					<td>高（隔离）</td>
+					<td>低（直接操作主进程）</td>
+			</tr>
+	</tbody>
 </table>
 <h4 id="docker-cp">docker cp<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
 <p><code>docker cp</code> 是用于在容器和主机之间复制文件和目录的命令</p>
@@ -520,35 +520,35 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#75715e"># 从主机复制到容器</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>docker cp <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> SRC_PATH CONTAINER:DEST_PATH</span></span></code></pre></div>
 <table>
-  <thead>
-      <tr>
-          <th>方向</th>
-          <th>命令示例</th>
-          <th>说明</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>容器 → 主机</strong></td>
-          <td><code>docker cp myapp:/app/logs ./logs</code></td>
-          <td>复制容器内文件到主机</td>
-      </tr>
-      <tr>
-          <td><strong>主机 → 容器</strong></td>
-          <td><code>docker cp config.yml myapp:/app/</code></td>
-          <td>复制主机文件到容器</td>
-      </tr>
-      <tr>
-          <td><strong>目录复制</strong></td>
-          <td><code>docker cp myapp:/var/log ./backup</code></td>
-          <td>递归复制整个目录</td>
-      </tr>
-      <tr>
-          <td><strong>归档模式</strong></td>
-          <td><code>docker cp -a myapp:/home/user ./user-backup</code></td>
-          <td>保留所有属性</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>方向</th>
+					<th>命令示例</th>
+					<th>说明</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>容器 → 主机</strong></td>
+					<td><code>docker cp myapp:/app/logs ./logs</code></td>
+					<td>复制容器内文件到主机</td>
+			</tr>
+			<tr>
+					<td><strong>主机 → 容器</strong></td>
+					<td><code>docker cp config.yml myapp:/app/</code></td>
+					<td>复制主机文件到容器</td>
+			</tr>
+			<tr>
+					<td><strong>目录复制</strong></td>
+					<td><code>docker cp myapp:/var/log ./backup</code></td>
+					<td>递归复制整个目录</td>
+			</tr>
+			<tr>
+					<td><strong>归档模式</strong></td>
+					<td><code>docker cp -a myapp:/home/user ./user-backup</code></td>
+					<td>保留所有属性</td>
+			</tr>
+	</tbody>
 </table>
 <h4 id="导入导出容器">导入导出容器<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 导出容器文件系统</span>
@@ -585,8 +585,8 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span><span style="color:#75715e"># 指定标签和注释</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>docker import --change <span style="color:#e6db74">&#34;ENV DEBUG=false&#34;</span> --message <span style="color:#e6db74">&#34;Imported from backup&#34;</span> ./container.tar myapp:v1.0</span></span></code></pre></div>
 <h2 id="总结">总结<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<p><a href="#R-image-6d01e353ffe9b5971a34b75b330a2768" class="lightbox-link"><img alt="docker入门总结" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20260315231434502.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-6d01e353ffe9b5971a34b75b330a2768"><img alt="docker入门总结" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20260315231434502.png"></a></p>
+<p><a href="#R-image-e62cbac63571b69df5104c5a2a8b8baf" class="lightbox-link"><img alt="docker入门总结" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20260315231434502.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-e62cbac63571b69df5104c5a2a8b8baf"><img alt="docker入门总结" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20260315231434502.png"></a></p>
 
   <footer class="footline">
 <div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
@@ -658,46 +658,46 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>4. Config 文件（运行时配置）</span></span></code></pre></div>
 <h3 id="常用存储驱动对比">常用存储驱动对比<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <table>
-  <thead>
-      <tr>
-          <th>驱动</th>
-          <th>原理</th>
-          <th>性能</th>
-          <th>适用场景</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>overlay2</strong></td>
-          <td>联合挂载</td>
-          <td>⭐⭐⭐⭐⭐</td>
-          <td>默认推荐</td>
-      </tr>
-      <tr>
-          <td><strong>aufs</strong></td>
-          <td>联合挂载</td>
-          <td>⭐⭐⭐⭐</td>
-          <td>旧系统兼容</td>
-      </tr>
-      <tr>
-          <td><strong>devicemapper</strong></td>
-          <td>块设备</td>
-          <td>⭐⭐⭐</td>
-          <td>企业存储</td>
-      </tr>
-      <tr>
-          <td><strong>btrfs</strong></td>
-          <td>写时复制</td>
-          <td>⭐⭐</td>
-          <td>高级特性</td>
-      </tr>
-      <tr>
-          <td><strong>zfs</strong></td>
-          <td>写时复制</td>
-          <td>⭐⭐</td>
-          <td>数据完整性</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>驱动</th>
+					<th>原理</th>
+					<th>性能</th>
+					<th>适用场景</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>overlay2</strong></td>
+					<td>联合挂载</td>
+					<td>⭐⭐⭐⭐⭐</td>
+					<td>默认推荐</td>
+			</tr>
+			<tr>
+					<td><strong>aufs</strong></td>
+					<td>联合挂载</td>
+					<td>⭐⭐⭐⭐</td>
+					<td>旧系统兼容</td>
+			</tr>
+			<tr>
+					<td><strong>devicemapper</strong></td>
+					<td>块设备</td>
+					<td>⭐⭐⭐</td>
+					<td>企业存储</td>
+			</tr>
+			<tr>
+					<td><strong>btrfs</strong></td>
+					<td>写时复制</td>
+					<td>⭐⭐</td>
+					<td>高级特性</td>
+			</tr>
+			<tr>
+					<td><strong>zfs</strong></td>
+					<td>写时复制</td>
+					<td>⭐⭐</td>
+					<td>数据完整性</td>
+			</tr>
+	</tbody>
 </table>
 <h3 id="查看当前存储驱动">查看当前存储驱动<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>docker info | grep <span style="color:#e6db74">&#34;Storage Driver&#34;</span>
@@ -788,21 +788,21 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>docker images | grep myubuntu</span></span></code></pre></div>
 <h3 id="将镜像推送到阿里云registry">将镜像推送到阿里云Registry<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <p>请根据实际镜像信息替换示例中的[ImageId]和[镜像版本号]参数。</p>
-<div class="tab-panel" data-tab-group="R-tabs-a7810a74ae7d5436577d5e182ca5a17c">
+<div class="tab-panel" data-tab-group="R-tabs-375354944c9ebfd8f4b4c5d92b3aaa89">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-af6efd66f786f54fbf6893af4c10ea33" aria-expanded="true"
+      aria-controls="R-tab-id-9f6449b8165c722bc5f84e5f743a5295" aria-expanded="true"
       data-tab-item="R-tab-f93a0afc6d5fe74ffd084a4c3524d051"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-a7810a74ae7d5436577d5e182ca5a17c','R-tab-f93a0afc6d5fe74ffd084a4c3524d051')"
+      onclick="switchTab('R-tabs-375354944c9ebfd8f4b4c5d92b3aaa89','R-tab-f93a0afc6d5fe74ffd084a4c3524d051')"
     >
       <span class="tab-nav-text">阿里云参考</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-af6efd66f786f54fbf6893af4c10ea33"
+      id="R-tab-id-9f6449b8165c722bc5f84e5f743a5295"
       data-tab-item="R-tab-f93a0afc6d5fe74ffd084a4c3524d051"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -813,21 +813,21 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
     </div>
   </div>
 </div><h3 id="验证云上镜像">验证云上镜像<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-16818f2b31193e3a8de8f5a8c6f2581d">
+<div class="tab-panel" data-tab-group="R-tabs-db893b63ad7b9e6cba959963c3a12c18">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-4158d9cce14853bf0d7e87423e63676c" aria-expanded="true"
+      aria-controls="R-tab-id-0a146e1f18059efb1ee3dda2b0cd097e" aria-expanded="true"
       data-tab-item="R-tab-0a06b4c63329fa8b3ba40f4af08e8757"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-16818f2b31193e3a8de8f5a8c6f2581d','R-tab-0a06b4c63329fa8b3ba40f4af08e8757')"
+      onclick="switchTab('R-tabs-db893b63ad7b9e6cba959963c3a12c18','R-tab-0a06b4c63329fa8b3ba40f4af08e8757')"
     >
       <span class="tab-nav-text">验证云上镜像</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-4158d9cce14853bf0d7e87423e63676c"
+      id="R-tab-id-0a146e1f18059efb1ee3dda2b0cd097e"
       data-tab-item="R-tab-0a06b4c63329fa8b3ba40f4af08e8757"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1132,21 +1132,21 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
 <h2 id="安装标准流程">安装标准流程<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <p>搜索 &gt; 拉取 &gt; 查看 &gt; 启动 &gt; 停止 &gt; 移除</p>
 <h2 id="安装tomcat">安装tomcat<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<div class="tab-panel" data-tab-group="R-tabs-42d47d522c415d67a2d02126e333fb28">
+<div class="tab-panel" data-tab-group="R-tabs-96073283bf4cd6542f4eafa0dc2a885d">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-d25b5643242da8984cd73ba9688be907" aria-expanded="true"
+      aria-controls="R-tab-id-4930ad818771a08915903134f48758bc" aria-expanded="true"
       data-tab-item="R-tab-c639518ecb2ed77268b87588e0e33c20"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-42d47d522c415d67a2d02126e333fb28','R-tab-c639518ecb2ed77268b87588e0e33c20')"
+      onclick="switchTab('R-tabs-96073283bf4cd6542f4eafa0dc2a885d','R-tab-c639518ecb2ed77268b87588e0e33c20')"
     >
       <span class="tab-nav-text">安装tomcat</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-d25b5643242da8984cd73ba9688be907"
+      id="R-tab-id-4930ad818771a08915903134f48758bc"
       data-tab-item="R-tab-c639518ecb2ed77268b87588e0e33c20"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1255,21 +1255,21 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
 </span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>-e MYSQL_ROOT_PASSWORD<span style="color:#f92672">=</span><span style="color:#ae81ff">123456</span> <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>--name mysql5.7 mysql:5.7</span></span></code></pre></div>
 <p>解决mysql中文乱码问题的配置</p>
-<div class="tab-panel" data-tab-group="R-tabs-5d5dfeafac41c7733a8c254a1c892c77">
+<div class="tab-panel" data-tab-group="R-tabs-03c887e9aa91cd1bfff36a639766e6e5">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-b97d1993ab817131404063688339211d" aria-expanded="true"
+      aria-controls="R-tab-id-dbbcc740c0f70d2d7c62cf25dc99d29f" aria-expanded="true"
       data-tab-item="R-tab-739ffd93c457dbe97320835b63d13923"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-5d5dfeafac41c7733a8c254a1c892c77','R-tab-739ffd93c457dbe97320835b63d13923')"
+      onclick="switchTab('R-tabs-03c887e9aa91cd1bfff36a639766e6e5','R-tab-739ffd93c457dbe97320835b63d13923')"
     >
       <span class="tab-nav-text">my.cnf配置</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-b97d1993ab817131404063688339211d"
+      id="R-tab-id-dbbcc740c0f70d2d7c62cf25dc99d29f"
       data-tab-item="R-tab-739ffd93c457dbe97320835b63d13923"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1312,21 +1312,21 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
 <p>其他测试参考实战安装mysql5.7的内容即可。</p>
 <h2 id="安装redis">安装redis<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="提前准备redisconf">提前准备redis.conf<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-8125acd2138c64e8cb1c52c8c0ca493e">
+<div class="tab-panel" data-tab-group="R-tabs-7eebc43ee104f51d49fd88913d33ed02">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-3a386b905564c2dd582bdc1d67d415a1" aria-expanded="true"
+      aria-controls="R-tab-id-7257525e16854706010cb2f3eeb836a7" aria-expanded="true"
       data-tab-item="R-tab-f4a5c29a0c9a46f188b11089bc9c1cf0"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-8125acd2138c64e8cb1c52c8c0ca493e','R-tab-f4a5c29a0c9a46f188b11089bc9c1cf0')"
+      onclick="switchTab('R-tabs-7eebc43ee104f51d49fd88913d33ed02','R-tab-f4a5c29a0c9a46f188b11089bc9c1cf0')"
     >
       <span class="tab-nav-text">redis7.0.15.conf</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-3a386b905564c2dd582bdc1d67d415a1"
+      id="R-tab-id-7257525e16854706010cb2f3eeb836a7"
       data-tab-item="R-tab-f4a5c29a0c9a46f188b11089bc9c1cf0"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -3609,21 +3609,21 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-8568dd9f498cfe7e01d7888d6d44c2c9">
+</div><div class="tab-panel" data-tab-group="R-tabs-29ba5ad438e24e15e89b8d6b72f0f3a2">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-4f1993235a9dc3daba1757508f1fdd35" aria-expanded="true"
+      aria-controls="R-tab-id-80716e146dd051915d6dbf9f8c4b0165" aria-expanded="true"
       data-tab-item="R-tab-d38ba3103156a60a54a163f5dab72eb9"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-8568dd9f498cfe7e01d7888d6d44c2c9','R-tab-d38ba3103156a60a54a163f5dab72eb9')"
+      onclick="switchTab('R-tabs-29ba5ad438e24e15e89b8d6b72f0f3a2','R-tab-d38ba3103156a60a54a163f5dab72eb9')"
     >
       <span class="tab-nav-text">redis8.4.2.conf</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-4f1993235a9dc3daba1757508f1fdd35"
+      id="R-tab-id-80716e146dd051915d6dbf9f8c4b0165"
       data-tab-item="R-tab-d38ba3103156a60a54a163f5dab72eb9"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -6146,23 +6146,23 @@ G --&gt; I[以该镜像为模板生产容器实例运行]</pre>
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1774626781"></script>
-    <script src="/js/js-yaml/js-yaml.min.js?1774626781" defer></script>
-    <script src="/js/d3/d3-color.min.js?1774626781" defer></script>
-    <script src="/js/d3/d3-dispatch.min.js?1774626781" defer></script>
-    <script src="/js/d3/d3-drag.min.js?1774626781" defer></script>
-    <script src="/js/d3/d3-ease.min.js?1774626781" defer></script>
-    <script src="/js/d3/d3-interpolate.min.js?1774626781" defer></script>
-    <script src="/js/d3/d3-selection.min.js?1774626781" defer></script>
-    <script src="/js/d3/d3-timer.min.js?1774626781" defer></script>
-    <script src="/js/d3/d3-transition.min.js?1774626781" defer></script>
-    <script src="/js/d3/d3-zoom.min.js?1774626781" defer></script>
-    <script src="/js/mermaid/mermaid.min.js?1774626781" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1781975876"></script>
+    <script src="/js/js-yaml/js-yaml.min.js?1781975876" defer></script>
+    <script src="/js/d3/d3-color.min.js?1781975876" defer></script>
+    <script src="/js/d3/d3-dispatch.min.js?1781975876" defer></script>
+    <script src="/js/d3/d3-drag.min.js?1781975876" defer></script>
+    <script src="/js/d3/d3-ease.min.js?1781975876" defer></script>
+    <script src="/js/d3/d3-interpolate.min.js?1781975876" defer></script>
+    <script src="/js/d3/d3-selection.min.js?1781975876" defer></script>
+    <script src="/js/d3/d3-timer.min.js?1781975876" defer></script>
+    <script src="/js/d3/d3-transition.min.js?1781975876" defer></script>
+    <script src="/js/d3/d3-zoom.min.js?1781975876" defer></script>
+    <script src="/js/mermaid/mermaid.min.js?1781975876" defer></script>
     <script>
       window.relearn.themeUseMermaid = JSON.parse("{}");
     </script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1774626781" defer></script>
-    <script src="/js/theme.min.js?1774626781" defer></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1781975876" defer></script>
+    <script src="/js/theme.min.js?1781975876" defer></script>
 
 <style>
     .highlight {
