@@ -258,7 +258,7 @@ var relearn_searchindex = [
   {
     "breadcrumb": "暮鼓晨钟",
     "content": "win11安装\r警告 安装前先断开网络链接。 安装前先备份C盘下个人数据。 安装win11 启动安装 在非 C 盘下，解压win11系统文件，例如：D:\\win11 下解压系统文件 进入D:\\win11目录后，双击setup文件 程序启动后，按上图操作。",
-    "description": "win11安装\r警告 安装前先断开网络链接。 安装前先备份C盘下个人数据。 安装win11 启动安装 在非 C 盘下，解压win11系统文件，例如：D:\\win11 下解压系统文件 进入D:\\win11目录后，双击setup文件 程序启动后，按上图操作。",
+    "description": "读书笔记。",
     "tags": [],
     "title": "书香笔记",
     "uri": "/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"
@@ -276,7 +276,7 @@ var relearn_searchindex = [
   {
     "breadcrumb": "暮鼓晨钟",
     "content": "学习方法\n深入理解原理 精度man帮助、官方文档 做所有的实验，尽量不要复制粘贴 详细记录实验过程 使用思维导图等辅助工具 享受排错的过程，在寻求帮助之前先尝试自己解决 网络接口的命名规则\r网络基础，网络接口的命名规则。\rAlgorithms\r常用算法。\rC++\rC++ 语言特性及项目。\rCMake\rC++ 项目构建工具。\rDocker\r应用容器引擎。\rLinux\rLinux 操作系统。\rshell\r核心命令及shell脚本总结。",
-    "description": "学习方法\n深入理解原理 精度man帮助、官方文档 做所有的实验，尽量不要复制粘贴 详细记录实验过程 使用思维导图等辅助工具 享受排错的过程，在寻求帮助之前先尝试自己解决 网络接口的命名规则\r网络基础，网络接口的命名规则。\rAlgorithms\r常用算法。\rC++\rC++ 语言特性及项目。\rCMake\rC++ 项目构建工具。\rDocker\r应用容器引擎。\rLinux\rLinux 操作系统。\rshell\r核心命令及shell脚本总结。",
+    "description": "技术总结。",
     "tags": [],
     "title": "程序员技能",
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"
