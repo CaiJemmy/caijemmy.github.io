@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="generator" content="Hugo 0.167.0">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="docker精进之Dockerfile。">
     <meta name="author" content="">
@@ -23,27 +23,27 @@
     <title>03 Dockerfile :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.html" rel="canonical" type="text/html" title="03 Dockerfile :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.xml" rel="alternate" type="application/rss+xml" title="03 Dockerfile :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1783018875" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1783018875" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1783018875" defer></script>
-    <script src="/js/search-lunr.min.js?1783018875" defer></script>
-    <script src="/js/search.min.js?1783018875" defer></script>
+    <link href="/images/favicon.png?1791650867" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1791650867" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1791650867" defer></script>
+    <script src="/js/search-lunr.min.js?1791650867" defer></script>
+    <script src="/js/search.min.js?1791650867" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1783018875";
+      window.relearn.index_js_url="/searchindex.en.js?1791650867";
     </script>
-    <script src="/js/lunr/lunr.min.js?1783018875" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1783018875" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1783018875" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1783018875" defer></script>
+    <script src="/js/lunr/lunr.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1791650867" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1783018875" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1783018875" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1783018875" rel="stylesheet">
-    <link href="/css/theme.min.css?1783018875" rel="stylesheet">
-    <link href="/css/format-print.min.css?1783018875" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1791650867" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1791650867" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1791650867" rel="stylesheet">
+    <link href="/css/theme.min.css?1791650867" rel="stylesheet">
+    <link href="/css/format-print.min.css?1791650867" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1783018875" rel="stylesheet">
+    <link href="/css/custom.css?1791650867" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.html">
     <div id="R-body" class="default-animation">
@@ -299,7 +299,7 @@
 			</tr>
 			<tr>
 					<td><code>RUN</code></td>
-					<td>执行命令（如安装软件、编译代码），生成新镜像层</td>
+					<td>执行命令（如安装软件、编译代码），生成新镜像层，构建时执行。</td>
 					<td>RUN &lt;command&gt;<br/>RUN [&ldquo;executable&rdquo;, &ldquo;param1&rdquo;, &ldquo;param2&rdquo;]</td>
 					<td>RUN apt-get update \ <br/>    &amp;&amp; apt-get install -y \ <br/>        python3 \ <br/>        python3-pip \ <br/>        nginx \ <br/>    &amp;&amp; apt-get clean \ <br/>    &amp;&amp; rm -rf /var/lib/apt/lists/*</td>
 			</tr>
@@ -637,21 +637,21 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>docker run -e DB_PASSWORD<span style="color:#f92672">=</span>secret123 myimage</span></span></code></pre></div>
 <h2 id="五完整示例">五、完整示例<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="制作自己的ubuntu">制作自己的ubuntu<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-afa22dea09fb249afd188a95a81d0f7c">
+<div class="tab-panel" data-tab-group="R-tabs-c7f83c5118757f255e574aeb2fb6a61f">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-360b437b80fe9833d3940d369b0c4055" aria-expanded="true"
+      aria-controls="R-tab-id-9b14d1df72e859ce6a5a364add645480" aria-expanded="true"
       data-tab-item="R-tab-3254677a7917c6c01f55212f86c57fbf"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-afa22dea09fb249afd188a95a81d0f7c','R-tab-3254677a7917c6c01f55212f86c57fbf')"
+      onclick="switchTab('R-tabs-c7f83c5118757f255e574aeb2fb6a61f','R-tab-3254677a7917c6c01f55212f86c57fbf')"
     >
       <span class="tab-nav-text">Dockerfile</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-360b437b80fe9833d3940d369b0c4055"
+      id="R-tab-id-9b14d1df72e859ce6a5a364add645480"
       data-tab-item="R-tab-3254677a7917c6c01f55212f86c57fbf"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -682,21 +682,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-9aac1214c758bc4343e503401a204a6f">
+</div><div class="tab-panel" data-tab-group="R-tabs-6316b0e3fbd0ca58c01c535e19078285">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-8471d9b91074c3a8daf6ee38d3656043" aria-expanded="true"
+      aria-controls="R-tab-id-78623d793d285f877b5b6b525743d5c9" aria-expanded="true"
       data-tab-item="R-tab-f7c5b4068637e2def526f9bbc7200c4e"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-9aac1214c758bc4343e503401a204a6f','R-tab-f7c5b4068637e2def526f9bbc7200c4e')"
+      onclick="switchTab('R-tabs-6316b0e3fbd0ca58c01c535e19078285','R-tab-f7c5b4068637e2def526f9bbc7200c4e')"
     >
       <span class="tab-nav-text">.dockerignore</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-8471d9b91074c3a8daf6ee38d3656043"
+      id="R-tab-id-78623d793d285f877b5b6b525743d5c9"
       data-tab-item="R-tab-f7c5b4068637e2def526f9bbc7200c4e"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -706,21 +706,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-a33dd7340f1bdd422518b008f6950660">
+</div><div class="tab-panel" data-tab-group="R-tabs-7eb1276ef9b0bb5c407fe09908242725">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-7d1b4d8ac5ca5511744e46b9a7c1b595" aria-expanded="true"
+      aria-controls="R-tab-id-87c905f23474dfc08abc03f049d639e1" aria-expanded="true"
       data-tab-item="R-tab-eaeb94017adf8fc051acf09ac2b71153"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-a33dd7340f1bdd422518b008f6950660','R-tab-eaeb94017adf8fc051acf09ac2b71153')"
+      onclick="switchTab('R-tabs-7eb1276ef9b0bb5c407fe09908242725','R-tab-eaeb94017adf8fc051acf09ac2b71153')"
     >
       <span class="tab-nav-text">制作并运行</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-7d1b4d8ac5ca5511744e46b9a7c1b595"
+      id="R-tab-id-87c905f23474dfc08abc03f049d639e1"
       data-tab-item="R-tab-eaeb94017adf8fc051acf09ac2b71153"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -741,21 +741,21 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#66d9ef">ENV</span> CLASSPATH<span style="color:#f92672">=</span>$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib:$CLASSPATH</span></span></code></pre></div>
 <p>重新构建镜像，问题解决。</p>
 <h4 id="有copy-命令打包的image包比较大">有COPY 命令打包的image包比较大<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-c86a6cbf889d6e14c1da65cb91850566">
+<div class="tab-panel" data-tab-group="R-tabs-7443460f8a601cbb6bcbd2b489cc688e">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-a6645fe8fb66bc268ed797f8e91a60aa" aria-expanded="true"
+      aria-controls="R-tab-id-950e94e323401f556d51ad74e554ecd5" aria-expanded="true"
       data-tab-item="R-tab-cf2cb804fbf71d04f0e0d103a7c5ec36"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-c86a6cbf889d6e14c1da65cb91850566','R-tab-cf2cb804fbf71d04f0e0d103a7c5ec36')"
+      onclick="switchTab('R-tabs-7443460f8a601cbb6bcbd2b489cc688e','R-tab-cf2cb804fbf71d04f0e0d103a7c5ec36')"
     >
       <span class="tab-nav-text">改进的Dockerfile</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-a6645fe8fb66bc268ed797f8e91a60aa"
+      id="R-tab-id-950e94e323401f556d51ad74e554ecd5"
       data-tab-item="R-tab-cf2cb804fbf71d04f0e0d103a7c5ec36"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -787,21 +787,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-062c02f4f9b366c4f5db31f80484ef0c">
+</div><div class="tab-panel" data-tab-group="R-tabs-4789bdc663ffb6e73d044b15ddfa3c6e">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-7f02319062758fb359e9dd308b43093a" aria-expanded="true"
+      aria-controls="R-tab-id-e210e52b05232d74d80c526939d56b3e" aria-expanded="true"
       data-tab-item="R-tab-3ce6f41bd4a869c1beb43e45ce1d4764"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-062c02f4f9b366c4f5db31f80484ef0c','R-tab-3ce6f41bd4a869c1beb43e45ce1d4764')"
+      onclick="switchTab('R-tabs-4789bdc663ffb6e73d044b15ddfa3c6e','R-tab-3ce6f41bd4a869c1beb43e45ce1d4764')"
     >
       <span class="tab-nav-text">镜像对比</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-7f02319062758fb359e9dd308b43093a"
+      id="R-tab-id-e210e52b05232d74d80c526939d56b3e"
       data-tab-item="R-tab-3ce6f41bd4a869c1beb43e45ce1d4764"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -812,21 +812,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-a05d314a913725aa021215d760f1fec7">
+</div><div class="tab-panel" data-tab-group="R-tabs-23751f99b5062d97aaa8b6fc3f15d5c7">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-de0036fc65040ef8fde7cd69889d5935" aria-expanded="true"
+      aria-controls="R-tab-id-116f1367c266f107f6c2a5bb966a1ae3" aria-expanded="true"
       data-tab-item="R-tab-78fb41f9045b2b30849284ec5d47b8b5"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-a05d314a913725aa021215d760f1fec7','R-tab-78fb41f9045b2b30849284ec5d47b8b5')"
+      onclick="switchTab('R-tabs-23751f99b5062d97aaa8b6fc3f15d5c7','R-tab-78fb41f9045b2b30849284ec5d47b8b5')"
     >
       <span class="tab-nav-text">查看镜像各层大小</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-de0036fc65040ef8fde7cd69889d5935"
+      id="R-tab-id-116f1367c266f107f6c2a5bb966a1ae3"
       data-tab-item="R-tab-78fb41f9045b2b30849284ec5d47b8b5"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -853,21 +853,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-17639e40299e38373d2734676b9459b8">
+</div><div class="tab-panel" data-tab-group="R-tabs-4564cb85d3263ffbc5e1df809b3b3999">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-8e15bb0f6edfaf85bf7f914a6d3f0966" aria-expanded="true"
+      aria-controls="R-tab-id-d9974c75f9e61a8ee1487ff5ad868441" aria-expanded="true"
       data-tab-item="R-tab-fa18035d2db48bf286aae591a5cdab57"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-17639e40299e38373d2734676b9459b8','R-tab-fa18035d2db48bf286aae591a5cdab57')"
+      onclick="switchTab('R-tabs-4564cb85d3263ffbc5e1df809b3b3999','R-tab-fa18035d2db48bf286aae591a5cdab57')"
     >
       <span class="tab-nav-text">问题原因</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-8e15bb0f6edfaf85bf7f914a6d3f0966"
+      id="R-tab-id-d9974c75f9e61a8ee1487ff5ad868441"
       data-tab-item="R-tab-fa18035d2db48bf286aae591a5cdab57"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -886,21 +886,21 @@
     </div>
   </div>
 </div><p>解决方法：<strong>多阶段构建</strong></p>
-<div class="tab-panel" data-tab-group="R-tabs-799af2906fe0fb6a4cbd70cdf456198a">
+<div class="tab-panel" data-tab-group="R-tabs-5cf829ec10e754f6480e575fffc52027">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-4102b6507d2e81339c4df7d3eaa8a8a2" aria-expanded="true"
+      aria-controls="R-tab-id-00d9f5ba4c0eb0235967173854f16a1d" aria-expanded="true"
       data-tab-item="R-tab-ae8da901af5aa3528ad73bbe1b5f704a"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-799af2906fe0fb6a4cbd70cdf456198a','R-tab-ae8da901af5aa3528ad73bbe1b5f704a')"
+      onclick="switchTab('R-tabs-5cf829ec10e754f6480e575fffc52027','R-tab-ae8da901af5aa3528ad73bbe1b5f704a')"
     >
       <span class="tab-nav-text">多阶段构建</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-4102b6507d2e81339c4df7d3eaa8a8a2"
+      id="R-tab-id-00d9f5ba4c0eb0235967173854f16a1d"
       data-tab-item="R-tab-ae8da901af5aa3528ad73bbe1b5f704a"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -942,21 +942,21 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>docker image prune</span></span></code></pre></div>
 <h3 id="demo微服务部署">demo微服务部署<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <p>前提条件，有一个demo版的spring boot微服务包（<code>demo-0.0.1-SNAPSHOT.jar</code>）。</p>
-<div class="tab-panel" data-tab-group="R-tabs-a29b535ac90402b71ba558cf26dbee21">
+<div class="tab-panel" data-tab-group="R-tabs-7c18460e64fe9b86cc84227a098107cc">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-04c90f5b299846dd58ec5c8a2d97005c" aria-expanded="true"
+      aria-controls="R-tab-id-268c70a74d52dd60de8348071c07ae0f" aria-expanded="true"
       data-tab-item="R-tab-039306bcd52caf965820c532a29824c4"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-a29b535ac90402b71ba558cf26dbee21','R-tab-039306bcd52caf965820c532a29824c4')"
+      onclick="switchTab('R-tabs-7c18460e64fe9b86cc84227a098107cc','R-tab-039306bcd52caf965820c532a29824c4')"
     >
       <span class="tab-nav-text">简单部署的Dockerfile</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-04c90f5b299846dd58ec5c8a2d97005c"
+      id="R-tab-id-268c70a74d52dd60de8348071c07ae0f"
       data-tab-item="R-tab-039306bcd52caf965820c532a29824c4"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -975,21 +975,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-c0f52fc2cf94d832239bdcdbbc2b9b2c">
+</div><div class="tab-panel" data-tab-group="R-tabs-1b5a23628d4ecb4e2700a7e666a3f397">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-1ad2ffd9bd6a2c23b5338f76dbd4554b" aria-expanded="true"
+      aria-controls="R-tab-id-f19b619d320c8955724d68e6d7e5b7f1" aria-expanded="true"
       data-tab-item="R-tab-e665ab3811b303e1a662bb61dc2ec8fc"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-c0f52fc2cf94d832239bdcdbbc2b9b2c','R-tab-e665ab3811b303e1a662bb61dc2ec8fc')"
+      onclick="switchTab('R-tabs-1b5a23628d4ecb4e2700a7e666a3f397','R-tab-e665ab3811b303e1a662bb61dc2ec8fc')"
     >
       <span class="tab-nav-text">构建镜像并验证</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-1ad2ffd9bd6a2c23b5338f76dbd4554b"
+      id="R-tab-id-f19b619d320c8955724d68e6d7e5b7f1"
       data-tab-item="R-tab-e665ab3811b303e1a662bb61dc2ec8fc"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1025,9 +1025,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1783018875"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1783018875" defer></script>
-    <script src="/js/theme.min.js?1783018875" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1791650867"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1791650867" defer></script>
+    <script src="/js/theme.min.js?1791650867" defer></script>
 
 <style>
     .highlight {

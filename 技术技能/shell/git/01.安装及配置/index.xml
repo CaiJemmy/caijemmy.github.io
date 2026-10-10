@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title></title>
+    <link>https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/git/01.%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE/index.html</link>
+    <description>安装git linux 下安装 1# Debian 下安装git 2apt install -y git 3 4# 验证 5git -v 6 7# 以下输出为正常安装 8git version 2.47.3 github配置 1# ssh-keygen -t rsa -b 4096 -C &#34;o0oo00ooo@example.com&#34; 2ssh-keygen -t rsa -b 4096 -C &#34;your_email@example.com&#34; 3 4# 以下内容无脑回车 5Generating public/private rsa key pair. 6Enter file in which to save the key (/root/.ssh/id_rsa): 7Enter passphrase for &#34;/root/.ssh/id_rsa&#34; (empty for no passphrase): 8Enter same passphrase again: 9Your identification has been saved in /root/.ssh/id_rsa 10Your public key has been saved in /root/.ssh/id_rsa.pub 11The key fingerprint is: 12SHA256:ot9lilcigrCwuD1I0x/RFRfHGPrXjJ/LiGegnJopMUA o0oo00ooo@example.com 13The key&#39;s randomart image is: 14+---[RSA 4096]----+ 15| ..+=. | 16| E .o... | 17| . . .. | 18|o . . . . + | 19|o+... o S . o o | 20|+o...=... ... . .| 21|.+. o.+..o= . o | 22|o o + o+B .oo .| 23| . +=+ .o. o | 24+----[SHA256]-----+ 25 26# 在github上配置刚刚生成的key 27 28# 配置git 29git config --global user.name &#34;xxoo&#34; 30 31# 设置全局邮箱 32git config --global user.email &#34;o0oo00ooo@126.com&#34; 使用 fastgit（国内镜像，不好用） 1bash# 临时使用 2git clone https://hub.fastgit.org/bats-core/bats-core.git 3 4# 全局设置 5git config --global url.&#34;https://hub.fastgit.org/&#34;.insteadOf &#34;https://github.com/&#34; 6 7# 恢复 8git config --global --unset url.https://hub.fastgit.org/.insteadof</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <atom:link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/git/01.%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

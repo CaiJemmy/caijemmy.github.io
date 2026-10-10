@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="print">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.167.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+    <meta name="description" content="Optional 是 Python 类型注解系统中的一个重要类型，用于表示一个值可以是某个类型或者 None。
+基本语法 1# 表示参数 name 可以是 str 类型，也可以是 None 2 3from typing import Optional 4 5def greet(name: Optional[str]) -&gt; str: 6 if name is None: 7 return &#34;Hello, stranger!&#34; 8 return f&#34;Hello, {name}!&#34; Optional 的本质 Optional[T] 等价于 Union[T, None] 1from typing import Optional, Union 2 3# 这两种写法完全等价 4def func1(x: Optional[str]) -&gt; None: ... 5def func2(x: Union[str, None]) -&gt; None: ... 6 7# Python 3.10&#43; 还可以这样写 8def func3(x: str | None) -&gt; None: ... 默认值示例 1def find_user(user_id: int) -&gt; Optional[str]: 2 &#34;&#34;&#34;查找用户名，如果找不到返回 None&#34;&#34;&#34; 3 users = {1: &#34;Alice&#34;, 2: &#34;Bob&#34;} 4 return users.get(user_id) # 可能返回 None 5 6user = find_user(1) # 类型: Optional[str] 7user = find_user(99) # 类型: Optional[str] (实际上是 None) 3. 使用场景 3.1 函数参数（可选参数） 1def connect_to_database( 2 host: str, 3 port: int, 4 username: str, 5 password: Optional[str] = None, # 密码是可选的 6 timeout: Optional[int] = None # 超时时间是可选的 7) -&gt; bool: 8 if password is None: 9 # 使用默认密码或匿名登录 10 password = &#34;guest&#34; 11 if timeout is None: 12 timeout = 30 13 # ... 连接逻辑 14 return True 3.2 函数返回值 1from typing import List, Optional 2 3def find_first_even(numbers: List[int]) -&gt; Optional[int]: 4 &#34;&#34;&#34;找到第一个偶数，找不到返回 None&#34;&#34;&#34; 5 for num in numbers: 6 if num % 2 == 0: 7 return num 8 return None # 必须显式返回 None 9 10result = find_first_even([1, 3, 5, 7]) # result 类型: Optional[int] 11if result is not None: 12 print(f&#34;找到偶数: {result}&#34;) 13else: 14 print(&#34;没有找到偶数&#34;) 3.3 类属性 1class User: 2 def __init__(self, username: str, email: Optional[str] = None): 3 self.username = username 4 self.email = email # 类型: Optional[str] 5 self.last_login: Optional[datetime] = None # 初始化时为 None 6 7 def login(self) -&gt; None: 8 self.last_login = datetime.now() # 现在有了具体值 9 10 def get_email_domain(self) -&gt; Optional[str]: 11 &#34;&#34;&#34;获取邮箱域名，如果没有邮箱返回 None&#34;&#34;&#34; 12 if self.email is None: 13 return None 14 return self.email.split(&#39;@&#39;)[-1] 4. 实际应用示例 4.1 数据库操作 1from typing import Optional, Dict, Any 2from datetime import datetime 3 4class Database: 5 def __init__(self, connection_string: str): 6 self.conn = self._connect(connection_string) 7 8 def get_user_by_id(self, user_id: int) -&gt; Optional[Dict[str, Any]]: 9 &#34;&#34;&#34;根据ID获取用户，如果不存在返回 None&#34;&#34;&#34; 10 cursor = self.conn.cursor() 11 cursor.execute(&#34;SELECT * FROM users WHERE id = %s&#34;, (user_id,)) 12 result = cursor.fetchone() 13 return result # 可能为 None 14 15 def update_user_last_login( 16 self, 17 user_id: int, 18 last_login: Optional[datetime] = None 19 ) -&gt; bool: 20 &#34;&#34;&#34;更新用户最后登录时间&#34;&#34;&#34; 21 if last_login is None: 22 last_login = datetime.now() 23 24 cursor = self.conn.cursor() 25 cursor.execute( 26 &#34;UPDATE users SET last_login = %s WHERE id = %s&#34;, 27 (last_login, user_id) 28 ) 29 return cursor.rowcount &gt; 0 4.2 API 响应处理 1from typing import Optional, Dict, Any 2import requests 3 4class APIClient: 5 def __init__(self, base_url: str, api_key: Optional[str] = None): 6 self.base_url = base_url 7 self.api_key = api_key 8 9 def get_user_profile(self, user_id: int) -&gt; Optional[Dict[str, Any]]: 10 &#34;&#34;&#34;获取用户资料，API 失败返回 None&#34;&#34;&#34; 11 headers = {} 12 if self.api_key is not None: 13 headers[&#34;Authorization&#34;] = f&#34;Bearer {self.api_key}&#34; 14 15 try: 16 response = requests.get( 17 f&#34;{self.base_url}/users/{user_id}&#34;, 18 headers=headers, 19 timeout=10 20 ) 21 if response.status_code == 200: 22 return response.json() 23 return None 24 except requests.RequestException: 25 return None # 网络错误返回 None 26 27 def process_user_data( 28 self, 29 user_data: Optional[Dict[str, Any]] 30 ) -&gt; str: 31 &#34;&#34;&#34;处理用户数据，处理 None 情况&#34;&#34;&#34; 32 if user_data is None: 33 return &#34;用户数据为空或获取失败&#34; 34 35 name = user_data.get(&#34;name&#34;, &#34;未知用户&#34;) 36 age = user_data.get(&#34;age&#34;) 37 38 if age is not None: 39 return f&#34;{name}, {age}岁&#34; 40 return f&#34;{name}，年龄未知&#34; 5. 最佳实践 5.1 总是检查 None 1# ❌ 不好的做法 2def process_data(data: Optional[str]) -&gt; str: 3 return data.upper() # 如果 data 是 None 会崩溃 4 5# ✅ 好的做法 6def process_data(data: Optional[str]) -&gt; str: 7 if data is None: 8 return &#34;&#34; 9 return data.upper() 10 11# ✅ 使用 walrus 操作符 (Python 3.8&#43;) 12def process_data(data: Optional[str]) -&gt; str: 13 if (normalized_data := data) is not None: 14 return normalized_data.upper() 15 return &#34;&#34; 5.2 避免过度使用 Optional 1# ❌ 过度使用 2def process( 3 data: Optional[str] = None, 4 count: Optional[int] = None, 5 enabled: Optional[bool] = None 6) -&gt; Optional[Dict]: 7 pass 8 9# ✅ 更好的设计 10def process( 11 data: str = &#34;&#34;, 12 count: int = 0, 13 enabled: bool = False 14) -&gt; Dict: 15 pass 5.3 使用类型保护 1from typing import Optional, List 2 3def process_items(items: Optional[List[str]]) -&gt; None: 4 &#34;&#34;&#34;类型保护：确保 items 不是 None&#34;&#34;&#34; 5 if items is None: 6 items = [] # 现在 items 是 List[str]，不是 Optional[List[str]] 7 8 for item in items: # 安全访问，IDE 不会警告 9 print(item.upper()) 6. 与 None 的对比 1# 没有类型注解 2def old_style(value): # value 可以是任何类型 3 if value is None: 4 return &#34;None&#34; 5 return str(value) 6 7# 有类型注解 8def new_style(value: Optional[str]) -&gt; str: 9 # IDE 知道 value 可能是 str 或 None 10 if value is None: 11 return &#34;None&#34; 12 return value.upper() # IDE 知道这里 value 一定是 str 7. 在类中的使用 1from typing import Optional 2from datetime import datetime 3 4class Task: 5 def __init__( 6 self, 7 title: str, 8 description: Optional[str] = None 9 ): 10 self.title = title 11 self.description = description 12 self.created_at = datetime.now() 13 self.completed_at: Optional[datetime] = None # 初始为 None 14 15 def complete(self) -&gt; None: 16 &#34;&#34;&#34;完成任务&#34;&#34;&#34; 17 self.completed_at = datetime.now() # 不再是 None 18 19 def is_completed(self) -&gt; bool: 20 &#34;&#34;&#34;检查任务是否完成&#34;&#34;&#34; 21 return self.completed_at is not None 22 23 def get_completion_time(self) -&gt; Optional[int]: 24 &#34;&#34;&#34;获取完成耗时（秒），如果未完成返回 None&#34;&#34;&#34; 25 if self.completed_at is None: 26 return None 27 return int((self.completed_at - self.created_at).total_seconds()) 8. Python 3.10&#43; 的新语法 1# Python 3.10 之前 2from typing import Optional, Union 3 4def func1(x: Optional[str]) -&gt; Optional[int]: 5 pass 6 7# Python 3.10&#43; 的简化写法 8def func2(x: str | None) -&gt; int | None: 9 pass 10 11# 在类型别名中使用 12type ResponseData = dict[str, str | int | None] 13type UserProfile = { 14 &#34;name&#34;: str, 15 &#34;email&#34;: str | None, 16 &#34;age&#34;: int | None 17} 9. 常见错误 9.1 忘记检查 None 1def get_length(data: Optional[str]) -&gt; int: 2 return len(data) # ❌ 如果 data 是 None 会崩溃 3 4# 修复 5def get_length(data: Optional[str]) -&gt; int: 6 return len(data) if data is not None else 0 9.2 错误的默认值 1# ❌ 错误：默认值类型不匹配 2def func(data: Optional[str] = []) -&gt; None: # 列表不是 Optional[str] 3 pass 4 5# ✅ 正确 6def func(data: Optional[str] = None) -&gt; None: 7 data = data or &#34;&#34; # 使用默认值 10. 实际项目示例 1from typing import Optional, Dict, Any, List 2from dataclasses import dataclass 3from datetime import datetime 4 5@dataclass 6class Product: 7 &#34;&#34;&#34;商品类&#34;&#34;&#34; 8 id: int 9 name: str 10 price: float 11 description: Optional[str] = None 12 discount: Optional[float] = None # 折扣率，None 表示无折扣 13 tags: Optional[List[str]] = None 14 15 def get_final_price(self) -&gt; float: 16 &#34;&#34;&#34;获取最终价格（考虑折扣）&#34;&#34;&#34; 17 if self.discount is not None: 18 return self.price * (1 - self.discount) 19 return self.price 20 21 def has_tag(self, tag: str) -&gt; bool: 22 &#34;&#34;&#34;检查是否有某个标签&#34;&#34;&#34; 23 if self.tags is None: 24 return False 25 return tag in self.tags 26 27 28class ShoppingCart: 29 &#34;&#34;&#34;购物车&#34;&#34;&#34; 30 def __init__(self, user_id: int): 31 self.user_id = user_id 32 self.items: Dict[int, int] = {} # 商品ID -&gt; 数量 33 self.coupon_code: Optional[str] = None 34 35 def add_item(self, product_id: int, quantity: int = 1) -&gt; None: 36 &#34;&#34;&#34;添加商品到购物车&#34;&#34;&#34; 37 self.items[product_id] = self.items.get(product_id, 0) &#43; quantity 38 39 def apply_coupon(self, code: Optional[str]) -&gt; bool: 40 &#34;&#34;&#34;应用优惠券&#34;&#34;&#34; 41 if code is None: 42 self.coupon_code = None 43 return True 44 45 # 验证优惠券逻辑 46 if self._is_valid_coupon(code): 47 self.coupon_code = code 48 return True 49 return False 50 51 def _is_valid_coupon(self, code: str) -&gt; bool: 52 &#34;&#34;&#34;验证优惠券有效性&#34;&#34;&#34; 53 # 实际项目中这里会有数据库查询等逻辑 54 return code.startswith(&#34;DISCOUNT&#34;) 55 56 57# 使用示例 58def process_order( 59 cart: ShoppingCart, 60 shipping_address: Optional[str], 61 payment_method: str 62) -&gt; Optional[Dict[str, Any]]: 63 &#34;&#34;&#34;处理订单&#34;&#34;&#34; 64 if shipping_address is None: 65 print(&#34;错误：需要收货地址&#34;) 66 return None 67 68 if cart.coupon_code is not None: 69 print(f&#34;使用优惠券: {cart.coupon_code}&#34;) 70 71 # 订单处理逻辑... 72 return { 73 &#34;order_id&#34;: 12345, 74 &#34;total&#34;: 100.0, 75 &#34;shipping_address&#34;: shipping_address, 76 &#34;coupon_used&#34;: cart.coupon_code # 可能是 None 77 } 总结 Optional 的主要用途：">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:description" content="Optional 是 Python 类型注解系统中的一个重要类型，用于表示一个值可以是某个类型或者 None。
+基本语法 1# 表示参数 name 可以是 str 类型，也可以是 None 2 3from typing import Optional 4 5def greet(name: Optional[str]) -&gt; str: 6 if name is None: 7 return &#34;Hello, stranger!&#34; 8 return f&#34;Hello, {name}!&#34; Optional 的本质 Optional[T] 等价于 Union[T, None] 1from typing import Optional, Union 2 3# 这两种写法完全等价 4def func1(x: Optional[str]) -&gt; None: ... 5def func2(x: Union[str, None]) -&gt; None: ... 6 7# Python 3.10&#43; 还可以这样写 8def func3(x: str | None) -&gt; None: ... 默认值示例 1def find_user(user_id: int) -&gt; Optional[str]: 2 &#34;&#34;&#34;查找用户名，如果找不到返回 None&#34;&#34;&#34; 3 users = {1: &#34;Alice&#34;, 2: &#34;Bob&#34;} 4 return users.get(user_id) # 可能返回 None 5 6user = find_user(1) # 类型: Optional[str] 7user = find_user(99) # 类型: Optional[str] (实际上是 None) 3. 使用场景 3.1 函数参数（可选参数） 1def connect_to_database( 2 host: str, 3 port: int, 4 username: str, 5 password: Optional[str] = None, # 密码是可选的 6 timeout: Optional[int] = None # 超时时间是可选的 7) -&gt; bool: 8 if password is None: 9 # 使用默认密码或匿名登录 10 password = &#34;guest&#34; 11 if timeout is None: 12 timeout = 30 13 # ... 连接逻辑 14 return True 3.2 函数返回值 1from typing import List, Optional 2 3def find_first_even(numbers: List[int]) -&gt; Optional[int]: 4 &#34;&#34;&#34;找到第一个偶数，找不到返回 None&#34;&#34;&#34; 5 for num in numbers: 6 if num % 2 == 0: 7 return num 8 return None # 必须显式返回 None 9 10result = find_first_even([1, 3, 5, 7]) # result 类型: Optional[int] 11if result is not None: 12 print(f&#34;找到偶数: {result}&#34;) 13else: 14 print(&#34;没有找到偶数&#34;) 3.3 类属性 1class User: 2 def __init__(self, username: str, email: Optional[str] = None): 3 self.username = username 4 self.email = email # 类型: Optional[str] 5 self.last_login: Optional[datetime] = None # 初始化时为 None 6 7 def login(self) -&gt; None: 8 self.last_login = datetime.now() # 现在有了具体值 9 10 def get_email_domain(self) -&gt; Optional[str]: 11 &#34;&#34;&#34;获取邮箱域名，如果没有邮箱返回 None&#34;&#34;&#34; 12 if self.email is None: 13 return None 14 return self.email.split(&#39;@&#39;)[-1] 4. 实际应用示例 4.1 数据库操作 1from typing import Optional, Dict, Any 2from datetime import datetime 3 4class Database: 5 def __init__(self, connection_string: str): 6 self.conn = self._connect(connection_string) 7 8 def get_user_by_id(self, user_id: int) -&gt; Optional[Dict[str, Any]]: 9 &#34;&#34;&#34;根据ID获取用户，如果不存在返回 None&#34;&#34;&#34; 10 cursor = self.conn.cursor() 11 cursor.execute(&#34;SELECT * FROM users WHERE id = %s&#34;, (user_id,)) 12 result = cursor.fetchone() 13 return result # 可能为 None 14 15 def update_user_last_login( 16 self, 17 user_id: int, 18 last_login: Optional[datetime] = None 19 ) -&gt; bool: 20 &#34;&#34;&#34;更新用户最后登录时间&#34;&#34;&#34; 21 if last_login is None: 22 last_login = datetime.now() 23 24 cursor = self.conn.cursor() 25 cursor.execute( 26 &#34;UPDATE users SET last_login = %s WHERE id = %s&#34;, 27 (last_login, user_id) 28 ) 29 return cursor.rowcount &gt; 0 4.2 API 响应处理 1from typing import Optional, Dict, Any 2import requests 3 4class APIClient: 5 def __init__(self, base_url: str, api_key: Optional[str] = None): 6 self.base_url = base_url 7 self.api_key = api_key 8 9 def get_user_profile(self, user_id: int) -&gt; Optional[Dict[str, Any]]: 10 &#34;&#34;&#34;获取用户资料，API 失败返回 None&#34;&#34;&#34; 11 headers = {} 12 if self.api_key is not None: 13 headers[&#34;Authorization&#34;] = f&#34;Bearer {self.api_key}&#34; 14 15 try: 16 response = requests.get( 17 f&#34;{self.base_url}/users/{user_id}&#34;, 18 headers=headers, 19 timeout=10 20 ) 21 if response.status_code == 200: 22 return response.json() 23 return None 24 except requests.RequestException: 25 return None # 网络错误返回 None 26 27 def process_user_data( 28 self, 29 user_data: Optional[Dict[str, Any]] 30 ) -&gt; str: 31 &#34;&#34;&#34;处理用户数据，处理 None 情况&#34;&#34;&#34; 32 if user_data is None: 33 return &#34;用户数据为空或获取失败&#34; 34 35 name = user_data.get(&#34;name&#34;, &#34;未知用户&#34;) 36 age = user_data.get(&#34;age&#34;) 37 38 if age is not None: 39 return f&#34;{name}, {age}岁&#34; 40 return f&#34;{name}，年龄未知&#34; 5. 最佳实践 5.1 总是检查 None 1# ❌ 不好的做法 2def process_data(data: Optional[str]) -&gt; str: 3 return data.upper() # 如果 data 是 None 会崩溃 4 5# ✅ 好的做法 6def process_data(data: Optional[str]) -&gt; str: 7 if data is None: 8 return &#34;&#34; 9 return data.upper() 10 11# ✅ 使用 walrus 操作符 (Python 3.8&#43;) 12def process_data(data: Optional[str]) -&gt; str: 13 if (normalized_data := data) is not None: 14 return normalized_data.upper() 15 return &#34;&#34; 5.2 避免过度使用 Optional 1# ❌ 过度使用 2def process( 3 data: Optional[str] = None, 4 count: Optional[int] = None, 5 enabled: Optional[bool] = None 6) -&gt; Optional[Dict]: 7 pass 8 9# ✅ 更好的设计 10def process( 11 data: str = &#34;&#34;, 12 count: int = 0, 13 enabled: bool = False 14) -&gt; Dict: 15 pass 5.3 使用类型保护 1from typing import Optional, List 2 3def process_items(items: Optional[List[str]]) -&gt; None: 4 &#34;&#34;&#34;类型保护：确保 items 不是 None&#34;&#34;&#34; 5 if items is None: 6 items = [] # 现在 items 是 List[str]，不是 Optional[List[str]] 7 8 for item in items: # 安全访问，IDE 不会警告 9 print(item.upper()) 6. 与 None 的对比 1# 没有类型注解 2def old_style(value): # value 可以是任何类型 3 if value is None: 4 return &#34;None&#34; 5 return str(value) 6 7# 有类型注解 8def new_style(value: Optional[str]) -&gt; str: 9 # IDE 知道 value 可能是 str 或 None 10 if value is None: 11 return &#34;None&#34; 12 return value.upper() # IDE 知道这里 value 一定是 str 7. 在类中的使用 1from typing import Optional 2from datetime import datetime 3 4class Task: 5 def __init__( 6 self, 7 title: str, 8 description: Optional[str] = None 9 ): 10 self.title = title 11 self.description = description 12 self.created_at = datetime.now() 13 self.completed_at: Optional[datetime] = None # 初始为 None 14 15 def complete(self) -&gt; None: 16 &#34;&#34;&#34;完成任务&#34;&#34;&#34; 17 self.completed_at = datetime.now() # 不再是 None 18 19 def is_completed(self) -&gt; bool: 20 &#34;&#34;&#34;检查任务是否完成&#34;&#34;&#34; 21 return self.completed_at is not None 22 23 def get_completion_time(self) -&gt; Optional[int]: 24 &#34;&#34;&#34;获取完成耗时（秒），如果未完成返回 None&#34;&#34;&#34; 25 if self.completed_at is None: 26 return None 27 return int((self.completed_at - self.created_at).total_seconds()) 8. Python 3.10&#43; 的新语法 1# Python 3.10 之前 2from typing import Optional, Union 3 4def func1(x: Optional[str]) -&gt; Optional[int]: 5 pass 6 7# Python 3.10&#43; 的简化写法 8def func2(x: str | None) -&gt; int | None: 9 pass 10 11# 在类型别名中使用 12type ResponseData = dict[str, str | int | None] 13type UserProfile = { 14 &#34;name&#34;: str, 15 &#34;email&#34;: str | None, 16 &#34;age&#34;: int | None 17} 9. 常见错误 9.1 忘记检查 None 1def get_length(data: Optional[str]) -&gt; int: 2 return len(data) # ❌ 如果 data 是 None 会崩溃 3 4# 修复 5def get_length(data: Optional[str]) -&gt; int: 6 return len(data) if data is not None else 0 9.2 错误的默认值 1# ❌ 错误：默认值类型不匹配 2def func(data: Optional[str] = []) -&gt; None: # 列表不是 Optional[str] 3 pass 4 5# ✅ 正确 6def func(data: Optional[str] = None) -&gt; None: 7 data = data or &#34;&#34; # 使用默认值 10. 实际项目示例 1from typing import Optional, Dict, Any, List 2from dataclasses import dataclass 3from datetime import datetime 4 5@dataclass 6class Product: 7 &#34;&#34;&#34;商品类&#34;&#34;&#34; 8 id: int 9 name: str 10 price: float 11 description: Optional[str] = None 12 discount: Optional[float] = None # 折扣率，None 表示无折扣 13 tags: Optional[List[str]] = None 14 15 def get_final_price(self) -&gt; float: 16 &#34;&#34;&#34;获取最终价格（考虑折扣）&#34;&#34;&#34; 17 if self.discount is not None: 18 return self.price * (1 - self.discount) 19 return self.price 20 21 def has_tag(self, tag: str) -&gt; bool: 22 &#34;&#34;&#34;检查是否有某个标签&#34;&#34;&#34; 23 if self.tags is None: 24 return False 25 return tag in self.tags 26 27 28class ShoppingCart: 29 &#34;&#34;&#34;购物车&#34;&#34;&#34; 30 def __init__(self, user_id: int): 31 self.user_id = user_id 32 self.items: Dict[int, int] = {} # 商品ID -&gt; 数量 33 self.coupon_code: Optional[str] = None 34 35 def add_item(self, product_id: int, quantity: int = 1) -&gt; None: 36 &#34;&#34;&#34;添加商品到购物车&#34;&#34;&#34; 37 self.items[product_id] = self.items.get(product_id, 0) &#43; quantity 38 39 def apply_coupon(self, code: Optional[str]) -&gt; bool: 40 &#34;&#34;&#34;应用优惠券&#34;&#34;&#34; 41 if code is None: 42 self.coupon_code = None 43 return True 44 45 # 验证优惠券逻辑 46 if self._is_valid_coupon(code): 47 self.coupon_code = code 48 return True 49 return False 50 51 def _is_valid_coupon(self, code: str) -&gt; bool: 52 &#34;&#34;&#34;验证优惠券有效性&#34;&#34;&#34; 53 # 实际项目中这里会有数据库查询等逻辑 54 return code.startswith(&#34;DISCOUNT&#34;) 55 56 57# 使用示例 58def process_order( 59 cart: ShoppingCart, 60 shipping_address: Optional[str], 61 payment_method: str 62) -&gt; Optional[Dict[str, Any]]: 63 &#34;&#34;&#34;处理订单&#34;&#34;&#34; 64 if shipping_address is None: 65 print(&#34;错误：需要收货地址&#34;) 66 return None 67 68 if cart.coupon_code is not None: 69 print(f&#34;使用优惠券: {cart.coupon_code}&#34;) 70 71 # 订单处理逻辑... 72 return { 73 &#34;order_id&#34;: 12345, 74 &#34;total&#34;: 100.0, 75 &#34;shipping_address&#34;: shipping_address, 76 &#34;coupon_used&#34;: cart.coupon_code # 可能是 None 77 } 总结 Optional 的主要用途：">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/python/%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95/untitled/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:description" content="Optional 是 Python 类型注解系统中的一个重要类型，用于表示一个值可以是某个类型或者 None。
+基本语法 1# 表示参数 name 可以是 str 类型，也可以是 None 2 3from typing import Optional 4 5def greet(name: Optional[str]) -&gt; str: 6 if name is None: 7 return &#34;Hello, stranger!&#34; 8 return f&#34;Hello, {name}!&#34; Optional 的本质 Optional[T] 等价于 Union[T, None] 1from typing import Optional, Union 2 3# 这两种写法完全等价 4def func1(x: Optional[str]) -&gt; None: ... 5def func2(x: Union[str, None]) -&gt; None: ... 6 7# Python 3.10&#43; 还可以这样写 8def func3(x: str | None) -&gt; None: ... 默认值示例 1def find_user(user_id: int) -&gt; Optional[str]: 2 &#34;&#34;&#34;查找用户名，如果找不到返回 None&#34;&#34;&#34; 3 users = {1: &#34;Alice&#34;, 2: &#34;Bob&#34;} 4 return users.get(user_id) # 可能返回 None 5 6user = find_user(1) # 类型: Optional[str] 7user = find_user(99) # 类型: Optional[str] (实际上是 None) 3. 使用场景 3.1 函数参数（可选参数） 1def connect_to_database( 2 host: str, 3 port: int, 4 username: str, 5 password: Optional[str] = None, # 密码是可选的 6 timeout: Optional[int] = None # 超时时间是可选的 7) -&gt; bool: 8 if password is None: 9 # 使用默认密码或匿名登录 10 password = &#34;guest&#34; 11 if timeout is None: 12 timeout = 30 13 # ... 连接逻辑 14 return True 3.2 函数返回值 1from typing import List, Optional 2 3def find_first_even(numbers: List[int]) -&gt; Optional[int]: 4 &#34;&#34;&#34;找到第一个偶数，找不到返回 None&#34;&#34;&#34; 5 for num in numbers: 6 if num % 2 == 0: 7 return num 8 return None # 必须显式返回 None 9 10result = find_first_even([1, 3, 5, 7]) # result 类型: Optional[int] 11if result is not None: 12 print(f&#34;找到偶数: {result}&#34;) 13else: 14 print(&#34;没有找到偶数&#34;) 3.3 类属性 1class User: 2 def __init__(self, username: str, email: Optional[str] = None): 3 self.username = username 4 self.email = email # 类型: Optional[str] 5 self.last_login: Optional[datetime] = None # 初始化时为 None 6 7 def login(self) -&gt; None: 8 self.last_login = datetime.now() # 现在有了具体值 9 10 def get_email_domain(self) -&gt; Optional[str]: 11 &#34;&#34;&#34;获取邮箱域名，如果没有邮箱返回 None&#34;&#34;&#34; 12 if self.email is None: 13 return None 14 return self.email.split(&#39;@&#39;)[-1] 4. 实际应用示例 4.1 数据库操作 1from typing import Optional, Dict, Any 2from datetime import datetime 3 4class Database: 5 def __init__(self, connection_string: str): 6 self.conn = self._connect(connection_string) 7 8 def get_user_by_id(self, user_id: int) -&gt; Optional[Dict[str, Any]]: 9 &#34;&#34;&#34;根据ID获取用户，如果不存在返回 None&#34;&#34;&#34; 10 cursor = self.conn.cursor() 11 cursor.execute(&#34;SELECT * FROM users WHERE id = %s&#34;, (user_id,)) 12 result = cursor.fetchone() 13 return result # 可能为 None 14 15 def update_user_last_login( 16 self, 17 user_id: int, 18 last_login: Optional[datetime] = None 19 ) -&gt; bool: 20 &#34;&#34;&#34;更新用户最后登录时间&#34;&#34;&#34; 21 if last_login is None: 22 last_login = datetime.now() 23 24 cursor = self.conn.cursor() 25 cursor.execute( 26 &#34;UPDATE users SET last_login = %s WHERE id = %s&#34;, 27 (last_login, user_id) 28 ) 29 return cursor.rowcount &gt; 0 4.2 API 响应处理 1from typing import Optional, Dict, Any 2import requests 3 4class APIClient: 5 def __init__(self, base_url: str, api_key: Optional[str] = None): 6 self.base_url = base_url 7 self.api_key = api_key 8 9 def get_user_profile(self, user_id: int) -&gt; Optional[Dict[str, Any]]: 10 &#34;&#34;&#34;获取用户资料，API 失败返回 None&#34;&#34;&#34; 11 headers = {} 12 if self.api_key is not None: 13 headers[&#34;Authorization&#34;] = f&#34;Bearer {self.api_key}&#34; 14 15 try: 16 response = requests.get( 17 f&#34;{self.base_url}/users/{user_id}&#34;, 18 headers=headers, 19 timeout=10 20 ) 21 if response.status_code == 200: 22 return response.json() 23 return None 24 except requests.RequestException: 25 return None # 网络错误返回 None 26 27 def process_user_data( 28 self, 29 user_data: Optional[Dict[str, Any]] 30 ) -&gt; str: 31 &#34;&#34;&#34;处理用户数据，处理 None 情况&#34;&#34;&#34; 32 if user_data is None: 33 return &#34;用户数据为空或获取失败&#34; 34 35 name = user_data.get(&#34;name&#34;, &#34;未知用户&#34;) 36 age = user_data.get(&#34;age&#34;) 37 38 if age is not None: 39 return f&#34;{name}, {age}岁&#34; 40 return f&#34;{name}，年龄未知&#34; 5. 最佳实践 5.1 总是检查 None 1# ❌ 不好的做法 2def process_data(data: Optional[str]) -&gt; str: 3 return data.upper() # 如果 data 是 None 会崩溃 4 5# ✅ 好的做法 6def process_data(data: Optional[str]) -&gt; str: 7 if data is None: 8 return &#34;&#34; 9 return data.upper() 10 11# ✅ 使用 walrus 操作符 (Python 3.8&#43;) 12def process_data(data: Optional[str]) -&gt; str: 13 if (normalized_data := data) is not None: 14 return normalized_data.upper() 15 return &#34;&#34; 5.2 避免过度使用 Optional 1# ❌ 过度使用 2def process( 3 data: Optional[str] = None, 4 count: Optional[int] = None, 5 enabled: Optional[bool] = None 6) -&gt; Optional[Dict]: 7 pass 8 9# ✅ 更好的设计 10def process( 11 data: str = &#34;&#34;, 12 count: int = 0, 13 enabled: bool = False 14) -&gt; Dict: 15 pass 5.3 使用类型保护 1from typing import Optional, List 2 3def process_items(items: Optional[List[str]]) -&gt; None: 4 &#34;&#34;&#34;类型保护：确保 items 不是 None&#34;&#34;&#34; 5 if items is None: 6 items = [] # 现在 items 是 List[str]，不是 Optional[List[str]] 7 8 for item in items: # 安全访问，IDE 不会警告 9 print(item.upper()) 6. 与 None 的对比 1# 没有类型注解 2def old_style(value): # value 可以是任何类型 3 if value is None: 4 return &#34;None&#34; 5 return str(value) 6 7# 有类型注解 8def new_style(value: Optional[str]) -&gt; str: 9 # IDE 知道 value 可能是 str 或 None 10 if value is None: 11 return &#34;None&#34; 12 return value.upper() # IDE 知道这里 value 一定是 str 7. 在类中的使用 1from typing import Optional 2from datetime import datetime 3 4class Task: 5 def __init__( 6 self, 7 title: str, 8 description: Optional[str] = None 9 ): 10 self.title = title 11 self.description = description 12 self.created_at = datetime.now() 13 self.completed_at: Optional[datetime] = None # 初始为 None 14 15 def complete(self) -&gt; None: 16 &#34;&#34;&#34;完成任务&#34;&#34;&#34; 17 self.completed_at = datetime.now() # 不再是 None 18 19 def is_completed(self) -&gt; bool: 20 &#34;&#34;&#34;检查任务是否完成&#34;&#34;&#34; 21 return self.completed_at is not None 22 23 def get_completion_time(self) -&gt; Optional[int]: 24 &#34;&#34;&#34;获取完成耗时（秒），如果未完成返回 None&#34;&#34;&#34; 25 if self.completed_at is None: 26 return None 27 return int((self.completed_at - self.created_at).total_seconds()) 8. Python 3.10&#43; 的新语法 1# Python 3.10 之前 2from typing import Optional, Union 3 4def func1(x: Optional[str]) -&gt; Optional[int]: 5 pass 6 7# Python 3.10&#43; 的简化写法 8def func2(x: str | None) -&gt; int | None: 9 pass 10 11# 在类型别名中使用 12type ResponseData = dict[str, str | int | None] 13type UserProfile = { 14 &#34;name&#34;: str, 15 &#34;email&#34;: str | None, 16 &#34;age&#34;: int | None 17} 9. 常见错误 9.1 忘记检查 None 1def get_length(data: Optional[str]) -&gt; int: 2 return len(data) # ❌ 如果 data 是 None 会崩溃 3 4# 修复 5def get_length(data: Optional[str]) -&gt; int: 6 return len(data) if data is not None else 0 9.2 错误的默认值 1# ❌ 错误：默认值类型不匹配 2def func(data: Optional[str] = []) -&gt; None: # 列表不是 Optional[str] 3 pass 4 5# ✅ 正确 6def func(data: Optional[str] = None) -&gt; None: 7 data = data or &#34;&#34; # 使用默认值 10. 实际项目示例 1from typing import Optional, Dict, Any, List 2from dataclasses import dataclass 3from datetime import datetime 4 5@dataclass 6class Product: 7 &#34;&#34;&#34;商品类&#34;&#34;&#34; 8 id: int 9 name: str 10 price: float 11 description: Optional[str] = None 12 discount: Optional[float] = None # 折扣率，None 表示无折扣 13 tags: Optional[List[str]] = None 14 15 def get_final_price(self) -&gt; float: 16 &#34;&#34;&#34;获取最终价格（考虑折扣）&#34;&#34;&#34; 17 if self.discount is not None: 18 return self.price * (1 - self.discount) 19 return self.price 20 21 def has_tag(self, tag: str) -&gt; bool: 22 &#34;&#34;&#34;检查是否有某个标签&#34;&#34;&#34; 23 if self.tags is None: 24 return False 25 return tag in self.tags 26 27 28class ShoppingCart: 29 &#34;&#34;&#34;购物车&#34;&#34;&#34; 30 def __init__(self, user_id: int): 31 self.user_id = user_id 32 self.items: Dict[int, int] = {} # 商品ID -&gt; 数量 33 self.coupon_code: Optional[str] = None 34 35 def add_item(self, product_id: int, quantity: int = 1) -&gt; None: 36 &#34;&#34;&#34;添加商品到购物车&#34;&#34;&#34; 37 self.items[product_id] = self.items.get(product_id, 0) &#43; quantity 38 39 def apply_coupon(self, code: Optional[str]) -&gt; bool: 40 &#34;&#34;&#34;应用优惠券&#34;&#34;&#34; 41 if code is None: 42 self.coupon_code = None 43 return True 44 45 # 验证优惠券逻辑 46 if self._is_valid_coupon(code): 47 self.coupon_code = code 48 return True 49 return False 50 51 def _is_valid_coupon(self, code: str) -&gt; bool: 52 &#34;&#34;&#34;验证优惠券有效性&#34;&#34;&#34; 53 # 实际项目中这里会有数据库查询等逻辑 54 return code.startswith(&#34;DISCOUNT&#34;) 55 56 57# 使用示例 58def process_order( 59 cart: ShoppingCart, 60 shipping_address: Optional[str], 61 payment_method: str 62) -&gt; Optional[Dict[str, Any]]: 63 &#34;&#34;&#34;处理订单&#34;&#34;&#34; 64 if shipping_address is None: 65 print(&#34;错误：需要收货地址&#34;) 66 return None 67 68 if cart.coupon_code is not None: 69 print(f&#34;使用优惠券: {cart.coupon_code}&#34;) 70 71 # 订单处理逻辑... 72 return { 73 &#34;order_id&#34;: 12345, 74 &#34;total&#34;: 100.0, 75 &#34;shipping_address&#34;: shipping_address, 76 &#34;coupon_used&#34;: cart.coupon_code # 可能是 None 77 } 总结 Optional 的主要用途：">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="程序员技能">
+    <meta itemprop="description" content="Optional 是 Python 类型注解系统中的一个重要类型，用于表示一个值可以是某个类型或者 None。
+基本语法 1# 表示参数 name 可以是 str 类型，也可以是 None 2 3from typing import Optional 4 5def greet(name: Optional[str]) -&gt; str: 6 if name is None: 7 return &#34;Hello, stranger!&#34; 8 return f&#34;Hello, {name}!&#34; Optional 的本质 Optional[T] 等价于 Union[T, None] 1from typing import Optional, Union 2 3# 这两种写法完全等价 4def func1(x: Optional[str]) -&gt; None: ... 5def func2(x: Union[str, None]) -&gt; None: ... 6 7# Python 3.10&#43; 还可以这样写 8def func3(x: str | None) -&gt; None: ... 默认值示例 1def find_user(user_id: int) -&gt; Optional[str]: 2 &#34;&#34;&#34;查找用户名，如果找不到返回 None&#34;&#34;&#34; 3 users = {1: &#34;Alice&#34;, 2: &#34;Bob&#34;} 4 return users.get(user_id) # 可能返回 None 5 6user = find_user(1) # 类型: Optional[str] 7user = find_user(99) # 类型: Optional[str] (实际上是 None) 3. 使用场景 3.1 函数参数（可选参数） 1def connect_to_database( 2 host: str, 3 port: int, 4 username: str, 5 password: Optional[str] = None, # 密码是可选的 6 timeout: Optional[int] = None # 超时时间是可选的 7) -&gt; bool: 8 if password is None: 9 # 使用默认密码或匿名登录 10 password = &#34;guest&#34; 11 if timeout is None: 12 timeout = 30 13 # ... 连接逻辑 14 return True 3.2 函数返回值 1from typing import List, Optional 2 3def find_first_even(numbers: List[int]) -&gt; Optional[int]: 4 &#34;&#34;&#34;找到第一个偶数，找不到返回 None&#34;&#34;&#34; 5 for num in numbers: 6 if num % 2 == 0: 7 return num 8 return None # 必须显式返回 None 9 10result = find_first_even([1, 3, 5, 7]) # result 类型: Optional[int] 11if result is not None: 12 print(f&#34;找到偶数: {result}&#34;) 13else: 14 print(&#34;没有找到偶数&#34;) 3.3 类属性 1class User: 2 def __init__(self, username: str, email: Optional[str] = None): 3 self.username = username 4 self.email = email # 类型: Optional[str] 5 self.last_login: Optional[datetime] = None # 初始化时为 None 6 7 def login(self) -&gt; None: 8 self.last_login = datetime.now() # 现在有了具体值 9 10 def get_email_domain(self) -&gt; Optional[str]: 11 &#34;&#34;&#34;获取邮箱域名，如果没有邮箱返回 None&#34;&#34;&#34; 12 if self.email is None: 13 return None 14 return self.email.split(&#39;@&#39;)[-1] 4. 实际应用示例 4.1 数据库操作 1from typing import Optional, Dict, Any 2from datetime import datetime 3 4class Database: 5 def __init__(self, connection_string: str): 6 self.conn = self._connect(connection_string) 7 8 def get_user_by_id(self, user_id: int) -&gt; Optional[Dict[str, Any]]: 9 &#34;&#34;&#34;根据ID获取用户，如果不存在返回 None&#34;&#34;&#34; 10 cursor = self.conn.cursor() 11 cursor.execute(&#34;SELECT * FROM users WHERE id = %s&#34;, (user_id,)) 12 result = cursor.fetchone() 13 return result # 可能为 None 14 15 def update_user_last_login( 16 self, 17 user_id: int, 18 last_login: Optional[datetime] = None 19 ) -&gt; bool: 20 &#34;&#34;&#34;更新用户最后登录时间&#34;&#34;&#34; 21 if last_login is None: 22 last_login = datetime.now() 23 24 cursor = self.conn.cursor() 25 cursor.execute( 26 &#34;UPDATE users SET last_login = %s WHERE id = %s&#34;, 27 (last_login, user_id) 28 ) 29 return cursor.rowcount &gt; 0 4.2 API 响应处理 1from typing import Optional, Dict, Any 2import requests 3 4class APIClient: 5 def __init__(self, base_url: str, api_key: Optional[str] = None): 6 self.base_url = base_url 7 self.api_key = api_key 8 9 def get_user_profile(self, user_id: int) -&gt; Optional[Dict[str, Any]]: 10 &#34;&#34;&#34;获取用户资料，API 失败返回 None&#34;&#34;&#34; 11 headers = {} 12 if self.api_key is not None: 13 headers[&#34;Authorization&#34;] = f&#34;Bearer {self.api_key}&#34; 14 15 try: 16 response = requests.get( 17 f&#34;{self.base_url}/users/{user_id}&#34;, 18 headers=headers, 19 timeout=10 20 ) 21 if response.status_code == 200: 22 return response.json() 23 return None 24 except requests.RequestException: 25 return None # 网络错误返回 None 26 27 def process_user_data( 28 self, 29 user_data: Optional[Dict[str, Any]] 30 ) -&gt; str: 31 &#34;&#34;&#34;处理用户数据，处理 None 情况&#34;&#34;&#34; 32 if user_data is None: 33 return &#34;用户数据为空或获取失败&#34; 34 35 name = user_data.get(&#34;name&#34;, &#34;未知用户&#34;) 36 age = user_data.get(&#34;age&#34;) 37 38 if age is not None: 39 return f&#34;{name}, {age}岁&#34; 40 return f&#34;{name}，年龄未知&#34; 5. 最佳实践 5.1 总是检查 None 1# ❌ 不好的做法 2def process_data(data: Optional[str]) -&gt; str: 3 return data.upper() # 如果 data 是 None 会崩溃 4 5# ✅ 好的做法 6def process_data(data: Optional[str]) -&gt; str: 7 if data is None: 8 return &#34;&#34; 9 return data.upper() 10 11# ✅ 使用 walrus 操作符 (Python 3.8&#43;) 12def process_data(data: Optional[str]) -&gt; str: 13 if (normalized_data := data) is not None: 14 return normalized_data.upper() 15 return &#34;&#34; 5.2 避免过度使用 Optional 1# ❌ 过度使用 2def process( 3 data: Optional[str] = None, 4 count: Optional[int] = None, 5 enabled: Optional[bool] = None 6) -&gt; Optional[Dict]: 7 pass 8 9# ✅ 更好的设计 10def process( 11 data: str = &#34;&#34;, 12 count: int = 0, 13 enabled: bool = False 14) -&gt; Dict: 15 pass 5.3 使用类型保护 1from typing import Optional, List 2 3def process_items(items: Optional[List[str]]) -&gt; None: 4 &#34;&#34;&#34;类型保护：确保 items 不是 None&#34;&#34;&#34; 5 if items is None: 6 items = [] # 现在 items 是 List[str]，不是 Optional[List[str]] 7 8 for item in items: # 安全访问，IDE 不会警告 9 print(item.upper()) 6. 与 None 的对比 1# 没有类型注解 2def old_style(value): # value 可以是任何类型 3 if value is None: 4 return &#34;None&#34; 5 return str(value) 6 7# 有类型注解 8def new_style(value: Optional[str]) -&gt; str: 9 # IDE 知道 value 可能是 str 或 None 10 if value is None: 11 return &#34;None&#34; 12 return value.upper() # IDE 知道这里 value 一定是 str 7. 在类中的使用 1from typing import Optional 2from datetime import datetime 3 4class Task: 5 def __init__( 6 self, 7 title: str, 8 description: Optional[str] = None 9 ): 10 self.title = title 11 self.description = description 12 self.created_at = datetime.now() 13 self.completed_at: Optional[datetime] = None # 初始为 None 14 15 def complete(self) -&gt; None: 16 &#34;&#34;&#34;完成任务&#34;&#34;&#34; 17 self.completed_at = datetime.now() # 不再是 None 18 19 def is_completed(self) -&gt; bool: 20 &#34;&#34;&#34;检查任务是否完成&#34;&#34;&#34; 21 return self.completed_at is not None 22 23 def get_completion_time(self) -&gt; Optional[int]: 24 &#34;&#34;&#34;获取完成耗时（秒），如果未完成返回 None&#34;&#34;&#34; 25 if self.completed_at is None: 26 return None 27 return int((self.completed_at - self.created_at).total_seconds()) 8. Python 3.10&#43; 的新语法 1# Python 3.10 之前 2from typing import Optional, Union 3 4def func1(x: Optional[str]) -&gt; Optional[int]: 5 pass 6 7# Python 3.10&#43; 的简化写法 8def func2(x: str | None) -&gt; int | None: 9 pass 10 11# 在类型别名中使用 12type ResponseData = dict[str, str | int | None] 13type UserProfile = { 14 &#34;name&#34;: str, 15 &#34;email&#34;: str | None, 16 &#34;age&#34;: int | None 17} 9. 常见错误 9.1 忘记检查 None 1def get_length(data: Optional[str]) -&gt; int: 2 return len(data) # ❌ 如果 data 是 None 会崩溃 3 4# 修复 5def get_length(data: Optional[str]) -&gt; int: 6 return len(data) if data is not None else 0 9.2 错误的默认值 1# ❌ 错误：默认值类型不匹配 2def func(data: Optional[str] = []) -&gt; None: # 列表不是 Optional[str] 3 pass 4 5# ✅ 正确 6def func(data: Optional[str] = None) -&gt; None: 7 data = data or &#34;&#34; # 使用默认值 10. 实际项目示例 1from typing import Optional, Dict, Any, List 2from dataclasses import dataclass 3from datetime import datetime 4 5@dataclass 6class Product: 7 &#34;&#34;&#34;商品类&#34;&#34;&#34; 8 id: int 9 name: str 10 price: float 11 description: Optional[str] = None 12 discount: Optional[float] = None # 折扣率，None 表示无折扣 13 tags: Optional[List[str]] = None 14 15 def get_final_price(self) -&gt; float: 16 &#34;&#34;&#34;获取最终价格（考虑折扣）&#34;&#34;&#34; 17 if self.discount is not None: 18 return self.price * (1 - self.discount) 19 return self.price 20 21 def has_tag(self, tag: str) -&gt; bool: 22 &#34;&#34;&#34;检查是否有某个标签&#34;&#34;&#34; 23 if self.tags is None: 24 return False 25 return tag in self.tags 26 27 28class ShoppingCart: 29 &#34;&#34;&#34;购物车&#34;&#34;&#34; 30 def __init__(self, user_id: int): 31 self.user_id = user_id 32 self.items: Dict[int, int] = {} # 商品ID -&gt; 数量 33 self.coupon_code: Optional[str] = None 34 35 def add_item(self, product_id: int, quantity: int = 1) -&gt; None: 36 &#34;&#34;&#34;添加商品到购物车&#34;&#34;&#34; 37 self.items[product_id] = self.items.get(product_id, 0) &#43; quantity 38 39 def apply_coupon(self, code: Optional[str]) -&gt; bool: 40 &#34;&#34;&#34;应用优惠券&#34;&#34;&#34; 41 if code is None: 42 self.coupon_code = None 43 return True 44 45 # 验证优惠券逻辑 46 if self._is_valid_coupon(code): 47 self.coupon_code = code 48 return True 49 return False 50 51 def _is_valid_coupon(self, code: str) -&gt; bool: 52 &#34;&#34;&#34;验证优惠券有效性&#34;&#34;&#34; 53 # 实际项目中这里会有数据库查询等逻辑 54 return code.startswith(&#34;DISCOUNT&#34;) 55 56 57# 使用示例 58def process_order( 59 cart: ShoppingCart, 60 shipping_address: Optional[str], 61 payment_method: str 62) -&gt; Optional[Dict[str, Any]]: 63 &#34;&#34;&#34;处理订单&#34;&#34;&#34; 64 if shipping_address is None: 65 print(&#34;错误：需要收货地址&#34;) 66 return None 67 68 if cart.coupon_code is not None: 69 print(f&#34;使用优惠券: {cart.coupon_code}&#34;) 70 71 # 订单处理逻辑... 72 return { 73 &#34;order_id&#34;: 12345, 74 &#34;total&#34;: 100.0, 75 &#34;shipping_address&#34;: shipping_address, 76 &#34;coupon_used&#34;: cart.coupon_code # 可能是 None 77 } 总结 Optional 的主要用途：">
+    <meta itemprop="wordCount" content="1303">
+    <title></title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/python/%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95/untitled/index.html" rel="canonical" type="text/html" title="">
+    <link href="/images/favicon.png?1791650867" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1791650867" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1791650867" defer></script>
+    <script src="/js/search-lunr.min.js?1791650867" defer></script>
+    <script src="/js/search.min.js?1791650867" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1791650867";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1791650867" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1791650867" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1791650867" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1791650867" rel="stylesheet">
+    <link href="/css/theme.min.css?1791650867" rel="stylesheet">
+    <link href="/css/format-print.min.css?1791650867" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/python\/%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95\/untitled\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1791650867" rel="stylesheet">
+  </head>
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/python/%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95/untitled/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#基本语法">基本语法</a></li>
+    <li><a href="#optional"><strong><code>Optional</code> 的本质</strong></a>
+      <ul>
+        <li><a href="#optionalt-等价于-uniont-none"><code>Optional[T]</code> 等价于 <code>Union[T, None]</code></a></li>
+        <li><a href="#默认值示例">默认值示例</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-使用场景">3. <strong>使用场景</strong></a>
+      <ul>
+        <li><a href="#31-函数参数可选参数">3.1 函数参数（可选参数）</a></li>
+        <li><a href="#32-函数返回值">3.2 函数返回值</a></li>
+        <li><a href="#33-类属性">3.3 类属性</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-实际应用示例">4. <strong>实际应用示例</strong></a>
+      <ul>
+        <li><a href="#41-数据库操作">4.1 数据库操作</a></li>
+        <li><a href="#42-api-响应处理">4.2 API 响应处理</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-最佳实践">5. <strong>最佳实践</strong></a>
+      <ul>
+        <li><a href="#51-总是检查-none">5.1 总是检查 <code>None</code></a></li>
+        <li><a href="#52-避免过度使用-optional">5.2 避免过度使用 <code>Optional</code></a></li>
+        <li><a href="#53-使用类型保护">5.3 使用类型保护</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-与">6. <strong>与 <code>None</code> 的对比</strong></a></li>
+    <li><a href="#7-在类中的使用">7. <strong>在类中的使用</strong></a></li>
+    <li><a href="#8-python-310-的新语法">8. <strong>Python 3.10+ 的新语法</strong></a></li>
+    <li><a href="#9-常见错误">9. <strong>常见错误</strong></a>
+      <ul>
+        <li><a href="#91-忘记检查-none">9.1 忘记检查 <code>None</code></a></li>
+        <li><a href="#92-错误的默认值">9.2 错误的默认值</a></li>
+      </ul>
+    </li>
+    <li><a href="#10-实际项目示例">10. <strong>实际项目示例</strong></a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/python/index.html"><span itemprop="name">python</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/python/%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95/untitled/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/python/index.html" title="python (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/python/pytest/index.html" title="pytest (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+        </div>
+      </main>
+    </div>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1791650867"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1791650867" defer></script>
+    <script src="/js/theme.min.js?1791650867" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>

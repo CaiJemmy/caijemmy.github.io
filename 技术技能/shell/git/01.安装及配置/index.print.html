@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="print">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.167.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+    <meta name="description" content="安装git linux 下安装 1# Debian 下安装git 2apt install -y git 3 4# 验证 5git -v 6 7# 以下输出为正常安装 8git version 2.47.3 github配置 1# ssh-keygen -t rsa -b 4096 -C &#34;o0oo00ooo@example.com&#34; 2ssh-keygen -t rsa -b 4096 -C &#34;your_email@example.com&#34; 3 4# 以下内容无脑回车 5Generating public/private rsa key pair. 6Enter file in which to save the key (/root/.ssh/id_rsa): 7Enter passphrase for &#34;/root/.ssh/id_rsa&#34; (empty for no passphrase): 8Enter same passphrase again: 9Your identification has been saved in /root/.ssh/id_rsa 10Your public key has been saved in /root/.ssh/id_rsa.pub 11The key fingerprint is: 12SHA256:ot9lilcigrCwuD1I0x/RFRfHGPrXjJ/LiGegnJopMUA o0oo00ooo@example.com 13The key&#39;s randomart image is: 14&#43;---[RSA 4096]----&#43; 15| ..&#43;=. | 16| E .o... | 17| . . .. | 18|o . . . . &#43; | 19|o&#43;... o S . o o | 20|&#43;o...=... ... . .| 21|.&#43;. o.&#43;..o= . o | 22|o o &#43; o&#43;B .oo .| 23| . &#43;=&#43; .o. o | 24&#43;----[SHA256]-----&#43; 25 26# 在github上配置刚刚生成的key 27 28# 配置git 29git config --global user.name &#34;xxoo&#34; 30 31# 设置全局邮箱 32git config --global user.email &#34;o0oo00ooo@126.com&#34; 使用 fastgit（国内镜像，不好用） 1bash# 临时使用 2git clone https://hub.fastgit.org/bats-core/bats-core.git 3 4# 全局设置 5git config --global url.&#34;https://hub.fastgit.org/&#34;.insteadOf &#34;https://github.com/&#34; 6 7# 恢复 8git config --global --unset url.https://hub.fastgit.org/.insteadof">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:description" content="安装git linux 下安装 1# Debian 下安装git 2apt install -y git 3 4# 验证 5git -v 6 7# 以下输出为正常安装 8git version 2.47.3 github配置 1# ssh-keygen -t rsa -b 4096 -C &#34;o0oo00ooo@example.com&#34; 2ssh-keygen -t rsa -b 4096 -C &#34;your_email@example.com&#34; 3 4# 以下内容无脑回车 5Generating public/private rsa key pair. 6Enter file in which to save the key (/root/.ssh/id_rsa): 7Enter passphrase for &#34;/root/.ssh/id_rsa&#34; (empty for no passphrase): 8Enter same passphrase again: 9Your identification has been saved in /root/.ssh/id_rsa 10Your public key has been saved in /root/.ssh/id_rsa.pub 11The key fingerprint is: 12SHA256:ot9lilcigrCwuD1I0x/RFRfHGPrXjJ/LiGegnJopMUA o0oo00ooo@example.com 13The key&#39;s randomart image is: 14&#43;---[RSA 4096]----&#43; 15| ..&#43;=. | 16| E .o... | 17| . . .. | 18|o . . . . &#43; | 19|o&#43;... o S . o o | 20|&#43;o...=... ... . .| 21|.&#43;. o.&#43;..o= . o | 22|o o &#43; o&#43;B .oo .| 23| . &#43;=&#43; .o. o | 24&#43;----[SHA256]-----&#43; 25 26# 在github上配置刚刚生成的key 27 28# 配置git 29git config --global user.name &#34;xxoo&#34; 30 31# 设置全局邮箱 32git config --global user.email &#34;o0oo00ooo@126.com&#34; 使用 fastgit（国内镜像，不好用） 1bash# 临时使用 2git clone https://hub.fastgit.org/bats-core/bats-core.git 3 4# 全局设置 5git config --global url.&#34;https://hub.fastgit.org/&#34;.insteadOf &#34;https://github.com/&#34; 6 7# 恢复 8git config --global --unset url.https://hub.fastgit.org/.insteadof">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/git/01.%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:description" content="安装git linux 下安装 1# Debian 下安装git 2apt install -y git 3 4# 验证 5git -v 6 7# 以下输出为正常安装 8git version 2.47.3 github配置 1# ssh-keygen -t rsa -b 4096 -C &#34;o0oo00ooo@example.com&#34; 2ssh-keygen -t rsa -b 4096 -C &#34;your_email@example.com&#34; 3 4# 以下内容无脑回车 5Generating public/private rsa key pair. 6Enter file in which to save the key (/root/.ssh/id_rsa): 7Enter passphrase for &#34;/root/.ssh/id_rsa&#34; (empty for no passphrase): 8Enter same passphrase again: 9Your identification has been saved in /root/.ssh/id_rsa 10Your public key has been saved in /root/.ssh/id_rsa.pub 11The key fingerprint is: 12SHA256:ot9lilcigrCwuD1I0x/RFRfHGPrXjJ/LiGegnJopMUA o0oo00ooo@example.com 13The key&#39;s randomart image is: 14&#43;---[RSA 4096]----&#43; 15| ..&#43;=. | 16| E .o... | 17| . . .. | 18|o . . . . &#43; | 19|o&#43;... o S . o o | 20|&#43;o...=... ... . .| 21|.&#43;. o.&#43;..o= . o | 22|o o &#43; o&#43;B .oo .| 23| . &#43;=&#43; .o. o | 24&#43;----[SHA256]-----&#43; 25 26# 在github上配置刚刚生成的key 27 28# 配置git 29git config --global user.name &#34;xxoo&#34; 30 31# 设置全局邮箱 32git config --global user.email &#34;o0oo00ooo@126.com&#34; 使用 fastgit（国内镜像，不好用） 1bash# 临时使用 2git clone https://hub.fastgit.org/bats-core/bats-core.git 3 4# 全局设置 5git config --global url.&#34;https://hub.fastgit.org/&#34;.insteadOf &#34;https://github.com/&#34; 6 7# 恢复 8git config --global --unset url.https://hub.fastgit.org/.insteadof">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="website">
+    <meta itemprop="description" content="安装git linux 下安装 1# Debian 下安装git 2apt install -y git 3 4# 验证 5git -v 6 7# 以下输出为正常安装 8git version 2.47.3 github配置 1# ssh-keygen -t rsa -b 4096 -C &#34;o0oo00ooo@example.com&#34; 2ssh-keygen -t rsa -b 4096 -C &#34;your_email@example.com&#34; 3 4# 以下内容无脑回车 5Generating public/private rsa key pair. 6Enter file in which to save the key (/root/.ssh/id_rsa): 7Enter passphrase for &#34;/root/.ssh/id_rsa&#34; (empty for no passphrase): 8Enter same passphrase again: 9Your identification has been saved in /root/.ssh/id_rsa 10Your public key has been saved in /root/.ssh/id_rsa.pub 11The key fingerprint is: 12SHA256:ot9lilcigrCwuD1I0x/RFRfHGPrXjJ/LiGegnJopMUA o0oo00ooo@example.com 13The key&#39;s randomart image is: 14&#43;---[RSA 4096]----&#43; 15| ..&#43;=. | 16| E .o... | 17| . . .. | 18|o . . . . &#43; | 19|o&#43;... o S . o o | 20|&#43;o...=... ... . .| 21|.&#43;. o.&#43;..o= . o | 22|o o &#43; o&#43;B .oo .| 23| . &#43;=&#43; .o. o | 24&#43;----[SHA256]-----&#43; 25 26# 在github上配置刚刚生成的key 27 28# 配置git 29git config --global user.name &#34;xxoo&#34; 30 31# 设置全局邮箱 32git config --global user.email &#34;o0oo00ooo@126.com&#34; 使用 fastgit（国内镜像，不好用） 1bash# 临时使用 2git clone https://hub.fastgit.org/bats-core/bats-core.git 3 4# 全局设置 5git config --global url.&#34;https://hub.fastgit.org/&#34;.insteadOf &#34;https://github.com/&#34; 6 7# 恢复 8git config --global --unset url.https://hub.fastgit.org/.insteadof">
+    <meta itemprop="wordCount" content="184">
+    <title></title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/git/01.%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE/index.html" rel="canonical" type="text/html" title="">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/git/01.%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE/index.xml" rel="alternate" type="application/rss+xml" title="">
+    <link href="/images/favicon.png?1791650867" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1791650867" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1791650867" defer></script>
+    <script src="/js/search-lunr.min.js?1791650867" defer></script>
+    <script src="/js/search.min.js?1791650867" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1791650867";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1791650867" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1791650867" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1791650867" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1791650867" rel="stylesheet">
+    <link href="/css/theme.min.css?1791650867" rel="stylesheet">
+    <link href="/css/format-print.min.css?1791650867" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/shell\/git\/01.%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1791650867" rel="stylesheet">
+  </head>
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/git/01.%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#安装git">安装git</a>
+      <ul>
+        <li><a href="#linux-下安装">linux 下安装</a></li>
+        <li><a href="#github配置">github配置</a></li>
+        <li><a href="#使用-fastgit国内镜像不好用">使用 fastgit（国内镜像，不好用）</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><span itemprop="name">shell</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/git/01.%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html" title="shell (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html" title="linux 核心命令 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+        </div>
+      </main>
+    </div>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1791650867"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1791650867" defer></script>
+    <script src="/js/theme.min.js?1791650867" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>

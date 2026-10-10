@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="print">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.167.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+    <meta name="description" content="架构关系 1┌─────────────────────────────────────┐ 2│ Docker CLI (docker command) │ ← 用户交互层 3├─────────────────────────────────────┤ 4│ Docker Engine (dockerd) │ ← API 服务层 5│ - REST API │ 6│ - 镜像构建 (docker build) │ 7│ - 卷管理 (volumes) │ 8│ - 网络管理 (networks) │ 9│ - Swarm 编排 │ 10└──────────────┬──────────────────────┘ 11 │ gRPC 调用 12 ↓ 13┌─────────────────────────────────────┐ 14│ containerd │ ← 容器运行时层 15│ - 镜像拉取和管理 │ 16│ - 容器生命周期管理 │ 17│ - 快照管理 │ 18│ - 命名空间隔离 │ 19└──────────────┬──────────────────────┘ 20 │ 调用 21 ↓ 22┌─────────────────────────────────────┐ 23│ runc │ ← OCI 运行时 24│ - 创建容器进程 │ 25│ - 配置 namespace/cgroup │ 26│ - 执行 OCI 规范 │ 27└─────────────────────────────────────┘ 28 │ 29 ↓ 30┌─────────────────────────────────────┐ 31│ Linux Kernel │ ← 内核层 32│ - namespace (隔离) │ 33│ - cgroup (资源限制) │ 34│ - union filesystem │ 35└─────────────────────────────────────┘ 简单理解 Docker = 高级工具（用户友好的界面 &#43; 额外功能）">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:description" content="架构关系 1┌─────────────────────────────────────┐ 2│ Docker CLI (docker command) │ ← 用户交互层 3├─────────────────────────────────────┤ 4│ Docker Engine (dockerd) │ ← API 服务层 5│ - REST API │ 6│ - 镜像构建 (docker build) │ 7│ - 卷管理 (volumes) │ 8│ - 网络管理 (networks) │ 9│ - Swarm 编排 │ 10└──────────────┬──────────────────────┘ 11 │ gRPC 调用 12 ↓ 13┌─────────────────────────────────────┐ 14│ containerd │ ← 容器运行时层 15│ - 镜像拉取和管理 │ 16│ - 容器生命周期管理 │ 17│ - 快照管理 │ 18│ - 命名空间隔离 │ 19└──────────────┬──────────────────────┘ 20 │ 调用 21 ↓ 22┌─────────────────────────────────────┐ 23│ runc │ ← OCI 运行时 24│ - 创建容器进程 │ 25│ - 配置 namespace/cgroup │ 26│ - 执行 OCI 规范 │ 27└─────────────────────────────────────┘ 28 │ 29 ↓ 30┌─────────────────────────────────────┐ 31│ Linux Kernel │ ← 内核层 32│ - namespace (隔离) │ 33│ - cgroup (资源限制) │ 34│ - union filesystem │ 35└─────────────────────────────────────┘ 简单理解 Docker = 高级工具（用户友好的界面 &#43; 额外功能）">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/20-containerd/docker%E5%92%8Ccontainerd%E7%9A%84%E5%85%B3%E7%B3%BB/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:description" content="架构关系 1┌─────────────────────────────────────┐ 2│ Docker CLI (docker command) │ ← 用户交互层 3├─────────────────────────────────────┤ 4│ Docker Engine (dockerd) │ ← API 服务层 5│ - REST API │ 6│ - 镜像构建 (docker build) │ 7│ - 卷管理 (volumes) │ 8│ - 网络管理 (networks) │ 9│ - Swarm 编排 │ 10└──────────────┬──────────────────────┘ 11 │ gRPC 调用 12 ↓ 13┌─────────────────────────────────────┐ 14│ containerd │ ← 容器运行时层 15│ - 镜像拉取和管理 │ 16│ - 容器生命周期管理 │ 17│ - 快照管理 │ 18│ - 命名空间隔离 │ 19└──────────────┬──────────────────────┘ 20 │ 调用 21 ↓ 22┌─────────────────────────────────────┐ 23│ runc │ ← OCI 运行时 24│ - 创建容器进程 │ 25│ - 配置 namespace/cgroup │ 26│ - 执行 OCI 规范 │ 27└─────────────────────────────────────┘ 28 │ 29 ↓ 30┌─────────────────────────────────────┐ 31│ Linux Kernel │ ← 内核层 32│ - namespace (隔离) │ 33│ - cgroup (资源限制) │ 34│ - union filesystem │ 35└─────────────────────────────────────┘ 简单理解 Docker = 高级工具（用户友好的界面 &#43; 额外功能）">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="程序员技能">
+    <meta itemprop="description" content="架构关系 1┌─────────────────────────────────────┐ 2│ Docker CLI (docker command) │ ← 用户交互层 3├─────────────────────────────────────┤ 4│ Docker Engine (dockerd) │ ← API 服务层 5│ - REST API │ 6│ - 镜像构建 (docker build) │ 7│ - 卷管理 (volumes) │ 8│ - 网络管理 (networks) │ 9│ - Swarm 编排 │ 10└──────────────┬──────────────────────┘ 11 │ gRPC 调用 12 ↓ 13┌─────────────────────────────────────┐ 14│ containerd │ ← 容器运行时层 15│ - 镜像拉取和管理 │ 16│ - 容器生命周期管理 │ 17│ - 快照管理 │ 18│ - 命名空间隔离 │ 19└──────────────┬──────────────────────┘ 20 │ 调用 21 ↓ 22┌─────────────────────────────────────┐ 23│ runc │ ← OCI 运行时 24│ - 创建容器进程 │ 25│ - 配置 namespace/cgroup │ 26│ - 执行 OCI 规范 │ 27└─────────────────────────────────────┘ 28 │ 29 ↓ 30┌─────────────────────────────────────┐ 31│ Linux Kernel │ ← 内核层 32│ - namespace (隔离) │ 33│ - cgroup (资源限制) │ 34│ - union filesystem │ 35└─────────────────────────────────────┘ 简单理解 Docker = 高级工具（用户友好的界面 &#43; 额外功能）">
+    <meta itemprop="wordCount" content="775">
+    <title></title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/20-containerd/docker%E5%92%8Ccontainerd%E7%9A%84%E5%85%B3%E7%B3%BB/index.html" rel="canonical" type="text/html" title="">
+    <link href="/images/favicon.png?1791650867" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1791650867" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1791650867" defer></script>
+    <script src="/js/search-lunr.min.js?1791650867" defer></script>
+    <script src="/js/search.min.js?1791650867" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1791650867";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1791650867" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1791650867" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1791650867" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1791650867" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1791650867" rel="stylesheet">
+    <link href="/css/theme.min.css?1791650867" rel="stylesheet">
+    <link href="/css/format-print.min.css?1791650867" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/docker\/%E8%BF%9B%E9%98%B6\/20-containerd\/docker%E5%92%8Ccontainerd%E7%9A%84%E5%85%B3%E7%B3%BB\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1791650867" rel="stylesheet">
+  </head>
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/20-containerd/docker%E5%92%8Ccontainerd%E7%9A%84%E5%85%B3%E7%B3%BB/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#架构关系">架构关系</a></li>
+    <li><a href="#简单理解">简单理解</a></li>
+    <li><a href="#历史演变">历史演变</a>
+      <ul>
+        <li><a href="#1-docker-早期2013-2016">1. Docker 早期（2013-2016）</a></li>
+        <li><a href="#2-docker-拆分2016">2. Docker 拆分（2016）</a></li>
+        <li><a href="#3-现在2024">3. 现在（2024+）</a></li>
+      </ul>
+    </li>
+    <li><a href="#功能对比">功能对比</a></li>
+    <li><a href="#实际调用关系">实际调用关系</a></li>
+    <li><a href="#验证它们的关系">验证它们的关系</a>
+      <ul>
+        <li><a href="#查看进程树">查看进程树</a></li>
+        <li><a href="#查看-docker-是否在使用-containerd">查看 Docker 是否在使用 containerd</a></li>
+        <li><a href="#查看同一个容器在不同工具中">查看同一个容器在不同工具中</a></li>
+      </ul>
+    </li>
+    <li><a href="#命名空间隔离">命名空间隔离</a></li>
+    <li><a href="#为什么-kubernetes-弃用-docker">为什么 Kubernetes 弃用 Docker？</a></li>
+    <li><a href="#什么时候用-docker什么时候用-containerd">什么时候用 Docker？什么时候用 containerd？</a>
+      <ul>
+        <li><a href="#使用-dockerdockerd--containerd">使用 Docker（dockerd + containerd）</a></li>
+        <li><a href="#使用-containerd纯-containerd">使用 containerd（纯 containerd）</a></li>
+      </ul>
+    </li>
+    <li><a href="#工具选择">工具选择</a></li>
+    <li><a href="#系统分析">系统分析</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"><span itemprop="name">Docker</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/index.html"><span itemprop="name">Docker 进阶</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/20-containerd/docker%E5%92%8Ccontainerd%E7%9A%84%E5%85%B3%E7%B3%BB/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/05-compose/index.html" title="05 compose (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/index.html" title="kubernetes (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+        </div>
+      </main>
+    </div>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1791650867"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1791650867" defer></script>
+    <script src="/js/theme.min.js?1791650867" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>
