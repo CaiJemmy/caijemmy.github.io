@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.167.0">
+    <meta name="generator" content="Hugo 0.168.0">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="博客的搭建 1、本地创建博客 1.1、根据文档进行本地搭建 通过参考文档的Introduction &gt; Getting Started章节，博客就在本地跑起来了。
 1.2、个性化定制 1.2.1、修改hugo.toml配置文件 ​ hugo.toml配置文件 1baseURL = &#39;https://example.org/&#39; 2languageCode = &#39;zh-CN&#39; 3title = &#39;暮鼓晨钟&#39; 4 5theme = &#39;hugo-theme-relearn&#39; 6 7[params] 8 disableLandingPageButton = true # hide the Home button on the left menu 9 collapsibleMenu = true # 左侧目录树有下层子目录时，显示提示箭头 10 alwaysopen = false # 左侧目录树有下层子目录时，查看其中一个文档，其他文档自动收起来 11 showVisitedLinks = true # 对历史浏览做标记 12 # themeVariant = [&#39;relearn-light&#39;, &#39;relearn-dark&#39;, &#39;Learn&#39;] # 左下侧显示界面日夜模式切换 13 14 highlightWrap = false # 代码行内字符较多，是否触发换行 15 mermaidZoom = true # 流程图外部框 16 math = true 17 externalLinkTarget = &#39;_blank&#39; # 在新标签页中打开所有外部链接 18#################################### 19# logo图片 20 [params.logo] 21 direction = &#39;row&#39; 22 src = &#39;/images/logo.png&#39; 23 24#################################### 25# 页面颜色模式 26 [[params.themeVariant]] 27 identifier = &#39;relearn-light&#39; 28 name = &#39;浅色模式&#39; 29 [[params.themeVariant]] 30 identifier = &#39;relearn-dark&#39; 31 name = &#39;暗色模式&#39; 32 [[params.themeVariant]] 33 identifier = &#39;learn&#39; 34 name = &#39;浅紫模式&#39; 35 36 37#################################### 38# 搜索框配置 39# [params.search] 40# disable = false 41# [params.search.index] 42# disable = false 43# [params.search.page] 44# disable = false 45# 支持中文搜索 46 [params.search] 47 [params.search.adapter] 48 [params.search.adapter.params] 49 additionalContentLanguage = [&#39;zh&#39;] 50#################################### 51 52[markup] 53 [markup.goldmark] 54 [markup.goldmark.renderer] 55 unsafe = true 56 [markup.goldmark.parser] 57 [markup.goldmark.parser.attribute] 58 block = true 59 [markup.asciidocExt] 60 extensions = [&#39;asciidoctor-html5s&#39;, &#39;asciidoctor-diagram&#39;] 61 workingFolderCurrent = true 62 [markup.highlight] 63 lineNumbersInTable = false # 代码换行时，行号显示是否随换行一起 64 lineNos = true # 代码块行号 65 [markup.tableOfContents] 66 startLevel = 2 67 endLevel = 4 68 69############################################################### 70# 页面右上角可以显示的按钮：打印，markdown查看文档，查看文档源码 71[outputs] 72# home = [&#39;html&#39;, &#39;rss&#39;, &#39;print&#39;, &#39;markdown&#39;, &#39;source&#39;] 73# page = [&#39;html&#39;, &#39;print&#39;, &#39;markdown&#39;, &#39;source&#39;] 74# section = [&#39;html&#39;, &#39;rss&#39;, &#39;print&#39;, &#39;markdown&#39;, &#39;source&#39;] 75 home = [&#39;html&#39;, &#39;rss&#39;, &#39;print&#39;] 76 page = [&#39;html&#39;, &#39;print&#39;] 77 section = [&#39;html&#39;, &#39;rss&#39;, &#39;print&#39;] 78 79 80############################################################### 81# 标签类别配置 开始 82[taxonomies] 83 category = &#39;categories&#39; 84 tag = &#39;tags&#39; 85 86[menu] 87 [[menu.shortcuts]] 88 name = &#39;&lt;i class=&#34;fa-solid fa-tags&#34;&gt;&lt;/i&gt; 标签&#39; 89 url = &#39;/tags/&#39; 90 weight = 1 91 [[menu.shortcuts]] 92 name = &#39;&lt;i class=&#34;fa-solid fa-layer-group&#34;&gt;&lt;/i&gt; 类别&#39; 93 url = &#39;/categories/&#39; 94 weight = 2 95 [[menu.shortcuts]] 96 name = &#39;&lt;i class=&#34;fa-solid fa-circle-question&#34;&gt;&lt;/i&gt; 关于&#39; 97 url = &#39;/about/&#39; 98 weight = 3 99# 标签类别配置 结束 100############################################################### 1.2.2、修改logo区背景颜色 将hugo-theme-relearn主题下的assets\css\theme-relearn-dark.css和assets\css\theme-relearn-light.css文件拷贝到博客主目录的assets\css目录下，并做以下修改。">
@@ -26,27 +26,27 @@
     <meta itemprop="wordCount" content="911">
     <title>关于 :: 暮鼓晨钟</title>
     <link href="/about/index.print.html" rel="alternate" type="text/html" title="关于 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1791820702" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1791820702" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1791820702" defer></script>
-    <script src="/js/search-lunr.min.js?1791820702" defer></script>
-    <script src="/js/search.min.js?1791820702" defer></script>
+    <link href="/images/favicon.png?1793103161" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1793103161" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1793103161" defer></script>
+    <script src="/js/search-lunr.min.js?1793103161" defer></script>
+    <script src="/js/search.min.js?1793103161" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1791820702";
+      window.relearn.index_js_url="/searchindex.en.js?1793103161";
     </script>
-    <script src="/js/lunr/lunr.min.js?1791820702" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1791820702" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1791820702" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1791820702" defer></script>
+    <script src="/js/lunr/lunr.min.js?1793103161" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1793103161" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1793103161" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1793103161" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1791820702" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1791820702" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1791820702" rel="stylesheet">
-    <link href="/css/theme.min.css?1791820702" rel="stylesheet">
-    <link href="/css/format-html.min.css?1791820702" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1793103161" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1793103161" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1793103161" rel="stylesheet">
+    <link href="/css/theme.min.css?1793103161" rel="stylesheet">
+    <link href="/css/format-html.min.css?1793103161" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -95,7 +95,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1791820702" rel="stylesheet">
+    <link href="/css/custom.css?1793103161" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/about/index.html">
     <div id="R-body" class="default-animation">
@@ -175,21 +175,21 @@
 <p>通过<a href="https://mcshelby.github.io/hugo-theme-relearn/index.html" rel="external" target="_blank">参考文档</a>的<code>Introduction &gt; Getting Started</code>章节，博客就在本地跑起来了。</p>
 <h4 id="12个性化定制">1.2、个性化定制<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
 <h5 id="121修改hugotoml配置文件">1.2.1、修改hugo.toml配置文件<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h5>
-<div class="tab-panel" data-tab-group="R-tabs-d6a959c26877e284a7b025a19a89cf43">
+<div class="tab-panel" data-tab-group="R-tabs-bcea82bb2111eab55b75c4e5cc599ea8">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-b3c90720535b41078d0889bc296eed69" aria-expanded="true"
+      aria-controls="R-tab-id-076ba19254aa1e93d740086249ddcdee" aria-expanded="true"
       data-tab-item="R-tab-47b9cd4795a4b851e7a109d647d1e85e"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-d6a959c26877e284a7b025a19a89cf43','R-tab-47b9cd4795a4b851e7a109d647d1e85e')"
+      onclick="switchTab('R-tabs-bcea82bb2111eab55b75c4e5cc599ea8','R-tab-47b9cd4795a4b851e7a109d647d1e85e')"
     >
       <span class="tab-nav-text">hugo.toml配置文件</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-b3c90720535b41078d0889bc296eed69"
+      id="R-tab-id-076ba19254aa1e93d740086249ddcdee"
       data-tab-item="R-tab-47b9cd4795a4b851e7a109d647d1e85e"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -298,21 +298,21 @@
   </div>
 </div><h5 id="122修改logo区背景颜色">1.2.2、修改logo区背景颜色<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h5>
 <p>将<code>hugo-theme-relearn</code>主题下的<code>assets\css\theme-relearn-dark.css</code>和<code>assets\css\theme-relearn-light.css</code>文件拷贝到博客主目录的<code>assets\css</code>目录下，并做以下修改。</p>
-<div class="tab-panel" data-tab-group="R-tabs-c24a223a313641bcbb629974df88a024">
+<div class="tab-panel" data-tab-group="R-tabs-8af5a1d55ea6f2d03d26d4717cde7a02">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-b4f356a006a0541e5677c9fccb40c858" aria-expanded="true"
+      aria-controls="R-tab-id-58dc588e31615bcad0de7565b2b94be7" aria-expanded="true"
       data-tab-item="R-tab-a2d26e044c5ba2cebc73e9ae777c5970"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-c24a223a313641bcbb629974df88a024','R-tab-a2d26e044c5ba2cebc73e9ae777c5970')"
+      onclick="switchTab('R-tabs-8af5a1d55ea6f2d03d26d4717cde7a02','R-tab-a2d26e044c5ba2cebc73e9ae777c5970')"
     >
       <span class="tab-nav-text">修改logo背景样式</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-b4f356a006a0541e5677c9fccb40c858"
+      id="R-tab-id-58dc588e31615bcad0de7565b2b94be7"
       data-tab-item="R-tab-a2d26e044c5ba2cebc73e9ae777c5970"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -337,21 +337,21 @@
 <p>调整代码块样式，使其更美观（代码块和拷贝按钮无错位）。在博客主目录的<code>assets\icons</code>目录下新建<code>custom.css</code>文件，拷贝以下代码到文件并保存。</p>
 </li>
 </ol>
-<div class="tab-panel" data-tab-group="R-tabs-97c3e78d013eb32ac0864ca11f1f78ff">
+<div class="tab-panel" data-tab-group="R-tabs-99826d5be1cc3f53e6da6ec68a08bf86">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-edfe04b6313d4c6d77fde0adf546c46b" aria-expanded="true"
+      aria-controls="R-tab-id-4417c74ad2040e6e5132c3f895473091" aria-expanded="true"
       data-tab-item="R-tab-a8a4ea2ec0bd9fcabb898421c60cb601"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-97c3e78d013eb32ac0864ca11f1f78ff','R-tab-a8a4ea2ec0bd9fcabb898421c60cb601')"
+      onclick="switchTab('R-tabs-99826d5be1cc3f53e6da6ec68a08bf86','R-tab-a8a4ea2ec0bd9fcabb898421c60cb601')"
     >
       <span class="tab-nav-text">custom-footer.html，定义折叠样式，定义展开函数</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-edfe04b6313d4c6d77fde0adf546c46b"
+      id="R-tab-id-4417c74ad2040e6e5132c3f895473091"
       data-tab-item="R-tab-a8a4ea2ec0bd9fcabb898421c60cb601"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -438,21 +438,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-0d853b5fc067093ca047c6c12958be40">
+</div><div class="tab-panel" data-tab-group="R-tabs-f7bac17e006e29e77b0908f51b30b8d0">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-1340facbf498474b9a48e9761af54feb" aria-expanded="true"
+      aria-controls="R-tab-id-bd8a7e0e9e76a9335d83b01ce44ee495" aria-expanded="true"
       data-tab-item="R-tab-0c7083a2223c37c587611dfc8ac205d0"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-0d853b5fc067093ca047c6c12958be40','R-tab-0c7083a2223c37c587611dfc8ac205d0')"
+      onclick="switchTab('R-tabs-f7bac17e006e29e77b0908f51b30b8d0','R-tab-0c7083a2223c37c587611dfc8ac205d0')"
     >
       <span class="tab-nav-text">assets\icons\custom.css，调整代码块样式</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-1340facbf498474b9a48e9761af54feb"
+      id="R-tab-id-bd8a7e0e9e76a9335d83b01ce44ee495"
       data-tab-item="R-tab-0c7083a2223c37c587611dfc8ac205d0"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -494,21 +494,21 @@
 </li>
 </ul>
 <h4 id="22配置gitignore">2.2、配置.gitignore<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-e250b5070623667885825778f1145184">
+<div class="tab-panel" data-tab-group="R-tabs-8ef87f4678616cdfca0525ccc03f577e">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-c5f0ebe7b146420cbf9cb382fa967262" aria-expanded="true"
+      aria-controls="R-tab-id-182eaf70c8f8d38c11f2ae9e4d881263" aria-expanded="true"
       data-tab-item="R-tab-9dd333f6fb56c7a924bf285ca42bd0d8"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-e250b5070623667885825778f1145184','R-tab-9dd333f6fb56c7a924bf285ca42bd0d8')"
+      onclick="switchTab('R-tabs-8ef87f4678616cdfca0525ccc03f577e','R-tab-9dd333f6fb56c7a924bf285ca42bd0d8')"
     >
       <span class="tab-nav-text">提交代码时忽略的文件及目录</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-c5f0ebe7b146420cbf9cb382fa967262"
+      id="R-tab-id-182eaf70c8f8d38c11f2ae9e4d881263"
       data-tab-item="R-tab-9dd333f6fb56c7a924bf285ca42bd0d8"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -530,21 +530,21 @@
 <li>token配置的名称</li>
 <li>blog分支名称</li>
 </ul>
-<div class="tab-panel" data-tab-group="R-tabs-a1535047ae93ce25aad11a722310d7c0">
+<div class="tab-panel" data-tab-group="R-tabs-76c6be3d778bf633b6b22eb25c171502">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-28ce94f097a282d8289f5616ee156879" aria-expanded="true"
+      aria-controls="R-tab-id-b2da9335b8535ad7aaeee1edac723e56" aria-expanded="true"
       data-tab-item="R-tab-8b21243e08dee36f3fbd8c1ade649041"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-a1535047ae93ce25aad11a722310d7c0','R-tab-8b21243e08dee36f3fbd8c1ade649041')"
+      onclick="switchTab('R-tabs-76c6be3d778bf633b6b22eb25c171502','R-tab-8b21243e08dee36f3fbd8c1ade649041')"
     >
       <span class="tab-nav-text">workflows配置</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-28ce94f097a282d8289f5616ee156879"
+      id="R-tab-id-b2da9335b8535ad7aaeee1edac723e56"
       data-tab-item="R-tab-8b21243e08dee36f3fbd8c1ade649041"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -670,7 +670,8 @@
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-3332d5c03f8527837f94b80748c083f2" aria-controls="R-subsections-3332d5c03f8527837f94b80748c083f2"><label for="R-section-3332d5c03f8527837f94b80748c083f2"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html">感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3332d5c03f8527837f94b80748c083f2" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html">聪明、听话、努力<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E9%9D%A2%E5%AD%90%E6%9C%80%E6%B2%A1%E7%94%A8%E7%9A%84%E4%B8%9C%E8%A5%BF/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E9%9D%A2%E5%AD%90%E6%9C%80%E6%B2%A1%E7%94%A8%E7%9A%84%E4%B8%9C%E8%A5%BF/index.html">面子，最没用的东西<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
-            <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><input type="checkbox" id="R-section-5514417afb636335d911822c29826333" aria-controls="R-subsections-5514417afb636335d911822c29826333"><label for="R-section-5514417afb636335d911822c29826333"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单书香笔记</span></label><a class="padding default-animation" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-5514417afb636335d911822c29826333" class="collapsible-menu">
+            <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%AD%A6/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%AD%A6/index.html">笨办法学<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f"><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html"><input type="checkbox" id="R-section-938848ec98f997f5505140fedf33ea1d" aria-controls="R-subsections-938848ec98f997f5505140fedf33ea1d"><label for="R-section-938848ec98f997f5505140fedf33ea1d"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01 redis服务安装后配置检查</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html">01 redis服务安装后配置检查<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-938848ec98f997f5505140fedf33ea1d" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html">01 redis服务启动配置文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
@@ -788,9 +789,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1791820702"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1791820702" defer></script>
-    <script src="/js/theme.min.js?1791820702" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1793103161"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1793103161" defer></script>
+    <script src="/js/theme.min.js?1793103161" defer></script>
 
 <style>
     .highlight {

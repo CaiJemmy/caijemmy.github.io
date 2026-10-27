@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.167.0">
+    <meta name="generator" content="Hugo 0.168.0">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="Hello World！">
     <meta name="author" content="">
@@ -24,27 +24,27 @@
     <meta itemprop="keywords" content="CMake">
     <title>02单个源文件生成可执行文件 :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/2-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html" rel="canonical" type="text/html" title="02单个源文件生成可执行文件 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1791820702" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1791820702" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1791820702" defer></script>
-    <script src="/js/search-lunr.min.js?1791820702" defer></script>
-    <script src="/js/search.min.js?1791820702" defer></script>
+    <link href="/images/favicon.png?1793103161" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1793103161" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1793103161" defer></script>
+    <script src="/js/search-lunr.min.js?1793103161" defer></script>
+    <script src="/js/search.min.js?1793103161" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1791820702";
+      window.relearn.index_js_url="/searchindex.en.js?1793103161";
     </script>
-    <script src="/js/lunr/lunr.min.js?1791820702" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1791820702" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1791820702" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1791820702" defer></script>
+    <script src="/js/lunr/lunr.min.js?1793103161" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1793103161" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1793103161" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1793103161" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1791820702" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1791820702" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1791820702" rel="stylesheet">
-    <link href="/css/theme.min.css?1791820702" rel="stylesheet">
-    <link href="/css/format-print.min.css?1791820702" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1793103161" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1793103161" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1793103161" rel="stylesheet">
+    <link href="/css/theme.min.css?1793103161" rel="stylesheet">
+    <link href="/css/format-print.min.css?1793103161" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -93,7 +93,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1791820702" rel="stylesheet">
+    <link href="/css/custom.css?1793103161" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/2-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">
     <div id="R-body" class="default-animation">
@@ -182,21 +182,21 @@
   </div>
 </details>
 <h2 id="cpp源文件">CPP源文件<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<div class="tab-panel" data-tab-group="R-tabs-228f8b9b3d78b83e65f14dbf6b679b6b">
+<div class="tab-panel" data-tab-group="R-tabs-80de5c927a4e5d6eefb68863b7b55cfe">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-1cecab335e821323801bf11519f4caf6" aria-expanded="true"
+      aria-controls="R-tab-id-9e9468150a82d2fadc3eb1c772206a7a" aria-expanded="true"
       data-tab-item="R-tab-9e70be30221ce738537b82eb3edc46d4"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-228f8b9b3d78b83e65f14dbf6b679b6b','R-tab-9e70be30221ce738537b82eb3edc46d4')"
+      onclick="switchTab('R-tabs-80de5c927a4e5d6eefb68863b7b55cfe','R-tab-9e70be30221ce738537b82eb3edc46d4')"
     >
       <span class="tab-nav-text">hello_world.cpp</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-1cecab335e821323801bf11519f4caf6"
+      id="R-tab-id-9e9468150a82d2fadc3eb1c772206a7a"
       data-tab-item="R-tab-9e70be30221ce738537b82eb3edc46d4"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -215,21 +215,21 @@
     </div>
   </div>
 </div><h2 id="cmake文件">CMake文件<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<div class="tab-panel" data-tab-group="R-tabs-7b2df97b9365f89dd5282ecfbb324365">
+<div class="tab-panel" data-tab-group="R-tabs-a19de288e1e8684daf7a61c273b0156e">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-33a527583c245d2062cbd71612b3a89d" aria-expanded="true"
+      aria-controls="R-tab-id-075fe955d06563036556dd8ca7db1bac" aria-expanded="true"
       data-tab-item="R-tab-af3b638bc2a3e6c650974192a53c7291"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-7b2df97b9365f89dd5282ecfbb324365','R-tab-af3b638bc2a3e6c650974192a53c7291')"
+      onclick="switchTab('R-tabs-a19de288e1e8684daf7a61c273b0156e','R-tab-af3b638bc2a3e6c650974192a53c7291')"
     >
       <span class="tab-nav-text">CMakeLists.txt</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-33a527583c245d2062cbd71612b3a89d"
+      id="R-tab-id-075fe955d06563036556dd8ca7db1bac"
       data-tab-item="R-tab-af3b638bc2a3e6c650974192a53c7291"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -266,21 +266,21 @@
 </details>
 <h2 id="构建">构建<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="生成cmake相关文件">生成CMake相关文件<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-59435922e9d177dd79e16c03ab03f0bd">
+<div class="tab-panel" data-tab-group="R-tabs-fefa446699669d2fbd3aba78269fc36c">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-70959fb65d9f2b68d4b0bd5031faee45" aria-expanded="true"
+      aria-controls="R-tab-id-93abc6ebc578c3a2f4ba979707f81ff8" aria-expanded="true"
       data-tab-item="R-tab-19f129d83c0db143bd85f89713ede162"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-59435922e9d177dd79e16c03ab03f0bd','R-tab-19f129d83c0db143bd85f89713ede162')"
+      onclick="switchTab('R-tabs-fefa446699669d2fbd3aba78269fc36c','R-tab-19f129d83c0db143bd85f89713ede162')"
     >
       <span class="tab-nav-text">生成CMake文件命令</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-70959fb65d9f2b68d4b0bd5031faee45"
+      id="R-tab-id-93abc6ebc578c3a2f4ba979707f81ff8"
       data-tab-item="R-tab-19f129d83c0db143bd85f89713ede162"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -302,21 +302,21 @@
 <p><code>-H</code> 和 <code>-B</code> 为CLI选项。 <code>-H</code> 表示当前目录中搜索根<code>CMakeLists.txt</code>文件。<code>-Bbuild</code>告诉CMake在一个名为<code>build</code>的目录中生成所有的文件。</p>
   </div>
 </details>
-<div class="tab-panel" data-tab-group="R-tabs-afaa2a3fc2783395692d84d5843f2134">
+<div class="tab-panel" data-tab-group="R-tabs-e3a53c15bb4ce6a57bd02879a69bd3c1">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-d027d439ab1fe1718b449e34c2d45c55" aria-expanded="true"
+      aria-controls="R-tab-id-5486ff81386cf916e2d773f6d46f8442" aria-expanded="true"
       data-tab-item="R-tab-96b9efaec56e2d7ae2517cf64b524917"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-afaa2a3fc2783395692d84d5843f2134','R-tab-96b9efaec56e2d7ae2517cf64b524917')"
+      onclick="switchTab('R-tabs-e3a53c15bb4ce6a57bd02879a69bd3c1','R-tab-96b9efaec56e2d7ae2517cf64b524917')"
     >
       <span class="tab-nav-text">命令结果输出</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-d027d439ab1fe1718b449e34c2d45c55"
+      id="R-tab-id-5486ff81386cf916e2d773f6d46f8442"
       data-tab-item="R-tab-96b9efaec56e2d7ae2517cf64b524917"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -332,21 +332,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-fd5de49b96151a58087b0e04b7023aae">
+</div><div class="tab-panel" data-tab-group="R-tabs-c951c746f2231e791d523238f497e966">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-d60efe750ff77730521d95c438f7eba7" aria-expanded="true"
+      aria-controls="R-tab-id-cca443bb0d85369a22be5b5cbd95d051" aria-expanded="true"
       data-tab-item="R-tab-e3c230e0d9d676c083ad298b1bbd7e2c"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-fd5de49b96151a58087b0e04b7023aae','R-tab-e3c230e0d9d676c083ad298b1bbd7e2c')"
+      onclick="switchTab('R-tabs-c951c746f2231e791d523238f497e966','R-tab-e3c230e0d9d676c083ad298b1bbd7e2c')"
     >
       <span class="tab-nav-text">build目录下文件</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-d60efe750ff77730521d95c438f7eba7"
+      id="R-tab-id-cca443bb0d85369a22be5b5cbd95d051"
       data-tab-item="R-tab-e3c230e0d9d676c083ad298b1bbd7e2c"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -367,21 +367,21 @@
 <li>CMakeCache.txt：如文件名所示，CMake缓存。CMake在重新运行配置时使用这个文件。</li>
 </ul>
 <h3 id="生成可执行文件">生成可执行文件<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-96bf3bd70e44098c15c1b946b555090c">
+<div class="tab-panel" data-tab-group="R-tabs-6725ffc06b4280a2df8765868b3432be">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-35d44d55b0173bb1e8b7903d14235492" aria-expanded="true"
+      aria-controls="R-tab-id-0cbfcd95fd5d6fa58d561e54d2aa014e" aria-expanded="true"
       data-tab-item="R-tab-905cb25908f66559a3f42d6a48a8f2c3"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-96bf3bd70e44098c15c1b946b555090c','R-tab-905cb25908f66559a3f42d6a48a8f2c3')"
+      onclick="switchTab('R-tabs-6725ffc06b4280a2df8765868b3432be','R-tab-905cb25908f66559a3f42d6a48a8f2c3')"
     >
       <span class="tab-nav-text">构建可执行文件</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-35d44d55b0173bb1e8b7903d14235492"
+      id="R-tab-id-0cbfcd95fd5d6fa58d561e54d2aa014e"
       data-tab-item="R-tab-905cb25908f66559a3f42d6a48a8f2c3"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -427,9 +427,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1791820702"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1791820702" defer></script>
-    <script src="/js/theme.min.js?1791820702" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1793103161"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1793103161" defer></script>
+    <script src="/js/theme.min.js?1793103161" defer></script>
 
 <style>
     .highlight {

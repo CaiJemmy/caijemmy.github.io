@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.167.0">
+    <meta name="generator" content="Hugo 0.168.0">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
     <meta name="description" content="启动shell配置 1# Custom profile 2cat &gt; /etc/profile.d/oneinstack.sh &lt;&lt; EOF 3HISTSIZE=10000 4PS1=&#39;\${debian_chroot:&#43;(\$debian_chroot)}\\[\\e[1;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ &#39; 5HISTTIMEFORMAT=&#34;%F %T \$(whoami) &#34; 6 7alias l=&#39;ls -AFhlt --color=auto&#39; 8alias lh=&#39;l | head&#39; 9alias ll=&#39;ls -l --color=auto&#39; 10alias ls=&#39;ls --color=auto&#39; 11alias vi=vim 12 13GREP_OPTIONS=&#34;--color=auto&#34; 14alias grep=&#39;grep --color&#39; 15alias egrep=&#39;egrep --color&#39; 16alias fgrep=&#39;fgrep --color&#39; 17EOF Linux PAM /etc/security/limits.conf 及 /etc/security/limits.d/这两个文件是 Linux PAM（Pluggable Authentication Modules） 的一部分，用于限制用户和进程的系统资源使用。它们定义了各种资源限制，如打开文件数、进程数、内存使用等。">
@@ -20,27 +20,27 @@
     <title></title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE/%E6%97%A5%E5%B8%B8%E9%85%8D%E7%BD%AE/index.html" rel="canonical" type="text/html" title="">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE/%E6%97%A5%E5%B8%B8%E9%85%8D%E7%BD%AE/index.xml" rel="alternate" type="application/rss+xml" title="">
-    <link href="/images/favicon.png?1791820702" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1791820702" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1791820702" defer></script>
-    <script src="/js/search-lunr.min.js?1791820702" defer></script>
-    <script src="/js/search.min.js?1791820702" defer></script>
+    <link href="/images/favicon.png?1793103161" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1793103161" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1793103161" defer></script>
+    <script src="/js/search-lunr.min.js?1793103161" defer></script>
+    <script src="/js/search.min.js?1793103161" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1791820702";
+      window.relearn.index_js_url="/searchindex.en.js?1793103161";
     </script>
-    <script src="/js/lunr/lunr.min.js?1791820702" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1791820702" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1791820702" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1791820702" defer></script>
+    <script src="/js/lunr/lunr.min.js?1793103161" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1793103161" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1793103161" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1793103161" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1791820702" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1791820702" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1791820702" rel="stylesheet">
-    <link href="/css/theme.min.css?1791820702" rel="stylesheet">
-    <link href="/css/format-print.min.css?1791820702" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1793103161" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1793103161" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1793103161" rel="stylesheet">
+    <link href="/css/theme.min.css?1793103161" rel="stylesheet">
+    <link href="/css/format-print.min.css?1793103161" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -89,7 +89,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1791820702" rel="stylesheet">
+    <link href="/css/custom.css?1793103161" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE/%E6%97%A5%E5%B8%B8%E9%85%8D%E7%BD%AE/index.html">
     <div id="R-body" class="default-animation">
@@ -179,9 +179,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1791820702"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1791820702" defer></script>
-    <script src="/js/theme.min.js?1791820702" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1793103161"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1793103161" defer></script>
+    <script src="/js/theme.min.js?1793103161" defer></script>
 
 <style>
     .highlight {
