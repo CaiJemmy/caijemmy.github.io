@@ -259,7 +259,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Linux \u003e Linux 网络",
-    "content": "veth 对 veth 对的基本概念 veth（Virtual Ethernet Device） 是 Linux 内核提供的一种虚拟网络设备，总是成对出现：\n一端在宿主机，通常命名为 vethxxxx 另一端在容器的 network namespace 中，通常命名为 eth0 这对设备像一根虚拟的网线，将两个网络命名空间连接起来 veth 对的创建和连接过程 手动创建 veth 对的步骤： 1# 1. 创建 veth 对（一端叫 veth0，另一端叫 peer0） 2sudo ip link add veth0 type veth peer name peer0 3 4# 2. 查看创建的网络设备 5ip link show | grep veth 6 7# 3. 创建一个新的网络命名空间（模拟容器） 8sudo ip netns add testns 9 10# 4. 将 peer0 移动到新的命名空间 11sudo ip link set peer0 netns testns 12 13# 5. 在宿主机中配置 veth0 14sudo ip addr add 10.0.0.1/24 dev veth0 15sudo ip link set veth0 up 16 17# 6. 在新的命名空间中配置 peer0（现在它是容器的 eth0） 18sudo ip netns exec testns ip addr add 10.0.0.2/24 dev peer0 19sudo ip netns exec testns ip link set peer0 up 20sudo ip netns exec testns ip link set lo up 21 22# 7. 验证连接 23ping -c 2 10.0.0.2 Docker 容器的实际创建过程： 当 Docker 创建一个容器时：\n1# Docker 内部执行的类似命令： 2# 1. 创建 veth 对 3ip link add veth123456 type veth peer name eth0 4 5# 2. 将 eth0 移动到容器的 network namespace 6ip link set eth0 netns \u003ccontainer-pid\u003e 7 8# 3. 将 veth123456 连接到 docker0 网桥 9brctl addif docker0 veth123456 3. 删除宿主机 vethxxx 的影响 直接回答：会断开！ 删除宿主机端的 vethxxx 会发生：\n立即断开连接：\n1# 删除宿主机端的 veth 设备 2sudo ip link delete veth123456 容器内的 eth0 会立即变成 NO-CARRIER 状态 网络连接完全中断 容器内的表现：\n1# 在容器内查看网络状态 2ip link show eth0 3# 输出：eth0: \u003cNO-CARRIER,BROADCAST,MULTICAST,UP\u003e ... 恢复方法：\n重启容器：Docker 会自动重建 veth 对 手动重建：需要重新创建 veth 对并重新连接 重要特性： veth 对是双向连接的 删除任何一端，另一端都会失效 但另一端不会自动删除，只是变为不可用状态 4. 多 veth 连接问题分析 问题 1：一个 eth0 连接多个 vethxxx？ 答案：技术上可以，但不推荐也不常见\n1# 理论上可以创建多个 veth 对连接到同一个命名空间 2sudo ip link add veth1 type veth peer name eth1 3sudo ip link add veth2 type veth peer name eth2 4sudo ip link set eth1 netns testns 5sudo ip link set eth2 netns testns 6 7# 在容器内会有 eth1 和 eth2 两个接口 但 Docker 的标准做法是：\n每个容器默认只有一个 eth0 如果需要多个网络接口，使用 --network 参数： 1docker run --network=bridge --network=my-network ... 问题 2：宿主机多个 vethxxx 连接到容器？ 答案：可以，这就是多网卡容器的实现方式\n1# Docker 创建多网络容器 2docker network create net1 3docker network create net2 4 5# 容器连接到多个网络 6docker run -d --name multi-net \\ 7 --network=bridge \\ 8 --network=net1 \\ 9 --network=net2 \\ 10 nginx 11 12# 查看结果 13docker exec multi-net ip link show 14# 会有：eth0@ifxxx, eth1@ifyyy, eth2@ifzzz 等多个接口 每个网络连接都会创建一对 veth：\n宿主机：vethA → 容器：eth0（默认 bridge） 宿主机：vethB → 容器：eth1（net1） 宿主机：vethC → 容器：eth2（net2） 5. Docker 网络架构图 1宿主机网络命名空间 2┌─────────────────────────────────────────┐ 3│ docker0 (172.17.0.1/16) │ 4│ │ │ 5│ ├─ veth123456 ←──────┐ │ 6│ │ │ │ 7│ ├─ veth789abc ←──────┼──────┐ │ 8│ │ │ │ │ 9│ └─ vethdef012 ←──────┼──────┼──────┐│ 10└───────────────────────────┼──────┼──────┼┘ 11 │ │ │ 12容器1网络命名空间 │ │ │ 13┌───────────────────────────┘ │ │ 14│ eth0 (172.17.0.2) │ │ 15└──────────────────────────────────┘ │ 16 │ 17容器2网络命名空间 │ 18┌─────────────────────────────────────────┘ 19│ eth0 (172.17.0.3) eth1 (10.0.0.2) │ 20│ │ │ │ 21└───────────────────────────┘ │ 22 │ 23容器3网络命名空间 │ 24┌──────────────────────────────────────────┘ 25│ eth0 (172.17.0.4) eth1 (192.168.1.2) │ 26└─────────────────────────────────────────┘ 6. 实际示例和操作 查看 Docker 容器的 veth 连接： 1# 1. 查看容器进程 ID 2docker inspect \u003ccontainer-id\u003e | grep Pid 3# \"Pid\": 12345 4 5# 2. 查看容器的网络命名空间 6sudo ls -la /proc/12345/ns/ 7# lrwxrwxrwx ... net -\u003e net:[4026531234] 8 9# 3. 查看容器内的网络接口 10sudo nsenter -t 12345 -n ip link show 11# 会看到 eth0@ifxxx 12 13# 4. 在宿主机找到对应的 veth 14ip link show | grep ifxxx 15# veth123456@ifxxx 16 17# 5. 查看 veth 对 18ethtool -S veth123456 19# 显示配对信息 删除和恢复实验： 1# 实验：删除 veth 对的影响 2# 1. 运行一个测试容器 3docker run -d --name test --rm alpine sleep 3600 4 5# 2. 找到对应的 veth 6VETH=$(ip link show | grep $(docker inspect test | grep SandboxKey | cut -d'\"' -f4) | cut -d' ' -f2 | cut -d'@' -f1) 7 8# 3. 删除 veth 9sudo ip link delete $VETH 10 11# 4. 查看容器网络状态 12docker exec test ip link show eth0 13# 显示 NO-CARRIER 14 15# 5. 重启容器网络 16docker restart test 17# veth 对会自动重建 7. 总结要点 veth 对是成对的：一端在宿主机，一端在容器 删除一端即断开：删除宿主机 veth，容器 eth0 会失去连接 多连接是可能的： 一个容器可以有多个网络接口（eth0, eth1, …） 每个接口对应一对 veth 宿主机有多个 veth 连接到不同容器 Docker 网络模型： 默认：容器 eth0 ↔ vethxxx ↔ docker0 网桥 多网络：每个网络创建一个新的 veth 对 自动管理：Docker 会自动管理 veth 对的生命周期 最佳实践： 不要手动删除 Docker 管理的 veth 设备 使用 Docker 命令管理网络（docker network） 需要多网络时，使用 Docker 网络功能而非手动配置 调试时使用 docker network inspect 查看连接关系",
+    "content": "veth 对 veth（Virtual Ethernet Device） 是 Linux 内核提供的一种虚拟网络设备，总是成对出现：\n一端在宿主机，通常命名为 vethxxxx 另一端在容器的 network namespace 中，通常命名为 eth0 这对设备像一根虚拟的网线，将两个网络命名空间连接起来 veth 对的创建和连接过程 手动创建 veth 对的步骤： 1# 1. 创建 veth 对（一端叫 veth0，另一端叫 peer0） 2sudo ip link add veth0 type veth peer name peer0 3 4# 2. 查看创建的网络设备 5ip link show | grep veth 6 7# 3. 创建一个新的网络命名空间（模拟容器） 8sudo ip netns add testns 9 10# 4. 将 peer0 移动到新的命名空间 11sudo ip link set peer0 netns testns 12 13# 5. 在宿主机中配置 veth0 14sudo ip addr add 10.0.0.1/24 dev veth0 15sudo ip link set veth0 up 16 17# 6. 在新的命名空间中配置 peer0（现在它是容器的 eth0） 18sudo ip netns exec testns ip addr add 10.0.0.2/24 dev peer0 19sudo ip netns exec testns ip link set peer0 up 20sudo ip netns exec testns ip link set lo up 21 22# 7. 验证连接 23ping -c 2 10.0.0.2 Docker 容器的实际创建过程： 当 Docker 创建一个容器时：\n1# Docker 内部执行的类似命令： 2# 1. 创建 veth 对 3ip link add veth123456 type veth peer name eth0 4 5# 2. 将 eth0 移动到容器的 network namespace 6ip link set eth0 netns \u003ccontainer-pid\u003e 7 8# 3. 将 veth123456 连接到 docker0 网桥 9brctl addif docker0 veth123456 删除宿主机 vethxxx 的影响 删除宿主机端的 vethxxx 会发生：\n立即断开连接：\n1# 删除宿主机端的 veth 设备 2sudo ip link delete veth123456 容器内的 eth0 会立即变成 NO-CARRIER 状态 网络连接完全中断 容器内的表现：\n1# 在容器内查看网络状态 2ip link show eth0 3# 输出：eth0: \u003cNO-CARRIER,BROADCAST,MULTICAST,UP\u003e ... 恢复方法：\n重启容器：Docker 会自动重建 veth 对 手动重建：需要重新创建 veth 对并重新连接 重要特性： veth 对是双向连接的 删除任何一端，另一端都会失效 但另一端不会自动删除，只是变为不可用状态 多 veth 连接问题分析 问题 1：一个 eth0 连接多个 vethxxx？ 答案：技术上可以，但不推荐也不常见\n1# 理论上可以创建多个 veth 对连接到同一个命名空间 2sudo ip link add veth1 type veth peer name eth1 3sudo ip link add veth2 type veth peer name eth2 4sudo ip link set eth1 netns testns 5sudo ip link set eth2 netns testns 6 7# 在容器内会有 eth1 和 eth2 两个接口 但 Docker 的标准做法是：\n每个容器默认只有一个 eth0 如果需要多个网络接口，使用 --network 参数： 1docker run --network=bridge --network=my-network ... 问题 2：宿主机多个 vethxxx 连接到容器？ 答案：可以，这就是多网卡容器的实现方式\n1# Docker 创建多网络容器 2docker network create net1 3docker network create net2 4 5# 容器连接到多个网络 6docker run -d --name multi-net \\ 7 --network=bridge \\ 8 --network=net1 \\ 9 --network=net2 \\ 10 nginx 11 12# 查看结果 13docker exec multi-net ip link show 14# 会有：eth0@ifxxx, eth1@ifyyy, eth2@ifzzz 等多个接口 每个网络连接都会创建一对 veth：\n宿主机：vethA → 容器：eth0（默认 bridge） 宿主机：vethB → 容器：eth1（net1） 宿主机：vethC → 容器：eth2（net2） Docker 网络架构图 1宿主机网络命名空间 2┌─────────────────────────────────────────┐ 3│ docker0 (172.17.0.1/16) │ 4│ │ │ 5│ ├─ veth123456 ←──────┐ │ 6│ │ │ │ 7│ ├─ veth789abc ←──────┼──────┐ │ 8│ │ │ │ │ 9│ └─ vethdef012 ←──────┼──────┼──────┐│ 10└───────────────────────────┼──────┼──────┼┘ 11 │ │ │ 12容器1网络命名空间 │ │ │ 13┌───────────────────────────┘ │ │ 14│ eth0 (172.17.0.2) │ │ 15└──────────────────────────────────┘ │ 16 │ 17容器2网络命名空间 │ 18┌─────────────────────────────────────────┘ 19│ eth0 (172.17.0.3) eth1 (10.0.0.2) │ 20│ │ │ │ 21└───────────────────────────┘ │ 22 │ 23容器3网络命名空间 │ 24┌──────────────────────────────────────────┘ 25│ eth0 (172.17.0.4) eth1 (192.168.1.2) │ 26└─────────────────────────────────────────┘ 实际示例和操作 查看 Docker 容器的 veth 连接： 1# 1. 查看容器进程 ID 2docker inspect \u003ccontainer-id\u003e | grep Pid 3# \"Pid\": 12345 4 5# 2. 查看容器的网络命名空间 6sudo ls -la /proc/12345/ns/ 7# lrwxrwxrwx ... net -\u003e net:[4026531234] 8 9# 3. 查看容器内的网络接口 10sudo nsenter -t 12345 -n ip link show 11# 会看到 eth0@ifxxx 12 13# 4. 在宿主机找到对应的 veth 14ip link show | grep ifxxx 15# veth123456@ifxxx 16 17# 5. 查看 veth 对 18ethtool -S veth123456 19# 显示配对信息 删除和恢复实验： 1# 实验：删除 veth 对的影响 2# 1. 运行一个测试容器 3docker run -d --name test --rm alpine sleep 3600 4 5# 2. 找到对应的 veth 6VETH=$(ip link show | grep $(docker inspect test | grep SandboxKey | cut -d'\"' -f4) | cut -d' ' -f2 | cut -d'@' -f1) 7 8# 3. 删除 veth 9sudo ip link delete $VETH 10 11# 4. 查看容器网络状态 12docker exec test ip link show eth0 13# 显示 NO-CARRIER 14 15# 5. 重启容器网络 16docker restart test 17# veth 对会自动重建 总结要点 veth 对是成对的：一端在宿主机，一端在容器 删除一端即断开：删除宿主机 veth，容器 eth0 会失去连接 多连接是可能的： 一个容器可以有多个网络接口（eth0, eth1, …） 每个接口对应一对 veth 宿主机有多个 veth 连接到不同容器 Docker 网络模型： 默认：容器 eth0 ↔ vethxxx ↔ docker0 网桥 多网络：每个网络创建一个新的 veth 对 自动管理：Docker 会自动管理 veth 对的生命周期 最佳实践： 不要手动删除 Docker 管理的 veth 设备 使用 Docker 命令管理网络（docker network） 需要多网络时，使用 Docker 网络功能而非手动配置 调试时使用 docker network inspect 查看连接关系",
     "description": "Linux 网络之虚拟网络设备。",
     "tags": [
       "Linux"
@@ -356,6 +356,16 @@ var relearn_searchindex = [
     "uri": "/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"
   },
   {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Linux \u003e Linux 网络 \u003e 网络知识疑问",
+    "content": "路由器的每个端口上是否有网卡 疑问：路由器端口上配IP地址，就能实现数据包的封装转发，那么路由器的每个端口上是否都有一张网卡？\n解答：路由器端口本质上就是一种特殊的网卡（网络接口卡），只是在叫法、形态和功能上有所区别。\n路由器端口的本质\n1路由器端口 = 网络接口 (Network Interface) 2 = 物理层 + 数据链路层功能 3 = 类似于网卡的硬件模块 从硬件角度看：\n路由器的每个端口都有独立的物理层芯片（PHY芯片） 每个端口都有独立的MAC地址 每个端口都有独立的数据链路层处理能力 每个端口可以配置独立的IP地址 从功能角度看：\n路由器端口 ≈ 服务器上的网卡 只是路由器有多个端口，而服务器通常只有1-2个网卡 数据包转发完整流程：\n1┌─────────────────────────────────────────────────────────┐ 2│ 路由器内部 │ 3│ │ 4│ ┌──────────┐ ┌──────────┐ ┌──────────┐ │ 5│ │ 端口1 │ │ CPU │ │ 端口2 │ │ 6│ │(网络接口)│ │ + 内存 │ │(网络接口)│ │ 7│ │ │ │ │ │ │ │ 8│ │ MAC: │◄───────►│ 路由表 │◄───────►│ MAC: │ │ 9│ │ aa:bb:cc │ │ ARP表 │ │ dd:ee:ff │ │ 10│ │ │ │ 转发引擎 │ │ │ │ 11│ │ IP: │ │ │ │ IP: │ │ 12│ │192.168.1.1│ │ │ │10.0.0.1 │ │ 13│ └─────┬────┘ └──────────┘ └────┬─────┘ │ 14│ │ │ │ 15└────────┼────────────────────────────────────────┼───────┘ 16 │ │ 17 [局域网] [互联网] 数据包接收过程（端口作为网卡）：\n1# 步骤1：物理层接收（端口硬件功能） 2端口1收到电信号 → PHY芯片转换 → 二进制数据 3 4# 步骤2：数据链路层处理（端口的MAC地址） 5解析以太网帧头 → 检查目的MAC地址 → 是否给本端口 6┌─────────────────────────────────────┐ 7│ 目的MAC | 源MAC | 类型 | IP数据包 | FCS │ 8└─────────────────────────────────────┘ 9 ↓ 10 检查：目的MAC == 端口1的MAC? 11 或 目的MAC == 广播地址? 12 13# 步骤3：网络层处理（端口的IP地址） 14解析IP头 → 查路由表 → 决定从哪个端口转发 15┌────────────────────────────────────────┐ 16│ 版本 | 源IP | 目的IP | 协议 | 数据 | 17└────────────────────────────────────────┘ 18 ↓ 19 查路由表：目的IP应该从哪个端口出去? 20 21# 步骤4：转发准备 22ARP查询 → 获取下一跳MAC地址 → 重新封装以太网帧 23 24# 步骤5：从另一个端口发送（端口作为网卡） 25端口2封装以太网帧 → PHY芯片转换 → 发送电信号 26┌─────────────────────────────────────┐ 27│ 新目的MAC | 端口2MAC | 类型 | IP包 | FCS │ 28└─────────────────────────────────────┘",
+    "description": "路由器相关疑问。",
+    "tags": [
+      "网络"
+    ],
+    "title": "路由器相关疑问",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E9%97%AE%E9%A2%98/%E8%B7%AF%E7%94%B1%E5%99%A8%E7%9B%B8%E5%85%B3/index.html"
+  },
+  {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Linux \u003e Linux 网络 \u003e Linux安全防火墙 \u003e netfilter/iptables",
     "content": "iptables 的匹配扩展（match extensions）是其强大功能的核心，它们通过 -m \u003cmodule\u003e 语法加载，用于在规则中实现更精细、更语义化的数据包匹配（如匹配端口范围、连接状态、字符串、IP 地址类型、速率、应用层特征等）。这些扩展由内核模块（xt_*）提供，需对应模块已加载（如 xt_tcp, xt_conntrack, xt_string 等）。\n以下为 iptables（基于 Linux 内核 4.x–6.x 主流版本，兼容 iptables-nft 和 legacy 模式）中常用且稳定的核心匹配扩展的详细分类列表。\n📌 注：所有扩展均作用于 filter、nat、mangle、raw、security 表中支持该扩展的链（如 INPUT、OUTPUT、FORWARD、PREROUTING、POSTROUTING），但并非所有扩展在所有表/链中都可用（例如 DNAT/SNAT 仅在 nat 表中有效，而 string 仅在 filter 表的 INPUT/FORWARD/OUTPUT 中常用）。\n基础协议相关扩展（无需 -m，隐式加载） 这些是协议内置匹配项，不需显式 -m tcp 等，但实际由对应 xt_* 模块支撑：\n协议 隐式匹配项 说明 示例 tcp --sport, --dport, --tcp-flags, --syn 等 匹配 TCP 头字段 iptables -A INPUT -p tcp --dport 22 -j ACCEPT udp --sport, --dport 匹配 UDP 端口 iptables -A INPUT -p udp --dport 53 -j ACCEPT icmp --icmp-type 匹配 ICMP 类型（如 echo-request） iptables -A INPUT -p icmp --icmp-type 8 -j ACCEPT icmpv6 --icmpv6-type IPv6 ICMP 类型匹配 ip6tables -A INPUT -p icmpv6 --icmpv6-type 128 -j ACCEPT 提示：-p tcp 自动加载 xt_tcp 模块；同理 -p udp → xt_udp，-p icmp → xt_icmp。\n核心通用匹配扩展（最常用） 模块名 (-m) 功能说明 典型选项与示例 注意事项 conntrack （推荐替代旧 state） 基于连接跟踪（conntrack）匹配连接状态、原始/回复方向、NAT 信息等 --ctstate ESTABLISHED,RELATED --ctorigsrc 192.168.1.100 --ctdir ORIGINAL ✅ 强烈推荐替代已废弃的 state 模块；需 nf_conntrack 内核支持；iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT multiport 匹配多个端口或端口范围（TCP/UDP），解决 --dport 只能单端口限制 --dports 22,80,443 --sports 1024:65535 --ports 53（用于 UDP/TCP 同端口） ⚠️ 最多支持 15 个端口；仅支持 TCP/UDP；\niptables -A INPUT -p tcp -m multiport --dports 22,80,443 -j ACCEPT iprange 按IP 地址范围（非 CIDR）匹配源/目的 IP --src-range 192.168.1.10-192.168.1.50 --dst-range 203.0.113.1-203.0.113.254 ✅ 灵活于 CIDR（如需连续但非网段的 IP）；\niptables -A INPUT -m iprange --src-range 10.0.0.5-10.0.0.20 -j DROP mac 匹配源 MAC 地址（仅链路层有效，INPUT/FORWARD 有效） --mac-source 00:11:22:33:44:55 ⚠️ 仅对本地接收/转发的帧有效；无法匹配经路由转发后的 MAC（因 MAC 在每跳重写）；\niptables -A INPUT -m mac --mac-source aa:bb:cc:dd:ee:ff -j ACCEPT owner （仅 OUTPUT 链） 匹配本地发起连接的进程 UID/GID/PID/进程名等 --uid-owner 1000 --gid-owner www-data --pid-owner 1234 --cmd-owner wget ⚠️ 仅 OUTPUT 链可用；需 CONFIG_NETFILTER_XT_MATCH_OWNER=y；普通用户进程 UID 匹配需 root；\niptables -A OUTPUT -m owner --uid-owner nginx -j REJECT 🔹 三、网络层与连接行为扩展 模块名 功能说明 示例 注意事项 addrtype 匹配地址类型（如 UNICAST, LOCAL, BROADCAST, ANYCAST, MULTICAST, UNSPEC） --src-type LOCAL（匹配本机地址）\n--dst-type UNICAST ✅ 常用于区分本机 vs 外部流量；iptables -A OUTPUT -m addrtype --src-type LOCAL -j ACCEPT pkttype 匹配数据包类型（unicast, broadcast, multicast） --pkt-type broadcast 仅对 INPUT/PREROUTING 有效；\niptables -A INPUT -m pkttype --pkt-type broadcast -j DROP physdev （桥接专用） 匹配桥接设备上的物理入/出接口（--physdev-in, --physdev-out, --physdev-is-bridged） --physdev-in eth0 ⚠️ 仅用于 Linux bridge（如 br0）环境；需 CONFIG_NETFILTER_XT_MATCH_PHYSDEV=y；\niptables -A FORWARD -m physdev --physdev-in eth0 --physdev-out br0 -j ACCEPT pktowner （较新） 类似 owner，但支持 --socket-exists（匹配已有 socket 的包） --socket-exists 内核 ≥ 4.15；用于更精确的本地进程控制； 🔹 四、高级匹配与应用层扩展（需谨慎启用） 模块名 功能说明 示例 注意事项 string 深度包检测（DPI）：匹配数据包载荷（payload）中的 ASCII/HEX 字符串 --algo bm（Boyer-Moore）\n--from 40（从第 40 字节开始）\n--string \"GET /admin\" ⚠️ 性能开销大，慎用于高流量链路；需 CONFIG_NETFILTER_XT_MATCH_STRING=y；\niptables -A FORWARD -p tcp --dport 80 -m string --algo bm --string \"sqlmap\" -j DROP time 基于系统时间/日期匹配（支持周几、月份、时间范围） --timestart 09:00 --timestop 17:00",
     "description": "介绍iptables的匹配扩展和目标扩展。",
@@ -388,6 +398,26 @@ var relearn_searchindex = [
     "tags": [],
     "title": "C++标准库",
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/%E6%A0%87%E5%87%86%E5%BA%93/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Linux \u003e Linux 网络",
+    "content": "LVS (Linux Virtual Server) 是 Linux 内核级别的负载均衡解决方案，由中国的章文嵩博士在 1998 年创建，是目前性能最高的负载均衡软件之一。\n​ 核心术语 1# 核心组件 2Director Server (DS) # 调度器/负载均衡器 3Real Server (RS) # 真实服务器/后端服务器 4VIP (Virtual IP) # 虚拟IP（对外提供服务的IP） 5DIP (Director IP) # 调度器IP（Director的内网IP） 6RIP (Real Server IP) # 真实服务器IP 7 8# 连接术语 9CIP (Client IP) # 客户端IP 10IPVS # IP Virtual Server（内核模块） 11ipvsadm # LVS管理工具",
+    "description": "LVS三种工作模式及调度算法学习及实验。",
+    "tags": [
+      "LVS"
+    ],
+    "title": "LVS架构",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Linux \u003e Linux 网络",
+    "content": "",
+    "description": "网络学习过程中的疑问。",
+    "tags": [
+      "网络"
+    ],
+    "title": "网络知识疑问",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E9%97%AE%E9%A2%98/index.html"
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e shell \u003e linux 核心命令",
@@ -478,6 +508,14 @@ var relearn_searchindex = [
     "tags": [],
     "title": "类别",
     "uri": "/categories/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 类别",
+    "content": "",
+    "description": "",
+    "tags": [],
+    "title": "类别 :: CCNA",
+    "uri": "/categories/ccna/index.html"
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 标签",
@@ -617,7 +655,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Linux",
-    "content": "虚拟网络设备\nLinux 网络之虚拟网络设备。\nLinux安全防火墙\nLinux安全防火墙之netfilter。",
+    "content": "虚拟网络设备\nLinux 网络之虚拟网络设备。\nLVS架构\nLVS三种工作模式及调度算法学习及实验。\n网络知识疑问\n网络学习过程中的疑问。\nLinux安全防火墙\nLinux安全防火墙之netfilter。",
     "description": "Linux 网络。",
     "tags": [],
     "title": "Linux 网络",
@@ -646,6 +684,14 @@ var relearn_searchindex = [
     "tags": [],
     "title": "Linux安全防火墙",
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 标签",
+    "content": "",
+    "description": "",
+    "tags": [],
+    "title": "标签 :: LVS",
+    "uri": "/tags/lvs/index.html"
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 程序员技能 \u003e Linux \u003e Linux 网络 \u003e Linux安全防火墙",
@@ -816,6 +862,14 @@ var relearn_searchindex = [
     "tags": [],
     "title": "类别 :: 网络",
     "uri": "/categories/%E7%BD%91%E7%BB%9C/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e 标签",
+    "content": "",
+    "description": "",
+    "tags": [],
+    "title": "标签 :: 网络",
+    "uri": "/tags/%E7%BD%91%E7%BB%9C/index.html"
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e 标签",

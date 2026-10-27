@@ -18,32 +18,32 @@
     <meta property="og:type" content="website">
     <meta itemprop="name" content="虚拟网络设备 :: 暮鼓晨钟">
     <meta itemprop="description" content="Linux 网络之虚拟网络设备。">
-    <meta itemprop="wordCount" content="648">
+    <meta itemprop="wordCount" content="640">
     <meta itemprop="keywords" content="Linux">
     <title>虚拟网络设备 :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/index.html" rel="canonical" type="text/html" title="虚拟网络设备 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/index.xml" rel="alternate" type="application/rss+xml" title="虚拟网络设备 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1793103161" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1793103161" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1793103161" defer></script>
-    <script src="/js/search-lunr.min.js?1793103161" defer></script>
-    <script src="/js/search.min.js?1793103161" defer></script>
+    <link href="/images/favicon.png?1793109011" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1793109011" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1793109011" defer></script>
+    <script src="/js/search-lunr.min.js?1793109011" defer></script>
+    <script src="/js/search.min.js?1793109011" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1793103161";
+      window.relearn.index_js_url="/searchindex.en.js?1793109011";
     </script>
-    <script src="/js/lunr/lunr.min.js?1793103161" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1793103161" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1793103161" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1793103161" defer></script>
+    <script src="/js/lunr/lunr.min.js?1793109011" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1793109011" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1793109011" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1793109011" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1793103161" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1793103161" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1793103161" rel="stylesheet">
-    <link href="/css/theme.min.css?1793103161" rel="stylesheet">
-    <link href="/css/format-print.min.css?1793103161" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1793109011" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1793109011" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1793109011" rel="stylesheet">
+    <link href="/css/theme.min.css?1793109011" rel="stylesheet">
+    <link href="/css/format-print.min.css?1793109011" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1793103161" rel="stylesheet">
+    <link href="/css/custom.css?1793109011" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/index.html">
     <div id="R-body" class="default-animation">
@@ -112,7 +112,6 @@
   <ul>
     <li><a href="#veth-对">veth 对</a>
       <ul>
-        <li><a href="#veth-对的基本概念">veth 对的基本概念</a></li>
         <li><a href="#veth-对的创建和连接过程">veth 对的创建和连接过程</a>
           <ul>
             <li><a href="#手动创建-veth-对的步骤">手动创建 veth 对的步骤：</a></li>
@@ -121,28 +120,27 @@
         </li>
       </ul>
     </li>
-    <li><a href="#3-删除宿主机-vethxxx-的影响"><strong>3. 删除宿主机 vethxxx 的影响</strong></a>
+    <li><a href="#删除宿主机-vethxxx-的影响">删除宿主机 vethxxx 的影响</a>
       <ul>
-        <li><a href="#直接回答会断开"><strong>直接回答：会断开！</strong></a></li>
-        <li><a href="#重要特性"><strong>重要特性</strong>：</a></li>
+        <li><a href="#重要特性">重要特性：</a></li>
       </ul>
     </li>
-    <li><a href="#4-多-veth-连接问题分析"><strong>4. 多 veth 连接问题分析</strong></a>
+    <li><a href="#多-veth-连接问题分析">多 veth 连接问题分析</a>
       <ul>
-        <li><a href="#问题-1一个-eth0-连接多个-vethxxx"><strong>问题 1：一个 eth0 连接多个 vethxxx？</strong></a></li>
-        <li><a href="#问题-2宿主机多个-vethxxx-连接到容器"><strong>问题 2：宿主机多个 vethxxx 连接到容器？</strong></a></li>
+        <li><a href="#问题-1一个-eth0-连接多个-vethxxx">问题 1：一个 eth0 连接多个 vethxxx？</a></li>
+        <li><a href="#问题-2宿主机多个-vethxxx-连接到容器">问题 2：宿主机多个 vethxxx 连接到容器？</a></li>
       </ul>
     </li>
-    <li><a href="#5-docker-网络架构图"><strong>5. Docker 网络架构图</strong></a></li>
-    <li><a href="#6-实际示例和操作"><strong>6. 实际示例和操作</strong></a>
+    <li><a href="#docker-网络架构图">Docker 网络架构图</a></li>
+    <li><a href="#实际示例和操作">实际示例和操作</a>
       <ul>
-        <li><a href="#查看-docker-容器的-veth-连接"><strong>查看 Docker 容器的 veth 连接：</strong></a></li>
-        <li><a href="#删除和恢复实验"><strong>删除和恢复实验：</strong></a></li>
+        <li><a href="#查看-docker-容器的-veth-连接">查看 Docker 容器的 veth 连接：</a></li>
+        <li><a href="#删除和恢复实验">删除和恢复实验：</a></li>
       </ul>
     </li>
-    <li><a href="#7-总结要点"><strong>7. 总结要点</strong></a>
+    <li><a href="#总结要点">总结要点</a>
       <ul>
-        <li><a href="#最佳实践"><strong>最佳实践：</strong></a></li>
+        <li><a href="#最佳实践">最佳实践：</a></li>
       </ul>
     </li>
   </ul>
@@ -161,7 +159,7 @@
 <span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/index.html" title="Linux 网络 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
-<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.html" title="Linux安全防火墙 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.html" title="LVS架构 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
             </div>
             <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
 <span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
@@ -191,7 +189,6 @@
 <h1 id="虚拟网络设备">虚拟网络设备</h1>
 
 <h2 id="veth-对">veth 对<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<h3 id="veth-对的基本概念">veth 对的基本概念<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <p><strong>veth（Virtual Ethernet Device）</strong> 是 Linux 内核提供的一种虚拟网络设备，总是成对出现：</p>
 <ul>
 <li>一端在<strong>宿主机</strong>，通常命名为 <code>vethxxxx</code></li>
@@ -236,8 +233,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#75715e"># 3. 将 veth123456 连接到 docker0 网桥</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>brctl addif docker0 veth123456</span></span></code></pre></div>
 <hr>
-<h2 id="3-删除宿主机-vethxxx-的影响"><strong>3. 删除宿主机 vethxxx 的影响</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<h3 id="直接回答会断开"><strong>直接回答：会断开！</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h2 id="删除宿主机-vethxxx-的影响">删除宿主机 vethxxx 的影响<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <p><strong>删除宿主机端的 vethxxx 会发生：</strong></p>
 <ol>
 <li>
@@ -263,15 +259,15 @@
 </ul>
 </li>
 </ol>
-<h3 id="重要特性"><strong>重要特性</strong>：<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h3 id="重要特性">重要特性：<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <ul>
 <li>veth 对是<strong>双向连接</strong>的</li>
 <li>删除任何一端，另一端都会失效</li>
 <li>但另一端不会自动删除，只是变为不可用状态</li>
 </ul>
 <hr>
-<h2 id="4-多-veth-连接问题分析"><strong>4. 多 veth 连接问题分析</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<h3 id="问题-1一个-eth0-连接多个-vethxxx"><strong>问题 1：一个 eth0 连接多个 vethxxx？</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h2 id="多-veth-连接问题分析">多 veth 连接问题分析<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="问题-1一个-eth0-连接多个-vethxxx">问题 1：一个 eth0 连接多个 vethxxx？<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <p><strong>答案：技术上可以，但不推荐也不常见</strong></p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 理论上可以创建多个 veth 对连接到同一个命名空间</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>sudo ip link add veth1 type veth peer name eth1
@@ -287,7 +283,7 @@
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>docker run --network<span style="color:#f92672">=</span>bridge --network<span style="color:#f92672">=</span>my-network ...</span></span></code></pre></div>
 </li>
 </ul>
-<h3 id="问题-2宿主机多个-vethxxx-连接到容器"><strong>问题 2：宿主机多个 vethxxx 连接到容器？</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h3 id="问题-2宿主机多个-vethxxx-连接到容器">问题 2：宿主机多个 vethxxx 连接到容器？<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <p><strong>答案：可以，这就是多网卡容器的实现方式</strong></p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># Docker 创建多网络容器</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>docker network create net1
@@ -310,7 +306,7 @@
 <li>宿主机：<code>vethC</code> → 容器：<code>eth2</code>（net2）</li>
 </ul>
 <hr>
-<h2 id="5-docker-网络架构图"><strong>5. Docker 网络架构图</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h2 id="docker-网络架构图">Docker 网络架构图<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>宿主机网络命名空间
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>┌─────────────────────────────────────────┐
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>│  docker0 (172.17.0.1/16)                │
@@ -338,8 +334,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>│ eth0 (172.17.0.4)  eth1 (192.168.1.2)   │
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>└─────────────────────────────────────────┘</span></span></code></pre></div>
 <hr>
-<h2 id="6-实际示例和操作"><strong>6. 实际示例和操作</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<h3 id="查看-docker-容器的-veth-连接"><strong>查看 Docker 容器的 veth 连接：</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h2 id="实际示例和操作">实际示例和操作<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="查看-docker-容器的-veth-连接">查看 Docker 容器的 veth 连接：<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 1. 查看容器进程 ID</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>docker inspect &lt;container-id&gt; | grep Pid
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e"># &#34;Pid&#34;: 12345</span>
@@ -359,7 +355,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#75715e"># 5. 查看 veth 对</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>ethtool -S veth123456
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#75715e"># 显示配对信息</span></span></span></code></pre></div>
-<h3 id="删除和恢复实验"><strong>删除和恢复实验：</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h3 id="删除和恢复实验">删除和恢复实验：<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 实验：删除 veth 对的影响</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#75715e"># 1. 运行一个测试容器</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>docker run -d --name test --rm alpine sleep <span style="color:#ae81ff">3600</span>
@@ -378,7 +374,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>docker restart test
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#75715e"># veth 对会自动重建</span></span></span></code></pre></div>
 <hr>
-<h2 id="7-总结要点"><strong>7. 总结要点</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h2 id="总结要点">总结要点<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <ol>
 <li><strong>veth 对是成对的</strong>：一端在宿主机，一端在容器</li>
 <li><strong>删除一端即断开</strong>：删除宿主机 veth，容器 eth0 会失去连接</li>
@@ -397,7 +393,7 @@
 </li>
 <li><strong>自动管理</strong>：Docker 会自动管理 veth 对的生命周期</li>
 </ol>
-<h3 id="最佳实践"><strong>最佳实践：</strong><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<h3 id="最佳实践">最佳实践：<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <ul>
 <li>不要手动删除 Docker 管理的 veth 设备</li>
 <li>使用 Docker 命令管理网络（<code>docker network</code>）</li>
@@ -430,9 +426,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1793103161"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1793103161" defer></script>
-    <script src="/js/theme.min.js?1793103161" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1793109011"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1793109011" defer></script>
+    <script src="/js/theme.min.js?1793109011" defer></script>
 
 <style>
     .highlight {
