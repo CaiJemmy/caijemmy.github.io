@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="print">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.169.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="description" content="LVS工作模式">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="01 LVS工作模式 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="LVS工作模式">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:title" content="01 LVS工作模式 :: 暮鼓晨钟">
+    <meta property="og:description" content="LVS工作模式">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="01 LVS工作模式 :: 暮鼓晨钟">
+    <meta itemprop="description" content="LVS工作模式">
+    <meta itemprop="wordCount" content="160">
+    <meta itemprop="keywords" content="LVS">
+    <title>01 LVS工作模式 :: 暮鼓晨钟</title>
+    <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/index.html" rel="canonical" type="text/html" title="01 LVS工作模式 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/index.xml" rel="alternate" type="application/rss+xml" title="01 LVS工作模式 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1794498726" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1794498726" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1794498726" defer></script>
+    <script src="/js/search-lunr.min.js?1794498726" defer></script>
+    <script src="/js/search.min.js?1794498726" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1794498726";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1794498726" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1794498726" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1794498726" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1794498726" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1794498726" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794498726" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794498726" rel="stylesheet">
+    <link href="/css/theme.min.css?1794498726" rel="stylesheet">
+    <link href="/css/format-print.min.css?1794498726" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/linux\/linux%E7%BD%91%E7%BB%9C\/lvs\/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1794498726" rel="stylesheet">
+  </head>
+  <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#1-nat模式network-address-translation">1. NAT模式（Network Address Translation）</a></li>
+    <li><a href="#2-dr模式direct-routing直接路由">2. DR模式（Direct Routing，直接路由）</a></li>
+    <li><a href="#3-tun模式ip-tunnelingip隧道">3. TUN模式（IP Tunneling，IP隧道）</a></li>
+    <li><a href="#四种调度算法">四种调度算法</a></li>
+    <li><a href="#三种模式对比">三种模式对比</a></li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html"><span itemprop="name">Linux</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/index.html"><span itemprop="name">Linux 网络</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.html"><span itemprop="name">LVS架构</span></a><meta itemprop="position" content="5">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">01 LVS工作模式</span><meta itemprop="position" content="6"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.html" title="LVS架构 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/02-dr%E6%A8%A1%E5%BC%8F%E5%AE%9E%E9%AA%8C/index.html" title="02 DR模式实验 (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/lvs/index.html">LVS</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="01-lvs工作模式">01 LVS工作模式</h1>
+
+<p>LVS（Linux Virtual Server）是Linux内核级别的负载均衡解决方案，有三种主要工作模式：</p>
+<h2 id="1-nat模式network-address-translation">1. NAT模式（Network Address Translation）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p>工作原理：</p>
+<ul>
+<li>Director Server（调度器）接收客户端请求</li>
+<li>修改请求包的目标IP为Real Server IP</li>
+<li>Real Server处理后，响应包发回Director</li>
+<li>Director修改源IP为VIP，返回给客户端</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>Real Server可使用任何操作系统</li>
+<li>Real Server只需配置Director为网关</li>
+<li>节省公网IP（只需Director有公网IP）</li>
+<li>Director成为性能瓶颈（请求和响应都经过）</li>
+<li>支持端口映射</li>
+</ul>
+<p>适用场景：<br>
+小规模集群（10-20台），Real Server在私网</p>
+<p><a href="#R-image-928f04126a551c2e110a221f1f061fcb" class="lightbox-link"><img alt="image-20261112205038106" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/image-20261112205038106.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-928f04126a551c2e110a221f1f061fcb"><img alt="image-20261112205038106" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/image-20261112205038106.png"></a></p>
+<h2 id="2-dr模式direct-routing直接路由">2. DR模式（Direct Routing，直接路由）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p>工作原理：</p>
+<ul>
+<li>Director接收请求，修改MAC地址为Real Server MAC</li>
+<li>Real Server处理后，直接返回给客户端（不经过Director）</li>
+<li>Real Server配置VIP在lo接口（抑制ARP）</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>性能最高（响应不经过Director）</li>
+<li>Director不是瓶颈</li>
+<li>支持大规模集群</li>
+<li>Real Server必须与Director在同一网段</li>
+<li>不支持端口映射</li>
+<li>Real Server需要抑制ARP响应</li>
+</ul>
+<p>适用场景：<br>
+大规模高性能集群，最常用模式</p>
+<p><a href="#R-image-329cfacdb835b41bc940236a218737a8" class="lightbox-link"><img alt="image-20261112205417362" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/image-20261112205417362.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-329cfacdb835b41bc940236a218737a8"><img alt="image-20261112205417362" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/image-20261112205417362.png"></a></p>
+<p>关键配置：</p>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># Real Server需要配置（抑制ARP）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>echo <span style="color:#ae81ff">1</span> &gt; /proc/sys/net/ipv4/conf/lo/arp_ignore
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>echo <span style="color:#ae81ff">2</span> &gt; /proc/sys/net/ipv4/conf/lo/arp_announce
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>echo <span style="color:#ae81ff">1</span> &gt; /proc/sys/net/ipv4/conf/all/arp_ignore
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>echo <span style="color:#ae81ff">2</span> &gt; /proc/sys/net/ipv4/conf/all/arp_announce
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#75715e"># lo接口配置VIP</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>ifconfig lo:0 VIP netmask 255.255.255.255</span></span></code></pre></div>
+<h2 id="3-tun模式ip-tunnelingip隧道">3. TUN模式（IP Tunneling，IP隧道）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p>工作原理：</p>
+<ul>
+<li>Director将请求包封装在新的IP包中（IP隧道）</li>
+<li>Real Server解封装后处理请求</li>
+<li>Real Server直接返回响应给客户端</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>Real Server可跨地域部署（不受网段限制）</li>
+<li>响应不经过Director</li>
+<li>适合跨机房负载均衡</li>
+<li>Real Server需要支持IP隧道</li>
+<li>不支持端口映射</li>
+<li>配置复杂</li>
+</ul>
+<p>适用场景：<br>
+跨地域、跨机房的大规模集群</p>
+<p><a href="#R-image-750855543e97a54c6a6d4ce9c591475b" class="lightbox-link"><img alt="image-20261112205646470" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/image-20261112205646470.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-750855543e97a54c6a6d4ce9c591475b"><img alt="image-20261112205646470" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/image-20261112205646470.png"></a></p>
+<h2 id="四种调度算法">四种调度算法<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<p>LVS支持10种调度算法，常用的有：</p>
+<p><strong>静态算法：</strong></p>
+<ul>
+<li><strong>RR（Round Robin）</strong>：轮询，平均分配</li>
+<li><strong>WRR（Weighted RR）</strong>：加权轮询，按权重分配</li>
+<li><strong>DH（Destination Hashing）</strong>：目标地址哈希</li>
+<li><strong>SH（Source Hashing）</strong>：源地址哈希</li>
+</ul>
+<p><strong>动态算法：</strong></p>
+<ul>
+<li><strong>LC（Least Connections）</strong>：最少连接，分配给连接数最少的服务器</li>
+<li><strong>WLC（Weighted LC）</strong>：加权最少连接（默认算法）</li>
+<li><strong>SED（Shortest Expected Delay）</strong>：最短期望延迟</li>
+<li><strong>NQ（Never Queue）</strong>：永不排队</li>
+<li><strong>LBLC</strong>：基于本地的最少连接</li>
+<li><strong>LBLCR</strong>：基于本地的带复制功能的最少连接</li>
+</ul>
+<h2 id="三种模式对比">三种模式对比<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<table>
+	<thead>
+			<tr>
+					<th>特性</th>
+					<th>NAT模式</th>
+					<th>DR模式</th>
+					<th>TUN模式</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>性能</td>
+					<td>较低</td>
+					<td>最高</td>
+					<td>高</td>
+			</tr>
+			<tr>
+					<td>网络要求</td>
+					<td>私网</td>
+					<td>同网段</td>
+					<td>可跨网段</td>
+			</tr>
+			<tr>
+					<td>端口映射</td>
+					<td>支持</td>
+					<td>不支持</td>
+					<td>不支持</td>
+			</tr>
+			<tr>
+					<td>Real Server配置</td>
+					<td>简单</td>
+					<td>中等（需抑制ARP）</td>
+					<td>复杂（需支持隧道）</td>
+			</tr>
+			<tr>
+					<td>Director负载</td>
+					<td>高（双向流量）</td>
+					<td>低（仅入站）</td>
+					<td>低（仅入站）</td>
+			</tr>
+			<tr>
+					<td>Real Server OS</td>
+					<td>任意</td>
+					<td>任意</td>
+					<td>需支持IP隧道</td>
+			</tr>
+			<tr>
+					<td>公网IP需求</td>
+					<td>仅Director</td>
+					<td>仅Director</td>
+					<td>仅Director</td>
+			</tr>
+			<tr>
+					<td>适用场景</td>
+					<td>小规模</td>
+					<td>大规模高性能</td>
+					<td>跨地域部署</td>
+			</tr>
+	</tbody>
+</table>
+
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/linux/index.html">Linux</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794498726"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794498726" defer></script>
+    <script src="/js/theme.min.js?1794498726" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>
