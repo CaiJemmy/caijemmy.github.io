@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html id="R-html" lang="zh-CN" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.169.0">
+    <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
+    <meta name="description" content="ipvsadm 命令详细学习">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="03 ipvsadm 详解 :: 暮鼓晨钟">
+    <meta name="twitter:description" content="ipvsadm 命令详细学习">
+    <meta property="og:url" content="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/03-ipvsadm-%E8%AF%A6%E8%A7%A3/index.html">
+    <meta property="og:site_name" content="暮鼓晨钟">
+    <meta property="og:title" content="03 ipvsadm 详解 :: 暮鼓晨钟">
+    <meta property="og:description" content="ipvsadm 命令详细学习">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="03 ipvsadm 详解 :: 暮鼓晨钟">
+    <meta itemprop="description" content="ipvsadm 命令详细学习">
+    <meta itemprop="wordCount" content="1219">
+    <meta itemprop="keywords" content="LVS">
+    <title>03 ipvsadm 详解 :: 暮鼓晨钟</title>
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/03-ipvsadm-%E8%AF%A6%E8%A7%A3/index.xml" rel="alternate" type="application/rss+xml" title="03 ipvsadm 详解 :: 暮鼓晨钟">
+    <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/03-ipvsadm-%E8%AF%A6%E8%A7%A3/index.print.html" rel="alternate" type="text/html" title="03 ipvsadm 详解 :: 暮鼓晨钟">
+    <link href="/images/favicon.png?1794568736" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1794568736" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1794568736" defer></script>
+    <script src="/js/search-lunr.min.js?1794568736" defer></script>
+    <script src="/js/search.min.js?1794568736" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/searchindex.en.js?1794568736";
+    </script>
+    <script src="/js/lunr/lunr.min.js?1794568736" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1794568736" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1794568736" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1794568736" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['zh'];
+    </script>
+    <link href="/fonts/fontawesome/css/all.min.css?1794568736" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794568736" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794568736" rel="stylesheet">
+    <link href="/css/theme.min.css?1794568736" rel="stylesheet">
+    <link href="/css/format-html.min.css?1794568736" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD\/linux\/linux%E7%BD%91%E7%BB%9C\/lvs\/03-ipvsadm-%E8%AF%A6%E8%A7%A3\/index.html';
+      window.relearn.relBasePath='..\/..\/..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/caijemmy.github.io';
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=false;
+      // translations
+      window.T_Copy_to_clipboard = `复制文本到剪贴板`;
+      window.T_Copied_to_clipboard = `文本已复制到剪贴板！`;
+      window.T_Link_copied_to_clipboard = `链接已复制到剪贴板！`;
+      window.T_Reset_view = `重置视图`;
+      window.T_View_reset = `查看重置！`;
+      window.T_No_results_found = `找不到"{0}"的结果`;
+      window.T_N_results_found = `为"{0}"找到 {1} 个结果`;
+      window.T_Browser_unsupported_feature = `此浏览器不支持此功能`;
+      // variant stuff
+      window.relearn.themevariants = [ 'relearn-light', 'relearn-dark', 'learn' ];
+      window.relearn.customvariantprefix = "my-custom-";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.localStorage.getItem(window.relearn.absBaseUri + "/variant") ?? "";
+        if( !variant ||
+            (!variant.startsWith(window.relearn.customvariantprefix) && !window.relearn.themevariants.includes(variant)) ||
+            (variant.startsWith(window.relearn.customvariantprefix) && !window.localStorage.getItem(window.relearn.absBaseUri + "/variantstylesheet-" + variant)) ){
+          variant = window.relearn.themevariants[0];
+          window.localStorage.setItem(window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+    <link href="/css/custom.css?1794568736" rel="stylesheet">
+  </head>
+  <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/03-ipvsadm-%E8%AF%A6%E8%A7%A3/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar" class="default-animation">
+        <div class="topbar-wrapper default-animation">
+          <div class="topbar-sidebar-divider default-animation"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar default-animation" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleNav()" type="button" title="导航 (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button></span>
+            </div>
+            <div class="topbar-button topbar-button-toc default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="目录 (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-table-list"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#虚拟服务管理命令">虚拟服务管理命令</a></li>
+    <li><a href="#真实服务器管理命令">真实服务器管理命令</a></li>
+    <li><a href="#查看信息">查看信息</a>
+      <ul>
+        <li><a href="#列出规则--l">列出规则 <code>-L</code></a></li>
+        <li><a href="#查看连接表--c">查看连接表 <code>-c</code></a></li>
+        <li><a href="#查看统计信息---stats">查看统计信息 <code>--stats</code></a></li>
+        <li><a href="#查看速率---rate">查看速率 <code>--rate</code></a></li>
+        <li><a href="#查看超时设置---timeout">查看超时设置 <code>--timeout</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#规则管理命令">规则管理命令</a>
+      <ul>
+        <li><a href="#清空所有规则--c">清空所有规则 <code>-C</code></a></li>
+        <li><a href="#清零计数器--z">清零计数器 <code>-Z</code></a></li>
+        <li><a href="#保存规则---save---s">保存规则 <code>--save</code> / <code>-S</code></a></li>
+        <li><a href="#恢复规则---restore---r">恢复规则 <code>--restore</code> / <code>-R</code></a></li>
+        <li><a href="#开机自动加载">开机自动加载</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/index.html"><span itemprop="name">暮鼓晨钟</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><span itemprop="name">程序员技能</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html"><span itemprop="name">Linux</span></a><meta itemprop="position" content="3">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/index.html"><span itemprop="name">Linux 网络</span></a><meta itemprop="position" content="4">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.html"><span itemprop="name">LVS架构</span></a><meta itemprop="position" content="5">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">03 ipvsadm 详解</span><meta itemprop="position" content="6"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-print default-animation" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/03-ipvsadm-%E8%AF%A6%E8%A7%A3/index.print.html" title="打印整章 (CTRL+ALT+p)"><i class="fa-fw fas fa-print"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-prev default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/02-dr%E6%A8%A1%E5%BC%8F%E5%AE%9E%E9%AA%8C/index.html" title="02 DR模式实验 (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-next default-animation" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><a href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/04-keepalived/index.html" title="04 keepalived (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a></span>
+            </div>
+            <div class="topbar-button topbar-button-more default-animation" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show">
+<span class="btn cstyle button link noborder notitle interactive"><button onclick="toggleTopbarFlyout(this)" type="button" title="更多"><i class="fa-fw fas fa-ellipsis-v"></i></button></span>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable 技术技能" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+<div class="R-taxonomy taxonomy-tags cstyle tags" title="标签" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/tags/lvs/index.html">LVS</a></li>
+  </ul>
+</div>
+  </header>
+
+<h1 id="03-ipvsadm-详解">03 ipvsadm 详解</h1>
+
+<div class="tab-panel" data-tab-group="R-tabs-edc7a3d747b003946a99f44ff4f241f8">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-272ec9da77655a36224b371325fadd6b" aria-expanded="true"
+      data-tab-item="R-tab-bedd25ddb5543c1cbf6ea29ce870a6a7"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-edc7a3d747b003946a99f44ff4f241f8','R-tab-bedd25ddb5543c1cbf6ea29ce870a6a7')"
+    >
+      <span class="tab-nav-text">ipvsadm &ndash;help</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-272ec9da77655a36224b371325fadd6b"
+      data-tab-item="R-tab-bedd25ddb5543c1cbf6ea29ce870a6a7"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>ipvsadm v1.31 2019/12/24 <span style="color:#f92672">(</span>compiled with popt and IPVS v1.2.1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>Usage:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>  ipvsadm -A|E virtual-service <span style="color:#f92672">[</span>-s scheduler<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-p <span style="color:#f92672">[</span>timeout<span style="color:#f92672">]]</span> <span style="color:#f92672">[</span>-M netmask<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--pe persistence_engine<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-b sched-flags<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>  ipvsadm -D virtual-service
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  ipvsadm -C
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>  ipvsadm -R
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>  ipvsadm -S <span style="color:#f92672">[</span>-n<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>  ipvsadm -a|e virtual-service -r server-address <span style="color:#f92672">[</span>options<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>  ipvsadm -d virtual-service -r server-address
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>  ipvsadm -L|l <span style="color:#f92672">[</span>virtual-service<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>options<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  ipvsadm -Z <span style="color:#f92672">[</span>virtual-service<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>  ipvsadm --set tcp tcpfin udp
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>  ipvsadm --start-daemon <span style="color:#f92672">{</span>master|backup<span style="color:#f92672">}</span> <span style="color:#f92672">[</span>daemon-options<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>  ipvsadm --stop-daemon <span style="color:#f92672">{</span>master|backup<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>  ipvsadm -h
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>Commands:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>Either long or short options are allowed.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>  --add-service     -A        add virtual service with options
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>  --edit-service    -E        edit virtual service with options
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>  --delete-service  -D        delete virtual service
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>  --clear           -C        clear the whole table
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>  --restore         -R        restore rules from stdin
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>  --save            -S        save rules to stdout
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>  --add-server      -a        add real server with options
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>  --edit-server     -e        edit real server with options
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>  --delete-server   -d        delete real server
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>  --list            -L|-l     list the table
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>  --zero            -Z        zero counters in a service or all services
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>  --set tcp tcpfin udp        set connection timeout values
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>  --start-daemon              start connection sync daemon
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>  --stop-daemon               stop connection sync daemon
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>  --help            -h        display this help message
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>virtual-service:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>  --tcp-service|-t  service-address   service-address is host<span style="color:#f92672">[</span>:port<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>  --udp-service|-u  service-address   service-address is host<span style="color:#f92672">[</span>:port<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span>  --sctp-service    service-address   service-address is host<span style="color:#f92672">[</span>:port<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span>  --fwmark-service|-f fwmark          fwmark is an integer greater than zero
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>Options:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span>  --ipv6         -6                   fwmark entry uses IPv6
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>  --scheduler    -s scheduler         one of rr|wrr|lc|wlc|lblc|lblcr|dh|sh|sed|nq|fo|ovf|mh,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>                                      the default scheduler is wlc.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span><span>  --pe            engine              alternate persistence engine may be sip,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span><span>                                      not set by default.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span><span>  --persistent   -p <span style="color:#f92672">[</span>timeout<span style="color:#f92672">]</span>         persistent service
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span><span>  --netmask      -M netmask           persistent granularity mask
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span><span>  --real-server  -r server-address    server-address is host <span style="color:#f92672">(</span>and port<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span><span>  --gatewaying   -g                   gatewaying <span style="color:#f92672">(</span>direct routing<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span><span>  --ipip         -i                   ipip encapsulation <span style="color:#f92672">(</span>tunneling<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span><span>  --masquerading -m                   masquerading <span style="color:#f92672">(</span>NAT<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span><span>  --tun-type      type                one of ipip|gue|gre,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span><span>                                      the default tunnel type is ipip.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span><span>  --tun-port      port                tunnel destination port
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56</span><span>  --tun-nocsum                        tunnel encapsulation without checksum
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57</span><span>  --tun-csum                          tunnel encapsulation with checksum
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58</span><span>  --tun-remcsum                       tunnel encapsulation with remote checksum
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59</span><span>  --weight       -w weight            capacity of real server
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60</span><span>  --u-threshold  -x uthreshold        upper threshold of connections
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61</span><span>  --l-threshold  -y lthreshold        lower threshold of connections
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62</span><span>  --connection   -c                   output of current IPVS connections
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63</span><span>  --timeout                           output of timeout <span style="color:#f92672">(</span>tcp tcpfin udp<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64</span><span>  --daemon                            output of daemon information
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65</span><span>  --stats                             output of statistics information
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66</span><span>  --rate                              output of rate information
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67</span><span>  --exact                             expand numbers <span style="color:#f92672">(</span>display exact values<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68</span><span>  --thresholds                        output of thresholds information
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69</span><span>  --persistent-conn                   output of persistent connection info
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70</span><span>  --tun-info                          output of tunnel information
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71</span><span>  --nosort                            disable sorting output of service/server entries
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72</span><span>  --sort                              does nothing, <span style="color:#66d9ef">for</span> backwards compatibility
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73</span><span>  --ops          -o                   one-packet scheduling
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74</span><span>  --numeric      -n                   numeric output of addresses and ports
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75</span><span>  --sched-flags  -b flags             scheduler flags <span style="color:#f92672">(</span>comma-separated<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76</span><span>Daemon Options:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77</span><span>  --syncid sid                        syncid <span style="color:#66d9ef">for</span> connection sync <span style="color:#f92672">(</span>default<span style="color:#f92672">=</span>255<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78</span><span>  --sync-maxlen length                Max sync message length <span style="color:#f92672">(</span>default<span style="color:#f92672">=</span>1472<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79</span><span>  --mcast-interface interface         multicast interface <span style="color:#66d9ef">for</span> connection sync
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80</span><span>  --mcast-group address               IPv4/IPv6 group <span style="color:#f92672">(</span>default<span style="color:#f92672">=</span>224.0.0.81<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81</span><span>  --mcast-port port                   UDP port <span style="color:#f92672">(</span>default<span style="color:#f92672">=</span>8848<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">82</span><span>  --mcast-ttl ttl                     Multicast TTL <span style="color:#f92672">(</span>default<span style="color:#f92672">=</span>1<span style="color:#f92672">)</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h2 id="虚拟服务管理命令">虚拟服务管理命令<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<div class="tab-panel" data-tab-group="R-tabs-563cf1adcca04d52f177ed01e95de3e4">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-4a88c5bf79c9fe23a88d3df79170ec10" aria-expanded="true"
+      data-tab-item="R-tab-e75ea5793931898cf1c8d999818a2819"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-563cf1adcca04d52f177ed01e95de3e4','R-tab-e75ea5793931898cf1c8d999818a2819')"
+    >
+      <span class="tab-nav-text">添加、修改虛擬服務</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-4a88c5bf79c9fe23a88d3df79170ec10"
+      data-tab-item="R-tab-e75ea5793931898cf1c8d999818a2819"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>ipvsadm -A|E virtual-service <span style="color:#f92672">[</span>-s scheduler<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-p <span style="color:#f92672">[</span>timeout<span style="color:#f92672">]]</span> <span style="color:#f92672">[</span>-M netmask<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--pe persistence_engine<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-b sched-flags<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e"># 添加虚拟服务 -A</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e"># 修改虚拟服务 -E</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e"># virtual-service   -t VIP:PORT tcp服務 | -u VIP:PORT  udp服務 | -f MARK  FWM（防火墙标记）服务</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#75715e"># -s scheduler  one of rr|wrr|lc|wlc|lblc|lblcr|dh|sh|sed|nq|fo|ovf|mh, the default scheduler is wlc.</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#75715e"># -p [timeout] 在指定时间内，来自同一客户端的请求调度到同一RS，实现会话保持，持久超时时间（秒）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#75715e"># -M NETMASK   持久粒度掩码（默认255.255.255.255）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#75715e"># 添加 TCP 80 端口服务，使用轮询算法</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>ipvsadm -A -t 192.168.1.100:80 -s rr
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#75715e"># 将调度算法从 rr 改为 wrr</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>ipvsadm -E -t 192.168.1.100:80 -s wrr</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-9312c22a01b36b321bd9edaeae2b8780">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-54609a4d2dfe23691ccae9b0600270cb" aria-expanded="true"
+      data-tab-item="R-tab-24168bbc14d69ba1d0c801a0ccd02820"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-9312c22a01b36b321bd9edaeae2b8780','R-tab-24168bbc14d69ba1d0c801a0ccd02820')"
+    >
+      <span class="tab-nav-text">删除虛擬服務</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-54609a4d2dfe23691ccae9b0600270cb"
+      data-tab-item="R-tab-24168bbc14d69ba1d0c801a0ccd02820"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>ipvsadm -D virtual-service
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#75715e"># 删除 TCP 80 服务</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>ipvsadm -D -t 192.168.1.100:80</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>静态调度算法</p>
+<table>
+	<thead>
+			<tr>
+					<th>算法</th>
+					<th>代码</th>
+					<th>说明</th>
+					<th>适用场景</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>轮询</td>
+					<td><code>rr</code></td>
+					<td>依次分配给每个RS</td>
+					<td>RS性能相近</td>
+			</tr>
+			<tr>
+					<td>加权轮询</td>
+					<td><code>wrr</code></td>
+					<td>按权重比例分配</td>
+					<td>RS性能不同</td>
+			</tr>
+			<tr>
+					<td>目标地址哈希</td>
+					<td><code>dh</code></td>
+					<td>根据目标IP哈希</td>
+					<td>特定目标固定RS</td>
+			</tr>
+			<tr>
+					<td>源地址哈希</td>
+					<td><code>sh</code></td>
+					<td>根据源IP哈希</td>
+					<td>会话保持</td>
+			</tr>
+	</tbody>
+</table>
+<p>动态调度算法</p>
+<table>
+	<thead>
+			<tr>
+					<th>算法</th>
+					<th>代码</th>
+					<th>说明</th>
+					<th>适用场景</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>最少连接</td>
+					<td><code>lc</code></td>
+					<td>选择连接数最少的RS</td>
+					<td>长连接服务</td>
+			</tr>
+			<tr>
+					<td>加权最少连接</td>
+					<td><code>wlc</code></td>
+					<td>结合权重和连接数</td>
+					<td>性能不同+长连接</td>
+			</tr>
+			<tr>
+					<td>最短期望延迟</td>
+					<td><code>sed</code></td>
+					<td>(活动连接+1)/权重最小</td>
+					<td>均衡负载</td>
+			</tr>
+			<tr>
+					<td>永不排队</td>
+					<td><code>nq</code></td>
+					<td>无需等待的最少连接</td>
+					<td>短连接</td>
+			</tr>
+			<tr>
+					<td>基于局部性的最少连接</td>
+					<td><code>lblc</code></td>
+					<td>目标IP哈希+最少连接</td>
+					<td>缓存集群</td>
+			</tr>
+			<tr>
+					<td>带复制的lblc</td>
+					<td><code>lblcr</code></td>
+					<td>lblc+复制</td>
+					<td>高可用缓存</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="真实服务器管理命令">真实服务器管理命令<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<div class="tab-panel" data-tab-group="R-tabs-76c7f17a195db22a268464a413dbb2bc">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-0a39547aaaf1a917fa57586a1ae75e6a" aria-expanded="true"
+      data-tab-item="R-tab-74304e7fec3c3234b6a601824ef84db7"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-76c7f17a195db22a268464a413dbb2bc','R-tab-74304e7fec3c3234b6a601824ef84db7')"
+    >
+      <span class="tab-nav-text">添加、修改真实服务器</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-0a39547aaaf1a917fa57586a1ae75e6a"
+      data-tab-item="R-tab-74304e7fec3c3234b6a601824ef84db7"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>ipvsadm -a|e virtual-service -r server-address <span style="color:#f92672">[</span>options<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e"># 添加真实服务器 -a</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e"># 修改真实服务器 -e</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e"># virtual-service   -t VIP:PORT tcp服務 | -u VIP:PORT  udp服務 | -f MARK  FWM（防火墙标记）服务</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#75715e"># -r server-address  真实服务器 RIP:PORT</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#75715e"># options  一般为这些参数 -g|-i|-m [-w WEIGHT]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#75715e">#    --gatewaying   -g                   gatewaying (direct routing) (default)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#75715e">#    --ipip         -i                   ipip encapsulation (tunneling)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#75715e">#    --masquerading -m                   masquerading (NAT)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#75715e">#    --weight       -w weight            capacity of real server 取值范围：0-65535，权重为1（默认），权重为0（停止调度新连接，但保持现有连接）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>ipvsadm -a -t 192.168.1.100:80 -r 192.168.1.11:80 -g -w <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>ipvsadm -a -t 192.168.1.100:80 -r 192.168.1.12:80 -g -w <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#75715e"># 修改权重</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>ipvsadm -e -t 192.168.1.100:80 -r 192.168.1.11:80 -g -w <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#75715e"># 改变转发模式（不推荐）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>ipvsadm -e -t 192.168.1.100:80 -r 192.168.1.11:80 -m -w <span style="color:#ae81ff">1</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-6dcbcd3f48250a9e7a19cd299bb2fed9">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-219132a006a04940a71bb56f7af27e1a" aria-expanded="true"
+      data-tab-item="R-tab-f7b79121345ebb833277ba755a996240"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-6dcbcd3f48250a9e7a19cd299bb2fed9','R-tab-f7b79121345ebb833277ba755a996240')"
+    >
+      <span class="tab-nav-text">删除真实服务器</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-219132a006a04940a71bb56f7af27e1a"
+      data-tab-item="R-tab-f7b79121345ebb833277ba755a996240"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>ipvsadm -d virtual-service -r server-address
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#75715e"># 删除单个RS</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>ipvsadm -d -t 192.168.1.100:80 -r 192.168.1.11:80</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h2 id="查看信息">查看信息<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="列出规则--l">列出规则 <code>-L</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<p>数字格式 <code>-n</code></p>
+<div class="tab-panel" data-tab-group="R-tabs-17a9852f5e936ea8d9dd3dd7dd685610">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-4ff61aa4eea4479f8a6188ab86d19a79" aria-expanded="true"
+      data-tab-item="R-tab-4c5af9483dae95ec8d320949b15e1653"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-17a9852f5e936ea8d9dd3dd7dd685610','R-tab-4c5af9483dae95ec8d320949b15e1653')"
+    >
+      <span class="tab-nav-text">ipvsadm -Ln</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-4ff61aa4eea4479f8a6188ab86d19a79"
+      data-tab-item="R-tab-4c5af9483dae95ec8d320949b15e1653"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@debian:~# ipvsadm -Ln
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>IP Virtual Server version 1.2.1 <span style="color:#f92672">(</span>size<span style="color:#f92672">=</span>4096<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Prot LocalAddress:Port Scheduler Flags
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>  -&gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>TCP  10.0.0.200:80 rr
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>  -&gt; 10.0.0.129:80                Route   <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span>          <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>  -&gt; 10.0.0.130:80                Route   <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span>          <span style="color:#ae81ff">0</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>列说明：</p>
+<ul>
+<li>Prot：协议（TCP/UDP/FWMARK）</li>
+<li>LocalAddress:Port：VIP和端口</li>
+<li>Scheduler：调度算法</li>
+<li>Forward：转发模式  （ <code>Route</code>：DR模式  | <code>Masq</code>：NAT模式 |  <code>Tunnel</code>：TUN模式）</li>
+<li>Weight：权重</li>
+<li>ActiveConn：活动连接数</li>
+<li>InActConn：非活动连接数</li>
+</ul>
+<h3 id="查看连接表--c">查看连接表 <code>-c</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-3da126367d1654f2ca6dae05dd8f47da">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-31d031cd3ab2516d3f4ad9994c6c346e" aria-expanded="true"
+      data-tab-item="R-tab-0111c95e95e08c13380ba2a119a45b58"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-3da126367d1654f2ca6dae05dd8f47da','R-tab-0111c95e95e08c13380ba2a119a45b58')"
+    >
+      <span class="tab-nav-text">ipvsadm -Lnc</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-31d031cd3ab2516d3f4ad9994c6c346e"
+      data-tab-item="R-tab-0111c95e95e08c13380ba2a119a45b58"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@debian:~# ipvsadm -Lnc
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>IPVS connection entries
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>pro expire state       source             virtual            destination
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>TCP 01:55  FIN_WAIT    10.0.0.1:22498     10.0.0.200:80      10.0.0.130:80
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>TCP 01:54  FIN_WAIT    10.0.0.1:22496     10.0.0.200:80      10.0.0.130:80
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>TCP 01:54  FIN_WAIT    10.0.0.1:22497     10.0.0.200:80      10.0.0.129:80
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>TCP 01:53  FIN_WAIT    10.0.0.1:22494     10.0.0.200:80      10.0.0.130:80</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>列说明：</p>
+<ul>
+<li>pro：协议</li>
+<li>expire：连接剩余时间（分:秒）</li>
+<li>state：TCP连接状态 （<code>ESTABLISHED</code>：已建立 | <code>SYN_RECV</code>：收到SYN | <code>FIN_WAIT</code>：等待关闭 | <code>TIME_WAIT</code>：等待超时 | <code>CLOSE</code>：已关闭）</li>
+<li>source：客户端IP:端口</li>
+<li>virtual：VIP:端口</li>
+<li>destination：RS IP:端口</li>
+</ul>
+<h3 id="查看统计信息---stats">查看统计信息 <code>--stats</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-5e79eafbff23cc19c039007a96dab689">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-f10c956ed0f7f4eda3c6668c287200a9" aria-expanded="true"
+      data-tab-item="R-tab-aef798ae0a03771f7f608d8d31ce5aa4"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-5e79eafbff23cc19c039007a96dab689','R-tab-aef798ae0a03771f7f608d8d31ce5aa4')"
+    >
+      <span class="tab-nav-text">ipvsadm -Ln &ndash;stats</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-f10c956ed0f7f4eda3c6668c287200a9"
+      data-tab-item="R-tab-aef798ae0a03771f7f608d8d31ce5aa4"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@debian:~# ipvsadm -Ln --stats
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>IP Virtual Server version 1.2.1 <span style="color:#f92672">(</span>size<span style="color:#f92672">=</span>4096<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>  -&gt; RemoteAddress:Port
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>TCP  10.0.0.200:80                      <span style="color:#ae81ff">32</span>      <span style="color:#ae81ff">319</span>        <span style="color:#ae81ff">6</span>    <span style="color:#ae81ff">53747</span>      <span style="color:#ae81ff">528</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>  -&gt; 10.0.0.129:80                      <span style="color:#ae81ff">16</span>      <span style="color:#ae81ff">207</span>        <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">44703</span>      <span style="color:#ae81ff">176</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>  -&gt; 10.0.0.130:80                      <span style="color:#ae81ff">16</span>      <span style="color:#ae81ff">112</span>        <span style="color:#ae81ff">4</span>     <span style="color:#ae81ff">9044</span>      <span style="color:#ae81ff">352</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>列说明：</p>
+<ul>
+<li>Conns：累计连接数</li>
+<li>InPkts：入站数据包数</li>
+<li>OutPkts：出站数据包数（NAT模式才有）</li>
+<li>InBytes：入站字节数</li>
+<li>OutBytes：出站字节数（NAT模式才有）</li>
+</ul>
+<p>用途：</p>
+<ul>
+<li>验证负载是否均衡</li>
+<li>监控流量分布</li>
+<li>故障排查</li>
+</ul>
+<h3 id="查看速率---rate">查看速率 <code>--rate</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-76b458e06980306a02e922155dfb0f34">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-5c94ce6d3c004382262262bd02684f2d" aria-expanded="true"
+      data-tab-item="R-tab-5aba0ff8f46f78c81d00a612e644e850"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-76b458e06980306a02e922155dfb0f34','R-tab-5aba0ff8f46f78c81d00a612e644e850')"
+    >
+      <span class="tab-nav-text">ipvsadm -Ln &ndash;rate</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-5c94ce6d3c004382262262bd02684f2d"
+      data-tab-item="R-tab-5aba0ff8f46f78c81d00a612e644e850"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@debian:~# ipvsadm -Ln --rate
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>IP Virtual Server version 1.2.1 <span style="color:#f92672">(</span>size<span style="color:#f92672">=</span>4096<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Prot LocalAddress:Port                 CPS    InPPS   OutPPS    InBPS   OutBPS
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>  -&gt; RemoteAddress:Port
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>TCP  10.0.0.200:80                       <span style="color:#ae81ff">1</span>        <span style="color:#ae81ff">4</span>        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">261</span>        <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>  -&gt; 10.0.0.129:80                       <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">2</span>        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">138</span>        <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>  -&gt; 10.0.0.130:80                       <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">2</span>        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">123</span>        <span style="color:#ae81ff">0</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>列说明：</p>
+<ul>
+<li>CPS：每秒连接数（Connections Per Second）</li>
+<li>InPPS：每秒入站包数（Packets Per Second）</li>
+<li>OutPPS：每秒出站包数</li>
+<li>InBPS：每秒入站字节数（Bytes Per Second）</li>
+<li>OutBPS：每秒出站字节数</li>
+</ul>
+<p>用途：</p>
+<ul>
+<li>实时监控流量</li>
+<li>性能分析</li>
+<li>容量规划</li>
+</ul>
+<h3 id="查看超时设置---timeout">查看超时设置 <code>--timeout</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-ff731581c70d380e266e4704d74d9513">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-db7d0923b524efc464283246c27a19d2" aria-expanded="true"
+      data-tab-item="R-tab-e0a5913374956736ea153b74a8e65913"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-ff731581c70d380e266e4704d74d9513','R-tab-e0a5913374956736ea153b74a8e65913')"
+    >
+      <span class="tab-nav-text">ipvsadm -Ln &ndash;timeout</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-db7d0923b524efc464283246c27a19d2"
+      data-tab-item="R-tab-e0a5913374956736ea153b74a8e65913"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@debian:~# ipvsadm -Ln --timeout
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Timeout <span style="color:#f92672">(</span>tcp tcpfin udp<span style="color:#f92672">)</span>: <span style="color:#ae81ff">900</span> <span style="color:#ae81ff">120</span> <span style="color:#ae81ff">300</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><p>含义：</p>
+<ul>
+<li>tcp 900：TCP ESTABLISHED 连接超时（15分钟）</li>
+<li>tcpfin 120：TCP FIN_WAIT 连接超时（2分钟）</li>
+<li>udp 300：UDP 连接超时（5分钟）</li>
+</ul>
+<h2 id="规则管理命令">规则管理命令<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
+<h3 id="清空所有规则--c">清空所有规则 <code>-C</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>ipvsadm -C</span></span></code></pre></div>
+<p>效果：</p>
+<ul>
+<li>删除所有虚拟服务</li>
+<li>删除所有真实服务器</li>
+<li>清空连接表</li>
+</ul>
+<p><strong>注意：</strong> 会中断所有现有连接，生产环境慎用。</p>
+<h3 id="清零计数器--z">清零计数器 <code>-Z</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-7fcd5c4af3787cb0c95b183bbd866b22">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-caf736d3a28290180d9d4db51acbcc2c" aria-expanded="true"
+      data-tab-item="R-tab-c55980553cb8fa3b736269fe8a7be904"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-7fcd5c4af3787cb0c95b183bbd866b22','R-tab-c55980553cb8fa3b736269fe8a7be904')"
+    >
+      <span class="tab-nav-text">ipvsadm -Z</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-caf736d3a28290180d9d4db51acbcc2c"
+      data-tab-item="R-tab-c55980553cb8fa3b736269fe8a7be904"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 清零所有计数器</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>ipvsadm -Z
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e"># 清零指定虚拟服务</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>ipvsadm -Z -t 192.168.1.100:80
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#75715e"># 清零指定RS</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>ipvsadm -Z -t 192.168.1.100:80 -r 192.168.1.11:80
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>root@debian:~# ipvsadm -Z
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>root@debian:~# ipvsadm -Ln --stats
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>IP Virtual Server version 1.2.1 <span style="color:#f92672">(</span>size<span style="color:#f92672">=</span>4096<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>  -&gt; RemoteAddress:Port
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>TCP  10.0.0.200:80                       <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>  -&gt; 10.0.0.129:80                       <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>  -&gt; 10.0.0.130:80                       <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h3 id="保存规则---save---s">保存规则 <code>--save</code> / <code>-S</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-30fde6aa1370a0b032cd940b13c0a8fe">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-c5d512a0dad657717033cd7531aee9ca" aria-expanded="true"
+      data-tab-item="R-tab-e3f02d4757fd8c4a6dc7a3809c4d1670"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-30fde6aa1370a0b032cd940b13c0a8fe','R-tab-e3f02d4757fd8c4a6dc7a3809c4d1670')"
+    >
+      <span class="tab-nav-text">ipvsadm -S</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-c5d512a0dad657717033cd7531aee9ca"
+      data-tab-item="R-tab-e3f02d4757fd8c4a6dc7a3809c4d1670"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 输出到终端</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>ipvsadm -S
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#75715e"># 保存到文件</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>ipvsadm -S &gt; /etc/sysconfig/ipvsadm
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#75715e"># 使用专用命令</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>ipvsadm-save &gt; /etc/sysconfig/ipvsadm</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h3 id="恢复规则---restore---r">恢复规则 <code>--restore</code> / <code>-R</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="tab-panel" data-tab-group="R-tabs-b2af98fa9d35b55f3b19b96f0f9a27ce">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-67144df227184a3c811847239d03efd4" aria-expanded="true"
+      data-tab-item="R-tab-69bf5623efb6b77b3442b21c0f6b00f9"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-b2af98fa9d35b55f3b19b96f0f9a27ce','R-tab-69bf5623efb6b77b3442b21c0f6b00f9')"
+    >
+      <span class="tab-nav-text">ipvsadm -R</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-67144df227184a3c811847239d03efd4"
+      data-tab-item="R-tab-69bf5623efb6b77b3442b21c0f6b00f9"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 从标准输入恢复</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>ipvsadm -R &lt; /etc/sysconfig/ipvsadm
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#75715e"># 使用专用命令</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>ipvsadm-restore &lt; /etc/sysconfig/ipvsadm</span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><h3 id="开机自动加载">开机自动加载<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 保存规则</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>ipvsadm-save &gt; /etc/ipvsadm.rules
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e"># 创建服务</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>cat &gt; /etc/systemd/system/ipvsadm.service <span style="color:#e6db74">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#e6db74">[Unit]
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#e6db74">Description=IP Virtual Server Rules
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#e6db74">After=network.target
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#e6db74">[Service]
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#e6db74">Type=oneshot
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#e6db74">ExecStart=/sbin/ipvsadm-restore &lt; /etc/ipvsadm.rules
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#e6db74">ExecStop=/sbin/ipvsadm -C
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#e6db74">RemainAfterExit=yes
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#e6db74">[Install]
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#e6db74">WantedBy=multi-user.target
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#75715e"># 启用服务</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>systemctl daemon-reload
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>systemctl enable ipvsadm
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>systemctl start ipvsadm</span></span></code></pre></div>
+
+  <footer class="footline">
+<div class="R-taxonomy taxonomy-categories cstyle" title="类别" style="--VARIABLE-TAGS-BG-color: var(--INTERNAL-TAG-BG-color);">
+  <i class="fa-fw fas fa-layer-group"></i>
+  <ul>
+    <li><a class="term-link" href="/categories/linux/index.html">Linux</a></li>
+  </ul>
+</div>
+
+<p>工欲善其事，必先利其器。</p>
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <a id="R-logo" class="R-default direction-row" href="/index.html">
+          <span class="logo-image default-animation" data-r-logo-variant="learn relearn-dark relearn-light">
+<img class="lazy figure-image" loading="lazy" src="/images/logo.png" style="height: auto;width: auto;">
+          </span>
+          <span class="logo-title default-animation">暮鼓晨钟<p style="font-size: small">盛世之牛马，乱世之炮灰；平安榨其身，战时用其命。</p></span>
+        </a>
+        <search><form action="/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="搜索 (CTRL+ALT+f)"><i class="fas fa-fw fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">搜索</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="搜索...">
+            <button class="search-clear" type="button" data-search-clear="" title="清除搜索"><i class="fas fa-fw fa-times" title="清除搜索"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks default-animation">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols default-animation">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main default-animation">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/index.html"><input type="checkbox" id="R-section-ea901636dff8018c5f1c03f9c780a1eb" aria-controls="R-subsections-ea901636dff8018c5f1c03f9c780a1eb"><label for="R-section-ea901636dff8018c5f1c03f9c780a1eb"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单日常拾趣</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/index.html"><i class="fa-solid fa-face-smile"></i>日常拾趣<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-ea901636dff8018c5f1c03f9c780a1eb" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/win11%E5%AE%89%E8%A3%85/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/win11%E5%AE%89%E8%A3%85/index.html">win11安装<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-a7e4371e0d818d2afaed8790c1e552d1" aria-controls="R-subsections-a7e4371e0d818d2afaed8790c1e552d1"><label for="R-section-a7e4371e0d818d2afaed8790c1e552d1"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单日常感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/index.html">日常感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a7e4371e0d818d2afaed8790c1e552d1" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><input type="checkbox" id="R-section-21b164580b14ca784734c2afe862cd51" aria-controls="R-subsections-21b164580b14ca784734c2afe862cd51"><label for="R-section-21b164580b14ca784734c2afe862cd51"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单亲子</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/index.html"><i class="fa-solid fa-hands-holding-child"></i>亲子<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-21b164580b14ca784734c2afe862cd51" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E4%BA%B2%E5%AD%90/%E7%AE%A1%E5%AD%A9%E5%AD%90/index.html">管孩子<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html"><input type="checkbox" id="R-section-3332d5c03f8527837f94b80748c083f2" aria-controls="R-subsections-3332d5c03f8527837f94b80748c083f2"><label for="R-section-3332d5c03f8527837f94b80748c083f2"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单感悟</span></label><a class="padding default-animation" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/index.html">感悟<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3332d5c03f8527837f94b80748c083f2" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E8%81%AA%E6%98%8E%E5%90%AC%E8%AF%9D%E5%8A%AA%E5%8A%9B/index.html">聪明、听话、努力<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E9%9D%A2%E5%AD%90%E6%9C%80%E6%B2%A1%E7%94%A8%E7%9A%84%E4%B8%9C%E8%A5%BF/index.html"><a class="padding" href="/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E9%9D%A2%E5%AD%90%E6%9C%80%E6%B2%A1%E7%94%A8%E7%9A%84%E4%B8%9C%E8%A5%BF/index.html">面子，最没用的东西<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><input type="checkbox" id="R-section-5514417afb636335d911822c29826333" aria-controls="R-subsections-5514417afb636335d911822c29826333"><label for="R-section-5514417afb636335d911822c29826333"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单书香笔记</span></label><a class="padding default-animation" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-5514417afb636335d911822c29826333" class="collapsible-menu">
+            <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%AD%A6/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%AD%A6/index.html">笨办法学<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" checked><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html"><input type="checkbox" id="R-section-938848ec98f997f5505140fedf33ea1d" aria-controls="R-subsections-938848ec98f997f5505140fedf33ea1d"><label for="R-section-938848ec98f997f5505140fedf33ea1d"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01 redis服务安装后配置检查</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html">01 redis服务安装后配置检查<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-938848ec98f997f5505140fedf33ea1d" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html">01 redis服务启动配置文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ai/openaiembedding/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ai/openaiembedding/index.html">OpenAIEmbedding<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ccna/%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ccna/%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/index.html">网络接口的命名规则<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html"><input type="checkbox" id="R-section-8ccf0f449d5b18651f34402c6b220482" aria-controls="R-subsections-8ccf0f449d5b18651f34402c6b220482"><label for="R-section-8ccf0f449d5b18651f34402c6b220482"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Algorithms</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html">Algorithms<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-8ccf0f449d5b18651f34402c6b220482" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/index.html"><input type="checkbox" id="R-section-ea340b7e93cf2d6fef86ae60ce6e9523" aria-controls="R-subsections-ea340b7e93cf2d6fef86ae60ce6e9523"><label for="R-section-ea340b7e93cf2d6fef86ae60ce6e9523"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Distributed Systems</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/index.html">Distributed Systems<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-ea340b7e93cf2d6fef86ae60ce6e9523" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.html">01 哈希取余算法详解<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/02-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/02-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/index.html">02 一致性哈希算法详解<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/index.html"><input type="checkbox" id="R-section-ca6b7d760e59dfa34365ccc27dc3bf23" aria-controls="R-subsections-ca6b7d760e59dfa34365ccc27dc3bf23"><label for="R-section-ca6b7d760e59dfa34365ccc27dc3bf23"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单C&#43;&#43;</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/index.html">C&#43;&#43;<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-ca6b7d760e59dfa34365ccc27dc3bf23" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/c&#43;&#43;17/index.html"><input type="checkbox" id="R-section-0df002b38d77a7be38a1c7cca728c83a" aria-controls="R-subsections-0df002b38d77a7be38a1c7cca728c83a"><label for="R-section-0df002b38d77a7be38a1c7cca728c83a"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单C&#43;&#43;17</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/c++17/index.html">C&#43;&#43;17<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-0df002b38d77a7be38a1c7cca728c83a" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/c&#43;&#43;17/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/c++17/%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%91%E5%AE%9A/index.html">C&#43;&#43;17之结构化绑定<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/%E6%A0%87%E5%87%86%E5%BA%93/index.html"><input type="checkbox" id="R-section-4bb335381728fc315abe3c794c7a2041" aria-controls="R-subsections-4bb335381728fc315abe3c794c7a2041"><label for="R-section-4bb335381728fc315abe3c794c7a2041"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单C&#43;&#43;标准库</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/%E6%A0%87%E5%87%86%E5%BA%93/index.html">C&#43;&#43;标准库<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-4bb335381728fc315abe3c794c7a2041" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c&#43;&#43;/%E6%A0%87%E5%87%86%E5%BA%93/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/c++/%E6%A0%87%E5%87%86%E5%BA%93/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.html">伪随机数<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html"><input type="checkbox" id="R-section-6cec2bec8b46e20834f6dad4f5e25a33" aria-controls="R-subsections-6cec2bec8b46e20834f6dad4f5e25a33"><label for="R-section-6cec2bec8b46e20834f6dad4f5e25a33"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单CMake</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/index.html">CMake<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-6cec2bec8b46e20834f6dad4f5e25a33" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html"><input type="checkbox" id="R-section-e3896758175d5ca3bb3393bfa1972c83" aria-controls="R-subsections-e3896758175d5ca3bb3393bfa1972c83"><label for="R-section-e3896758175d5ca3bb3393bfa1972c83"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01.从可执行文件到库</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/index.html">01.从可执行文件到库<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-e3896758175d5ca3bb3393bfa1972c83" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/1-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">01单个源文件生成可执行文件<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/2-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/cmake/01.%E4%BB%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E5%BA%93/2-%E5%8D%95%E4%B8%AA%E6%BA%90%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/index.html">02单个源文件生成可执行文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html"><input type="checkbox" id="R-section-f714aa8935e88da0fd464af80a18f2e9" aria-controls="R-subsections-f714aa8935e88da0fd464af80a18f2e9"><label for="R-section-f714aa8935e88da0fd464af80a18f2e9"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/index.html">Docker<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-f714aa8935e88da0fd464af80a18f2e9" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html"><input type="checkbox" id="R-section-3de5b49d7e58e22c3d763ec2d32213d6" aria-controls="R-subsections-3de5b49d7e58e22c3d763ec2d32213d6"><label for="R-section-3de5b49d7e58e22c3d763ec2d32213d6"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker 入门</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/index.html">Docker 入门<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3de5b49d7e58e22c3d763ec2d32213d6" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/01-docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01 docker常用命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/02-%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/index.html">02 容器镜像<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/03-%E5%AE%B9%E5%99%A8%E5%8D%B7/index.html">03 容器卷<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/04-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E5%85%A5%E9%97%A8/04-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/index.html">04 常用软件安装<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/index.html"><input type="checkbox" id="R-section-f324a38d4faac03c4757f331975e7120" aria-controls="R-subsections-f324a38d4faac03c4757f331975e7120"><label for="R-section-f324a38d4faac03c4757f331975e7120"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Docker 进阶</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/index.html">Docker 进阶<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-f324a38d4faac03c4757f331975e7120" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html">01 Mysql主从复制<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.html">02 redis集群<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.html">03 Dockerfile<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/04-network/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/04-network/index.html">04 network<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/05-compose/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/05-compose/index.html">05 compose<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/index.html"><input type="checkbox" id="R-section-c4e42add534ae9aa9688209fecf4445e" aria-controls="R-subsections-c4e42add534ae9aa9688209fecf4445e"><label for="R-section-c4e42add534ae9aa9688209fecf4445e"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单kubernetes</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/index.html">kubernetes<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-c4e42add534ae9aa9688209fecf4445e" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/index.html"><input type="checkbox" id="R-section-0f1581e57473aa655aa42a31a3bb15c0" aria-controls="R-subsections-0f1581e57473aa655aa42a31a3bb15c0"><label for="R-section-0f1581e57473aa655aa42a31a3bb15c0"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单kubernetes 入门</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/index.html">kubernetes 入门<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-0f1581e57473aa655aa42a31a3bb15c0" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%9F%BA%E7%A1%80/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%9F%BA%E7%A1%80/index.html">01、K8S概述<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E5%AE%9E%E8%B7%B5/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E5%AE%9E%E8%B7%B5/index.html">02、K8S环境部署<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html">03、K8S应用生命周期管理<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html"><input type="checkbox" id="R-section-78e8052c19acfaadd24c63525115a88c" aria-controls="R-subsections-78e8052c19acfaadd24c63525115a88c" checked><label for="R-section-78e8052c19acfaadd24c63525115a88c"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html">Linux<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-78e8052c19acfaadd24c63525115a88c" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html"><input type="checkbox" id="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e" aria-controls="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e"><label for="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux之文件处理</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html">Linux之文件处理<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html">创建测试文件<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5/index.html">软链接和硬链接<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/index.html"><input type="checkbox" id="R-section-138bf277a91cd826875005faf528d4ec" aria-controls="R-subsections-138bf277a91cd826875005faf528d4ec" checked><label for="R-section-138bf277a91cd826875005faf528d4ec"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux 网络</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/index.html">Linux 网络<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-138bf277a91cd826875005faf528d4ec" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/index.html">虚拟网络设备<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.html"><input type="checkbox" id="R-section-c1c04e0ed9ccd38b1b09826ec327eaf9" aria-controls="R-subsections-c1c04e0ed9ccd38b1b09826ec327eaf9" checked><label for="R-section-c1c04e0ed9ccd38b1b09826ec327eaf9"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单LVS架构</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.html">LVS架构<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-c1c04e0ed9ccd38b1b09826ec327eaf9" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/01-lvs%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/index.html">01 LVS工作模式<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/02-dr%E6%A8%A1%E5%BC%8F%E5%AE%9E%E9%AA%8C/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/02-dr%E6%A8%A1%E5%BC%8F%E5%AE%9E%E9%AA%8C/index.html">02 DR模式实验<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="active " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/03-ipvsadm-%E8%AF%A6%E8%A7%A3/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/03-ipvsadm-%E8%AF%A6%E8%A7%A3/index.html">03 ipvsadm 详解<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/04-keepalived/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/04-keepalived/index.html">04 keepalived<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E9%97%AE%E9%A2%98/index.html"><input type="checkbox" id="R-section-033f74c6baa416ffc2b35c1b30e3feee" aria-controls="R-subsections-033f74c6baa416ffc2b35c1b30e3feee"><label for="R-section-033f74c6baa416ffc2b35c1b30e3feee"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单网络知识疑问</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E9%97%AE%E9%A2%98/index.html">网络知识疑问<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-033f74c6baa416ffc2b35c1b30e3feee" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E9%97%AE%E9%A2%98/%E8%B7%AF%E7%94%B1%E5%99%A8%E7%9B%B8%E5%85%B3/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E9%97%AE%E9%A2%98/%E8%B7%AF%E7%94%B1%E5%99%A8%E7%9B%B8%E5%85%B3/index.html">路由器相关疑问<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.html"><input type="checkbox" id="R-section-97ad7f28e9bbf2b6424a203ce59d76b2" aria-controls="R-subsections-97ad7f28e9bbf2b6424a203ce59d76b2"><label for="R-section-97ad7f28e9bbf2b6424a203ce59d76b2"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux安全防火墙</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/index.html">Linux安全防火墙<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-97ad7f28e9bbf2b6424a203ce59d76b2" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/index.html"><input type="checkbox" id="R-section-23d2a3431effd44185701bb407f3074f" aria-controls="R-subsections-23d2a3431effd44185701bb407f3074f"><label for="R-section-23d2a3431effd44185701bb407f3074f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单netfilter/iptables</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/index.html">netfilter/iptables<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-23d2a3431effd44185701bb407f3074f" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/01-iptables%E6%80%BB%E4%BD%93%E4%BB%8B%E7%BB%8D/index.html">iptables总体介绍<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html">iptables filter表基本命令<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/03-iptables-%E6%89%A9%E5%B1%95/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/03-iptables-%E6%89%A9%E5%B1%95/index.html">iptables 扩展<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/python/index.html"><input type="checkbox" id="R-section-3b6149675e1741515fd5bddbf131c80e" aria-controls="R-subsections-3b6149675e1741515fd5bddbf131c80e"><label for="R-section-3b6149675e1741515fd5bddbf131c80e"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单python</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/python/index.html">python<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-3b6149675e1741515fd5bddbf131c80e" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/python/pytest/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/python/pytest/index.html">pytest<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html"><input type="checkbox" id="R-section-304846f73ad6d6a97cc461dcfbcd5e89" aria-controls="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89"><label for="R-section-304846f73ad6d6a97cc461dcfbcd5e89"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/index.html">shell<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-304846f73ad6d6a97cc461dcfbcd5e89" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html"><input type="checkbox" id="R-section-89ae1b5e52ee2fb92d25853d1938dbc3" aria-controls="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3"><label for="R-section-89ae1b5e52ee2fb92d25853d1938dbc3"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单linux 核心命令</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/index.html">linux 核心命令<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-89ae1b5e52ee2fb92d25853d1938dbc3" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html"><input type="checkbox" id="R-section-94b3b9a4bf57fb084f3b3a262e74ad7f" aria-controls="R-subsections-94b3b9a4bf57fb084f3b3a262e74ad7f"><label for="R-section-94b3b9a4bf57fb084f3b3a262e74ad7f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01、常用命令</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">01、常用命令<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-94b3b9a4bf57fb084f3b3a262e74ad7f" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/%E5%B8%B8%E8%A7%81%E7%9A%84%E6%96%87%E4%BB%B6%E6%B5%8B%E8%AF%95%E8%BF%90%E7%AE%97%E7%AC%A6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/01.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/%E5%B8%B8%E8%A7%81%E7%9A%84%E6%96%87%E4%BB%B6%E6%B5%8B%E8%AF%95%E8%BF%90%E7%AE%97%E7%AC%A6/index.html">shell 中常见的文件测试运算符<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4/ip/index.html">ip命令<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/index.html"><input type="checkbox" id="R-section-6fe0a03ac9c213c95fd8431d286e7919" aria-controls="R-subsections-6fe0a03ac9c213c95fd8431d286e7919"><label for="R-section-6fe0a03ac9c213c95fd8431d286e7919"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单shell编程技巧</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/index.html">shell编程技巧<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-6fe0a03ac9c213c95fd8431d286e7919" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/01.%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html">01、严格模式<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html">02、参数解析<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/03.%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%A1%86%E6%9E%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/03.%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%A1%86%E6%9E%B6/index.html">03、日志记录框架<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/04.%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E5%92%8Ctrap%E4%BF%A1%E5%8F%B7%E6%8D%95%E8%8E%B7/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/04.%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E5%92%8Ctrap%E4%BF%A1%E5%8F%B7%E6%8D%95%E8%8E%B7/index.html">04、错误处理和trap信号捕获<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html">07、单元测试（bats框架）<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts default-animation">
+          <div class="nav-title padding">更多</div>
+          <ul class="space collapsible-menu">
+            <li class="" data-nav-id="/tags/"><a class="padding" href="/tags/"><i class="fa-solid fa-tags"></i> 标签<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/categories/"><a class="padding" href="/categories/"><i class="fa-solid fa-layer-group"></i> 类别<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/about/"><a class="padding" href="/about/"><i class="fa-solid fa-circle-question"></i> 关于<i class="fa-fw fas fa-check read-icon"></i></a></li>
+          </ul>
+        </div>
+        <div id="R-footer-margin" class="default-animation"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding default-animation">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols default-animation">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">主题</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-relearn-light" value="relearn-light" selected>浅色模式</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">暗色模式</option>
+                    <option id="R-select-variant-learn" value="learn">浅紫模式</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+            <li class="R-historyclearer">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-history"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <button>清理历史记录</button>
+                </div>
+                <div class="clear"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer" class="default-animation"><p>Built with <a href="https://github.com/McShelby/hugo-theme-relearn" title="love"><i class="fas fa-heart"></i></a> by <a href="https://gohugo.io/">Hugo</a></p></div>
+      </div>
+    </aside>
+    <script>
+      window.MathJax = Object.assign( window.MathJax || {}, {
+        tex: {
+          inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+          displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+        },
+        options: {
+          enableMenu: false 
+        }
+      }, JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794568736"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794568736" defer></script>
+    <script src="/js/theme.min.js?1794568736" defer></script>
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 4px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://caijemmy.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+    <div id="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>
