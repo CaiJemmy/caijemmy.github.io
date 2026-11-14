@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.169.0">
+    <meta name="generator" content="Hugo 0.170.0">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="LVS三种工作模式及调度算法学习及实验。">
     <meta name="author" content="">
@@ -23,27 +23,27 @@
     <title>LVS架构 :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.xml" rel="alternate" type="application/rss+xml" title="LVS架构 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.print.html" rel="alternate" type="text/html" title="LVS架构 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1794568736" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1794568736" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1794568736" defer></script>
-    <script src="/js/search-lunr.min.js?1794568736" defer></script>
-    <script src="/js/search.min.js?1794568736" defer></script>
+    <link href="/images/favicon.png?1794669549" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1794669549" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1794669549" defer></script>
+    <script src="/js/search-lunr.min.js?1794669549" defer></script>
+    <script src="/js/search.min.js?1794669549" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1794568736";
+      window.relearn.index_js_url="/searchindex.en.js?1794669549";
     </script>
-    <script src="/js/lunr/lunr.min.js?1794568736" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1794568736" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1794568736" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1794568736" defer></script>
+    <script src="/js/lunr/lunr.min.js?1794669549" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1794669549" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1794669549" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1794669549" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1794568736" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794568736" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794568736" rel="stylesheet">
-    <link href="/css/theme.min.css?1794568736" rel="stylesheet">
-    <link href="/css/format-html.min.css?1794568736" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1794669549" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794669549" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794669549" rel="stylesheet">
+    <link href="/css/theme.min.css?1794669549" rel="stylesheet">
+    <link href="/css/format-html.min.css?1794669549" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1794568736" rel="stylesheet">
+    <link href="/css/custom.css?1794669549" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.html">
     <div id="R-body" class="default-animation">
@@ -176,23 +176,23 @@
 <h1 id="lvs架构">LVS架构</h1>
 
 <p>LVS (Linux Virtual Server) 是 Linux 内核级别的负载均衡解决方案，由中国的章文嵩博士在 1998 年创建，是目前性能最高的负载均衡软件之一。</p>
-<p><a href="#R-image-b526f2a19ac5811a2fa5e0ace024ee1a" class="lightbox-link"><img alt="image-20261027214044316" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/image-20261027214044316.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-b526f2a19ac5811a2fa5e0ace024ee1a"><img alt="image-20261027214044316" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/image-20261027214044316.png"></a></p>
-<div class="tab-panel" data-tab-group="R-tabs-70c8d6098240f20b547fb834afe9bb50">
+<p><a href="#R-image-b5f285af904c353c2b55315a9ac1acec" class="lightbox-link"><img alt="image-20261027214044316" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/image-20261027214044316.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-b5f285af904c353c2b55315a9ac1acec"><img alt="image-20261027214044316" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/image-20261027214044316.png"></a></p>
+<div class="tab-panel" data-tab-group="R-tabs-92959b1869e12e8fa7a067807f72ce47">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-39ee3b532afd65a7b1c2bce629a275c9" aria-expanded="true"
+      aria-controls="R-tab-id-5e1718b98b4319b9f0f3d46afdcb1945" aria-expanded="true"
       data-tab-item="R-tab-0a1d367f65f16caf925018ede1f27712"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-70c8d6098240f20b547fb834afe9bb50','R-tab-0a1d367f65f16caf925018ede1f27712')"
+      onclick="switchTab('R-tabs-92959b1869e12e8fa7a067807f72ce47','R-tab-0a1d367f65f16caf925018ede1f27712')"
     >
       <span class="tab-nav-text">核心术语</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-39ee3b532afd65a7b1c2bce629a275c9"
+      id="R-tab-id-5e1718b98b4319b9f0f3d46afdcb1945"
       data-tab-item="R-tab-0a1d367f65f16caf925018ede1f27712"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -236,21 +236,21 @@
 <li>目标：在Linux平台实现高性能、高可用的服务器集群</li>
 <li>包含：内核模块（IPVS）+ 用户态工具（ipvsadm）+ 高可用方案（Keepalived）</li>
 </ul>
-<div class="tab-panel" data-tab-group="R-tabs-9a8e18aaf9ecf4cf7810157f4d31d49c">
+<div class="tab-panel" data-tab-group="R-tabs-2d7a8706a750e95a234444e5b1006034">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-e775f0c3a55d64c63949d9617c10b99e" aria-expanded="true"
+      aria-controls="R-tab-id-c13cca81c7c7e84fe48c42214d3cc9b9" aria-expanded="true"
       data-tab-item="R-tab-7e272722fb8b0a0bd7540a8c9b827dd2"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-9a8e18aaf9ecf4cf7810157f4d31d49c','R-tab-7e272722fb8b0a0bd7540a8c9b827dd2')"
+      onclick="switchTab('R-tabs-2d7a8706a750e95a234444e5b1006034','R-tab-7e272722fb8b0a0bd7540a8c9b827dd2')"
     >
       <span class="tab-nav-text">LVS项目组成</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-e775f0c3a55d64c63949d9617c10b99e"
+      id="R-tab-id-c13cca81c7c7e84fe48c42214d3cc9b9"
       data-tab-item="R-tab-7e272722fb8b0a0bd7540a8c9b827dd2"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -262,21 +262,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-34b422d8ef5a1877db18d48138a52784">
+</div><div class="tab-panel" data-tab-group="R-tabs-b72ec7ab2a3c5a885370a3f9f4954b13">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-a5b8bc7c78c16e025a1d3f7e3c2fd008" aria-expanded="true"
+      aria-controls="R-tab-id-f83a58a1574db9f65a8868f780c39b0f" aria-expanded="true"
       data-tab-item="R-tab-2143897f463db133672680e0eb24d27e"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-34b422d8ef5a1877db18d48138a52784','R-tab-2143897f463db133672680e0eb24d27e')"
+      onclick="switchTab('R-tabs-b72ec7ab2a3c5a885370a3f9f4954b13','R-tab-2143897f463db133672680e0eb24d27e')"
     >
       <span class="tab-nav-text">类比</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-a5b8bc7c78c16e025a1d3f7e3c2fd008"
+      id="R-tab-id-f83a58a1574db9f65a8868f780c39b0f"
       data-tab-item="R-tab-2143897f463db133672680e0eb24d27e"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -561,8 +561,6 @@
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><input type="checkbox" id="R-section-5514417afb636335d911822c29826333" aria-controls="R-subsections-5514417afb636335d911822c29826333"><label for="R-section-5514417afb636335d911822c29826333"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单书香笔记</span></label><a class="padding default-animation" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-5514417afb636335d911822c29826333" class="collapsible-menu">
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%AD%A6/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%AD%A6/index.html">笨办法学<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" checked><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html"><input type="checkbox" id="R-section-938848ec98f997f5505140fedf33ea1d" aria-controls="R-subsections-938848ec98f997f5505140fedf33ea1d"><label for="R-section-938848ec98f997f5505140fedf33ea1d"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01 redis服务安装后配置检查</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html">01 redis服务安装后配置检查<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-938848ec98f997f5505140fedf33ea1d" class="collapsible-menu">
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html">01 redis服务启动配置文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ai/openaiembedding/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ai/openaiembedding/index.html">OpenAIEmbedding<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ccna/%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ccna/%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/index.html">网络接口的命名规则<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html"><input type="checkbox" id="R-section-8ccf0f449d5b18651f34402c6b220482" aria-controls="R-subsections-8ccf0f449d5b18651f34402c6b220482"><label for="R-section-8ccf0f449d5b18651f34402c6b220482"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Algorithms</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html">Algorithms<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-8ccf0f449d5b18651f34402c6b220482" class="collapsible-menu">
@@ -625,7 +623,11 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html">02、参数解析<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/03.%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%A1%86%E6%9E%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/03.%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%A1%86%E6%9E%B6/index.html">03、日志记录框架<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/04.%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E5%92%8Ctrap%E4%BF%A1%E5%8F%B7%E6%8D%95%E8%8E%B7/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/04.%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E5%92%8Ctrap%E4%BF%A1%E5%8F%B7%E6%8D%95%E8%8E%B7/index.html">04、错误处理和trap信号捕获<i class="fa-fw fas fa-check read-icon"></i></a></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html">07、单元测试（bats框架）<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html">07、单元测试（bats框架）<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/index.html"><input type="checkbox" id="R-section-37cbfe5216fe431b1b9a1fae68058e06" aria-controls="R-subsections-37cbfe5216fe431b1b9a1fae68058e06"><label for="R-section-37cbfe5216fe431b1b9a1fae68058e06"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单中间件组件</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/index.html">中间件组件<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-37cbfe5216fe431b1b9a1fae68058e06" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html"><input type="checkbox" id="R-section-938848ec98f997f5505140fedf33ea1d" aria-controls="R-subsections-938848ec98f997f5505140fedf33ea1d"><label for="R-section-938848ec98f997f5505140fedf33ea1d"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01 redis服务安装后配置检查</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html">01 redis服务安装后配置检查<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-938848ec98f997f5505140fedf33ea1d" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html">01 redis服务启动配置文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/nginx/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/nginx/index.html">nginx<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
           </ul>
         </div>
         <div class="R-sidebarmenu R-shortcutmenu-shortcuts default-animation">
@@ -684,9 +686,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794568736"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794568736" defer></script>
-    <script src="/js/theme.min.js?1794568736" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794669549"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794669549" defer></script>
+    <script src="/js/theme.min.js?1794669549" defer></script>
 
 <style>
     .highlight {

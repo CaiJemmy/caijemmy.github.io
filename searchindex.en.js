@@ -30,7 +30,7 @@ var relearn_searchindex = [
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/01-mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/index.html"
   },
   {
-    "breadcrumb": "暮鼓晨钟 \u003e  程序员技能",
+    "breadcrumb": "暮鼓晨钟 \u003e  程序员技能 \u003e  中间件组件",
     "content": "安装后配置检查清单 通过apt -y install redis命令安装的配置清单，使用如下脚本可以检查。\n1#!/bin/bash 2 3# 颜色定义 4GREEN='\\033[0;32m' 5YELLOW='\\033[1;33m' 6CYAN='\\033[0;36m' 7BLUE='\\033[0;34m' 8NC='\\033[0m' 9 10echo -e \"${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\" 11echo -e \"${CYAN} Redis Server 完整文件清单${NC}\" 12echo -e \"${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\" 13echo \"\" 14 15# 检查是否安装 16if ! dpkg -l | grep -q redis-server; then 17 echo -e \"${YELLOW}Redis Server 未安装${NC}\" 18 exit 1 19fi 20 21# 1. 可执行文件 22echo -e \"${BLUE}【1】可执行文件${NC}\" 23echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 24for bin in redis-server redis-sentinel redis-cli redis-benchmark redis-check-aof redis-check-rdb; do 25 if [ -f \"/usr/bin/$bin\" ]; then 26 size=$(ls -lh /usr/bin/$bin | awk '{print $5}') 27 version=$(/usr/bin/$bin --version 2\u003e/dev/null | head -1 || echo \"N/A\") 28 printf \"%-25s %8s %s\\n\" \"/usr/bin/$bin\" \"$size\" \"$version\" 29 fi 30done 31echo \"\" 32 33# 2. 配置文件 34echo -e \"${BLUE}【2】配置文件${NC}\" 35echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 36for conf in /etc/redis/redis.conf /etc/redis/sentinel.conf /etc/default/redis-server; do 37 if [ -f \"$conf\" ]; then 38 size=$(ls -lh \"$conf\" | awk '{print $5}') 39 lines=$(wc -l \u003c \"$conf\") 40 printf \"%-35s %8s %5s 行\\n\" \"$conf\" \"$size\" \"$lines\" 41 fi 42done 43echo \"\" 44 45# 3. Systemd 服务 46echo -e \"${BLUE}【3】Systemd 服务文件${NC}\" 47echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 48for service in /lib/systemd/system/redis*.service; do 49 if [ -f \"$service\" ]; then 50 status=$(systemctl is-active $(basename $service) 2\u003e/dev/null || echo \"inactive\") 51 enabled=$(systemctl is-enabled $(basename $service) 2\u003e/dev/null || echo \"disabled\") 52 printf \"%-50s [%s] [%s]\\n\" \"$service\" \"$status\" \"$enabled\" 53 fi 54done 55echo \"\" 56 57# 4. 数据目录 58echo -e \"${BLUE}【4】数据目录${NC}\" 59echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 60if [ -d \"/var/lib/redis\" ]; then 61 echo \"/var/lib/redis/\" 62 ls -lhA /var/lib/redis/ 2\u003e/dev/null | tail -n +2 | while read line; do 63 echo \" $line\" 64 done 65 echo \"\" 66 du -sh /var/lib/redis/ 2\u003e/dev/null 67else 68 echo \"数据目录不存在\" 69fi 70echo \"\" 71 72# 5. 日志目录 73echo -e \"${BLUE}【5】日志目录${NC}\" 74echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 75if [ -d \"/var/log/redis\" ]; then 76 echo \"/var/log/redis/\" 77 ls -lhA /var/log/redis/ 2\u003e/dev/null | tail -n +2 | while read line; do 78 echo \" $line\" 79 done 80 echo \"\" 81 if [ -f \"/var/log/redis/redis-server.log\" ]; then 82 lines=$(wc -l \u003c /var/log/redis/redis-server.log 2\u003e/dev/null) 83 echo \"日志行数: $lines\" 84 fi 85else 86 echo \"日志目录不存在\" 87fi 88echo \"\" 89 90# 6. 运行时文件 91echo -e \"${BLUE}【6】运行时文件${NC}\" 92echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 93for runfile in /run/redis/redis-server.pid /run/redis/redis.sock /var/run/redis/redis-server.pid; do 94 if [ -e \"$runfile\" ]; then 95 ls -lh \"$runfile\" 96 fi 97done 98if systemctl is-active --quiet redis-server; then 99 pid=$(cat /run/redis/redis-server.pid 2\u003e/dev/null || pgrep redis-server) 100 echo \"\" 101 echo \"Redis Server PID: $pid\" 102 if [ -n \"$pid\" ]; then 103 echo \"进程信息:\" 104 ps aux | grep -E \"PID|$pid\" | grep -v grep 105 fi 106fi 107echo \"\" 108 109# 7. 用户和组 110echo -e \"${BLUE}【7】用户和组${NC}\" 111echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 112id redis 2\u003e/dev/null || echo \"redis 用户不存在\" 113echo \"\" 114 115# 8. 权限信息 116echo -e \"${BLUE}【8】关键目录权限${NC}\" 117echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 118for dir in /etc/redis /var/lib/redis /var/log/redis /run/redis; do 119 if [ -d \"$dir\" ]; then 120 ls -ld \"$dir\" 121 fi 122done 123echo \"\" 124 125# 9. 配置摘要 126echo -e \"${BLUE}【9】配置文件关键参数${NC}\" 127echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 128if [ -f /etc/redis/redis.conf ]; then 129 echo \"端口: $(grep -E '^port ' /etc/redis/redis.conf | awk '{print $2}')\" 130 echo \"绑定: $(grep -E '^bind ' /etc/redis/redis.conf | awk '{print $2}')\" 131 echo \"数据目录: $(grep -E '^dir ' /etc/redis/redis.conf | awk '{print $2}')\" 132 echo \"日志文件: $(grep -E '^logfile ' /etc/redis/redis.conf | awk '{print $2}')\" 133 echo \"RDB 文件: $(grep -E '^dbfilename ' /etc/redis/redis.conf | awk '{print $2}')\" 134 echo \"后台运行: $(grep -E '^daemonize ' /etc/redis/redis.conf | awk '{print $2}')\" 135 echo \"保护模式: $(grep -E '^protected-mode ' /etc/redis/redis.conf | awk '{print $2}')\" 136 137 if grep -q \"^requirepass\" /etc/redis/redis.conf; then 138 echo \"密码: 已设置\" 139 else 140 echo \"密码: 未设置\" 141 fi 142fi 143echo \"\" 144 145# 10. 磁盘使用 146echo -e \"${BLUE}【10】磁盘使用情况${NC}\" 147echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 148echo \"数据目录:\" 149du -sh /var/lib/redis 2\u003e/dev/null || echo \" 不存在\" 150echo \"日志目录:\" 151du -sh /var/log/redis 2\u003e/dev/null || echo \" 不存在\" 152echo \"安装大小:\" 153dpkg-query -W -f='${Installed-Size}\\n' redis-server 2\u003e/dev/null | awk '{print $1/1024 \" MB\"}' 154echo \"\" 155 156# 11. 包信息 157echo -e \"${BLUE}【11】包信息${NC}\" 158echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 159dpkg -l | grep redis | awk '{printf \"%-20s %-15s %s\\n\", $2, $3, $4}' 160echo \"\" 161 162# 12. 完整文件列表 163echo -e \"${BLUE}【12】完整文件列表（前 50 个）${NC}\" 164echo \"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\" 165dpkg -L redis-server | head -50 166echo \"\" 167echo \"总文件数: $(dpkg -L redis-server | wc -l)\" 168echo \"\" 169 170echo -e \"${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\" 171echo -e \"${GREEN} 查看完整列表: dpkg -L redis-server${NC}\" 172echo -e \"${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\" 设置密码（安全）",
     "description": "redis服务安装后配置检查。",
     "tags": [
@@ -328,7 +328,7 @@ var relearn_searchindex = [
     "uri": "/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E9%9D%A2%E5%AD%90%E6%9C%80%E6%B2%A1%E7%94%A8%E7%9A%84%E4%B8%9C%E8%A5%BF/index.html"
   },
   {
-    "breadcrumb": "暮鼓晨钟 \u003e  程序员技能 \u003e  01 redis服务安装后配置检查",
+    "breadcrumb": "暮鼓晨钟 \u003e  程序员技能 \u003e  中间件组件 \u003e  01 redis服务安装后配置检查",
     "content": "服务启动文件 /lib/systemd/system/redis-server.service 和/lib/systemd/system/redis-server@.service的区别。\n/lib/systemd/system/redis-server.service 标准服务：启动单个 Redis 实例\n固定配置：使用 /etc/redis/redis.conf 配置文件\n端口固定：默认端口 6379\n常用命令：\n1sudo systemctl start redis-server # 启动 2sudo systemctl stop redis-server # 停止 3sudo systemctl status redis-server # 状态 /lib/systemd/system/redis-server@.service 模板服务：用于启动多个 Redis 实例\n动态配置：%i 是占位符，会被实例名替换\n多实例支持：可以启动多个不同端口的 Redis\n常用命令：\n1sudo systemctl start redis-server@6380 # 启动 6380 实例 2sudo systemctl start redis-server@cache # 启动名为 cache 的实例 服务启动失败 Failed to start redis-server.service - Advanced key-value store 1Aug 01 19:40:43 VM-0-16-debian systemd[1]: redis-server.service: Scheduled restart job, restart counter is at 5. 2░░ Subject: Automatic restarting of a unit has been scheduled 3░░ Defined-By: systemd 4░░ Support: https://www.debian.org/support 5░░ 6░░ Automatic restarting of the unit redis-server.service has been scheduled, as the result for 7░░ the configured Restart= setting for the unit. 8Aug 01 19:40:43 VM-0-16-debian systemd[1]: redis-server.service: Start request repeated too quickly. 9Aug 01 19:40:43 VM-0-16-debian systemd[1]: redis-server.service: Failed with result 'exit-code'. 10░░ Subject: Unit failed 11░░ Defined-By: systemd 12░░ Support: https://www.debian.org/support 13░░ 14░░ The unit redis-server.service has entered the 'failed' state with result 'exit-code'. 15Aug 01 19:40:43 VM-0-16-debian systemd[1]: Failed to start redis-server.service - Advanced key-value store. 16░░ Subject: A start job for unit redis-server.service has failed 17░░ Defined-By: systemd 18░░ Support: https://www.debian.org/support 19░░ 20░░ A start job for unit redis-server.service has finished with a failure. 21░░ 22░░ The job identifier is 23076 and the job result is failed. 检查步骤 1# 查看 Redis 服务的完整日志 2sudo journalctl -u redis-server --no-pager -n 50 3 4# 检查配置文件语法 5sudo redis-server /etc/redis/redis.conf --test 6 7# 检查目录权限 8ls -la /var/lib/redis/ 9ls -la /var/log/redis/ 10ls -la /var/run/redis/ 11 12# 检查用户和组 13id redis 14getent passwd redis 15getent group redis 16 17# 检查 SELinux/AppArmor（如果有） 18sudo aa-status 2\u003e/dev/null || echo \"AppArmor not installed\" 19sudo getenforce 2\u003e/dev/null || echo \"SELinux not installed\" 1WARNING You have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo madvise \u003e /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled (set to 'madvise' or 'never').",
     "description": "redis服务启动相关配置及启动报错排查。",
     "tags": [
@@ -417,7 +417,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟",
-    "content": "学习方法\n深入理解原理 精度man帮助、官方文档 做所有的实验，尽量不要复制粘贴 详细记录实验过程 使用思维导图等辅助工具 享受排错的过程，在寻求帮助之前先尝试自己解决 01 redis服务安装后配置检查\rredis服务安装后配置检查。\rOpenAIEmbedding\rOpenAI Embedding。\r网络接口的命名规则\r网络基础，网络接口的命名规则。\rAlgorithms\r常用算法。\rC++\rC++ 语言特性及项目。\rCMake\rC++ 项目构建工具。\rDocker\r应用容器引擎。\rkubernetes\rK8S学习与总结。\rLinux\rLinux 操作系统。\rpython\rpython 核心语法及日常脚本\rshell\r核心命令及shell脚本总结。",
+    "content": "学习方法\n深入理解原理 精度man帮助、官方文档 做所有的实验，尽量不要复制粘贴 详细记录实验过程 使用思维导图等辅助工具 享受排错的过程，在寻求帮助之前先尝试自己解决 OpenAIEmbedding\rOpenAI Embedding。\r网络接口的命名规则\r网络基础，网络接口的命名规则。\rAlgorithms\r常用算法。\rC++\rC++ 语言特性及项目。\rCMake\rC++ 项目构建工具。\rDocker\r应用容器引擎。\rkubernetes\rK8S学习与总结。\rLinux\rLinux 操作系统。\rpython\rpython 核心语法及日常脚本\rshell\r核心命令及shell脚本总结。\r中间件组件\r常用中间件组件：nginx，redis等",
     "description": "技术总结。",
     "tags": [],
     "title": "程序员技能",
@@ -742,6 +742,14 @@ var relearn_searchindex = [
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/index.html"
   },
   {
+    "breadcrumb": "暮鼓晨钟 \u003e  程序员技能 \u003e  中间件组件",
+    "content": "",
+    "description": "nginx 中间件。",
+    "tags": [],
+    "title": "nginx",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/nginx/index.html"
+  },
+  {
     "breadcrumb": "暮鼓晨钟 \u003e  标签",
     "content": "",
     "description": "",
@@ -812,6 +820,14 @@ var relearn_searchindex = [
     "tags": [],
     "title": "win11安装",
     "uri": "/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/win11%E5%AE%89%E8%A3%85/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e  程序员技能",
+    "content": "01 redis服务安装后配置检查\rredis服务安装后配置检查。\rnginx\rnginx 中间件。",
+    "description": "常用中间件组件：nginx，redis等",
+    "tags": [],
+    "title": "中间件组件",
+    "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/index.html"
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e  日常拾趣 \u003e  日常感悟",

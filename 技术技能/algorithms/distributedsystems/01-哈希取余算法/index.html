@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.169.0">
+    <meta name="generator" content="Hugo 0.170.0">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="通过对数据的哈希值进行取模运算。">
     <meta name="author" content="">
@@ -23,27 +23,27 @@
     <title>01 哈希取余算法详解 :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.xml" rel="alternate" type="application/rss+xml" title="01 哈希取余算法详解 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.print.html" rel="alternate" type="text/html" title="01 哈希取余算法详解 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1794568736" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1794568736" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1794568736" defer></script>
-    <script src="/js/search-lunr.min.js?1794568736" defer></script>
-    <script src="/js/search.min.js?1794568736" defer></script>
+    <link href="/images/favicon.png?1794669549" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1794669549" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1794669549" defer></script>
+    <script src="/js/search-lunr.min.js?1794669549" defer></script>
+    <script src="/js/search.min.js?1794669549" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1794568736";
+      window.relearn.index_js_url="/searchindex.en.js?1794669549";
     </script>
-    <script src="/js/lunr/lunr.min.js?1794568736" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1794568736" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1794568736" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1794568736" defer></script>
+    <script src="/js/lunr/lunr.min.js?1794669549" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1794669549" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1794669549" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1794669549" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1794568736" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794568736" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794568736" rel="stylesheet">
-    <link href="/css/theme.min.css?1794568736" rel="stylesheet">
-    <link href="/css/format-html.min.css?1794568736" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1794669549" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794669549" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794669549" rel="stylesheet">
+    <link href="/css/theme.min.css?1794669549" rel="stylesheet">
+    <link href="/css/format-html.min.css?1794669549" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1794568736" rel="stylesheet">
+    <link href="/css/custom.css?1794669549" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.html">
     <div id="R-body" class="default-animation">
@@ -229,21 +229,21 @@
 </ul>
 <h2 id="二算法优点">二、算法优点<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="1-数据分布均匀性">1. 数据分布均匀性<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-ae3dea9cbeea924c2a9f5c4eb7fbfb98">
+<div class="tab-panel" data-tab-group="R-tabs-10a3353601b575ae11b973e889c401fd">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-5e06780e4df74b49c0bb3f0998cc6207" aria-expanded="true"
+      aria-controls="R-tab-id-8a2f7e4b89101b00c0c6e4adb527e97d" aria-expanded="true"
       data-tab-item="R-tab-8160d3e49905c03e2469b3ea0cfde94c"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-ae3dea9cbeea924c2a9f5c4eb7fbfb98','R-tab-8160d3e49905c03e2469b3ea0cfde94c')"
+      onclick="switchTab('R-tabs-10a3353601b575ae11b973e889c401fd','R-tab-8160d3e49905c03e2469b3ea0cfde94c')"
     >
       <span class="tab-nav-text">模拟10000个键的分布</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-5e06780e4df74b49c0bb3f0998cc6207"
+      id="R-tab-id-8a2f7e4b89101b00c0c6e4adb527e97d"
       data-tab-item="R-tab-8160d3e49905c03e2469b3ea0cfde94c"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -312,21 +312,21 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;处理 100,000 个键耗时: </span><span style="color:#e6db74">{</span>end <span style="color:#f92672">-</span> start<span style="color:#e6db74">:</span><span style="color:#e6db74">.3f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> 秒&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;平均每个键: </span><span style="color:#e6db74">{</span>(end <span style="color:#f92672">-</span> start) <span style="color:#f92672">/</span> <span style="color:#ae81ff">100000</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span><span style="color:#e6db74">:</span><span style="color:#e6db74">.3f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> 毫秒&#34;</span>)</span></span></code></pre></div>
 <h3 id="3-确定性路由">3. 确定性路由<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-a0a9b554317507ca9e3a2b895d57f7fb">
+<div class="tab-panel" data-tab-group="R-tabs-56228cf5433020d5e28ba678e04dc3d4">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-93bb4a2128933e1b53dce91549747a85" aria-expanded="true"
+      aria-controls="R-tab-id-84c1727d519cb4e57172944893768dc7" aria-expanded="true"
       data-tab-item="R-tab-eb9b81715df5ba7609ca4d60ac45c8f4"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-a0a9b554317507ca9e3a2b895d57f7fb','R-tab-eb9b81715df5ba7609ca4d60ac45c8f4')"
+      onclick="switchTab('R-tabs-56228cf5433020d5e28ba678e04dc3d4','R-tab-eb9b81715df5ba7609ca4d60ac45c8f4')"
     >
       <span class="tab-nav-text">相同键总是路由到相同节点</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-93bb4a2128933e1b53dce91549747a85"
+      id="R-tab-id-84c1727d519cb4e57172944893768dc7"
       data-tab-item="R-tab-eb9b81715df5ba7609ca4d60ac45c8f4"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -354,21 +354,21 @@
     </div>
   </div>
 </div><h3 id="4-无状态设计">4. 无状态设计<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-0c7e3a1e6040e607bf07827d6e54ff20">
+<div class="tab-panel" data-tab-group="R-tabs-7d75a9d3470ee893c96ef23daf017b11">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-a173330511e101039b3388b7a8aef81e" aria-expanded="true"
+      aria-controls="R-tab-id-f682951c891ed927cb2bdeef7df88449" aria-expanded="true"
       data-tab-item="R-tab-4cbc9c253b70bacace849a49902decde"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-0c7e3a1e6040e607bf07827d6e54ff20','R-tab-4cbc9c253b70bacace849a49902decde')"
+      onclick="switchTab('R-tabs-7d75a9d3470ee893c96ef23daf017b11','R-tab-4cbc9c253b70bacace849a49902decde')"
     >
       <span class="tab-nav-text">不同客户端计算结果相同</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-a173330511e101039b3388b7a8aef81e"
+      id="R-tab-id-f682951c891ed927cb2bdeef7df88449"
       data-tab-item="R-tab-4cbc9c253b70bacace849a49902decde"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -393,21 +393,21 @@
   </div>
 </div><h2 id="三算法缺点">三、算法缺点<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="1-节点数量变化导致大规模数据迁移">1. 节点数量变化导致大规模数据迁移<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-73730aaff92949091a22c834b4ceb39b">
+<div class="tab-panel" data-tab-group="R-tabs-79a7f9987b97978759a6fdf3df976350">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-f565ba0d846fcb27883dc8c832130b3c" aria-expanded="true"
+      aria-controls="R-tab-id-3fc669537d1c65223d0faee9ff554973" aria-expanded="true"
       data-tab-item="R-tab-2b0f61b2dc2e001b20d60d7c531bd5a9"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-73730aaff92949091a22c834b4ceb39b','R-tab-2b0f61b2dc2e001b20d60d7c531bd5a9')"
+      onclick="switchTab('R-tabs-79a7f9987b97978759a6fdf3df976350','R-tab-2b0f61b2dc2e001b20d60d7c531bd5a9')"
     >
       <span class="tab-nav-text">节点扩容时的数据迁移</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-f565ba0d846fcb27883dc8c832130b3c"
+      id="R-tab-id-3fc669537d1c65223d0faee9ff554973"
       data-tab-item="R-tab-2b0f61b2dc2e001b20d60d7c531bd5a9"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -450,21 +450,21 @@
 <li><strong>100节点→101节点</strong>：约 99% 的数据需要迁移</li>
 </ul>
 <h3 id="2-数据倾斜问题">2. 数据倾斜问题<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-72c7d7978ec3fd3bb07bd6ad82ccd987">
+<div class="tab-panel" data-tab-group="R-tabs-5e0b2edf1e595fe16e73b0c5b91f5190">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-69bd06e736259e46a3932bf248685d81" aria-expanded="true"
+      aria-controls="R-tab-id-21ca12cb4f8fd2a88a212a910c450c62" aria-expanded="true"
       data-tab-item="R-tab-317b33d28e38c06c950e515588e3d887"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-72c7d7978ec3fd3bb07bd6ad82ccd987','R-tab-317b33d28e38c06c950e515588e3d887')"
+      onclick="switchTab('R-tabs-5e0b2edf1e595fe16e73b0c5b91f5190','R-tab-317b33d28e38c06c950e515588e3d887')"
     >
       <span class="tab-nav-text">特定数据模式导致的倾斜</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-69bd06e736259e46a3932bf248685d81"
+      id="R-tab-id-21ca12cb4f8fd2a88a212a910c450c62"
       data-tab-item="R-tab-317b33d28e38c06c950e515588e3d887"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -773,8 +773,6 @@
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><input type="checkbox" id="R-section-5514417afb636335d911822c29826333" aria-controls="R-subsections-5514417afb636335d911822c29826333"><label for="R-section-5514417afb636335d911822c29826333"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单书香笔记</span></label><a class="padding default-animation" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-5514417afb636335d911822c29826333" class="collapsible-menu">
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%AD%A6/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%AD%A6/index.html">笨办法学<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" checked><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html"><input type="checkbox" id="R-section-938848ec98f997f5505140fedf33ea1d" aria-controls="R-subsections-938848ec98f997f5505140fedf33ea1d"><label for="R-section-938848ec98f997f5505140fedf33ea1d"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01 redis服务安装后配置检查</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html">01 redis服务安装后配置检查<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-938848ec98f997f5505140fedf33ea1d" class="collapsible-menu">
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html">01 redis服务启动配置文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ai/openaiembedding/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ai/openaiembedding/index.html">OpenAIEmbedding<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ccna/%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ccna/%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/index.html">网络接口的命名规则<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html"><input type="checkbox" id="R-section-8ccf0f449d5b18651f34402c6b220482" aria-controls="R-subsections-8ccf0f449d5b18651f34402c6b220482" checked><label for="R-section-8ccf0f449d5b18651f34402c6b220482"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Algorithms</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html">Algorithms<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-8ccf0f449d5b18651f34402c6b220482" class="collapsible-menu">
@@ -837,7 +835,11 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html">02、参数解析<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/03.%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%A1%86%E6%9E%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/03.%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%A1%86%E6%9E%B6/index.html">03、日志记录框架<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/04.%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E5%92%8Ctrap%E4%BF%A1%E5%8F%B7%E6%8D%95%E8%8E%B7/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/04.%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E5%92%8Ctrap%E4%BF%A1%E5%8F%B7%E6%8D%95%E8%8E%B7/index.html">04、错误处理和trap信号捕获<i class="fa-fw fas fa-check read-icon"></i></a></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html">07、单元测试（bats框架）<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html">07、单元测试（bats框架）<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/index.html"><input type="checkbox" id="R-section-37cbfe5216fe431b1b9a1fae68058e06" aria-controls="R-subsections-37cbfe5216fe431b1b9a1fae68058e06"><label for="R-section-37cbfe5216fe431b1b9a1fae68058e06"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单中间件组件</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/index.html">中间件组件<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-37cbfe5216fe431b1b9a1fae68058e06" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html"><input type="checkbox" id="R-section-938848ec98f997f5505140fedf33ea1d" aria-controls="R-subsections-938848ec98f997f5505140fedf33ea1d"><label for="R-section-938848ec98f997f5505140fedf33ea1d"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01 redis服务安装后配置检查</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html">01 redis服务安装后配置检查<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-938848ec98f997f5505140fedf33ea1d" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html">01 redis服务启动配置文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/nginx/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/nginx/index.html">nginx<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
           </ul>
         </div>
         <div class="R-sidebarmenu R-shortcutmenu-shortcuts default-animation">
@@ -896,9 +898,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794568736"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794568736" defer></script>
-    <script src="/js/theme.min.js?1794568736" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794669549"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794669549" defer></script>
+    <script src="/js/theme.min.js?1794669549" defer></script>
 
 <style>
     .highlight {

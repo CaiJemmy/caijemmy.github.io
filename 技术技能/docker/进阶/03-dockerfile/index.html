@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.169.0">
+    <meta name="generator" content="Hugo 0.170.0">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="docker精进之Dockerfile。">
     <meta name="author" content="">
@@ -23,27 +23,27 @@
     <title>03 Dockerfile :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.xml" rel="alternate" type="application/rss+xml" title="03 Dockerfile :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.print.html" rel="alternate" type="text/html" title="03 Dockerfile :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1794568736" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1794568736" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1794568736" defer></script>
-    <script src="/js/search-lunr.min.js?1794568736" defer></script>
-    <script src="/js/search.min.js?1794568736" defer></script>
+    <link href="/images/favicon.png?1794669549" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1794669549" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1794669549" defer></script>
+    <script src="/js/search-lunr.min.js?1794669549" defer></script>
+    <script src="/js/search.min.js?1794669549" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1794568736";
+      window.relearn.index_js_url="/searchindex.en.js?1794669549";
     </script>
-    <script src="/js/lunr/lunr.min.js?1794568736" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1794568736" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1794568736" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1794568736" defer></script>
+    <script src="/js/lunr/lunr.min.js?1794669549" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1794669549" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1794669549" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1794669549" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1794568736" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794568736" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794568736" rel="stylesheet">
-    <link href="/css/theme.min.css?1794568736" rel="stylesheet">
-    <link href="/css/format-html.min.css?1794568736" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1794669549" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794669549" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794669549" rel="stylesheet">
+    <link href="/css/theme.min.css?1794669549" rel="stylesheet">
+    <link href="/css/format-html.min.css?1794669549" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1794568736" rel="stylesheet">
+    <link href="/css/custom.css?1794669549" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/03-dockerfile/index.html">
     <div id="R-body" class="default-animation">
@@ -637,21 +637,21 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>docker run -e DB_PASSWORD<span style="color:#f92672">=</span>secret123 myimage</span></span></code></pre></div>
 <h2 id="五完整示例">五、完整示例<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="制作自己的ubuntu">制作自己的ubuntu<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-1c215cfbe2520370bca0227d8558a3d0">
+<div class="tab-panel" data-tab-group="R-tabs-f6b3a35ff40b55ceb9b3be9061f4bb90">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-d7702680e29669122594d1120b9ffdf1" aria-expanded="true"
+      aria-controls="R-tab-id-8bf73bb8937be6e6da801512a50c2fe0" aria-expanded="true"
       data-tab-item="R-tab-3254677a7917c6c01f55212f86c57fbf"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-1c215cfbe2520370bca0227d8558a3d0','R-tab-3254677a7917c6c01f55212f86c57fbf')"
+      onclick="switchTab('R-tabs-f6b3a35ff40b55ceb9b3be9061f4bb90','R-tab-3254677a7917c6c01f55212f86c57fbf')"
     >
       <span class="tab-nav-text">Dockerfile</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-d7702680e29669122594d1120b9ffdf1"
+      id="R-tab-id-8bf73bb8937be6e6da801512a50c2fe0"
       data-tab-item="R-tab-3254677a7917c6c01f55212f86c57fbf"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -682,21 +682,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-9277d7a885e6059ae9b95b105fe8e193">
+</div><div class="tab-panel" data-tab-group="R-tabs-8c6b7f6e33b1150602fba162b71664e4">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-c8d0dc951973f20edf88743a5d507e8f" aria-expanded="true"
+      aria-controls="R-tab-id-03edaec53bb6dc2605130c72101d81f1" aria-expanded="true"
       data-tab-item="R-tab-f7c5b4068637e2def526f9bbc7200c4e"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-9277d7a885e6059ae9b95b105fe8e193','R-tab-f7c5b4068637e2def526f9bbc7200c4e')"
+      onclick="switchTab('R-tabs-8c6b7f6e33b1150602fba162b71664e4','R-tab-f7c5b4068637e2def526f9bbc7200c4e')"
     >
       <span class="tab-nav-text">.dockerignore</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-c8d0dc951973f20edf88743a5d507e8f"
+      id="R-tab-id-03edaec53bb6dc2605130c72101d81f1"
       data-tab-item="R-tab-f7c5b4068637e2def526f9bbc7200c4e"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -706,21 +706,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-dd19a1a9cdcf1e46e46279244946a49d">
+</div><div class="tab-panel" data-tab-group="R-tabs-2499eb5d7cb1f6ebab9e23811fe722d5">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-078af2828a61995ee111869962cfcdf8" aria-expanded="true"
+      aria-controls="R-tab-id-1d41c2ca895fcb5a2fd92c4ed1a2eec2" aria-expanded="true"
       data-tab-item="R-tab-eaeb94017adf8fc051acf09ac2b71153"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-dd19a1a9cdcf1e46e46279244946a49d','R-tab-eaeb94017adf8fc051acf09ac2b71153')"
+      onclick="switchTab('R-tabs-2499eb5d7cb1f6ebab9e23811fe722d5','R-tab-eaeb94017adf8fc051acf09ac2b71153')"
     >
       <span class="tab-nav-text">制作并运行</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-078af2828a61995ee111869962cfcdf8"
+      id="R-tab-id-1d41c2ca895fcb5a2fd92c4ed1a2eec2"
       data-tab-item="R-tab-eaeb94017adf8fc051acf09ac2b71153"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -741,21 +741,21 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#66d9ef">ENV</span> CLASSPATH<span style="color:#f92672">=</span>$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib:$CLASSPATH</span></span></code></pre></div>
 <p>重新构建镜像，问题解决。</p>
 <h4 id="有copy-命令打包的image包比较大">有COPY 命令打包的image包比较大<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-eacb8c2ce6add99b7f648120b0202096">
+<div class="tab-panel" data-tab-group="R-tabs-63f54fc7327747ca8fec20cb4323570a">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-7786bdcb08acb0ecfb3c4a8ed1e0bf56" aria-expanded="true"
+      aria-controls="R-tab-id-9d71221c89d8362395e1b40cd87215e0" aria-expanded="true"
       data-tab-item="R-tab-cf2cb804fbf71d04f0e0d103a7c5ec36"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-eacb8c2ce6add99b7f648120b0202096','R-tab-cf2cb804fbf71d04f0e0d103a7c5ec36')"
+      onclick="switchTab('R-tabs-63f54fc7327747ca8fec20cb4323570a','R-tab-cf2cb804fbf71d04f0e0d103a7c5ec36')"
     >
       <span class="tab-nav-text">改进的Dockerfile</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-7786bdcb08acb0ecfb3c4a8ed1e0bf56"
+      id="R-tab-id-9d71221c89d8362395e1b40cd87215e0"
       data-tab-item="R-tab-cf2cb804fbf71d04f0e0d103a7c5ec36"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -787,21 +787,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-409fdcf2a83f4d0a5d91027a7b70853c">
+</div><div class="tab-panel" data-tab-group="R-tabs-93272db6757850ed925283b236bf5c08">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-3378022237ad0eacb3aeb894251588ec" aria-expanded="true"
+      aria-controls="R-tab-id-9af955aac3e379d2e49988b65cb6ce0e" aria-expanded="true"
       data-tab-item="R-tab-3ce6f41bd4a869c1beb43e45ce1d4764"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-409fdcf2a83f4d0a5d91027a7b70853c','R-tab-3ce6f41bd4a869c1beb43e45ce1d4764')"
+      onclick="switchTab('R-tabs-93272db6757850ed925283b236bf5c08','R-tab-3ce6f41bd4a869c1beb43e45ce1d4764')"
     >
       <span class="tab-nav-text">镜像对比</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-3378022237ad0eacb3aeb894251588ec"
+      id="R-tab-id-9af955aac3e379d2e49988b65cb6ce0e"
       data-tab-item="R-tab-3ce6f41bd4a869c1beb43e45ce1d4764"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -812,21 +812,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-ee1853fdb4cd72c0627486848644bd25">
+</div><div class="tab-panel" data-tab-group="R-tabs-99694d655b80c9a337b482cdfa49dd26">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-c11e2e5b82ee15ef5e1852735b6e965f" aria-expanded="true"
+      aria-controls="R-tab-id-b26c08a7600995b893e9241ad89a22ab" aria-expanded="true"
       data-tab-item="R-tab-78fb41f9045b2b30849284ec5d47b8b5"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-ee1853fdb4cd72c0627486848644bd25','R-tab-78fb41f9045b2b30849284ec5d47b8b5')"
+      onclick="switchTab('R-tabs-99694d655b80c9a337b482cdfa49dd26','R-tab-78fb41f9045b2b30849284ec5d47b8b5')"
     >
       <span class="tab-nav-text">查看镜像各层大小</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-c11e2e5b82ee15ef5e1852735b6e965f"
+      id="R-tab-id-b26c08a7600995b893e9241ad89a22ab"
       data-tab-item="R-tab-78fb41f9045b2b30849284ec5d47b8b5"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -853,21 +853,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-6a2a681143e2966fc8e02e13e3d76983">
+</div><div class="tab-panel" data-tab-group="R-tabs-e18f313d64539af1e977e3873565e68a">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-d64b62135081d0944c6f5732c5d9205b" aria-expanded="true"
+      aria-controls="R-tab-id-0085a533f04ce92617c739782a555951" aria-expanded="true"
       data-tab-item="R-tab-fa18035d2db48bf286aae591a5cdab57"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-6a2a681143e2966fc8e02e13e3d76983','R-tab-fa18035d2db48bf286aae591a5cdab57')"
+      onclick="switchTab('R-tabs-e18f313d64539af1e977e3873565e68a','R-tab-fa18035d2db48bf286aae591a5cdab57')"
     >
       <span class="tab-nav-text">问题原因</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-d64b62135081d0944c6f5732c5d9205b"
+      id="R-tab-id-0085a533f04ce92617c739782a555951"
       data-tab-item="R-tab-fa18035d2db48bf286aae591a5cdab57"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -886,21 +886,21 @@
     </div>
   </div>
 </div><p>解决方法：<strong>多阶段构建</strong></p>
-<div class="tab-panel" data-tab-group="R-tabs-ea18f0aa118c7929b7eafe97cbdb3a49">
+<div class="tab-panel" data-tab-group="R-tabs-176c912ca814300ac8dc8b3eb6b1975b">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-43135577768fa9ba869cd0e16e1e183d" aria-expanded="true"
+      aria-controls="R-tab-id-bbae4639dc27a5acb50ca4d74858a8e5" aria-expanded="true"
       data-tab-item="R-tab-ae8da901af5aa3528ad73bbe1b5f704a"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-ea18f0aa118c7929b7eafe97cbdb3a49','R-tab-ae8da901af5aa3528ad73bbe1b5f704a')"
+      onclick="switchTab('R-tabs-176c912ca814300ac8dc8b3eb6b1975b','R-tab-ae8da901af5aa3528ad73bbe1b5f704a')"
     >
       <span class="tab-nav-text">多阶段构建</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-43135577768fa9ba869cd0e16e1e183d"
+      id="R-tab-id-bbae4639dc27a5acb50ca4d74858a8e5"
       data-tab-item="R-tab-ae8da901af5aa3528ad73bbe1b5f704a"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -942,21 +942,21 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>docker image prune</span></span></code></pre></div>
 <h3 id="demo微服务部署">demo微服务部署<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <p>前提条件，有一个demo版的spring boot微服务包（<code>demo-0.0.1-SNAPSHOT.jar</code>）。</p>
-<div class="tab-panel" data-tab-group="R-tabs-a1e967733163bda2bdda0ce32a791e7a">
+<div class="tab-panel" data-tab-group="R-tabs-5dbf09ad13299c73aecf07994f2ce52b">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-af3f296a48df5cd18cf2d4423c72d3c5" aria-expanded="true"
+      aria-controls="R-tab-id-c902fabd51c57d5990890b7b1384599f" aria-expanded="true"
       data-tab-item="R-tab-039306bcd52caf965820c532a29824c4"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-a1e967733163bda2bdda0ce32a791e7a','R-tab-039306bcd52caf965820c532a29824c4')"
+      onclick="switchTab('R-tabs-5dbf09ad13299c73aecf07994f2ce52b','R-tab-039306bcd52caf965820c532a29824c4')"
     >
       <span class="tab-nav-text">简单部署的Dockerfile</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-af3f296a48df5cd18cf2d4423c72d3c5"
+      id="R-tab-id-c902fabd51c57d5990890b7b1384599f"
       data-tab-item="R-tab-039306bcd52caf965820c532a29824c4"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -975,21 +975,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-860efb2d3026942811e328cff14a5aeb">
+</div><div class="tab-panel" data-tab-group="R-tabs-95e3212d56c2ea8db588d2669ab4d096">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-105fcf553e87c099c3ce89d1705c3d7c" aria-expanded="true"
+      aria-controls="R-tab-id-bc65198c469ade3250918dc2cab0ee62" aria-expanded="true"
       data-tab-item="R-tab-e665ab3811b303e1a662bb61dc2ec8fc"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-860efb2d3026942811e328cff14a5aeb','R-tab-e665ab3811b303e1a662bb61dc2ec8fc')"
+      onclick="switchTab('R-tabs-95e3212d56c2ea8db588d2669ab4d096','R-tab-e665ab3811b303e1a662bb61dc2ec8fc')"
     >
       <span class="tab-nav-text">构建镜像并验证</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-105fcf553e87c099c3ce89d1705c3d7c"
+      id="R-tab-id-bc65198c469ade3250918dc2cab0ee62"
       data-tab-item="R-tab-e665ab3811b303e1a662bb61dc2ec8fc"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1065,8 +1065,6 @@
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><input type="checkbox" id="R-section-5514417afb636335d911822c29826333" aria-controls="R-subsections-5514417afb636335d911822c29826333"><label for="R-section-5514417afb636335d911822c29826333"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单书香笔记</span></label><a class="padding default-animation" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/index.html"><i class="fa-solid fa-book-open-reader"></i>书香笔记<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-5514417afb636335d911822c29826333" class="collapsible-menu">
             <li class="" data-nav-id="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%AD%A6/index.html"><a class="padding" href="/%E4%B9%A6%E9%A6%99%E7%AC%94%E8%AE%B0/%E7%AC%A8%E5%8A%9E%E6%B3%95%E5%AD%A6/index.html">笨办法学<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><input type="checkbox" id="R-section-a24a2c8ce0d73abdd70a5420f401c71f" aria-controls="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" checked><label for="R-section-a24a2c8ce0d73abdd70a5420f401c71f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单程序员技能</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"><i class="fa-solid fa-keyboard"></i>程序员技能<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a24a2c8ce0d73abdd70a5420f401c71f" class="collapsible-menu">
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html"><input type="checkbox" id="R-section-938848ec98f997f5505140fedf33ea1d" aria-controls="R-subsections-938848ec98f997f5505140fedf33ea1d"><label for="R-section-938848ec98f997f5505140fedf33ea1d"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01 redis服务安装后配置检查</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html">01 redis服务安装后配置检查<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-938848ec98f997f5505140fedf33ea1d" class="collapsible-menu">
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html">01 redis服务启动配置文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ai/openaiembedding/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ai/openaiembedding/index.html">OpenAIEmbedding<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ccna/%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/ccna/%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/index.html">网络接口的命名规则<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html"><input type="checkbox" id="R-section-8ccf0f449d5b18651f34402c6b220482" aria-controls="R-subsections-8ccf0f449d5b18651f34402c6b220482"><label for="R-section-8ccf0f449d5b18651f34402c6b220482"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Algorithms</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/index.html">Algorithms<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-8ccf0f449d5b18651f34402c6b220482" class="collapsible-menu">
@@ -1129,7 +1127,11 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/02.%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/index.html">02、参数解析<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/03.%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%A1%86%E6%9E%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/03.%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%A1%86%E6%9E%B6/index.html">03、日志记录框架<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/04.%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E5%92%8Ctrap%E4%BF%A1%E5%8F%B7%E6%8D%95%E8%8E%B7/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/04.%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E5%92%8Ctrap%E4%BF%A1%E5%8F%B7%E6%8D%95%E8%8E%B7/index.html">04、错误处理和trap信号捕获<i class="fa-fw fas fa-check read-icon"></i></a></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html">07、单元测试（bats框架）<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/shell/shell%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/07.%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-bats%E6%A1%86%E6%9E%B6/index.html">07、单元测试（bats框架）<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/index.html"><input type="checkbox" id="R-section-37cbfe5216fe431b1b9a1fae68058e06" aria-controls="R-subsections-37cbfe5216fe431b1b9a1fae68058e06"><label for="R-section-37cbfe5216fe431b1b9a1fae68058e06"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单中间件组件</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/index.html">中间件组件<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-37cbfe5216fe431b1b9a1fae68058e06" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html"><input type="checkbox" id="R-section-938848ec98f997f5505140fedf33ea1d" aria-controls="R-subsections-938848ec98f997f5505140fedf33ea1d"><label for="R-section-938848ec98f997f5505140fedf33ea1d"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单01 redis服务安装后配置检查</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/index.html">01 redis服务安装后配置检查<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-938848ec98f997f5505140fedf33ea1d" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/redis/%E9%85%8D%E7%BD%AE/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html">01 redis服务启动配置文件<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/nginx/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/%E7%BB%84%E4%BB%B6/nginx/index.html">nginx<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
           </ul>
         </div>
         <div class="R-sidebarmenu R-shortcutmenu-shortcuts default-animation">
@@ -1188,9 +1190,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794568736"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794568736" defer></script>
-    <script src="/js/theme.min.js?1794568736" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794669549"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794669549" defer></script>
+    <script src="/js/theme.min.js?1794669549" defer></script>
 
 <style>
     .highlight {
