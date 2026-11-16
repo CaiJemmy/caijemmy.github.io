@@ -318,16 +318,6 @@ var relearn_searchindex = [
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5/index.html"
   },
   {
-    "breadcrumb": "暮鼓晨钟 \u003e  日常拾趣 \u003e  日常感悟 \u003e  感悟",
-    "content": "穷人都是把最好的东西送人，还担心别人看不上。\n富人都是把自己看不上的东西送人，并且以为别人没见过没用过没吃过。\n这个世界上没有富大方，只有傻大方和穷大方。\n富人优先考虑的全是利益，而穷人考虑的是感情和面子\n穷人是小心翼翼的大方，而富人是大大方方的小气\n面子其实是一个人最难放下，却又最没用的东西。你越是在意它，它就会越沉重。\n这个世界上不是朋友多了路好走，而是路好走的时候朋友才多。",
-    "description": "面子其实是一个人最难放下，却又最没用的东西。",
-    "tags": [
-      "感悟"
-    ],
-    "title": "面子，最没用的东西",
-    "uri": "/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E9%9D%A2%E5%AD%90%E6%9C%80%E6%B2%A1%E7%94%A8%E7%9A%84%E4%B8%9C%E8%A5%BF/index.html"
-  },
-  {
     "breadcrumb": "暮鼓晨钟 \u003e  程序员技能 \u003e  中间件组件 \u003e  01 redis服务安装后配置检查",
     "content": "服务启动文件 /lib/systemd/system/redis-server.service 和/lib/systemd/system/redis-server@.service的区别。\n/lib/systemd/system/redis-server.service 标准服务：启动单个 Redis 实例\n固定配置：使用 /etc/redis/redis.conf 配置文件\n端口固定：默认端口 6379\n常用命令：\n1sudo systemctl start redis-server # 启动 2sudo systemctl stop redis-server # 停止 3sudo systemctl status redis-server # 状态 /lib/systemd/system/redis-server@.service 模板服务：用于启动多个 Redis 实例\n动态配置：%i 是占位符，会被实例名替换\n多实例支持：可以启动多个不同端口的 Redis\n常用命令：\n1sudo systemctl start redis-server@6380 # 启动 6380 实例 2sudo systemctl start redis-server@cache # 启动名为 cache 的实例 服务启动失败 Failed to start redis-server.service - Advanced key-value store 1Aug 01 19:40:43 VM-0-16-debian systemd[1]: redis-server.service: Scheduled restart job, restart counter is at 5. 2░░ Subject: Automatic restarting of a unit has been scheduled 3░░ Defined-By: systemd 4░░ Support: https://www.debian.org/support 5░░ 6░░ Automatic restarting of the unit redis-server.service has been scheduled, as the result for 7░░ the configured Restart= setting for the unit. 8Aug 01 19:40:43 VM-0-16-debian systemd[1]: redis-server.service: Start request repeated too quickly. 9Aug 01 19:40:43 VM-0-16-debian systemd[1]: redis-server.service: Failed with result 'exit-code'. 10░░ Subject: Unit failed 11░░ Defined-By: systemd 12░░ Support: https://www.debian.org/support 13░░ 14░░ The unit redis-server.service has entered the 'failed' state with result 'exit-code'. 15Aug 01 19:40:43 VM-0-16-debian systemd[1]: Failed to start redis-server.service - Advanced key-value store. 16░░ Subject: A start job for unit redis-server.service has failed 17░░ Defined-By: systemd 18░░ Support: https://www.debian.org/support 19░░ 20░░ A start job for unit redis-server.service has finished with a failure. 21░░ 22░░ The job identifier is 23076 and the job result is failed. 检查步骤 1# 查看 Redis 服务的完整日志 2sudo journalctl -u redis-server --no-pager -n 50 3 4# 检查配置文件语法 5sudo redis-server /etc/redis/redis.conf --test 6 7# 检查目录权限 8ls -la /var/lib/redis/ 9ls -la /var/log/redis/ 10ls -la /var/run/redis/ 11 12# 检查用户和组 13id redis 14getent passwd redis 15getent group redis 16 17# 检查 SELinux/AppArmor（如果有） 18sudo aa-status 2\u003e/dev/null || echo \"AppArmor not installed\" 19sudo getenforce 2\u003e/dev/null || echo \"SELinux not installed\" 1WARNING You have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo madvise \u003e /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled (set to 'madvise' or 'never').",
     "description": "redis服务启动相关配置及启动报错排查。",
@@ -406,6 +396,16 @@ var relearn_searchindex = [
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E9%97%AE%E9%A2%98/%E8%B7%AF%E7%94%B1%E5%99%A8%E7%9B%B8%E5%85%B3/index.html"
   },
   {
+    "breadcrumb": "暮鼓晨钟 \u003e  日常拾趣 \u003e  日常感悟 \u003e  感悟",
+    "content": "穷人都是把最好的东西送人，还担心别人看不上。\n富人都是把自己看不上的东西送人，并且以为别人没见过没用过没吃过。\n这个世界上没有富大方，只有傻大方和穷大方。\n富人优先考虑的全是利益，而穷人考虑的是感情和面子\n穷人是小心翼翼的大方，而富人是大大方方的小气\n面子其实是一个人最难放下，却又最没用的东西。你越是在意它，它就会越沉重。\n这个世界上不是朋友多了路好走，而是路好走的时候朋友才多。",
+    "description": "面子其实是一个人最难放下，却又最没用的东西。",
+    "tags": [
+      "感悟"
+    ],
+    "title": "面子，最没用的东西",
+    "uri": "/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E9%9D%A2%E5%AD%90%E6%9C%80%E6%B2%A1%E7%94%A8%E7%9A%84%E4%B8%9C%E8%A5%BF/index.html"
+  },
+  {
     "breadcrumb": "暮鼓晨钟 \u003e  程序员技能 \u003e  Linux \u003e  Linux 网络 \u003e  Linux安全防火墙 \u003e  netfilter/iptables",
     "content": "iptables 的匹配扩展（match extensions）是其强大功能的核心，它们通过 -m \u003cmodule\u003e 语法加载，用于在规则中实现更精细、更语义化的数据包匹配（如匹配端口范围、连接状态、字符串、IP 地址类型、速率、应用层特征等）。这些扩展由内核模块（xt_*）提供，需对应模块已加载（如 xt_tcp, xt_conntrack, xt_string 等）。\n以下为 iptables（基于 Linux 内核 4.x–6.x 主流版本，兼容 iptables-nft 和 legacy 模式）中常用且稳定的核心匹配扩展的详细分类列表。\n📌 注：所有扩展均作用于 filter、nat、mangle、raw、security 表中支持该扩展的链（如 INPUT、OUTPUT、FORWARD、PREROUTING、POSTROUTING），但并非所有扩展在所有表/链中都可用（例如 DNAT/SNAT 仅在 nat 表中有效，而 string 仅在 filter 表的 INPUT/FORWARD/OUTPUT 中常用）。\n基础协议相关扩展（无需 -m，隐式加载） 这些是协议内置匹配项，不需显式 -m tcp 等，但实际由对应 xt_* 模块支撑：\n协议 隐式匹配项 说明 示例 tcp --sport, --dport, --tcp-flags, --syn 等 匹配 TCP 头字段 iptables -A INPUT -p tcp --dport 22 -j ACCEPT udp --sport, --dport 匹配 UDP 端口 iptables -A INPUT -p udp --dport 53 -j ACCEPT icmp --icmp-type 匹配 ICMP 类型（如 echo-request） iptables -A INPUT -p icmp --icmp-type 8 -j ACCEPT icmpv6 --icmpv6-type IPv6 ICMP 类型匹配 ip6tables -A INPUT -p icmpv6 --icmpv6-type 128 -j ACCEPT 提示：-p tcp 自动加载 xt_tcp 模块；同理 -p udp → xt_udp，-p icmp → xt_icmp。\n核心通用匹配扩展（最常用） 模块名 (-m) 功能说明 典型选项与示例 注意事项 conntrack （推荐替代旧 state） 基于连接跟踪（conntrack）匹配连接状态、原始/回复方向、NAT 信息等 --ctstate ESTABLISHED,RELATED --ctorigsrc 192.168.1.100 --ctdir ORIGINAL ✅ 强烈推荐替代已废弃的 state 模块；需 nf_conntrack 内核支持；iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT multiport 匹配多个端口或端口范围（TCP/UDP），解决 --dport 只能单端口限制 --dports 22,80,443 --sports 1024:65535 --ports 53（用于 UDP/TCP 同端口） ⚠️ 最多支持 15 个端口；仅支持 TCP/UDP；\niptables -A INPUT -p tcp -m multiport --dports 22,80,443 -j ACCEPT iprange 按IP 地址范围（非 CIDR）匹配源/目的 IP --src-range 192.168.1.10-192.168.1.50 --dst-range 203.0.113.1-203.0.113.254 ✅ 灵活于 CIDR（如需连续但非网段的 IP）；\niptables -A INPUT -m iprange --src-range 10.0.0.5-10.0.0.20 -j DROP mac 匹配源 MAC 地址（仅链路层有效，INPUT/FORWARD 有效） --mac-source 00:11:22:33:44:55 ⚠️ 仅对本地接收/转发的帧有效；无法匹配经路由转发后的 MAC（因 MAC 在每跳重写）；\niptables -A INPUT -m mac --mac-source aa:bb:cc:dd:ee:ff -j ACCEPT owner （仅 OUTPUT 链） 匹配本地发起连接的进程 UID/GID/PID/进程名等 --uid-owner 1000 --gid-owner www-data --pid-owner 1234 --cmd-owner wget ⚠️ 仅 OUTPUT 链可用；需 CONFIG_NETFILTER_XT_MATCH_OWNER=y；普通用户进程 UID 匹配需 root；\niptables -A OUTPUT -m owner --uid-owner nginx -j REJECT 🔹 三、网络层与连接行为扩展 模块名 功能说明 示例 注意事项 addrtype 匹配地址类型（如 UNICAST, LOCAL, BROADCAST, ANYCAST, MULTICAST, UNSPEC） --src-type LOCAL（匹配本机地址）\n--dst-type UNICAST ✅ 常用于区分本机 vs 外部流量；iptables -A OUTPUT -m addrtype --src-type LOCAL -j ACCEPT pkttype 匹配数据包类型（unicast, broadcast, multicast） --pkt-type broadcast 仅对 INPUT/PREROUTING 有效；\niptables -A INPUT -m pkttype --pkt-type broadcast -j DROP physdev （桥接专用） 匹配桥接设备上的物理入/出接口（--physdev-in, --physdev-out, --physdev-is-bridged） --physdev-in eth0 ⚠️ 仅用于 Linux bridge（如 br0）环境；需 CONFIG_NETFILTER_XT_MATCH_PHYSDEV=y；\niptables -A FORWARD -m physdev --physdev-in eth0 --physdev-out br0 -j ACCEPT pktowner （较新） 类似 owner，但支持 --socket-exists（匹配已有 socket 的包） --socket-exists 内核 ≥ 4.15；用于更精确的本地进程控制； 🔹 四、高级匹配与应用层扩展（需谨慎启用） 模块名 功能说明 示例 注意事项 string 深度包检测（DPI）：匹配数据包载荷（payload）中的 ASCII/HEX 字符串 --algo bm（Boyer-Moore）\n--from 40（从第 40 字节开始）\n--string \"GET /admin\" ⚠️ 性能开销大，慎用于高流量链路；需 CONFIG_NETFILTER_XT_MATCH_STRING=y；\niptables -A FORWARD -p tcp --dport 80 -m string --algo bm --string \"sqlmap\" -j DROP time 基于系统时间/日期匹配（支持周几、月份、时间范围） --timestart 09:00 --timestop 17:00",
     "description": "介绍iptables的匹配扩展和目标扩展。",
@@ -422,6 +422,16 @@ var relearn_searchindex = [
     "tags": [],
     "title": "程序员技能",
     "uri": "/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/index.html"
+  },
+  {
+    "breadcrumb": "暮鼓晨钟 \u003e  日常拾趣 \u003e  日常感悟 \u003e  感悟",
+    "content": "这世上最不值钱的，便是男人一事无成的温柔，和一贫如洗的真情。\n所以作为一个男人，一旦没有了经济来源，\n那么就算他人品再好，再怎么顾家，再如何的孝顺，\n都会在别人的眼中变得一文不值。\n而如果一个男人拿不出钱的时候，那么就会连他最基本的尊严，\n都会被人随意的踩在脚下。\n所以这个世界上最大的悲哀，\n就是让一个原本有情有义，相信真心可以换真心的男人，\n到了最后，眼里却就只剩下钱了。",
+    "description": "人的眼里为什么只有钱。",
+    "tags": [
+      "感悟"
+    ],
+    "title": "穷困潦倒的感悟",
+    "uri": "/%E6%97%A5%E5%B8%B8%E6%8B%BE%E8%B6%A3/%E6%97%A5%E5%B8%B8%E6%84%9F%E6%82%9F/%E6%84%9F%E6%82%9F/%E7%A9%B7%E5%9B%B0%E6%BD%A6%E5%80%92%E7%9A%84%E6%84%9F%E6%82%9F/index.html"
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e  程序员技能 \u003e  C++",
@@ -891,7 +901,7 @@ var relearn_searchindex = [
   },
   {
     "breadcrumb": "暮鼓晨钟 \u003e  日常拾趣 \u003e  日常感悟",
-    "content": "聪明、听话、努力\n一般孩子不可能同时具备的3个优点。\n面子，最没用的东西\n面子其实是一个人最难放下，却又最没用的东西。",
+    "content": "聪明、听话、努力\n一般孩子不可能同时具备的3个优点。\n面子，最没用的东西\n面子其实是一个人最难放下，却又最没用的东西。\n穷困潦倒的感悟\n人的眼里为什么只有钱。",
     "description": "记录日常感悟、生活感悟。",
     "tags": [],
     "title": "感悟",
