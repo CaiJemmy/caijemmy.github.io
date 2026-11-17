@@ -23,27 +23,27 @@
     <title>LVS架构 :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.xml" rel="alternate" type="application/rss+xml" title="LVS架构 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.print.html" rel="alternate" type="text/html" title="LVS架构 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1794837722" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1794837722" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1794837722" defer></script>
-    <script src="/js/search-lunr.min.js?1794837722" defer></script>
-    <script src="/js/search.min.js?1794837722" defer></script>
+    <link href="/images/favicon.png?1794900460" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1794900460" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1794900460" defer></script>
+    <script src="/js/search-lunr.min.js?1794900460" defer></script>
+    <script src="/js/search.min.js?1794900460" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1794837722";
+      window.relearn.index_js_url="/searchindex.en.js?1794900460";
     </script>
-    <script src="/js/lunr/lunr.min.js?1794837722" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1794837722" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1794837722" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1794837722" defer></script>
+    <script src="/js/lunr/lunr.min.js?1794900460" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1794900460" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1794900460" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1794900460" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1794837722" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794837722" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794837722" rel="stylesheet">
-    <link href="/css/theme.min.css?1794837722" rel="stylesheet">
-    <link href="/css/format-html.min.css?1794837722" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1794900460" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794900460" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794900460" rel="stylesheet">
+    <link href="/css/theme.min.css?1794900460" rel="stylesheet">
+    <link href="/css/format-html.min.css?1794900460" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1794837722" rel="stylesheet">
+    <link href="/css/custom.css?1794900460" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/index.html">
     <div id="R-body" class="default-animation">
@@ -176,23 +176,23 @@
 <h1 id="lvs架构">LVS架构</h1>
 
 <p>LVS (Linux Virtual Server) 是 Linux 内核级别的负载均衡解决方案，由中国的章文嵩博士在 1998 年创建，是目前性能最高的负载均衡软件之一。</p>
-<p><a href="#R-image-50536d3bc2ef87165c3f9ae9b0aa0429" class="lightbox-link"><img alt="image-20261027214044316" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/image-20261027214044316.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-50536d3bc2ef87165c3f9ae9b0aa0429"><img alt="image-20261027214044316" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/image-20261027214044316.png"></a></p>
-<div class="tab-panel" data-tab-group="R-tabs-7db0b4aa340c4e9d64c4d954af44f77c">
+<p><a href="#R-image-2c4913854bfe3f1619c5e45932d860fd" class="lightbox-link"><img alt="image-20261027214044316" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/image-20261027214044316.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-2c4913854bfe3f1619c5e45932d860fd"><img alt="image-20261027214044316" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/image-20261027214044316.png"></a></p>
+<div class="tab-panel" data-tab-group="R-tabs-9836546add73bd632b633d6f59286d8c">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-5f343137a3d3382e456cf29adedfef0b" aria-expanded="true"
+      aria-controls="R-tab-id-8846cfc781763970296a91928419d405" aria-expanded="true"
       data-tab-item="R-tab-0a1d367f65f16caf925018ede1f27712"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-7db0b4aa340c4e9d64c4d954af44f77c','R-tab-0a1d367f65f16caf925018ede1f27712')"
+      onclick="switchTab('R-tabs-9836546add73bd632b633d6f59286d8c','R-tab-0a1d367f65f16caf925018ede1f27712')"
     >
       <span class="tab-nav-text">核心术语</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-5f343137a3d3382e456cf29adedfef0b"
+      id="R-tab-id-8846cfc781763970296a91928419d405"
       data-tab-item="R-tab-0a1d367f65f16caf925018ede1f27712"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -236,21 +236,21 @@
 <li>目标：在Linux平台实现高性能、高可用的服务器集群</li>
 <li>包含：内核模块（IPVS）+ 用户态工具（ipvsadm）+ 高可用方案（Keepalived）</li>
 </ul>
-<div class="tab-panel" data-tab-group="R-tabs-4a2cbb4d52578b3def2c640722613f16">
+<div class="tab-panel" data-tab-group="R-tabs-1f06347f76de39f7a41180979c80d04a">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-93bbc266f4674cc598c3be513e474a06" aria-expanded="true"
+      aria-controls="R-tab-id-8a34bbeb50ea346fd5c90edb8390ddac" aria-expanded="true"
       data-tab-item="R-tab-7e272722fb8b0a0bd7540a8c9b827dd2"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-4a2cbb4d52578b3def2c640722613f16','R-tab-7e272722fb8b0a0bd7540a8c9b827dd2')"
+      onclick="switchTab('R-tabs-1f06347f76de39f7a41180979c80d04a','R-tab-7e272722fb8b0a0bd7540a8c9b827dd2')"
     >
       <span class="tab-nav-text">LVS项目组成</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-93bbc266f4674cc598c3be513e474a06"
+      id="R-tab-id-8a34bbeb50ea346fd5c90edb8390ddac"
       data-tab-item="R-tab-7e272722fb8b0a0bd7540a8c9b827dd2"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -262,21 +262,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-77a4ef11f5879b7e296dc5fa84e9693b">
+</div><div class="tab-panel" data-tab-group="R-tabs-2739462ddcd2ac3dd63fa0064797a4ef">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-829236c5966e4da26c1a0fa0677450b4" aria-expanded="true"
+      aria-controls="R-tab-id-ea715548463ae9ca20771acbbe4bb347" aria-expanded="true"
       data-tab-item="R-tab-2143897f463db133672680e0eb24d27e"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-77a4ef11f5879b7e296dc5fa84e9693b','R-tab-2143897f463db133672680e0eb24d27e')"
+      onclick="switchTab('R-tabs-2739462ddcd2ac3dd63fa0064797a4ef','R-tab-2143897f463db133672680e0eb24d27e')"
     >
       <span class="tab-nav-text">类比</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-829236c5966e4da26c1a0fa0677450b4"
+      id="R-tab-id-ea715548463ae9ca20771acbbe4bb347"
       data-tab-item="R-tab-2143897f463db133672680e0eb24d27e"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -689,9 +689,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794837722"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794837722" defer></script>
-    <script src="/js/theme.min.js?1794837722" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794900460"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794900460" defer></script>
+    <script src="/js/theme.min.js?1794900460" defer></script>
 
 <style>
     .highlight {
