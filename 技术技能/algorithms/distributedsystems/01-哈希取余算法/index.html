@@ -23,27 +23,27 @@
     <title>01 哈希取余算法详解 :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.xml" rel="alternate" type="application/rss+xml" title="01 哈希取余算法详解 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.print.html" rel="alternate" type="text/html" title="01 哈希取余算法详解 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1794900460" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1794900460" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1794900460" defer></script>
-    <script src="/js/search-lunr.min.js?1794900460" defer></script>
-    <script src="/js/search.min.js?1794900460" defer></script>
+    <link href="/images/favicon.png?1794901386" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1794901386" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1794901386" defer></script>
+    <script src="/js/search-lunr.min.js?1794901386" defer></script>
+    <script src="/js/search.min.js?1794901386" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1794900460";
+      window.relearn.index_js_url="/searchindex.en.js?1794901386";
     </script>
-    <script src="/js/lunr/lunr.min.js?1794900460" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1794900460" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1794900460" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1794900460" defer></script>
+    <script src="/js/lunr/lunr.min.js?1794901386" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1794901386" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1794901386" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1794901386" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1794900460" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794900460" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794900460" rel="stylesheet">
-    <link href="/css/theme.min.css?1794900460" rel="stylesheet">
-    <link href="/css/format-html.min.css?1794900460" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1794901386" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794901386" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794901386" rel="stylesheet">
+    <link href="/css/theme.min.css?1794901386" rel="stylesheet">
+    <link href="/css/format-html.min.css?1794901386" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1794900460" rel="stylesheet">
+    <link href="/css/custom.css?1794901386" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/algorithms/distributedsystems/01-%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E7%AE%97%E6%B3%95/index.html">
     <div id="R-body" class="default-animation">
@@ -229,21 +229,21 @@
 </ul>
 <h2 id="二算法优点">二、算法优点<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="1-数据分布均匀性">1. 数据分布均匀性<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-adb4ec0a762f410663d15b96ae8b12c0">
+<div class="tab-panel" data-tab-group="R-tabs-62021f96194f497b9b0fc301bb3d5869">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-fd9d047404ed19161825f994a6f72fa4" aria-expanded="true"
+      aria-controls="R-tab-id-f39fdc4f6ba6e317b7082cfa60ac7714" aria-expanded="true"
       data-tab-item="R-tab-8160d3e49905c03e2469b3ea0cfde94c"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-adb4ec0a762f410663d15b96ae8b12c0','R-tab-8160d3e49905c03e2469b3ea0cfde94c')"
+      onclick="switchTab('R-tabs-62021f96194f497b9b0fc301bb3d5869','R-tab-8160d3e49905c03e2469b3ea0cfde94c')"
     >
       <span class="tab-nav-text">模拟10000个键的分布</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-fd9d047404ed19161825f994a6f72fa4"
+      id="R-tab-id-f39fdc4f6ba6e317b7082cfa60ac7714"
       data-tab-item="R-tab-8160d3e49905c03e2469b3ea0cfde94c"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -312,21 +312,21 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;处理 100,000 个键耗时: </span><span style="color:#e6db74">{</span>end <span style="color:#f92672">-</span> start<span style="color:#e6db74">:</span><span style="color:#e6db74">.3f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> 秒&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;平均每个键: </span><span style="color:#e6db74">{</span>(end <span style="color:#f92672">-</span> start) <span style="color:#f92672">/</span> <span style="color:#ae81ff">100000</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span><span style="color:#e6db74">:</span><span style="color:#e6db74">.3f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> 毫秒&#34;</span>)</span></span></code></pre></div>
 <h3 id="3-确定性路由">3. 确定性路由<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-22b87e7a37ed4bad76ac06586b0b19cd">
+<div class="tab-panel" data-tab-group="R-tabs-2370d82f5e06ce9c9628766e1c9667fd">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-8be5aea403342257670d4c044b821cec" aria-expanded="true"
+      aria-controls="R-tab-id-e8538e38cc8382961b7a09eb9fc77fc3" aria-expanded="true"
       data-tab-item="R-tab-eb9b81715df5ba7609ca4d60ac45c8f4"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-22b87e7a37ed4bad76ac06586b0b19cd','R-tab-eb9b81715df5ba7609ca4d60ac45c8f4')"
+      onclick="switchTab('R-tabs-2370d82f5e06ce9c9628766e1c9667fd','R-tab-eb9b81715df5ba7609ca4d60ac45c8f4')"
     >
       <span class="tab-nav-text">相同键总是路由到相同节点</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-8be5aea403342257670d4c044b821cec"
+      id="R-tab-id-e8538e38cc8382961b7a09eb9fc77fc3"
       data-tab-item="R-tab-eb9b81715df5ba7609ca4d60ac45c8f4"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -354,21 +354,21 @@
     </div>
   </div>
 </div><h3 id="4-无状态设计">4. 无状态设计<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-66503df8c44803b6ebac16a4aae944dc">
+<div class="tab-panel" data-tab-group="R-tabs-b8765d4f74e10a3161d3d3943d635e37">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-3578c617f4f9fb36dc892014a9ba66ef" aria-expanded="true"
+      aria-controls="R-tab-id-68d8cd9b940564b6881a6d0b83d39dca" aria-expanded="true"
       data-tab-item="R-tab-4cbc9c253b70bacace849a49902decde"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-66503df8c44803b6ebac16a4aae944dc','R-tab-4cbc9c253b70bacace849a49902decde')"
+      onclick="switchTab('R-tabs-b8765d4f74e10a3161d3d3943d635e37','R-tab-4cbc9c253b70bacace849a49902decde')"
     >
       <span class="tab-nav-text">不同客户端计算结果相同</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-3578c617f4f9fb36dc892014a9ba66ef"
+      id="R-tab-id-68d8cd9b940564b6881a6d0b83d39dca"
       data-tab-item="R-tab-4cbc9c253b70bacace849a49902decde"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -393,21 +393,21 @@
   </div>
 </div><h2 id="三算法缺点">三、算法缺点<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="1-节点数量变化导致大规模数据迁移">1. 节点数量变化导致大规模数据迁移<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-7a7fb1749a21e4dff370e811aba33091">
+<div class="tab-panel" data-tab-group="R-tabs-313e1759e54a77658405dd23c39feb4e">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-ebec3b76596fdae7e6cba7922dad346b" aria-expanded="true"
+      aria-controls="R-tab-id-2c8b3f1e78f7ebd6ba900cc032a0bba2" aria-expanded="true"
       data-tab-item="R-tab-2b0f61b2dc2e001b20d60d7c531bd5a9"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-7a7fb1749a21e4dff370e811aba33091','R-tab-2b0f61b2dc2e001b20d60d7c531bd5a9')"
+      onclick="switchTab('R-tabs-313e1759e54a77658405dd23c39feb4e','R-tab-2b0f61b2dc2e001b20d60d7c531bd5a9')"
     >
       <span class="tab-nav-text">节点扩容时的数据迁移</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-ebec3b76596fdae7e6cba7922dad346b"
+      id="R-tab-id-2c8b3f1e78f7ebd6ba900cc032a0bba2"
       data-tab-item="R-tab-2b0f61b2dc2e001b20d60d7c531bd5a9"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -450,21 +450,21 @@
 <li><strong>100节点→101节点</strong>：约 99% 的数据需要迁移</li>
 </ul>
 <h3 id="2-数据倾斜问题">2. 数据倾斜问题<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-0432e58d1b7f2fc730830882df8b9071">
+<div class="tab-panel" data-tab-group="R-tabs-0d873935d3f5233f6cfe987259168ba9">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-4be2202951fd83ae54d0dfbace35fcaa" aria-expanded="true"
+      aria-controls="R-tab-id-cdaab09c1d68eced3713480a8bb97d42" aria-expanded="true"
       data-tab-item="R-tab-317b33d28e38c06c950e515588e3d887"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-0432e58d1b7f2fc730830882df8b9071','R-tab-317b33d28e38c06c950e515588e3d887')"
+      onclick="switchTab('R-tabs-0d873935d3f5233f6cfe987259168ba9','R-tab-317b33d28e38c06c950e515588e3d887')"
     >
       <span class="tab-nav-text">特定数据模式导致的倾斜</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-4be2202951fd83ae54d0dfbace35fcaa"
+      id="R-tab-id-cdaab09c1d68eced3713480a8bb97d42"
       data-tab-item="R-tab-317b33d28e38c06c950e515588e3d887"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -807,7 +807,7 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/index.html"><input type="checkbox" id="R-section-0f1581e57473aa655aa42a31a3bb15c0" aria-controls="R-subsections-0f1581e57473aa655aa42a31a3bb15c0"><label for="R-section-0f1581e57473aa655aa42a31a3bb15c0"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单kubernetes 入门</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/index.html">kubernetes 入门<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-0f1581e57473aa655aa42a31a3bb15c0" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%9F%BA%E7%A1%80/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%9F%BA%E7%A1%80/index.html">01、K8S概述<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E5%AE%9E%E8%B7%B5/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E5%AE%9E%E8%B7%B5/index.html">02、K8S环境部署<i class="fa-fw fas fa-check read-icon"></i></a></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html">03、K8S应用生命周期管理<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html">03、K8S应用生命周期管理<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html"><input type="checkbox" id="R-section-78e8052c19acfaadd24c63525115a88c" aria-controls="R-subsections-78e8052c19acfaadd24c63525115a88c"><label for="R-section-78e8052c19acfaadd24c63525115a88c"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html">Linux<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-78e8052c19acfaadd24c63525115a88c" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html"><input type="checkbox" id="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e" aria-controls="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e"><label for="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux之文件处理</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html">Linux之文件处理<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html">创建测试文件<i class="fa-fw fas fa-check read-icon"></i></a></li>
@@ -901,9 +901,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794900460"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794900460" defer></script>
-    <script src="/js/theme.min.js?1794900460" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794901386"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794901386" defer></script>
+    <script src="/js/theme.min.js?1794901386" defer></script>
 
 <style>
     .highlight {
