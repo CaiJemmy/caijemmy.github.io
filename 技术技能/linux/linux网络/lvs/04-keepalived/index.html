@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.170.0">
+    <meta name="generator" content="Hugo 0.170.1">
     <meta name="generator" content="Relearn 9.0.3+9bc97fdf9eaf3af61af9bcc11db2e010de83af95">
     <meta name="description" content="keepalived 详细学习">
     <meta name="author" content="">
@@ -23,27 +23,27 @@
     <title>04 keepalived :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/04-keepalived/index.xml" rel="alternate" type="application/rss+xml" title="04 keepalived :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/04-keepalived/index.print.html" rel="alternate" type="text/html" title="04 keepalived :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1794901386" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1794901386" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1794901386" defer></script>
-    <script src="/js/search-lunr.min.js?1794901386" defer></script>
-    <script src="/js/search.min.js?1794901386" defer></script>
+    <link href="/images/favicon.png?1794971884" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1794971884" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1794971884" defer></script>
+    <script src="/js/search-lunr.min.js?1794971884" defer></script>
+    <script src="/js/search.min.js?1794971884" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1794901386";
+      window.relearn.index_js_url="/searchindex.en.js?1794971884";
     </script>
-    <script src="/js/lunr/lunr.min.js?1794901386" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1794901386" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1794901386" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1794901386" defer></script>
+    <script src="/js/lunr/lunr.min.js?1794971884" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1794971884" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1794971884" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1794971884" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1794901386" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794901386" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794901386" rel="stylesheet">
-    <link href="/css/theme.min.css?1794901386" rel="stylesheet">
-    <link href="/css/format-html.min.css?1794901386" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1794971884" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1794971884" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1794971884" rel="stylesheet">
+    <link href="/css/theme.min.css?1794971884" rel="stylesheet">
+    <link href="/css/format-html.min.css?1794971884" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1794901386" rel="stylesheet">
+    <link href="/css/custom.css?1794971884" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/04-keepalived/index.html">
     <div id="R-body" class="default-animation">
@@ -198,8 +198,8 @@
 </ul>
 <p>要能自动切换主从节点；</p>
 <p>要能自动探测RS是否正常，异常时摘除相应节点，不再向异常节点转发。</p>
-<p><a href="#R-image-84dd9768abdc5bf695c486e78861f6dc" class="lightbox-link"><img alt="image-20261113121102358" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/04-keepalived/image-20261113121102358.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-84dd9768abdc5bf695c486e78861f6dc"><img alt="image-20261113121102358" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/04-keepalived/image-20261113121102358.png"></a></p>
+<p><a href="#R-image-c44f2c875788753aa475b6faf58f1ebd" class="lightbox-link"><img alt="image-20261113121102358" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/04-keepalived/image-20261113121102358.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-c44f2c875788753aa475b6faf58f1ebd"><img alt="image-20261113121102358" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/04-keepalived/image-20261113121102358.png"></a></p>
 <h2 id="安装-keepalived">安装 Keepalived<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 安装</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>apt update
@@ -245,21 +245,21 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span><span style="color:#f92672">}</span></span></span></code></pre></div>
 <h3 id="vrrp-实例配置vrrp_instance">VRRP 实例配置（vrrp_instance）<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <h4 id="基本-vrrp-配置">基本 VRRP 配置<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-b8a7e3ed8ad4a59700abc093bd61826c">
+<div class="tab-panel" data-tab-group="R-tabs-1da65ab5c943208d928f29459af7a778">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-748448d90b166d787e984897236653d6" aria-expanded="true"
+      aria-controls="R-tab-id-2cb9866cdfe13825e450c60b39a1089a" aria-expanded="true"
       data-tab-item="R-tab-9c41268ceb85ad2742e464658f6b377c"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-b8a7e3ed8ad4a59700abc093bd61826c','R-tab-9c41268ceb85ad2742e464658f6b377c')"
+      onclick="switchTab('R-tabs-1da65ab5c943208d928f29459af7a778','R-tab-9c41268ceb85ad2742e464658f6b377c')"
     >
       <span class="tab-nav-text">MASTER 节点配置</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-748448d90b166d787e984897236653d6"
+      id="R-tab-id-2cb9866cdfe13825e450c60b39a1089a"
       data-tab-item="R-tab-9c41268ceb85ad2742e464658f6b377c"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -284,21 +284,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-59fb034080c6a92b39cefe8e2cce0362">
+</div><div class="tab-panel" data-tab-group="R-tabs-23c6363d9898f73838f2d875204aa926">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-c3c703c9d1c7cd19e42976d2301bdea9" aria-expanded="true"
+      aria-controls="R-tab-id-c329e30c6c26df5bc7f21c8b26c7b964" aria-expanded="true"
       data-tab-item="R-tab-474d7c23d6c4f94b49c951925ccd1e9b"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-59fb034080c6a92b39cefe8e2cce0362','R-tab-474d7c23d6c4f94b49c951925ccd1e9b')"
+      onclick="switchTab('R-tabs-23c6363d9898f73838f2d875204aa926','R-tab-474d7c23d6c4f94b49c951925ccd1e9b')"
     >
       <span class="tab-nav-text">BACKUP 节点配置</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-c3c703c9d1c7cd19e42976d2301bdea9"
+      id="R-tab-id-c329e30c6c26df5bc7f21c8b26c7b964"
       data-tab-item="R-tab-474d7c23d6c4f94b49c951925ccd1e9b"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -633,21 +633,21 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>        exit <span style="color:#ae81ff">1</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span><span style="color:#66d9ef">esac</span></span></span></code></pre></div>
 <h3 id="2-配置主备keepalived信息">2 配置主备keepalived信息<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-ee9e8e9d4b8e5eb02c052947a772a287">
+<div class="tab-panel" data-tab-group="R-tabs-68ff98bd9f36881384ff6a1b83f82e90">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-ddc29c57eeefb704216c719626eff41a" aria-expanded="true"
+      aria-controls="R-tab-id-ea2b1d1a2dcba1878a8ead8c766bc428" aria-expanded="true"
       data-tab-item="R-tab-c80b825891077ade685966e5ca989d4b"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-ee9e8e9d4b8e5eb02c052947a772a287','R-tab-c80b825891077ade685966e5ca989d4b')"
+      onclick="switchTab('R-tabs-68ff98bd9f36881384ff6a1b83f82e90','R-tab-c80b825891077ade685966e5ca989d4b')"
     >
       <span class="tab-nav-text">Director MASTER</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-ddc29c57eeefb704216c719626eff41a"
+      id="R-tab-id-ea2b1d1a2dcba1878a8ead8c766bc428"
       data-tab-item="R-tab-c80b825891077ade685966e5ca989d4b"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -713,21 +713,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-7d661481d5b83a99c8c15543ccac7109">
+</div><div class="tab-panel" data-tab-group="R-tabs-599a8c4de8c5b105d28614a08a86c45d">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-96b2bb81cc103e7a1b2b067b2f83310b" aria-expanded="true"
+      aria-controls="R-tab-id-786ce48965faa4b83ef00025394af32c" aria-expanded="true"
       data-tab-item="R-tab-de14b73fbcc9924b20fb03ac0b1f7e65"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-7d661481d5b83a99c8c15543ccac7109','R-tab-de14b73fbcc9924b20fb03ac0b1f7e65')"
+      onclick="switchTab('R-tabs-599a8c4de8c5b105d28614a08a86c45d','R-tab-de14b73fbcc9924b20fb03ac0b1f7e65')"
     >
       <span class="tab-nav-text">Director BACKUP</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-96b2bb81cc103e7a1b2b067b2f83310b"
+      id="R-tab-id-786ce48965faa4b83ef00025394af32c"
       data-tab-item="R-tab-de14b73fbcc9924b20fb03ac0b1f7e65"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -951,7 +951,8 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/index.html"><input type="checkbox" id="R-section-0f1581e57473aa655aa42a31a3bb15c0" aria-controls="R-subsections-0f1581e57473aa655aa42a31a3bb15c0"><label for="R-section-0f1581e57473aa655aa42a31a3bb15c0"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单kubernetes 入门</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/index.html">kubernetes 入门<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-0f1581e57473aa655aa42a31a3bb15c0" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%9F%BA%E7%A1%80/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%9F%BA%E7%A1%80/index.html">01、K8S概述<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E5%AE%9E%E8%B7%B5/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E5%AE%9E%E8%B7%B5/index.html">02、K8S环境部署<i class="fa-fw fas fa-check read-icon"></i></a></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html">03、K8S应用生命周期管理<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html">03、K8S应用生命周期管理<i class="fa-fw fas fa-check read-icon"></i></a></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E8%84%9A%E6%9C%AC/nsenter/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E8%84%9A%E6%9C%AC/nsenter/index.html">nsenter 命令<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html"><input type="checkbox" id="R-section-78e8052c19acfaadd24c63525115a88c" aria-controls="R-subsections-78e8052c19acfaadd24c63525115a88c" checked><label for="R-section-78e8052c19acfaadd24c63525115a88c"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html">Linux<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-78e8052c19acfaadd24c63525115a88c" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html"><input type="checkbox" id="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e" aria-controls="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e"><label for="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux之文件处理</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html">Linux之文件处理<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html">创建测试文件<i class="fa-fw fas fa-check read-icon"></i></a></li>
@@ -1045,9 +1046,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794901386"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794901386" defer></script>
-    <script src="/js/theme.min.js?1794901386" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1794971884"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1794971884" defer></script>
+    <script src="/js/theme.min.js?1794971884" defer></script>
 
 <style>
     .highlight {
