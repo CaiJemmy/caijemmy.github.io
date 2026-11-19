@@ -23,27 +23,27 @@
     <title>iptables filter表基本命令 :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.xml" rel="alternate" type="application/rss+xml" title="iptables filter表基本命令 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.print.html" rel="alternate" type="text/html" title="iptables filter表基本命令 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1795013931" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1795013931" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1795013931" defer></script>
-    <script src="/js/search-lunr.min.js?1795013931" defer></script>
-    <script src="/js/search.min.js?1795013931" defer></script>
+    <link href="/images/favicon.png?1795087911" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1795087911" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1795087911" defer></script>
+    <script src="/js/search-lunr.min.js?1795087911" defer></script>
+    <script src="/js/search.min.js?1795087911" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1795013931";
+      window.relearn.index_js_url="/searchindex.en.js?1795087911";
     </script>
-    <script src="/js/lunr/lunr.min.js?1795013931" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1795013931" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1795013931" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1795013931" defer></script>
+    <script src="/js/lunr/lunr.min.js?1795087911" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1795087911" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1795087911" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1795087911" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1795013931" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1795013931" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1795013931" rel="stylesheet">
-    <link href="/css/theme.min.css?1795013931" rel="stylesheet">
-    <link href="/css/format-html.min.css?1795013931" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1795087911" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1795087911" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1795087911" rel="stylesheet">
+    <link href="/css/theme.min.css?1795087911" rel="stylesheet">
+    <link href="/css/format-html.min.css?1795087911" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1795013931" rel="stylesheet">
+    <link href="/css/custom.css?1795087911" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html">
     <div id="R-body" class="default-animation">
@@ -180,8 +180,8 @@
         iptables和netfilter的关系
       </div>
       <div class="card-content-text">
-          <a href="#R-image-806f0631498cdd1e2888fe9de6c1aee8" class="lightbox-link"><img alt="image-20260326155730252" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326155730252.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-806f0631498cdd1e2888fe9de6c1aee8"><img alt="image-20260326155730252" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326155730252.png"></a>
+          <a href="#R-image-8cf2310bc4f1eb7c3f09ebfbc35b2c13" class="lightbox-link"><img alt="image-20260326155730252" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326155730252.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-8cf2310bc4f1eb7c3f09ebfbc35b2c13"><img alt="image-20260326155730252" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326155730252.png"></a>
       </div>
     </div>
   </article>
@@ -193,8 +193,8 @@
         iptables的5个链
       </div>
       <div class="card-content-text">
-          <p><a href="#R-image-810979e875cd9022be4f4f169dfe85ca" class="lightbox-link"><img alt="image-20260326170716441" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326170716441.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-810979e875cd9022be4f4f169dfe85ca"><img alt="image-20260326170716441" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326170716441.png"></a></p>
+          <p><a href="#R-image-61ccab94c334421fffabe37b2fcbd77a" class="lightbox-link"><img alt="image-20260326170716441" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326170716441.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-61ccab94c334421fffabe37b2fcbd77a"><img alt="image-20260326170716441" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326170716441.png"></a></p>
 <ul>
 <li>给本机某个进程的数据包：PREROUTING &ndash;&gt; INPUT</li>
 <li>由本机转发的数据包：PREROUTING &ndash;&gt; FORWARD &ndash;&gt; POSTROUTING</li>
@@ -211,8 +211,8 @@
         表和链的关系
       </div>
       <div class="card-content-text">
-          <p><a href="#R-image-ea8445ff9f1027c598ea6c80586b0e3a" class="lightbox-link"><img alt="image-20260326192831787" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326192831787.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-ea8445ff9f1027c598ea6c80586b0e3a"><img alt="image-20260326192831787" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326192831787.png"></a></p>
+          <p><a href="#R-image-e5ce790f49124f67215018260f42921a" class="lightbox-link"><img alt="image-20260326192831787" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326192831787.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-e5ce790f49124f67215018260f42921a"><img alt="image-20260326192831787" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260326192831787.png"></a></p>
 <ul>
 <li>表是按功能分</li>
 <li>链是按时机分</li>
@@ -265,21 +265,21 @@
 	</tbody>
 </table>
 <h2 id="iptables的基本语法">iptables的基本语法<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<div class="tab-panel" data-tab-group="R-tabs-0b51581877d157fc3678fcd8d33efbcd">
+<div class="tab-panel" data-tab-group="R-tabs-8307070e639d740ef0a31e1a947141e4">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-596f3d2c9b94b1511d71e796345c1578" aria-expanded="true"
+      aria-controls="R-tab-id-4a33bda06cc967a16fba5004fc24d838" aria-expanded="true"
       data-tab-item="R-tab-14fb608d70b8dfdae4eb0325b2cce398"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-0b51581877d157fc3678fcd8d33efbcd','R-tab-14fb608d70b8dfdae4eb0325b2cce398')"
+      onclick="switchTab('R-tabs-8307070e639d740ef0a31e1a947141e4','R-tab-14fb608d70b8dfdae4eb0325b2cce398')"
     >
       <span class="tab-nav-text">man iptables</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-596f3d2c9b94b1511d71e796345c1578"
+      id="R-tab-id-4a33bda06cc967a16fba5004fc24d838"
       data-tab-item="R-tab-14fb608d70b8dfdae4eb0325b2cce398"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -328,21 +328,21 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>-E, --rename-chain old-chain new-chain
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>  重命名自定义的规则链名称</span></span></code></pre></div>
-<div class="tab-panel" data-tab-group="R-tabs-72c863b3a6a0ebe9c04f5862d4db5287">
+<div class="tab-panel" data-tab-group="R-tabs-e777a8ad055e05f94d959d2dc78d06b4">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-472f3bbf1ce7a7c57877e6c79ad44412" aria-expanded="true"
+      aria-controls="R-tab-id-2659af00ab0bfebb51648c2c4fc8face" aria-expanded="true"
       data-tab-item="R-tab-16035461f35402af95ad690023d1f40c"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-72c863b3a6a0ebe9c04f5862d4db5287','R-tab-16035461f35402af95ad690023d1f40c')"
+      onclick="switchTab('R-tabs-e777a8ad055e05f94d959d2dc78d06b4','R-tab-16035461f35402af95ad690023d1f40c')"
     >
       <span class="tab-nav-text">列表命令（-L）的选项</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-472f3bbf1ce7a7c57877e6c79ad44412"
+      id="R-tab-id-2659af00ab0bfebb51648c2c4fc8face"
       data-tab-item="R-tab-16035461f35402af95ad690023d1f40c"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -391,21 +391,21 @@
 <li>要求以&quot;-m 扩展模块&quot;的形式明确指出类型</li>
 <li>包括多端口、MAC地址、IP范围、数据包状态等条件</li>
 </ul>
-<div class="tab-panel" data-tab-group="R-tabs-4c646c6130a90cfa342de29fc4ae9c49">
+<div class="tab-panel" data-tab-group="R-tabs-2615905c0f2dd655311cb9d86c398405">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-8b2064f186b8281a263f6bd1acb8ae74" aria-expanded="true"
+      aria-controls="R-tab-id-fc4edd94b66e16e83747c2f3fb591ac0" aria-expanded="true"
       data-tab-item="R-tab-79f0f5bb974ffdc958700cbee835857a"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-4c646c6130a90cfa342de29fc4ae9c49','R-tab-79f0f5bb974ffdc958700cbee835857a')"
+      onclick="switchTab('R-tabs-2615905c0f2dd655311cb9d86c398405','R-tab-79f0f5bb974ffdc958700cbee835857a')"
     >
       <span class="tab-nav-text">通用匹配</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-8b2064f186b8281a263f6bd1acb8ae74"
+      id="R-tab-id-fc4edd94b66e16e83747c2f3fb591ac0"
       data-tab-item="R-tab-79f0f5bb974ffdc958700cbee835857a"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -418,21 +418,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-3d63801a003cb18632b01a4b304c5696">
+</div><div class="tab-panel" data-tab-group="R-tabs-71c5361d5b7a85017312ab9e69c0dc9e">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-ede1d9fc9417a1124c0a4a9dc6711878" aria-expanded="true"
+      aria-controls="R-tab-id-74288522a0ea3ae1c6ce4e64553ec207" aria-expanded="true"
       data-tab-item="R-tab-f2c31d91905f1f44e22bb7208206abf2"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-3d63801a003cb18632b01a4b304c5696','R-tab-f2c31d91905f1f44e22bb7208206abf2')"
+      onclick="switchTab('R-tabs-71c5361d5b7a85017312ab9e69c0dc9e','R-tab-f2c31d91905f1f44e22bb7208206abf2')"
     >
       <span class="tab-nav-text">[!] -p, &ndash;protocol tcp TCP头部通用选项</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-ede1d9fc9417a1124c0a4a9dc6711878"
+      id="R-tab-id-74288522a0ea3ae1c6ce4e64553ec207"
       data-tab-item="R-tab-f2c31d91905f1f44e22bb7208206abf2"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -446,21 +446,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-e06cd2086cf3f8c4f046d44637b6651f">
+</div><div class="tab-panel" data-tab-group="R-tabs-b61c9ebc3bf3ca0ffe2b7cad162f2a58">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-95e842cf4fdf279fad6f89c010b425b5" aria-expanded="true"
+      aria-controls="R-tab-id-e1b356f728998f73573a8b2978106338" aria-expanded="true"
       data-tab-item="R-tab-87dce88e50a4b2ad25cd198c15440257"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-e06cd2086cf3f8c4f046d44637b6651f','R-tab-87dce88e50a4b2ad25cd198c15440257')"
+      onclick="switchTab('R-tabs-b61c9ebc3bf3ca0ffe2b7cad162f2a58','R-tab-87dce88e50a4b2ad25cd198c15440257')"
     >
       <span class="tab-nav-text">[!] -p, &ndash;protocol udp UDP头部通用选项</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-95e842cf4fdf279fad6f89c010b425b5"
+      id="R-tab-id-e1b356f728998f73573a8b2978106338"
       data-tab-item="R-tab-87dce88e50a4b2ad25cd198c15440257"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -469,21 +469,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-a6d0457ac83998f47c9741ee79fa356f">
+</div><div class="tab-panel" data-tab-group="R-tabs-6a5455d089bbb58b7027f857a9ed11d7">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-423a66fe96c4265922c800c6726d1579" aria-expanded="true"
+      aria-controls="R-tab-id-408c307a6ef00499f3a2c6b8315ee6f6" aria-expanded="true"
       data-tab-item="R-tab-28be4ebbc5207f96b0a8ca3f9742d204"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-a6d0457ac83998f47c9741ee79fa356f','R-tab-28be4ebbc5207f96b0a8ca3f9742d204')"
+      onclick="switchTab('R-tabs-6a5455d089bbb58b7027f857a9ed11d7','R-tab-28be4ebbc5207f96b0a8ca3f9742d204')"
     >
       <span class="tab-nav-text">[!] -p, &ndash;protocol icmp ICMP头部通用选项</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-423a66fe96c4265922c800c6726d1579"
+      id="R-tab-id-408c307a6ef00499f3a2c6b8315ee6f6"
       data-tab-item="R-tab-28be4ebbc5207f96b0a8ca3f9742d204"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -551,8 +551,8 @@
 </li>
 </ul>
 <h2 id="filter表脑图">filter表脑图<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<p><a href="#R-image-2ea7e67ae451bb15b5e248ea7a68c901" class="lightbox-link"><img alt="image-20260327091425674" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327091425674.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-2ea7e67ae451bb15b5e248ea7a68c901"><img alt="image-20260327091425674" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327091425674.png"></a></p>
+<p><a href="#R-image-2ef2ce906bdcb6c06e1d6baba5d6fd71" class="lightbox-link"><img alt="image-20260327091425674" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327091425674.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-2ef2ce906bdcb6c06e1d6baba5d6fd71"><img alt="image-20260327091425674" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327091425674.png"></a></p>
 <h2 id="实验配置web服务器上的主机防火墙">实验：配置Web服务器上的主机防火墙<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <p><strong>实验环境</strong>：LAMP（Debian）</p>
 <p><strong>配置防火墙策略</strong></p>
@@ -585,8 +585,8 @@
         mysql客户端连接测试
       </div>
       <div class="card-content-text">
-          <p><a href="#R-image-49f3935a8fa2faba9fbecf394d9708bc" class="lightbox-link"><img alt="image-20260327010404704" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010404704.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-49f3935a8fa2faba9fbecf394d9708bc"><img alt="image-20260327010404704" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010404704.png"></a></p>
+          <p><a href="#R-image-0b9729eb96f3b306158094538d5b9abe" class="lightbox-link"><img alt="image-20260327010404704" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010404704.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-0b9729eb96f3b306158094538d5b9abe"><img alt="image-20260327010404704" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010404704.png"></a></p>
 <ul>
 <li>windows 客户端可以连接到服务器的mysql数据库</li>
 </ul>
@@ -601,8 +601,8 @@
         nginx服务测试
       </div>
       <div class="card-content-text">
-          <p><a href="#R-image-533e817e866f9e63cb37cf9caaff62df" class="lightbox-link"><img alt="image-20260327010523698" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-533e817e866f9e63cb37cf9caaff62df"><img alt="image-20260327010523698" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png"></a></p>
+          <p><a href="#R-image-0e4a87d1e5998308979376a9ae0dcc24" class="lightbox-link"><img alt="image-20260327010523698" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-0e4a87d1e5998308979376a9ae0dcc24"><img alt="image-20260327010523698" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png"></a></p>
 <ul>
 <li>其他主机可以访问80端口</li>
 </ul>
@@ -656,21 +656,21 @@
 <p>为防止ssh登录不上，建议配置前设置个定时器，清理配置，保证自己对主机的连接权。</p>
   </div>
 </details>
-<div class="tab-panel" data-tab-group="R-tabs-84950e0e7ae3debc1df3f21c15c6cdd8">
+<div class="tab-panel" data-tab-group="R-tabs-d5aa69a311f578a13fd6416bf2535bea">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-4c278c4ac2102cefd230c1853f497a0a" aria-expanded="true"
+      aria-controls="R-tab-id-c61928cb34902ad3ac63801548fa9319" aria-expanded="true"
       data-tab-item="R-tab-b2d16594f0d3569b4e2b851b27f53dc3"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-84950e0e7ae3debc1df3f21c15c6cdd8','R-tab-b2d16594f0d3569b4e2b851b27f53dc3')"
+      onclick="switchTab('R-tabs-d5aa69a311f578a13fd6416bf2535bea','R-tab-b2d16594f0d3569b4e2b851b27f53dc3')"
     >
       <span class="tab-nav-text">恢复ssh的脚本</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-4c278c4ac2102cefd230c1853f497a0a"
+      id="R-tab-id-c61928cb34902ad3ac63801548fa9319"
       data-tab-item="R-tab-b2d16594f0d3569b4e2b851b27f53dc3"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -707,21 +707,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-3a4a6f0754443740d166fe235747a15e">
+</div><div class="tab-panel" data-tab-group="R-tabs-7a16bc3998979d6d07402d87bf64b0cb">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-009bfcb97614496e5ec42128d9a64270" aria-expanded="true"
+      aria-controls="R-tab-id-2d84ce58b13f2904a254d5a9b6447a5a" aria-expanded="true"
       data-tab-item="R-tab-430a2784a2a66dd5e5316b9582096bc1"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-3a4a6f0754443740d166fe235747a15e','R-tab-430a2784a2a66dd5e5316b9582096bc1')"
+      onclick="switchTab('R-tabs-7a16bc3998979d6d07402d87bf64b0cb','R-tab-430a2784a2a66dd5e5316b9582096bc1')"
     >
       <span class="tab-nav-text">删除ssh定时器及脚本</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-009bfcb97614496e5ec42128d9a64270"
+      id="R-tab-id-2d84ce58b13f2904a254d5a9b6447a5a"
       data-tab-item="R-tab-430a2784a2a66dd5e5316b9582096bc1"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -729,21 +729,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-049535a74458577d7143a2fc9166776f">
+</div><div class="tab-panel" data-tab-group="R-tabs-8ca37528a7cf046aae58df9f984bda5f">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-fda45e6afd3fa34bb041f31133acc1b2" aria-expanded="true"
+      aria-controls="R-tab-id-62dd8f0ca3404a6e8793d95a211f4f48" aria-expanded="true"
       data-tab-item="R-tab-e50d6ad56e3afcb5d2551b2ec213090e"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-049535a74458577d7143a2fc9166776f','R-tab-e50d6ad56e3afcb5d2551b2ec213090e')"
+      onclick="switchTab('R-tabs-8ca37528a7cf046aae58df9f984bda5f','R-tab-e50d6ad56e3afcb5d2551b2ec213090e')"
     >
       <span class="tab-nav-text">命令错误排查</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-fda45e6afd3fa34bb041f31133acc1b2"
+      id="R-tab-id-62dd8f0ca3404a6e8793d95a211f4f48"
       data-tab-item="R-tab-e50d6ad56e3afcb5d2551b2ec213090e"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -788,8 +788,8 @@
         mysql客户端连接测试
       </div>
       <div class="card-content-text">
-          <p><a href="#R-image-1ea3be1d3381d1aa8b2e2a9ea810d322" class="lightbox-link"><img alt="image-20260328000604901" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260328000604901.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-1ea3be1d3381d1aa8b2e2a9ea810d322"><img alt="image-20260328000604901" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260328000604901.png"></a></p>
+          <p><a href="#R-image-1ce05116d2b56832a2fd0e8a8f1d0a10" class="lightbox-link"><img alt="image-20260328000604901" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260328000604901.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-1ce05116d2b56832a2fd0e8a8f1d0a10"><img alt="image-20260328000604901" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260328000604901.png"></a></p>
 <ul>
 <li>windows 客户端连接到服务器的mysql数据库<strong>失败</strong></li>
 </ul>
@@ -804,8 +804,8 @@
         nginx服务测试
       </div>
       <div class="card-content-text">
-          <p><a href="#R-image-c2683705bb65bc6c2c4ccdeeea21f56e" class="lightbox-link"><img alt="image-20260327010523698" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-c2683705bb65bc6c2c4ccdeeea21f56e"><img alt="image-20260327010523698" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png"></a></p>
+          <p><a href="#R-image-78e83131b5da58b100038b2b3b2a7361" class="lightbox-link"><img alt="image-20260327010523698" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-78e83131b5da58b100038b2b3b2a7361"><img alt="image-20260327010523698" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/linux%E5%AE%89%E5%85%A8%E9%98%B2%E7%81%AB%E5%A2%99/iptables/02-iptables-filter%E8%A1%A8%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/image-20260327010523698.png"></a></p>
 <ul>
 <li>其他主机可以访问80端口</li>
 </ul>
@@ -822,21 +822,21 @@
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@debian:~# mysql -uroot -p -h 127.0.0.1
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Enter password:
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>ERROR <span style="color:#ae81ff">2002</span> <span style="color:#f92672">(</span>HY000<span style="color:#f92672">)</span>: Can<span style="color:#e6db74">&#39;t connect to server on &#39;</span>127.0.0.1<span style="color:#960050;background-color:#1e0010">&#39;</span> <span style="color:#f92672">(</span>115<span style="color:#f92672">)</span></span></span></code></pre></div>
-<div class="tab-panel" data-tab-group="R-tabs-dcca860acfca4814e7992ad85fe94a77">
+<div class="tab-panel" data-tab-group="R-tabs-77b7471404cdaca0f5a50d0f70e8d36d">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-8a5242daf51fd6ffac7e010602d0e571" aria-expanded="true"
+      aria-controls="R-tab-id-eb5efcddbf21a10fdde6dbfa6fe7f027" aria-expanded="true"
       data-tab-item="R-tab-c2be289ccc7c48dd900e85ff7d9ce599"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-dcca860acfca4814e7992ad85fe94a77','R-tab-c2be289ccc7c48dd900e85ff7d9ce599')"
+      onclick="switchTab('R-tabs-77b7471404cdaca0f5a50d0f70e8d36d','R-tab-c2be289ccc7c48dd900e85ff7d9ce599')"
     >
       <span class="tab-nav-text">失败原因分析</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-8a5242daf51fd6ffac7e010602d0e571"
+      id="R-tab-id-eb5efcddbf21a10fdde6dbfa6fe7f027"
       data-tab-item="R-tab-c2be289ccc7c48dd900e85ff7d9ce599"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -860,21 +860,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-17cbea24d1effae925b18a0e099cb076">
+</div><div class="tab-panel" data-tab-group="R-tabs-327632f90de9c4113204ab0d7d13fbfd">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-76fe0ec72e6f7536b2297ff675d99c71" aria-expanded="true"
+      aria-controls="R-tab-id-191343fa600ba42f1a8bb48634433652" aria-expanded="true"
       data-tab-item="R-tab-cab6e6e3004cea4c4402947b1fbfdb7d"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-17cbea24d1effae925b18a0e099cb076','R-tab-cab6e6e3004cea4c4402947b1fbfdb7d')"
+      onclick="switchTab('R-tabs-327632f90de9c4113204ab0d7d13fbfd','R-tab-cab6e6e3004cea4c4402947b1fbfdb7d')"
     >
       <span class="tab-nav-text">放行lo网卡</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-76fe0ec72e6f7536b2297ff675d99c71"
+      id="R-tab-id-191343fa600ba42f1a8bb48634433652"
       data-tab-item="R-tab-cab6e6e3004cea4c4402947b1fbfdb7d"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1003,7 +1003,9 @@
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/02-k8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E5%AE%9E%E8%B7%B5/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/02-k8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E5%AE%9E%E8%B7%B5/index.html">02、K8S环境部署<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/03-k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/03-k8s%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86/index.html">03、K8S应用生命周期管理<i class="fa-fw fas fa-check read-icon"></i></a></li>
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/04-k8s%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%A1%E7%90%86/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/04-k8s%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%A1%E7%90%86/index.html">04、K8S资源控制器管理<i class="fa-fw fas fa-check read-icon"></i></a></li>
-            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E8%84%9A%E6%9C%AC/nsenter/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E8%84%9A%E6%9C%AC/nsenter/index.html">nsenter 命令<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E8%84%9A%E6%9C%AC/nsenter/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E8%84%9A%E6%9C%AC/nsenter/index.html">nsenter 命令<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li>
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E8%BF%9B%E9%98%B6/index.html"><input type="checkbox" id="R-section-a7329624dfb1a5b7d71343444b76861f" aria-controls="R-subsections-a7329624dfb1a5b7d71343444b76861f"><label for="R-section-a7329624dfb1a5b7d71343444b76861f"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单kubernetes 进阶</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E8%BF%9B%E9%98%B6/index.html">kubernetes 进阶<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-a7329624dfb1a5b7d71343444b76861f" class="collapsible-menu">
+            <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E8%BF%9B%E9%98%B6/01-%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E5%99%A8/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E8%BF%9B%E9%98%B6/01-%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E5%99%A8/index.html">01、K8S资源控制器管理-进阶<i class="fa-fw fas fa-check read-icon"></i></a></li></ul></li></ul></li>
             <li class="parent " data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html"><input type="checkbox" id="R-section-78e8052c19acfaadd24c63525115a88c" aria-controls="R-subsections-78e8052c19acfaadd24c63525115a88c" checked><label for="R-section-78e8052c19acfaadd24c63525115a88c"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/index.html">Linux<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-78e8052c19acfaadd24c63525115a88c" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html"><input type="checkbox" id="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e" aria-controls="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e"><label for="R-section-d08ed0f80ff45fd8aa3e85bdc0f1277e"><i class="fa-fw fas fa-chevron-right"></i><span class="a11y-only">子菜单Linux之文件处理</span></label><a class="padding default-animation" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html">Linux之文件处理<i class="fa-fw fas fa-check read-icon"></i></a><ul id="R-subsections-d08ed0f80ff45fd8aa3e85bdc0f1277e" class="collapsible-menu">
             <li class="" data-nav-id="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html"><a class="padding" href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux-%E5%91%BD%E4%BB%A4/%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/index.html">创建测试文件<i class="fa-fw fas fa-check read-icon"></i></a></li>
@@ -1097,9 +1099,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1795013931"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1795013931" defer></script>
-    <script src="/js/theme.min.js?1795013931" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1795087911"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1795087911" defer></script>
+    <script src="/js/theme.min.js?1795087911" defer></script>
 
 <style>
     .highlight {
