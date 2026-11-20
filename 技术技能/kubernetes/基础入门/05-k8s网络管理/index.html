@@ -18,32 +18,32 @@
     <meta property="og:type" content="website">
     <meta itemprop="name" content="05、K8S网络管理 :: 暮鼓晨钟">
     <meta itemprop="description" content="K8S网络管理。">
-    <meta itemprop="wordCount" content="2763">
+    <meta itemprop="wordCount" content="2780">
     <meta itemprop="keywords" content="K8S">
     <title>05、K8S网络管理 :: 暮鼓晨钟</title>
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/index.xml" rel="alternate" type="application/rss+xml" title="05、K8S网络管理 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/index.print.html" rel="alternate" type="text/html" title="05、K8S网络管理 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1795188341" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1795188341" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1795188341" defer></script>
-    <script src="/js/search-lunr.min.js?1795188341" defer></script>
-    <script src="/js/search.min.js?1795188341" defer></script>
+    <link href="/images/favicon.png?1795189166" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1795189166" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1795189166" defer></script>
+    <script src="/js/search-lunr.min.js?1795189166" defer></script>
+    <script src="/js/search.min.js?1795189166" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1795188341";
+      window.relearn.index_js_url="/searchindex.en.js?1795189166";
     </script>
-    <script src="/js/lunr/lunr.min.js?1795188341" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1795188341" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1795188341" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1795188341" defer></script>
+    <script src="/js/lunr/lunr.min.js?1795189166" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1795189166" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1795189166" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1795189166" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1795188341" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1795188341" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1795188341" rel="stylesheet">
-    <link href="/css/theme.min.css?1795188341" rel="stylesheet">
-    <link href="/css/format-html.min.css?1795188341" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1795189166" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1795189166" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1795189166" rel="stylesheet">
+    <link href="/css/theme.min.css?1795189166" rel="stylesheet">
+    <link href="/css/format-html.min.css?1795189166" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1795188341" rel="stylesheet">
+    <link href="/css/custom.css?1795189166" rel="stylesheet">
   </head>
   <body class="mobile-support html" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/index.html">
     <div id="R-body" class="default-animation">
@@ -184,8 +184,8 @@
 <p>这一节，我们从 应用流程、细节解读、小结 三个方面来学习。</p>
 <p><strong>应用流程</strong></p>
 <p>资源对象体系</p>
-<p><a href="#R-image-9d922f977230bd98d07f99fb4ea063dd" class="lightbox-link"><img alt="image-20220715012035435" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220715012035435.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-9d922f977230bd98d07f99fb4ea063dd"><img alt="image-20220715012035435" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220715012035435.png"></a></p>
+<p><a href="#R-image-9659cabfc0074bf518a7b9058074bcc0" class="lightbox-link"><img alt="image-20220715012035435" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220715012035435.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-9659cabfc0074bf518a7b9058074bcc0"><img alt="image-20220715012035435" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220715012035435.png"></a></p>
 <p>简介</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	通过对Pod及其管理资源RC和Deployment的实践<span style="color:#960050;background-color:#1e0010">，</span>我们知道<span style="color:#960050;background-color:#1e0010">，</span>我们所有的应用服务都是工作在pod资源中<span style="color:#960050;background-color:#1e0010">，</span>由于每个Pod都有独立的ip地址<span style="color:#960050;background-color:#1e0010">，</span>而大量的动态创建和销毁操作后<span style="color:#960050;background-color:#1e0010">，</span>虽然pod资源的数量是控制住了<span style="color:#960050;background-color:#1e0010">，</span>但是由于pod重新启动<span style="color:#960050;background-color:#1e0010">，</span>导致他的IP很有可能发生了变化<span style="color:#960050;background-color:#1e0010">，</span>假设我们这里有前段应用的pod和后端应用的pod<span style="color:#960050;background-color:#1e0010">，</span>那么再剧烈变动的场景中<span style="color:#960050;background-color:#1e0010">，</span>两个应用该如何自由通信呢<span style="color:#960050;background-color:#1e0010">？</span>难道是让我们以类似nginx负载均衡的方式手工定制pod ip然后进行一一管理么<span style="color:#960050;background-color:#1e0010">？</span>但是这是做不到的<span style="color:#960050;background-color:#1e0010">。</span> 
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	
@@ -193,14 +193,14 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>	这个资源在master端的Controller组件中<span style="color:#960050;background-color:#1e0010">，</span>由Service Controller 来进行统一管理<span style="color:#960050;background-color:#1e0010">。</span></span></span></code></pre></div>
 <p>service</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	service是Kubernetes里最核心的资源对象之一<span style="color:#960050;background-color:#1e0010">，</span>每一个Service都是一个完整的业务服务<span style="color:#960050;background-color:#1e0010">，</span>我们之前学到的Pod<span style="color:#960050;background-color:#1e0010">、</span>RC<span style="color:#960050;background-color:#1e0010">、</span>Deployment等资源对象都是为Service服务的<span style="color:#960050;background-color:#1e0010">。</span>他们之间的关系如下图<span style="color:#960050;background-color:#1e0010">：</span></span></span></code></pre></div>
-<p><a href="#R-image-46102dbf836c0cf2e124636044423fe5" class="lightbox-link"><img alt="image-20210922135912555" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20210922135912555.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-46102dbf836c0cf2e124636044423fe5"><img alt="image-20210922135912555" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20210922135912555.png"></a></p>
+<p><a href="#R-image-46344014878f3b2246f003173f7c55a9" class="lightbox-link"><img alt="image-20210922135912555" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20210922135912555.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-46344014878f3b2246f003173f7c55a9"><img alt="image-20210922135912555" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20210922135912555.png"></a></p>
 <p>解析</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	Kubernetes 的 Service定义了一个服务的访问入口地址<span style="color:#960050;background-color:#1e0010">，</span>前端的应用Pod通过Service访问其背后一组有Pod副本组成的集群示例<span style="color:#960050;background-color:#1e0010">，</span>Service通过Label Selector访问指定的后端Pod<span style="color:#960050;background-color:#1e0010">，</span>RC保证Service的服务能力和服务质量处于预期状态<span style="color:#960050;background-color:#1e0010">。</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    Service是Kubernetes中最高一级的抽象资源对象<span style="color:#960050;background-color:#1e0010">，</span>每个Service提供一个独立的服务<span style="color:#960050;background-color:#1e0010">，</span>集群Service彼此间使用TCP/IP进行通信<span style="color:#960050;background-color:#1e0010">，</span>将不同的服务组合在一起运行起来<span style="color:#960050;background-color:#1e0010">，</span>就行了我们所谓的<span style="color:#e6db74">&#34;系统&#34;</span><span style="color:#960050;background-color:#1e0010">，</span>效果如下图</span></span></code></pre></div>
-<p><a href="#R-image-712e36345d83414496b7c5e6e18c6d6a" class="lightbox-link"><img alt="image-20220721090648605" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721090648605.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-712e36345d83414496b7c5e6e18c6d6a"><img alt="image-20220721090648605" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721090648605.png"></a></p>
+<p><a href="#R-image-4e6a052d22531aa0da84c13228b15187" class="lightbox-link"><img alt="image-20220721090648605" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721090648605.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-4e6a052d22531aa0da84c13228b15187"><img alt="image-20220721090648605" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721090648605.png"></a></p>
 <p><strong>细节解读</strong></p>
 <p>Pod入口</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	我们知道每个Pod都有一个专用的IP地址<span style="color:#960050;background-color:#1e0010">，</span>加上Pod内部容器的Port端口<span style="color:#960050;background-color:#1e0010">，</span>就组成了一个访问Pod专用的EndPoint(Pod IP+Container Port)<span style="color:#960050;background-color:#1e0010">，</span>从而实现了用户外部资源访问Pod内部应用的效果<span style="color:#960050;background-color:#1e0010">。</span>这个EndPoint资源在master端的Controller组件中<span style="color:#960050;background-color:#1e0010">，</span>由EndPoint Controller 来进行统一管理<span style="color:#960050;background-color:#1e0010">。</span></span></span></code></pre></div>
@@ -230,8 +230,8 @@
 <p>简介</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	Service对象<span style="color:#960050;background-color:#1e0010">，</span>对于当前集群的节点来说<span style="color:#960050;background-color:#1e0010">，</span>本质上就是工作节点的一些iptables或ipvs规则<span style="color:#960050;background-color:#1e0010">，</span>这些规则由kube-proxy进行实时维护<span style="color:#960050;background-color:#1e0010">，</span>站在kubernetes的发展脉络上来说<span style="color:#960050;background-color:#1e0010">，</span>kube-proxy将请求代理至相应端点的方式有三种<span style="color:#960050;background-color:#1e0010">：</span>userspace/iptables/ipvs<span style="color:#960050;background-color:#1e0010">。</span>目前我们主要用的是 iptables/ipvs 两种<span style="color:#960050;background-color:#1e0010">。</span></span></span></code></pre></div>
 <p>模式解析</p>
-<p><a href="#R-image-4d6b21eac1c3a81df00174e849480942" class="lightbox-link"><img alt="image-20220721093742953" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721093742953.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-4d6b21eac1c3a81df00174e849480942"><img alt="image-20220721093742953" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721093742953.png"></a></p>
+<p><a href="#R-image-afabcf408c6c645707b370a86e6485f7" class="lightbox-link"><img alt="image-20220721093742953" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721093742953.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-afabcf408c6c645707b370a86e6485f7"><img alt="image-20220721093742953" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721093742953.png"></a></p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	userspace模型是k8s(<span style="color:#ae81ff">1.1</span>-<span style="color:#ae81ff">1.2</span>)最早的一种工作模型<span style="color:#960050;background-color:#1e0010">，</span>作用就是将service的策略转换成iptables规则<span style="color:#960050;background-color:#1e0010">，</span>这些规则仅仅做请求的拦截<span style="color:#960050;background-color:#1e0010">，</span>而不对请求进行调度处理<span style="color:#960050;background-color:#1e0010">。</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	该模型中<span style="color:#960050;background-color:#1e0010">，</span>请求流量到达内核空间后<span style="color:#960050;background-color:#1e0010">，</span>由套接字送往用户空间的kube-proxy<span style="color:#960050;background-color:#1e0010">，</span>再由它送回内核空间<span style="color:#960050;background-color:#1e0010">，</span>并调度至后端Pod<span style="color:#960050;background-color:#1e0010">。</span>因为涉及到来回转发<span style="color:#960050;background-color:#1e0010">，</span>效率不高<span style="color:#960050;background-color:#1e0010">，</span>另外用户空间的转发<span style="color:#960050;background-color:#1e0010">，</span>默认开启了会话粘滞<span style="color:#960050;background-color:#1e0010">，</span>会导致流量转发给无效的pod上<span style="color:#960050;background-color:#1e0010">。</span></span></span></code></pre></div>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	iptables模式是k8s(<span style="color:#ae81ff">1.2</span>-至今)默认的一种模式<span style="color:#960050;background-color:#1e0010">，</span>作用是将service的策略转换成iptables规则<span style="color:#960050;background-color:#1e0010">，</span>不仅仅包括拦截<span style="color:#960050;background-color:#1e0010">，</span>还包括调度<span style="color:#960050;background-color:#1e0010">，</span>捕获到达ClusterIP和Port的流量<span style="color:#960050;background-color:#1e0010">，</span>并重定向至当前Service的代理的后端Pod资源<span style="color:#960050;background-color:#1e0010">。</span>性能比userspace更加高效和可靠
@@ -376,21 +376,33 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>访问效果
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>[root@kubernetes-master1 /data/kubernetes/service]<span style="color:#75715e"># curl 10.0.0.12:30080             Hello Nginx, nginx-6944855df5-8zjdn-1.23.0</span></span></span></code></pre></div>
 <p>ClusterIP 类型</p>
-<div class="tab-panel" data-tab-group="R-tabs-16a9d52e00c4ec3e8077ab21097b1cb5">
+<p><strong>特点</strong></p>
+<ul>
+<li>集群内部访问：只能在集群内部通过 Cluster IP 访问</li>
+<li>默认类型：不指定 <code>type</code> 时的默认值</li>
+<li>虚拟 IP：由 kube-proxy 管理，不是真实网络设备的 IP</li>
+</ul>
+<p><strong>使用场景</strong></p>
+<ul>
+<li>微服务之间的内部通信</li>
+<li>数据库、缓存等后端服务</li>
+<li>不需要对外暴露的服务</li>
+</ul>
+<div class="tab-panel" data-tab-group="R-tabs-6613c59df2057be77b9c33f864f4dbec">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-9fc14d8b126717a6f9dd003558c96e5c" aria-expanded="true"
+      aria-controls="R-tab-id-1ee08b60f179f1ca16cc6bfa4fba9457" aria-expanded="true"
       data-tab-item="R-tab-e5522ba60fcc1ac5f1733008984d43cc"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-16a9d52e00c4ec3e8077ab21097b1cb5','R-tab-e5522ba60fcc1ac5f1733008984d43cc')"
+      onclick="switchTab('R-tabs-6613c59df2057be77b9c33f864f4dbec','R-tab-e5522ba60fcc1ac5f1733008984d43cc')"
     >
       <span class="tab-nav-text">clusterIP类型</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-9fc14d8b126717a6f9dd003558c96e5c"
+      id="R-tab-id-1ee08b60f179f1ca16cc6bfa4fba9457"
       data-tab-item="R-tab-e5522ba60fcc1ac5f1733008984d43cc"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -430,10 +442,10 @@
       </div>
     </div>
   </div>
-</div><p><a href="#R-image-ae8e5b7d60d8010e3312e11613c2dc5e" class="lightbox-link"><img alt="image-20261120231635467" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20261120231635467.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-ae8e5b7d60d8010e3312e11613c2dc5e"><img alt="image-20261120231635467" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20261120231635467.png"></a></p>
-<p><a href="#R-image-529ac1708a623527c5f7ae6a7a872a7d" class="lightbox-link"><img alt="image-20261120231402533" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20261120231402533.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-529ac1708a623527c5f7ae6a7a872a7d"><img alt="image-20261120231402533" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20261120231402533.png"></a></p>
+</div><p><a href="#R-image-4926eed4665aea58890d7653c3fb74bd" class="lightbox-link"><img alt="image-20261120231635467" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20261120231635467.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-4926eed4665aea58890d7653c3fb74bd"><img alt="image-20261120231635467" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20261120231635467.png"></a></p>
+<p><a href="#R-image-ea84bbd89dcdf217e54e7616822c120d" class="lightbox-link"><img alt="image-20261120231402533" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20261120231402533.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-ea84bbd89dcdf217e54e7616822c120d"><img alt="image-20261120231402533" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20261120231402533.png"></a></p>
 <p><strong>小结</strong></p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"></code></pre></div>
 <h3 id="114-ipvs实践">1.1.4 IPVS实践<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
@@ -441,8 +453,8 @@
 <p>这一节，我们从 基础知识、简单实践、小结 三个方面来学习。</p>
 <p><strong>基础知识</strong></p>
 <p>简介</p>
-<p><a href="#R-image-5c05797f3a4756993800e3290ffe013b" class="lightbox-link"><img alt="image-20220721093742953" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721093742953.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-5c05797f3a4756993800e3290ffe013b"><img alt="image-20220721093742953" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721093742953.png"></a></p>
+<p><a href="#R-image-4b1b41ef960adf5c40c4da3d0c416a31" class="lightbox-link"><img alt="image-20220721093742953" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721093742953.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-4b1b41ef960adf5c40c4da3d0c416a31"><img alt="image-20220721093742953" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721093742953.png"></a></p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>关键点<span style="color:#960050;background-color:#1e0010">：</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	ipvs会在每个节点上创建一个名为kube-ipvs0的虚拟接口<span style="color:#960050;background-color:#1e0010">，</span>并将集群所有Service对象的ClusterIP和ExternalIP都配置在该接口<span style="color:#960050;background-color:#1e0010">；</span> 
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>		- 所以每增加一个ClusterIP 或者 EternalIP<span style="color:#960050;background-color:#1e0010">，</span>就相当于为 kube-ipvs0 关联了一个地址罢了<span style="color:#960050;background-color:#1e0010">。</span>
@@ -549,8 +561,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	服务发现 <span style="color:#960050;background-color:#1e0010">—</span> 当A服务需要找未知的B服务时<span style="color:#960050;background-color:#1e0010">，</span>先去服务管理中心查找B服务地址<span style="color:#960050;background-color:#1e0010">，</span>然后根据该地址找到B服务</span></span></code></pre></div>
 <p>DNS方案</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	专用于kubernetes集群中的服务注册和发现的解决方案就是KubeDNS<span style="color:#960050;background-color:#1e0010">。</span>kubeDNS自从k8s诞生以来<span style="color:#960050;background-color:#1e0010">，</span>其方案的具体实现样式前后经历了三代<span style="color:#960050;background-color:#1e0010">，</span>分别是 SkyDNS<span style="color:#960050;background-color:#1e0010">、</span>KubeDNS<span style="color:#960050;background-color:#1e0010">、</span>CoreDNS(目前默认的)<span style="color:#960050;background-color:#1e0010">。</span></span></span></code></pre></div>
-<p><a href="#R-image-7f06b5607508513daba9fcc09400d751" class="lightbox-link"><img alt="image-20220721185041526" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721185041526.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-7f06b5607508513daba9fcc09400d751"><img alt="image-20220721185041526" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721185041526.png"></a></p>
+<p><a href="#R-image-4cb9ac1f1d2a31b0a1ccfebb716254ed" class="lightbox-link"><img alt="image-20220721185041526" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721185041526.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-4cb9ac1f1d2a31b0a1ccfebb716254ed"><img alt="image-20220721185041526" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220721185041526.png"></a></p>
 <p>域名解析记录</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	Kubelet会为创建的每一个容器于/etc/resolv.conf配置文件中生成DNS查询客户端依赖到的必要配置<span style="color:#960050;background-color:#1e0010">，</span>相关的配置信息源自于kubelet的配置参数<span style="color:#960050;background-color:#1e0010">，</span>容器的DNS服务器由clusterDNS参数的值设定<span style="color:#960050;background-color:#1e0010">，</span>它的取值为kube-system名称空间中的Service对象kube-dns的ClusterIP<span style="color:#960050;background-color:#1e0010">，</span>默认为10.96.0.10.
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	DNS搜索域的值由clusterDomain参数的值设定<span style="color:#960050;background-color:#1e0010">，</span>若部署Kubernetes集群时未特别指定<span style="color:#960050;background-color:#1e0010">，</span>其值将为cluster.local<span style="color:#960050;background-color:#1e0010">、</span>svc.cluster.local和NAMESPACENAME.svc.cluster.local</span></span></code></pre></div>
@@ -838,8 +850,8 @@
 <p>这一节，我们从 存储原理、方案解读、小结 三个方面来学习。</p>
 <p><strong>存储原理</strong></p>
 <p>容器实现网络访问样式</p>
-<p><a href="#R-image-281435ad54df42dfd1b7933fe94d6080" class="lightbox-link"><img alt="1633650192071" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/1633650192071.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-281435ad54df42dfd1b7933fe94d6080"><img alt="1633650192071" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/1633650192071.png"></a></p>
+<p><a href="#R-image-01f847f65c125f910e54026f8de6511b" class="lightbox-link"><img alt="1633650192071" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/1633650192071.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-01f847f65c125f910e54026f8de6511b"><img alt="1633650192071" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/1633650192071.png"></a></p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ae81ff">1</span>  虚拟网桥<span style="color:#960050;background-color:#1e0010">：</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	brdige<span style="color:#960050;background-color:#1e0010">，</span>用纯软件的方式实现一个虚拟网络<span style="color:#960050;background-color:#1e0010">，</span>用一个虚拟网卡接入到我们虚拟网桥上去<span style="color:#960050;background-color:#1e0010">。</span>这样就能保证每一个容器和每一个pod都能有一个专用的网络接口<span style="color:#960050;background-color:#1e0010">，</span>从而实现每一主机组件有网络接口<span style="color:#960050;background-color:#1e0010">。</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
@@ -864,8 +876,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>注意<span style="color:#960050;background-color:#1e0010">：</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>	我们可以部署多个网络解决方案<span style="color:#960050;background-color:#1e0010">，</span>但是对于CNI来说<span style="color:#960050;background-color:#1e0010">，</span>只会有一个生效<span style="color:#960050;background-color:#1e0010">。</span>如果网络信息过多会导致冲突</span></span></code></pre></div>
-<p><a href="#R-image-1c03a6ae44c984b71c87fa654bda3e48" class="lightbox-link"><img alt="1633651873150" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/1633651873150.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-1c03a6ae44c984b71c87fa654bda3e48"><img alt="1633651873150" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/1633651873150.png"></a></p>
+<p><a href="#R-image-46c4a3099e6bc564115fae9822a1e634" class="lightbox-link"><img alt="1633651873150" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/1633651873150.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-46c4a3099e6bc564115fae9822a1e634"><img alt="1633651873150" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/1633651873150.png"></a></p>
 <p><strong>方案解读</strong></p>
 <p>CNI插件</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	根据我们刚才对pod通信的回顾<span style="color:#960050;background-color:#1e0010">，</span>多节点内的pod通信<span style="color:#960050;background-color:#1e0010">，</span>k8s是通过CNI接口来实现网络通信的<span style="color:#960050;background-color:#1e0010">。</span>CNI基本思想<span style="color:#960050;background-color:#1e0010">：</span>创建容器时<span style="color:#960050;background-color:#1e0010">，</span>先创建好网络名称空间<span style="color:#960050;background-color:#1e0010">，</span>然后调用CNI插件配置这个网络<span style="color:#960050;background-color:#1e0010">，</span>而后启动容器内的进程
@@ -972,8 +984,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>vxlan directrouting模型
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>	它是vxlan和host-gw自由组合的一种模型
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>	位于同一个二层网络上的<span style="color:#960050;background-color:#1e0010">、</span>但不同节点上的Pod间通信<span style="color:#960050;background-color:#1e0010">，</span>无须隧道封装<span style="color:#960050;background-color:#1e0010">；</span>但非同一个二层网络上的节点上的Pod间通信<span style="color:#960050;background-color:#1e0010">，</span>仍须隧道封装</span></span></code></pre></div>
-<p><a href="#R-image-e55da34f26ff3d75634dc424262f0401" class="lightbox-link"><img alt="image-20220722073310706" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220722073310706.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-e55da34f26ff3d75634dc424262f0401"><img alt="image-20220722073310706" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220722073310706.png"></a></p>
+<p><a href="#R-image-4c1fbeb0bafdd4baab63a133bc06c01b" class="lightbox-link"><img alt="image-20220722073310706" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220722073310706.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-4c1fbeb0bafdd4baab63a133bc06c01b"><img alt="image-20220722073310706" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/05-k8s%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/image/image-20220722073310706.png"></a></p>
 <p>vxlan原理</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ae81ff">1</span> 节点上的pod通过虚拟网卡对<span style="color:#960050;background-color:#1e0010">，</span>连接到cni0的虚拟网络交换机上
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	当有外部网络通信的时候<span style="color:#960050;background-color:#1e0010">，</span>借助于 flannel.1网卡向外发出数据包
@@ -1337,9 +1349,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1795188341"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1795188341" defer></script>
-    <script src="/js/theme.min.js?1795188341" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1795189166"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1795189166" defer></script>
+    <script src="/js/theme.min.js?1795189166" defer></script>
 
 <style>
     .highlight {

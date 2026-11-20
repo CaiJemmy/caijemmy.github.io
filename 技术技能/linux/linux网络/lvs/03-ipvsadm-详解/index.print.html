@@ -23,27 +23,27 @@
     <title>03 ipvsadm 详解 :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/03-ipvsadm-%E8%AF%A6%E8%A7%A3/index.html" rel="canonical" type="text/html" title="03 ipvsadm 详解 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/03-ipvsadm-%E8%AF%A6%E8%A7%A3/index.xml" rel="alternate" type="application/rss+xml" title="03 ipvsadm 详解 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1795188341" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1795188341" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1795188341" defer></script>
-    <script src="/js/search-lunr.min.js?1795188341" defer></script>
-    <script src="/js/search.min.js?1795188341" defer></script>
+    <link href="/images/favicon.png?1795189166" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1795189166" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1795189166" defer></script>
+    <script src="/js/search-lunr.min.js?1795189166" defer></script>
+    <script src="/js/search.min.js?1795189166" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1795188341";
+      window.relearn.index_js_url="/searchindex.en.js?1795189166";
     </script>
-    <script src="/js/lunr/lunr.min.js?1795188341" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1795188341" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1795188341" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1795188341" defer></script>
+    <script src="/js/lunr/lunr.min.js?1795189166" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1795189166" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1795189166" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1795189166" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1795188341" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1795188341" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1795188341" rel="stylesheet">
-    <link href="/css/theme.min.css?1795188341" rel="stylesheet">
-    <link href="/css/format-print.min.css?1795188341" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1795189166" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1795189166" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1795189166" rel="stylesheet">
+    <link href="/css/theme.min.css?1795189166" rel="stylesheet">
+    <link href="/css/format-print.min.css?1795189166" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1795188341" rel="stylesheet">
+    <link href="/css/custom.css?1795189166" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/linux/linux%E7%BD%91%E7%BB%9C/lvs/03-ipvsadm-%E8%AF%A6%E8%A7%A3/index.html">
     <div id="R-body" class="default-animation">
@@ -175,21 +175,21 @@
 
 <h1 id="03-ipvsadm-详解">03 ipvsadm 详解</h1>
 
-<div class="tab-panel" data-tab-group="R-tabs-f194fd370be187f9bf75f2aa789f87e5">
+<div class="tab-panel" data-tab-group="R-tabs-13dd35ccd878072753cd20397f171bca">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-e206b7611b8455466d41f427d98dccfc" aria-expanded="true"
+      aria-controls="R-tab-id-6ed3074c30e07f4b5bb0d873ebf88f2d" aria-expanded="true"
       data-tab-item="R-tab-bedd25ddb5543c1cbf6ea29ce870a6a7"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-f194fd370be187f9bf75f2aa789f87e5','R-tab-bedd25ddb5543c1cbf6ea29ce870a6a7')"
+      onclick="switchTab('R-tabs-13dd35ccd878072753cd20397f171bca','R-tab-bedd25ddb5543c1cbf6ea29ce870a6a7')"
     >
       <span class="tab-nav-text">ipvsadm &ndash;help</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-e206b7611b8455466d41f427d98dccfc"
+      id="R-tab-id-6ed3074c30e07f4b5bb0d873ebf88f2d"
       data-tab-item="R-tab-bedd25ddb5543c1cbf6ea29ce870a6a7"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -279,21 +279,21 @@
     </div>
   </div>
 </div><h2 id="虚拟服务管理命令">虚拟服务管理命令<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<div class="tab-panel" data-tab-group="R-tabs-6de48974eaa80ffcd38e908d9b4d6001">
+<div class="tab-panel" data-tab-group="R-tabs-91471ef458d4e7941d601fa47ea7713d">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-874c36899be9633ec478d2d7a5c1a9a9" aria-expanded="true"
+      aria-controls="R-tab-id-c67e4c69b5c024b0a468977597e81477" aria-expanded="true"
       data-tab-item="R-tab-e75ea5793931898cf1c8d999818a2819"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-6de48974eaa80ffcd38e908d9b4d6001','R-tab-e75ea5793931898cf1c8d999818a2819')"
+      onclick="switchTab('R-tabs-91471ef458d4e7941d601fa47ea7713d','R-tab-e75ea5793931898cf1c8d999818a2819')"
     >
       <span class="tab-nav-text">添加、修改虛擬服務</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-874c36899be9633ec478d2d7a5c1a9a9"
+      id="R-tab-id-c67e4c69b5c024b0a468977597e81477"
       data-tab-item="R-tab-e75ea5793931898cf1c8d999818a2819"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -315,21 +315,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-834852a1841ac04ba74b3adc29c31729">
+</div><div class="tab-panel" data-tab-group="R-tabs-ff5f947ac8de86000c525c2f6d838321">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-043637a749422a5f850b75a69d92b54d" aria-expanded="true"
+      aria-controls="R-tab-id-54afddb89fbb7429199c8bc3bb526a06" aria-expanded="true"
       data-tab-item="R-tab-24168bbc14d69ba1d0c801a0ccd02820"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-834852a1841ac04ba74b3adc29c31729','R-tab-24168bbc14d69ba1d0c801a0ccd02820')"
+      onclick="switchTab('R-tabs-ff5f947ac8de86000c525c2f6d838321','R-tab-24168bbc14d69ba1d0c801a0ccd02820')"
     >
       <span class="tab-nav-text">删除虛擬服務</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-043637a749422a5f850b75a69d92b54d"
+      id="R-tab-id-54afddb89fbb7429199c8bc3bb526a06"
       data-tab-item="R-tab-24168bbc14d69ba1d0c801a0ccd02820"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -427,21 +427,21 @@
 	</tbody>
 </table>
 <h2 id="真实服务器管理命令">真实服务器管理命令<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
-<div class="tab-panel" data-tab-group="R-tabs-f6126cf42107d3321e4bc31480515722">
+<div class="tab-panel" data-tab-group="R-tabs-eb9aa9ab1f1a6a97ee73bb241b3bc1b9">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-945e6be900f82e5f810b7c16def71ddd" aria-expanded="true"
+      aria-controls="R-tab-id-57293536dd0cc5e9d08c67d857f299cf" aria-expanded="true"
       data-tab-item="R-tab-74304e7fec3c3234b6a601824ef84db7"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-f6126cf42107d3321e4bc31480515722','R-tab-74304e7fec3c3234b6a601824ef84db7')"
+      onclick="switchTab('R-tabs-eb9aa9ab1f1a6a97ee73bb241b3bc1b9','R-tab-74304e7fec3c3234b6a601824ef84db7')"
     >
       <span class="tab-nav-text">添加、修改真实服务器</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-945e6be900f82e5f810b7c16def71ddd"
+      id="R-tab-id-57293536dd0cc5e9d08c67d857f299cf"
       data-tab-item="R-tab-74304e7fec3c3234b6a601824ef84db7"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -469,21 +469,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-df19f98b45539051a2c9d2be105ad31a">
+</div><div class="tab-panel" data-tab-group="R-tabs-829558ab8631850ad3db52b3f2562bf0">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-39e4316090cc65a2482f58c37760f32e" aria-expanded="true"
+      aria-controls="R-tab-id-8182b7836b08665cfb28f747b17a3148" aria-expanded="true"
       data-tab-item="R-tab-f7b79121345ebb833277ba755a996240"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-df19f98b45539051a2c9d2be105ad31a','R-tab-f7b79121345ebb833277ba755a996240')"
+      onclick="switchTab('R-tabs-829558ab8631850ad3db52b3f2562bf0','R-tab-f7b79121345ebb833277ba755a996240')"
     >
       <span class="tab-nav-text">删除真实服务器</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-39e4316090cc65a2482f58c37760f32e"
+      id="R-tab-id-8182b7836b08665cfb28f747b17a3148"
       data-tab-item="R-tab-f7b79121345ebb833277ba755a996240"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -497,21 +497,21 @@
 </div><h2 id="查看信息">查看信息<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="列出规则--l">列出规则 <code>-L</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <p>数字格式 <code>-n</code></p>
-<div class="tab-panel" data-tab-group="R-tabs-6be0b7816ace4307bf652b06835ad739">
+<div class="tab-panel" data-tab-group="R-tabs-2e56666bac14929ef716e01c83ea7531">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-b6dd746bba12575937ec81498b837c1e" aria-expanded="true"
+      aria-controls="R-tab-id-feb1e7c24790115f1adab18a2c0537f9" aria-expanded="true"
       data-tab-item="R-tab-4c5af9483dae95ec8d320949b15e1653"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-6be0b7816ace4307bf652b06835ad739','R-tab-4c5af9483dae95ec8d320949b15e1653')"
+      onclick="switchTab('R-tabs-2e56666bac14929ef716e01c83ea7531','R-tab-4c5af9483dae95ec8d320949b15e1653')"
     >
       <span class="tab-nav-text">ipvsadm -Ln</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-b6dd746bba12575937ec81498b837c1e"
+      id="R-tab-id-feb1e7c24790115f1adab18a2c0537f9"
       data-tab-item="R-tab-4c5af9483dae95ec8d320949b15e1653"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -536,21 +536,21 @@
 <li>InActConn：非活动连接数</li>
 </ul>
 <h3 id="查看连接表--c">查看连接表 <code>-c</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-5d298c3d439b23ed20720ec620f11e77">
+<div class="tab-panel" data-tab-group="R-tabs-f826ec6dbdde7cb223af06808a7b01a5">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-0eeca9141f6cf952dfd8450f67eb10d8" aria-expanded="true"
+      aria-controls="R-tab-id-ac0a5851c0d642a77859864ca36c7ded" aria-expanded="true"
       data-tab-item="R-tab-0111c95e95e08c13380ba2a119a45b58"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-5d298c3d439b23ed20720ec620f11e77','R-tab-0111c95e95e08c13380ba2a119a45b58')"
+      onclick="switchTab('R-tabs-f826ec6dbdde7cb223af06808a7b01a5','R-tab-0111c95e95e08c13380ba2a119a45b58')"
     >
       <span class="tab-nav-text">ipvsadm -Lnc</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-0eeca9141f6cf952dfd8450f67eb10d8"
+      id="R-tab-id-ac0a5851c0d642a77859864ca36c7ded"
       data-tab-item="R-tab-0111c95e95e08c13380ba2a119a45b58"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -574,21 +574,21 @@
 <li>destination：RS IP:端口</li>
 </ul>
 <h3 id="查看统计信息---stats">查看统计信息 <code>--stats</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-4959cafef0d2155fdeb4592e8e1bdd58">
+<div class="tab-panel" data-tab-group="R-tabs-d064d859706bb836b337dafe38c7162e">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-ba5d0b3476549063e541c48a50eb8e1f" aria-expanded="true"
+      aria-controls="R-tab-id-f4592a40b022aaeeb0b61c2bbf3e07e5" aria-expanded="true"
       data-tab-item="R-tab-aef798ae0a03771f7f608d8d31ce5aa4"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-4959cafef0d2155fdeb4592e8e1bdd58','R-tab-aef798ae0a03771f7f608d8d31ce5aa4')"
+      onclick="switchTab('R-tabs-d064d859706bb836b337dafe38c7162e','R-tab-aef798ae0a03771f7f608d8d31ce5aa4')"
     >
       <span class="tab-nav-text">ipvsadm -Ln &ndash;stats</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-ba5d0b3476549063e541c48a50eb8e1f"
+      id="R-tab-id-f4592a40b022aaeeb0b61c2bbf3e07e5"
       data-tab-item="R-tab-aef798ae0a03771f7f608d8d31ce5aa4"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -617,21 +617,21 @@
 <li>故障排查</li>
 </ul>
 <h3 id="查看速率---rate">查看速率 <code>--rate</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-9ee8436ad86527839147c0baa9e7d0e7">
+<div class="tab-panel" data-tab-group="R-tabs-ad7445e4c08baff5680a330c77495e54">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-bbba51826f58a066577cddf6b57fb813" aria-expanded="true"
+      aria-controls="R-tab-id-6b237d387eaa50d4dca0999f34e0bf21" aria-expanded="true"
       data-tab-item="R-tab-5aba0ff8f46f78c81d00a612e644e850"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-9ee8436ad86527839147c0baa9e7d0e7','R-tab-5aba0ff8f46f78c81d00a612e644e850')"
+      onclick="switchTab('R-tabs-ad7445e4c08baff5680a330c77495e54','R-tab-5aba0ff8f46f78c81d00a612e644e850')"
     >
       <span class="tab-nav-text">ipvsadm -Ln &ndash;rate</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-bbba51826f58a066577cddf6b57fb813"
+      id="R-tab-id-6b237d387eaa50d4dca0999f34e0bf21"
       data-tab-item="R-tab-5aba0ff8f46f78c81d00a612e644e850"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -660,21 +660,21 @@
 <li>容量规划</li>
 </ul>
 <h3 id="查看超时设置---timeout">查看超时设置 <code>--timeout</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-69e10bfed27ee7696d38d0580556f468">
+<div class="tab-panel" data-tab-group="R-tabs-a8102e48a77b54280f1459f77d7b20da">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-06a5de02e579f17d8d594763c9e69120" aria-expanded="true"
+      aria-controls="R-tab-id-dacbf22ef1798ac07c0ee5fe5384801c" aria-expanded="true"
       data-tab-item="R-tab-e0a5913374956736ea153b74a8e65913"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-69e10bfed27ee7696d38d0580556f468','R-tab-e0a5913374956736ea153b74a8e65913')"
+      onclick="switchTab('R-tabs-a8102e48a77b54280f1459f77d7b20da','R-tab-e0a5913374956736ea153b74a8e65913')"
     >
       <span class="tab-nav-text">ipvsadm -Ln &ndash;timeout</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-06a5de02e579f17d8d594763c9e69120"
+      id="R-tab-id-dacbf22ef1798ac07c0ee5fe5384801c"
       data-tab-item="R-tab-e0a5913374956736ea153b74a8e65913"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -700,21 +700,21 @@
 </ul>
 <p><strong>注意：</strong> 会中断所有现有连接，生产环境慎用。</p>
 <h3 id="清零计数器--z">清零计数器 <code>-Z</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-9be0b64fffd5b5c80a0c5fb37bc1dbb3">
+<div class="tab-panel" data-tab-group="R-tabs-5f17dd664bddd8ef5d700f20d49157e3">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-ef03301b0e6ac0ef191a8aa52db085d8" aria-expanded="true"
+      aria-controls="R-tab-id-f40eff9ae65cd2efb3b3745f90056018" aria-expanded="true"
       data-tab-item="R-tab-c55980553cb8fa3b736269fe8a7be904"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-9be0b64fffd5b5c80a0c5fb37bc1dbb3','R-tab-c55980553cb8fa3b736269fe8a7be904')"
+      onclick="switchTab('R-tabs-5f17dd664bddd8ef5d700f20d49157e3','R-tab-c55980553cb8fa3b736269fe8a7be904')"
     >
       <span class="tab-nav-text">ipvsadm -Z</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-ef03301b0e6ac0ef191a8aa52db085d8"
+      id="R-tab-id-f40eff9ae65cd2efb3b3745f90056018"
       data-tab-item="R-tab-c55980553cb8fa3b736269fe8a7be904"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -739,21 +739,21 @@
     </div>
   </div>
 </div><h3 id="保存规则---save---s">保存规则 <code>--save</code> / <code>-S</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-90080ca6e32dc45909229d6ce1e97047">
+<div class="tab-panel" data-tab-group="R-tabs-c5087042ec1e7d7481758fe9b8817b3b">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-11dca29efce42c79f034ede143ba50ac" aria-expanded="true"
+      aria-controls="R-tab-id-59c8e07bc27af31df9517d0c8144c08f" aria-expanded="true"
       data-tab-item="R-tab-e3f02d4757fd8c4a6dc7a3809c4d1670"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-90080ca6e32dc45909229d6ce1e97047','R-tab-e3f02d4757fd8c4a6dc7a3809c4d1670')"
+      onclick="switchTab('R-tabs-c5087042ec1e7d7481758fe9b8817b3b','R-tab-e3f02d4757fd8c4a6dc7a3809c4d1670')"
     >
       <span class="tab-nav-text">ipvsadm -S</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-11dca29efce42c79f034ede143ba50ac"
+      id="R-tab-id-59c8e07bc27af31df9517d0c8144c08f"
       data-tab-item="R-tab-e3f02d4757fd8c4a6dc7a3809c4d1670"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -769,21 +769,21 @@
     </div>
   </div>
 </div><h3 id="恢复规则---restore---r">恢复规则 <code>--restore</code> / <code>-R</code><span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
-<div class="tab-panel" data-tab-group="R-tabs-9b874d0b345877c06ce3f4247337b8a5">
+<div class="tab-panel" data-tab-group="R-tabs-69a29d881220be9c9cf7a7fbf72e1d28">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-ca262f8695237a596453c1b5ed4671a0" aria-expanded="true"
+      aria-controls="R-tab-id-621fc9a4e92d12bbccf7212ff25d8206" aria-expanded="true"
       data-tab-item="R-tab-69bf5623efb6b77b3442b21c0f6b00f9"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-9b874d0b345877c06ce3f4247337b8a5','R-tab-69bf5623efb6b77b3442b21c0f6b00f9')"
+      onclick="switchTab('R-tabs-69a29d881220be9c9cf7a7fbf72e1d28','R-tab-69bf5623efb6b77b3442b21c0f6b00f9')"
     >
       <span class="tab-nav-text">ipvsadm -R</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-ca262f8695237a596453c1b5ed4671a0"
+      id="R-tab-id-621fc9a4e92d12bbccf7212ff25d8206"
       data-tab-item="R-tab-69bf5623efb6b77b3442b21c0f6b00f9"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -845,9 +845,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1795188341"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1795188341" defer></script>
-    <script src="/js/theme.min.js?1795188341" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1795189166"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1795189166" defer></script>
+    <script src="/js/theme.min.js?1795189166" defer></script>
 
 <style>
     .highlight {
