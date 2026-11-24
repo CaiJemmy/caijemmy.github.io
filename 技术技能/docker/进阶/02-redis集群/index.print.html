@@ -23,27 +23,27 @@
     <title>02 redis集群 :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.html" rel="canonical" type="text/html" title="02 redis集群 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.xml" rel="alternate" type="application/rss+xml" title="02 redis集群 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1795478857" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1795478857" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1795478857" defer></script>
-    <script src="/js/search-lunr.min.js?1795478857" defer></script>
-    <script src="/js/search.min.js?1795478857" defer></script>
+    <link href="/images/favicon.png?1795531674" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1795531674" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1795531674" defer></script>
+    <script src="/js/search-lunr.min.js?1795531674" defer></script>
+    <script src="/js/search.min.js?1795531674" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1795478857";
+      window.relearn.index_js_url="/searchindex.en.js?1795531674";
     </script>
-    <script src="/js/lunr/lunr.min.js?1795478857" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1795478857" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1795478857" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1795478857" defer></script>
+    <script src="/js/lunr/lunr.min.js?1795531674" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1795531674" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1795531674" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1795531674" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1795478857" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1795478857" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1795478857" rel="stylesheet">
-    <link href="/css/theme.min.css?1795478857" rel="stylesheet">
-    <link href="/css/format-print.min.css?1795478857" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1795531674" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1795531674" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1795531674" rel="stylesheet">
+    <link href="/css/theme.min.css?1795531674" rel="stylesheet">
+    <link href="/css/format-print.min.css?1795531674" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1795478857" rel="stylesheet">
+    <link href="/css/custom.css?1795531674" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/index.html">
     <div id="R-body" class="default-animation">
@@ -178,26 +178,26 @@
 <h2 id="三主三从集群">三主三从集群<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h2>
 <h3 id="搭建集群">搭建集群<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <h4 id="集群架构">集群架构<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<p><a href="#R-image-fcc09de1e2f23c33222ee18260f26d50" class="lightbox-link"><img alt="image-20260319193009840" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319193009840.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-fcc09de1e2f23c33222ee18260f26d50"><img alt="image-20260319193009840" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319193009840.png"></a></p>
+<p><a href="#R-image-2f7e899a76493146ab3864766acd314d" class="lightbox-link"><img alt="image-20260319193009840" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319193009840.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-2f7e899a76493146ab3864766acd314d"><img alt="image-20260319193009840" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319193009840.png"></a></p>
 <p>图中的port是理想状态，部署时以实际情况为准。</p>
 <h4 id="容器启动配置">容器启动配置<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
 <p>这里使用的是主机模式，所以要指定端口号，端口号也占用的是主机的端口号。</p>
-<div class="tab-panel" data-tab-group="R-tabs-f2e168151d4accb3decd7c821a166c80">
+<div class="tab-panel" data-tab-group="R-tabs-f37105764ac90d657eaac06d09444eee">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-6205c440db7dbcaaf69e39ee342679e1" aria-expanded="true"
+      aria-controls="R-tab-id-a7efbf3ff1d6ce0cb89410257fbd4efd" aria-expanded="true"
       data-tab-item="R-tab-456ed78d545eb75a05b57f0ac7d9d61f"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-f2e168151d4accb3decd7c821a166c80','R-tab-456ed78d545eb75a05b57f0ac7d9d61f')"
+      onclick="switchTab('R-tabs-f37105764ac90d657eaac06d09444eee','R-tab-456ed78d545eb75a05b57f0ac7d9d61f')"
     >
       <span class="tab-nav-text">启动服务命令</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-6205c440db7dbcaaf69e39ee342679e1"
+      id="R-tab-id-a7efbf3ff1d6ce0cb89410257fbd4efd"
       data-tab-item="R-tab-456ed78d545eb75a05b57f0ac7d9d61f"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -243,21 +243,21 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>&gt;&gt;&gt; Check slots coverage...
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.</span></span></code></pre></div>
 <h4 id="查看集群信息">查看集群信息<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-3c1620ece3cb2192d38a822da195fd6f">
+<div class="tab-panel" data-tab-group="R-tabs-9ecb72ed412bb4724e27ddb53da9a101">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-df06a792112aa368998963d08a332086" aria-expanded="true"
+      aria-controls="R-tab-id-d14a66565b36d1dae019067cf4f14a97" aria-expanded="true"
       data-tab-item="R-tab-e1dc7e3a67a4d872c699c3478bcb1496"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-3c1620ece3cb2192d38a822da195fd6f','R-tab-e1dc7e3a67a4d872c699c3478bcb1496')"
+      onclick="switchTab('R-tabs-9ecb72ed412bb4724e27ddb53da9a101','R-tab-e1dc7e3a67a4d872c699c3478bcb1496')"
     >
       <span class="tab-nav-text">查看集群信息</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-df06a792112aa368998963d08a332086"
+      id="R-tab-id-d14a66565b36d1dae019067cf4f14a97"
       data-tab-item="R-tab-e1dc7e3a67a4d872c699c3478bcb1496"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -275,21 +275,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-ec34a912e8910dea6397b0caaa5efeba">
+</div><div class="tab-panel" data-tab-group="R-tabs-c07c77ac67d54e345885d196bbdc44c5">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-11a6a552ed421cb821b07bec60687c9b" aria-expanded="true"
+      aria-controls="R-tab-id-2cb05810a4cc649428ff08e039d1414a" aria-expanded="true"
       data-tab-item="R-tab-d99542537da3b408232c33811782d1ef"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-ec34a912e8910dea6397b0caaa5efeba','R-tab-d99542537da3b408232c33811782d1ef')"
+      onclick="switchTab('R-tabs-c07c77ac67d54e345885d196bbdc44c5','R-tab-d99542537da3b408232c33811782d1ef')"
     >
       <span class="tab-nav-text">查看集群节点</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-11a6a552ed421cb821b07bec60687c9b"
+      id="R-tab-id-2cb05810a4cc649428ff08e039d1414a"
       data-tab-item="R-tab-d99542537da3b408232c33811782d1ef"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -308,21 +308,21 @@
     </div>
   </div>
 </div><h4 id="集群验证">集群验证<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-33dec3259c261cd4a29daeda7ceaa579">
+<div class="tab-panel" data-tab-group="R-tabs-8559e259a9a4c5eb82c63621a4a42f8b">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-7aa0e84dd40b3fcf1f62404d0a530c24" aria-expanded="true"
+      aria-controls="R-tab-id-f78b05451eadd20405af54e2929ce1d7" aria-expanded="true"
       data-tab-item="R-tab-bf27a3484d84424deac4e66bb8c01d6a"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-33dec3259c261cd4a29daeda7ceaa579','R-tab-bf27a3484d84424deac4e66bb8c01d6a')"
+      onclick="switchTab('R-tabs-8559e259a9a4c5eb82c63621a4a42f8b','R-tab-bf27a3484d84424deac4e66bb8c01d6a')"
     >
       <span class="tab-nav-text">单机登录命令验证</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-7aa0e84dd40b3fcf1f62404d0a530c24"
+      id="R-tab-id-f78b05451eadd20405af54e2929ce1d7"
       data-tab-item="R-tab-bf27a3484d84424deac4e66bb8c01d6a"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -337,21 +337,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-aa5d990b91baad2c4dc67bbc64d09373">
+</div><div class="tab-panel" data-tab-group="R-tabs-d5d625e65225ec5c0c6822aead3d0d9f">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-34cb61f1b7728b0c0079e68ec065d1f8" aria-expanded="true"
+      aria-controls="R-tab-id-77108dfcb43461b5cea87bff07dc56cd" aria-expanded="true"
       data-tab-item="R-tab-dd2980132162165820234240bde48ff6"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-aa5d990b91baad2c4dc67bbc64d09373','R-tab-dd2980132162165820234240bde48ff6')"
+      onclick="switchTab('R-tabs-d5d625e65225ec5c0c6822aead3d0d9f','R-tab-dd2980132162165820234240bde48ff6')"
     >
       <span class="tab-nav-text">集群登录命令验证</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-34cb61f1b7728b0c0079e68ec065d1f8"
+      id="R-tab-id-77108dfcb43461b5cea87bff07dc56cd"
       data-tab-item="R-tab-dd2980132162165820234240bde48ff6"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -372,21 +372,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-63ea9b79f92356614067d421d5a07fc2">
+</div><div class="tab-panel" data-tab-group="R-tabs-83809d1d4d5fe4d1f764f88dc292eee1">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-9b43979e8fcfec4c65d5ba8f26cce1b1" aria-expanded="true"
+      aria-controls="R-tab-id-02a870648759fdc2ffaf66c48b22554e" aria-expanded="true"
       data-tab-item="R-tab-dd5b34a69ebb7261566af82ef8b68d59"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-63ea9b79f92356614067d421d5a07fc2','R-tab-dd5b34a69ebb7261566af82ef8b68d59')"
+      onclick="switchTab('R-tabs-83809d1d4d5fe4d1f764f88dc292eee1','R-tab-dd5b34a69ebb7261566af82ef8b68d59')"
     >
       <span class="tab-nav-text">redis集群检查</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-9b43979e8fcfec4c65d5ba8f26cce1b1"
+      id="R-tab-id-02a870648759fdc2ffaf66c48b22554e"
       data-tab-item="R-tab-dd5b34a69ebb7261566af82ef8b68d59"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -425,23 +425,23 @@
   </div>
 </div><h3 id="运维场景">运维场景<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h3>
 <h4 id="主从切换">主从切换<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<p><a href="#R-image-e31676e4cbc2ac2ce53581504b3efa2b" class="lightbox-link"><img alt="image-20260319215424267" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319215424267.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-e31676e4cbc2ac2ce53581504b3efa2b"><img alt="image-20260319215424267" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319215424267.png"></a></p>
-<div class="tab-panel" data-tab-group="R-tabs-68988ea7adad5be064a14b01e970eb0d">
+<p><a href="#R-image-d7743fd6cbcf4d52c185b9fb0026739f" class="lightbox-link"><img alt="image-20260319215424267" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319215424267.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-d7743fd6cbcf4d52c185b9fb0026739f"><img alt="image-20260319215424267" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/docker/%E8%BF%9B%E9%98%B6/02-redis%E9%9B%86%E7%BE%A4/image-20260319215424267.png"></a></p>
+<div class="tab-panel" data-tab-group="R-tabs-b430c8c318217dba207fe20a6a926843">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-1b0acc76307388acda1ac4f6dea73c8c" aria-expanded="true"
+      aria-controls="R-tab-id-564613415831ff2f6d1b6f5d3d7de1fb" aria-expanded="true"
       data-tab-item="R-tab-a8742b68f721b29feaa66c906455ebf6"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-68988ea7adad5be064a14b01e970eb0d','R-tab-a8742b68f721b29feaa66c906455ebf6')"
+      onclick="switchTab('R-tabs-b430c8c318217dba207fe20a6a926843','R-tab-a8742b68f721b29feaa66c906455ebf6')"
     >
       <span class="tab-nav-text">停容器验证</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-1b0acc76307388acda1ac4f6dea73c8c"
+      id="R-tab-id-564613415831ff2f6d1b6f5d3d7de1fb"
       data-tab-item="R-tab-a8742b68f721b29feaa66c906455ebf6"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -466,21 +466,21 @@
     </div>
   </div>
 </div><p>可以看到6381已下线，6384切换为master。</p>
-<div class="tab-panel" data-tab-group="R-tabs-7f1c20c698b61f5f0f213e5c82e441de">
+<div class="tab-panel" data-tab-group="R-tabs-e62c80e3bf467b6d329fcd9884cdf934">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-b1d62cfe3cf7d4f7d456021da87da771" aria-expanded="true"
+      aria-controls="R-tab-id-93a6ecafb82d2d2aacbf91a6afe12b5d" aria-expanded="true"
       data-tab-item="R-tab-94799dadec031e8e9b3b57ef960d4604"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-7f1c20c698b61f5f0f213e5c82e441de','R-tab-94799dadec031e8e9b3b57ef960d4604')"
+      onclick="switchTab('R-tabs-e62c80e3bf467b6d329fcd9884cdf934','R-tab-94799dadec031e8e9b3b57ef960d4604')"
     >
       <span class="tab-nav-text">验证业务数据</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-b1d62cfe3cf7d4f7d456021da87da771"
+      id="R-tab-id-93a6ecafb82d2d2aacbf91a6afe12b5d"
       data-tab-item="R-tab-94799dadec031e8e9b3b57ef960d4604"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -500,21 +500,21 @@
     </div>
   </div>
 </div><p>原来6381上的业务数据，通过6384节点也可以正常查询到。</p>
-<div class="tab-panel" data-tab-group="R-tabs-58f8df5795d77cad602f693e5829599b">
+<div class="tab-panel" data-tab-group="R-tabs-31c9a4e377d0500f04653dfbcc4f59ba">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-c76553f9b1006d4588fc43cf67fd8681" aria-expanded="true"
+      aria-controls="R-tab-id-01532e7b728fb8a6284e5bde3394e549" aria-expanded="true"
       data-tab-item="R-tab-03380b67220ef199f6611ed3b13d4869"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-58f8df5795d77cad602f693e5829599b','R-tab-03380b67220ef199f6611ed3b13d4869')"
+      onclick="switchTab('R-tabs-31c9a4e377d0500f04653dfbcc4f59ba','R-tab-03380b67220ef199f6611ed3b13d4869')"
     >
       <span class="tab-nav-text">启容器验证</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-c76553f9b1006d4588fc43cf67fd8681"
+      id="R-tab-id-01532e7b728fb8a6284e5bde3394e549"
       data-tab-item="R-tab-03380b67220ef199f6611ed3b13d4869"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -539,21 +539,21 @@
     </div>
   </div>
 </div><p>6384为master，6381为从机。</p>
-<div class="tab-panel" data-tab-group="R-tabs-25ad040e469a630dd0e03ddd928a6d64">
+<div class="tab-panel" data-tab-group="R-tabs-5781122c6f152a9b5b8144b1f14d0df8">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-bc9181bdbb88e5b24739f4446dbafcd5" aria-expanded="true"
+      aria-controls="R-tab-id-f5494c4cc6de0b044972971bffe3f852" aria-expanded="true"
       data-tab-item="R-tab-932da1962a9c4279a3f5ed0cf813e372"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-25ad040e469a630dd0e03ddd928a6d64','R-tab-932da1962a9c4279a3f5ed0cf813e372')"
+      onclick="switchTab('R-tabs-5781122c6f152a9b5b8144b1f14d0df8','R-tab-932da1962a9c4279a3f5ed0cf813e372')"
     >
       <span class="tab-nav-text">强迫症式恢复主从关系</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-bc9181bdbb88e5b24739f4446dbafcd5"
+      id="R-tab-id-f5494c4cc6de0b044972971bffe3f852"
       data-tab-item="R-tab-932da1962a9c4279a3f5ed0cf813e372"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -573,21 +573,21 @@
     </div>
   </div>
 </div><h4 id="集群扩容">集群扩容<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-a140de6c998233f05b05e7a253205d8e">
+<div class="tab-panel" data-tab-group="R-tabs-9f6c6c69576bca7de5de8c2f1b8ec68c">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-fea4b638088de348239042efb8b852ed" aria-expanded="true"
+      aria-controls="R-tab-id-df1fc8cd0e918139730ad138d77d4016" aria-expanded="true"
       data-tab-item="R-tab-bf8e01a8b1668faa0e604484cde451ec"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-a140de6c998233f05b05e7a253205d8e','R-tab-bf8e01a8b1668faa0e604484cde451ec')"
+      onclick="switchTab('R-tabs-9f6c6c69576bca7de5de8c2f1b8ec68c','R-tab-bf8e01a8b1668faa0e604484cde451ec')"
     >
       <span class="tab-nav-text">新建节点</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-fea4b638088de348239042efb8b852ed"
+      id="R-tab-id-df1fc8cd0e918139730ad138d77d4016"
       data-tab-item="R-tab-bf8e01a8b1668faa0e604484cde451ec"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -600,21 +600,21 @@
     </div>
   </div>
 </div><p>通过领路人（6381）找到组织（集群），然后加入集群。</p>
-<div class="tab-panel" data-tab-group="R-tabs-789faac51ea1d25b185fbdfab230b052">
+<div class="tab-panel" data-tab-group="R-tabs-f3ca876b7bd020095092faaf80024145">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-f5d8b8809d49f1565441dcd16b640888" aria-expanded="true"
+      aria-controls="R-tab-id-beb96468d96caeed5b59a00d37865160" aria-expanded="true"
       data-tab-item="R-tab-a6dc87e49badbfdf3191a638534f8f5e"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-789faac51ea1d25b185fbdfab230b052','R-tab-a6dc87e49badbfdf3191a638534f8f5e')"
+      onclick="switchTab('R-tabs-f3ca876b7bd020095092faaf80024145','R-tab-a6dc87e49badbfdf3191a638534f8f5e')"
     >
       <span class="tab-nav-text">6387作为master加入集群</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-f5d8b8809d49f1565441dcd16b640888"
+      id="R-tab-id-beb96468d96caeed5b59a00d37865160"
       data-tab-item="R-tab-a6dc87e49badbfdf3191a638534f8f5e"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -638,21 +638,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-28bdd7d46e8ef7f9aa0a3dc7d854b26e">
+</div><div class="tab-panel" data-tab-group="R-tabs-b07c511353789be90f55cc1aed53541e">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-8dedfcc7a62306bff76a47300723c404" aria-expanded="true"
+      aria-controls="R-tab-id-22020a5f420d021477f48f8f45ae1789" aria-expanded="true"
       data-tab-item="R-tab-780d2f9fe120238afead63d68aa21fe6"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-28bdd7d46e8ef7f9aa0a3dc7d854b26e','R-tab-780d2f9fe120238afead63d68aa21fe6')"
+      onclick="switchTab('R-tabs-b07c511353789be90f55cc1aed53541e','R-tab-780d2f9fe120238afead63d68aa21fe6')"
     >
       <span class="tab-nav-text">集群检查</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-8dedfcc7a62306bff76a47300723c404"
+      id="R-tab-id-22020a5f420d021477f48f8f45ae1789"
       data-tab-item="R-tab-780d2f9fe120238afead63d68aa21fe6"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -679,21 +679,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-cf24b3ba6648f985aee79b84197b98ab">
+</div><div class="tab-panel" data-tab-group="R-tabs-5039a722c18e9f310f4aa71e679f7b3f">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-b808e7bcf45ae70f63856858c7781e17" aria-expanded="true"
+      aria-controls="R-tab-id-94b48bcd3c7b35cb2a69ec7381cf2db7" aria-expanded="true"
       data-tab-item="R-tab-31c494adf80a9c2378b48187d2be9082"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-cf24b3ba6648f985aee79b84197b98ab','R-tab-31c494adf80a9c2378b48187d2be9082')"
+      onclick="switchTab('R-tabs-5039a722c18e9f310f4aa71e679f7b3f','R-tab-31c494adf80a9c2378b48187d2be9082')"
     >
       <span class="tab-nav-text">重新分配槽号</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-b808e7bcf45ae70f63856858c7781e17"
+      id="R-tab-id-94b48bcd3c7b35cb2a69ec7381cf2db7"
       data-tab-item="R-tab-31c494adf80a9c2378b48187d2be9082"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -718,21 +718,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-1ac1a5bb1fdf0500c96000345810b588">
+</div><div class="tab-panel" data-tab-group="R-tabs-a4b9b51217ae9b057597b93df71559f5">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-d8bbedaad53c8a6ccb0286ea19a0143f" aria-expanded="true"
+      aria-controls="R-tab-id-762da856500ad6c1d1a4820752c5200d" aria-expanded="true"
       data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-1ac1a5bb1fdf0500c96000345810b588','R-tab-1703e563642a8b981be3badda4867538')"
+      onclick="switchTab('R-tabs-a4b9b51217ae9b057597b93df71559f5','R-tab-1703e563642a8b981be3badda4867538')"
     >
       <span class="tab-nav-text">检查集群</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-d8bbedaad53c8a6ccb0286ea19a0143f"
+      id="R-tab-id-762da856500ad6c1d1a4820752c5200d"
       data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -761,21 +761,21 @@
     </div>
   </div>
 </div><p>新加入节点分配槽位，不是整个集群从头重新分配槽位，只是从之前的主节点匀一部分给新节点，满足分配规则即可。目的是为了集群稳定性。</p>
-<div class="tab-panel" data-tab-group="R-tabs-05199a7f855d2d57b0da5e78abdc78d1">
+<div class="tab-panel" data-tab-group="R-tabs-0ec1d4517b795f9ebe961719f5149a93">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-df6672ed907f6c6487b470074b6a27a6" aria-expanded="true"
+      aria-controls="R-tab-id-08df0c9528654c1754a803acf165e47e" aria-expanded="true"
       data-tab-item="R-tab-b611578393970b7ed7c9847c70897f83"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-05199a7f855d2d57b0da5e78abdc78d1','R-tab-b611578393970b7ed7c9847c70897f83')"
+      onclick="switchTab('R-tabs-0ec1d4517b795f9ebe961719f5149a93','R-tab-b611578393970b7ed7c9847c70897f83')"
     >
       <span class="tab-nav-text">6388接入主机</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-df6672ed907f6c6487b470074b6a27a6"
+      id="R-tab-id-08df0c9528654c1754a803acf165e47e"
       data-tab-item="R-tab-b611578393970b7ed7c9847c70897f83"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -798,21 +798,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-ff341e7de2ce23566aa42b9d6f42eef3">
+</div><div class="tab-panel" data-tab-group="R-tabs-e771fed244724d60bf3545291f518a67">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-9b060a8cd6691bb44a16235995bd294d" aria-expanded="true"
+      aria-controls="R-tab-id-b1f2484d1afcf51f43bd73824e0f34d2" aria-expanded="true"
       data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-ff341e7de2ce23566aa42b9d6f42eef3','R-tab-1703e563642a8b981be3badda4867538')"
+      onclick="switchTab('R-tabs-e771fed244724d60bf3545291f518a67','R-tab-1703e563642a8b981be3badda4867538')"
     >
       <span class="tab-nav-text">检查集群</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-9b060a8cd6691bb44a16235995bd294d"
+      id="R-tab-id-b1f2484d1afcf51f43bd73824e0f34d2"
       data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -840,21 +840,21 @@
     </div>
   </div>
 </div><h4 id="集群缩容">集群缩容<span class="btn cstyle anchor copyanchor scrollanchor link noborder notitle interactive"><button type="button" title="复制链接到剪贴板"><i class="fa-fw fas fa-link fa-lg"></i></button></span></h4>
-<div class="tab-panel" data-tab-group="R-tabs-ebe14782743222722ea41a303ac89dac">
+<div class="tab-panel" data-tab-group="R-tabs-0f84d2d8331294260ed91621713f79dd">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-62adb23783c45c1a8cee011a5c706d43" aria-expanded="true"
+      aria-controls="R-tab-id-e0350ff1953778d0e48b953c0b2ba533" aria-expanded="true"
       data-tab-item="R-tab-5a3cb3163c4024a049315fcc15e098a4"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-ebe14782743222722ea41a303ac89dac','R-tab-5a3cb3163c4024a049315fcc15e098a4')"
+      onclick="switchTab('R-tabs-0f84d2d8331294260ed91621713f79dd','R-tab-5a3cb3163c4024a049315fcc15e098a4')"
     >
       <span class="tab-nav-text">删除6388从机</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-62adb23783c45c1a8cee011a5c706d43"
+      id="R-tab-id-e0350ff1953778d0e48b953c0b2ba533"
       data-tab-item="R-tab-5a3cb3163c4024a049315fcc15e098a4"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -874,21 +874,21 @@
     </div>
   </div>
 </div><p>本次分配槽位号，为了方便，一次将所有槽号都给6381。</p>
-<div class="tab-panel" data-tab-group="R-tabs-13e9f0ae8855a025c7db3f807697cf21">
+<div class="tab-panel" data-tab-group="R-tabs-eaca14eb365b3227a21a2d670ffa0523">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-80c033c99fc6de3dbae53fcb3a6b1fad" aria-expanded="true"
+      aria-controls="R-tab-id-dc1b0e63b680dd9832a5437379bc5d9a" aria-expanded="true"
       data-tab-item="R-tab-41a9e9426fe5a460344cf2ed385ac190"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-13e9f0ae8855a025c7db3f807697cf21','R-tab-41a9e9426fe5a460344cf2ed385ac190')"
+      onclick="switchTab('R-tabs-eaca14eb365b3227a21a2d670ffa0523','R-tab-41a9e9426fe5a460344cf2ed385ac190')"
     >
       <span class="tab-nav-text">重新分配槽位</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-80c033c99fc6de3dbae53fcb3a6b1fad"
+      id="R-tab-id-dc1b0e63b680dd9832a5437379bc5d9a"
       data-tab-item="R-tab-41a9e9426fe5a460344cf2ed385ac190"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -915,21 +915,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-2d5ff02043299a2da34dd4da9406618a">
+</div><div class="tab-panel" data-tab-group="R-tabs-d3059db95b19369b7cb2403710b7dc82">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-d326489f34f0ad8351d640a60d67a27d" aria-expanded="true"
+      aria-controls="R-tab-id-712e2bbd46313d6e36366282b5ad5a5c" aria-expanded="true"
       data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-2d5ff02043299a2da34dd4da9406618a','R-tab-1703e563642a8b981be3badda4867538')"
+      onclick="switchTab('R-tabs-d3059db95b19369b7cb2403710b7dc82','R-tab-1703e563642a8b981be3badda4867538')"
     >
       <span class="tab-nav-text">检查集群</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-d326489f34f0ad8351d640a60d67a27d"
+      id="R-tab-id-712e2bbd46313d6e36366282b5ad5a5c"
       data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -957,21 +957,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-b77d8d280c1d108b1ba353cbda15ee66">
+</div><div class="tab-panel" data-tab-group="R-tabs-82f93a6cb2295d672aa1ed1f602dc46f">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-7da7ff7aa61062f1d9579d3c762ff360" aria-expanded="true"
+      aria-controls="R-tab-id-95564bc1699d433458f11b2a085e3115" aria-expanded="true"
       data-tab-item="R-tab-b58d5a40f6a0cc9954bb1fb97cf0016e"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-b77d8d280c1d108b1ba353cbda15ee66','R-tab-b58d5a40f6a0cc9954bb1fb97cf0016e')"
+      onclick="switchTab('R-tabs-82f93a6cb2295d672aa1ed1f602dc46f','R-tab-b58d5a40f6a0cc9954bb1fb97cf0016e')"
     >
       <span class="tab-nav-text">删除6387节点</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-7da7ff7aa61062f1d9579d3c762ff360"
+      id="R-tab-id-95564bc1699d433458f11b2a085e3115"
       data-tab-item="R-tab-b58d5a40f6a0cc9954bb1fb97cf0016e"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -985,21 +985,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-727334f1b43290ae2cb16d97bc50b109">
+</div><div class="tab-panel" data-tab-group="R-tabs-cc704068ddd023c7f92ee6fd1658109e">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-c69c32c111d24adbfafe756068aff5ff" aria-expanded="true"
+      aria-controls="R-tab-id-8f99446140bd8d844750a6ee639f19e7" aria-expanded="true"
       data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-727334f1b43290ae2cb16d97bc50b109','R-tab-1703e563642a8b981be3badda4867538')"
+      onclick="switchTab('R-tabs-cc704068ddd023c7f92ee6fd1658109e','R-tab-1703e563642a8b981be3badda4867538')"
     >
       <span class="tab-nav-text">检查集群</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-c69c32c111d24adbfafe756068aff5ff"
+      id="R-tab-id-8f99446140bd8d844750a6ee639f19e7"
       data-tab-item="R-tab-1703e563642a8b981be3badda4867538"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1041,9 +1041,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1795478857"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1795478857" defer></script>
-    <script src="/js/theme.min.js?1795478857" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1795531674"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1795531674" defer></script>
+    <script src="/js/theme.min.js?1795531674" defer></script>
 
 <style>
     .highlight {
