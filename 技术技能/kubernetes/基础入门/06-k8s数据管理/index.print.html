@@ -18,32 +18,32 @@
     <meta property="og:type" content="website">
     <meta itemprop="name" content="06、K8S数据管理 :: 暮鼓晨钟">
     <meta itemprop="description" content="K8S数据管理。">
-    <meta itemprop="wordCount" content="4741">
+    <meta itemprop="wordCount" content="4824">
     <meta itemprop="keywords" content="K8S">
     <title>06、K8S数据管理 :: 暮鼓晨钟</title>
     <link href="https://caijemmy.github.io/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/index.html" rel="canonical" type="text/html" title="06、K8S数据管理 :: 暮鼓晨钟">
     <link href="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/index.xml" rel="alternate" type="application/rss+xml" title="06、K8S数据管理 :: 暮鼓晨钟">
-    <link href="/images/favicon.png?1795787596" rel="icon" type="image/png">
-    <link href="/css/auto-complete/auto-complete.min.css?1795787596" rel="stylesheet">
-    <script src="/js/auto-complete/auto-complete.min.js?1795787596" defer></script>
-    <script src="/js/search-lunr.min.js?1795787596" defer></script>
-    <script src="/js/search.min.js?1795787596" defer></script>
+    <link href="/images/favicon.png?1795787786" rel="icon" type="image/png">
+    <link href="/css/auto-complete/auto-complete.min.css?1795787786" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1795787786" defer></script>
+    <script src="/js/search-lunr.min.js?1795787786" defer></script>
+    <script src="/js/search.min.js?1795787786" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/searchindex.en.js?1795787596";
+      window.relearn.index_js_url="/searchindex.en.js?1795787786";
     </script>
-    <script src="/js/lunr/lunr.min.js?1795787596" defer></script>
-    <script src="/js/lunr/lunr.stemmer.support.min.js?1795787596" defer></script>
-    <script src="/js/lunr/lunr.multi.min.js?1795787596" defer></script>
-    <script src="/js/lunr/lunr.zh.min.js?1795787596" defer></script>
+    <script src="/js/lunr/lunr.min.js?1795787786" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1795787786" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1795787786" defer></script>
+    <script src="/js/lunr/lunr.zh.min.js?1795787786" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['zh'];
     </script>
-    <link href="/fonts/fontawesome/css/all.min.css?1795787596" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1795787596" rel="stylesheet"></noscript>
-    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1795787596" rel="stylesheet">
-    <link href="/css/theme.min.css?1795787596" rel="stylesheet">
-    <link href="/css/format-print.min.css?1795787596" rel="stylesheet" id="R-format-style">
+    <link href="/fonts/fontawesome/css/all.min.css?1795787786" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/all.min.css?1795787786" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1795787786" rel="stylesheet">
+    <link href="/css/theme.min.css?1795787786" rel="stylesheet">
+    <link href="/css/format-print.min.css?1795787786" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -92,7 +92,7 @@
       window.relearn.initVariant();
       window.relearn.markVariant();
     </script>
-    <link href="/css/custom.css?1795787596" rel="stylesheet">
+    <link href="/css/custom.css?1795787786" rel="stylesheet">
   </head>
   <body class="mobile-support print" data-origin="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/index.html">
     <div id="R-body" class="default-animation">
@@ -204,8 +204,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	- 即使我们对本地是磁盘做 raid等冗余功能<span style="color:#960050;background-color:#1e0010">，</span>但是这种等级的安全很鸡肋<span style="color:#960050;background-color:#1e0010">。</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>网络存储方式
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>	- 通过网络的方式<span style="color:#960050;background-color:#1e0010">，</span>将外部的存储空间挂载到当前宿主机<span style="color:#960050;background-color:#1e0010">，</span>然后借助于host机制实现容器数据的可持久化<span style="color:#960050;background-color:#1e0010">。</span></span></span></code></pre></div>
-<p><a href="#R-image-f47a43bb259441ffb93bdf6303331d9c" class="lightbox-link"><img alt="image-20220722083656222" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722083656222.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-f47a43bb259441ffb93bdf6303331d9c"><img alt="image-20220722083656222" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722083656222.png"></a></p>
+<p><a href="#R-image-3f769c2fef2e75e6d31ac1f8bd21ea6a" class="lightbox-link"><img alt="image-20220722083656222" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722083656222.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-3f769c2fef2e75e6d31ac1f8bd21ea6a"><img alt="image-20220722083656222" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722083656222.png"></a></p>
 <p>k8s支持的存储类型</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>本地数据卷 	emptyDir<span style="color:#960050;background-color:#1e0010">、</span>hostPath<span style="color:#960050;background-color:#1e0010">、</span>local等
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>云存储数据卷	gcePersistentDisk<span style="color:#960050;background-color:#1e0010">、</span>awsElasticBlockStore等
@@ -238,8 +238,8 @@
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>kubernetes根据资源对象创建的灵活的度实现了两种数据持久化解决方案<span style="color:#960050;background-color:#1e0010">：</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	手工方式<span style="color:#960050;background-color:#1e0010">：</span> PVC + PV
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	自动方式<span style="color:#960050;background-color:#1e0010">：</span> VCT + SC</span></span></code></pre></div>
-<p><a href="#R-image-015ef3f76ffd163a4d87ef5d4aa516df" class="lightbox-link"><img alt="image-20220722084705991" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722084705991.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-015ef3f76ffd163a4d87ef5d4aa516df"><img alt="image-20220722084705991" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722084705991.png"></a></p>
+<p><a href="#R-image-050d4f7a56338973c6bae2ae9502ae6b" class="lightbox-link"><img alt="image-20220722084705991" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722084705991.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-050d4f7a56338973c6bae2ae9502ae6b"><img alt="image-20220722084705991" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722084705991.png"></a></p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ae81ff">1</span> 由专业的存储管理员来管理所有的存储后端<span style="color:#960050;background-color:#1e0010">：</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	- 在专用的存储设备上<span style="color:#960050;background-color:#1e0010">，</span>创建各种类型级别的PV(Persistent Volume)
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	- 或者通过存储模板文件SC(storageclasses)来自动创建大量不同类型的PV对象<span style="color:#960050;background-color:#1e0010">。</span>
@@ -597,11 +597,11 @@
 <p>这一节，我们从 存储机制、对象解读、小结 三个方面来学习。</p>
 <p><strong>存储机制</strong></p>
 <p>资源对象</p>
-<p><a href="#R-image-e3e20fa2c9f5b3782fac11bf92d9230e" class="lightbox-link"><img alt="image-20220715012035435" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220715012035435.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-e3e20fa2c9f5b3782fac11bf92d9230e"><img alt="image-20220715012035435" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220715012035435.png"></a></p>
+<p><a href="#R-image-2d70eba5e5d1d3249760484fe1d1f62b" class="lightbox-link"><img alt="image-20220715012035435" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220715012035435.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-2d70eba5e5d1d3249760484fe1d1f62b"><img alt="image-20220715012035435" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220715012035435.png"></a></p>
 <p>存储方案</p>
-<p><a href="#R-image-3cdff4176d445088547aec9b5ed5a3b1" class="lightbox-link"><img alt="image-20220722084705991" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722084705991.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-3cdff4176d445088547aec9b5ed5a3b1"><img alt="image-20220722084705991" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722084705991.png"></a></p>
+<p><a href="#R-image-740bc4f8eef18caeeef3f5fdac74f209" class="lightbox-link"><img alt="image-20220722084705991" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722084705991.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-740bc4f8eef18caeeef3f5fdac74f209"><img alt="image-20220722084705991" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722084705991.png"></a></p>
 <p>对象解读</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>	之前我们提到的Volume可以提供多种类型的资源存储(可持久或不持久)<span style="color:#960050;background-color:#1e0010">，</span>但是它定义在Pod上的<span style="color:#960050;background-color:#1e0010">，</span>是属于<span style="color:#e6db74">&#34;资源对象&#34;</span>的一部分<span style="color:#960050;background-color:#1e0010">。</span>工作中的存储资源一般都是独立的<span style="color:#960050;background-color:#1e0010">，</span>这就是资源对象Persistent Volume(PV)<span style="color:#960050;background-color:#1e0010">，</span>是由管理员设置的存储<span style="color:#960050;background-color:#1e0010">，</span>它是群集的一部分<span style="color:#960050;background-color:#1e0010">，</span>PV 是 Volume 之类的卷插件<span style="color:#960050;background-color:#1e0010">，</span>但具有独立于使用 PV 的 Pod 的生命周期<span style="color:#960050;background-color:#1e0010">。。</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
@@ -615,8 +615,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span> StorageClass(SC)
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span> 	管理员可以根据 Kubernetes 的 StorageClass 对象来动态的定义各种类型的资源<span style="color:#960050;background-color:#1e0010">。</span></span></span></code></pre></div>
 <p>存储流程</p>
-<p><a href="#R-image-ec8e18347d7b6a1d8d3661d7b9809ef2" class="lightbox-link"><img alt="image-20210928143219693" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210928143219693.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-ec8e18347d7b6a1d8d3661d7b9809ef2"><img alt="image-20210928143219693" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210928143219693.png"></a></p>
+<p><a href="#R-image-347380416affea07274b15b4648c2608" class="lightbox-link"><img alt="image-20210928143219693" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210928143219693.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-347380416affea07274b15b4648c2608"><img alt="image-20210928143219693" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210928143219693.png"></a></p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ae81ff">1</span> 用户创建了一个包含 PVC 的 Pod<span style="color:#960050;background-color:#1e0010">，</span>该 PVC 要求使用动态存储卷<span style="color:#960050;background-color:#1e0010">；</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#ae81ff">2</span> Scheduler 根据 Pod 配置<span style="color:#960050;background-color:#1e0010">、</span>节点状态<span style="color:#960050;background-color:#1e0010">、</span>PV 配置等信息<span style="color:#960050;background-color:#1e0010">，</span>把 Pod 调度到一个合适的 Worker 节点上<span style="color:#960050;background-color:#1e0010">；</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#ae81ff">3</span> PV 控制器 watch 到该 Pod 使用的 PVC 处于 Pending 状态<span style="color:#960050;background-color:#1e0010">，</span>于是调用 Volume Plugin(in-tree)创建存储卷<span style="color:#960050;background-color:#1e0010">，</span>并创建 PV 对象(out-of-tree 由 External Provisioner 来处理)<span style="color:#960050;background-color:#1e0010">；</span>
@@ -634,15 +634,15 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>注意
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>	原则上来说<span style="color:#960050;background-color:#1e0010">，</span>pod<span style="color:#960050;background-color:#1e0010">、</span>pvc<span style="color:#960050;background-color:#1e0010">、</span>pv 必须在同一个命名空间</span></span></code></pre></div>
 <p>pod生命周期</p>
-<p><a href="#R-image-46dec2f9003cbcb5e9fc564b3eacc2b9" class="lightbox-link"><img alt="image-20210927151520502" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210927151520502.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-46dec2f9003cbcb5e9fc564b3eacc2b9"><img alt="image-20210927151520502" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210927151520502.png"></a></p>
+<p><a href="#R-image-2920a8bb95d018e30eba363f95ef28e5" class="lightbox-link"><img alt="image-20210927151520502" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210927151520502.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-2920a8bb95d018e30eba363f95ef28e5"><img alt="image-20210927151520502" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210927151520502.png"></a></p>
 <p>状态管理</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Availabled 	空闲状态<span style="color:#960050;background-color:#1e0010">，</span>表示pv没有被其他对象使用
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Bound		绑定状态<span style="color:#960050;background-color:#1e0010">，</span>表示pv已经被其他对象使用
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Released	未回收状态<span style="color:#960050;background-color:#1e0010">，</span>表示pvc已经被删除了<span style="color:#960050;background-color:#1e0010">，</span>但是资源没有被回收
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>Faild		资源回收失败</span></span></code></pre></div>
-<p><a href="#R-image-5396aab9f5f17cfaf8dd03e423d0ff54" class="lightbox-link"><img alt="image-20210928141233731" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210928141233731.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-5396aab9f5f17cfaf8dd03e423d0ff54"><img alt="image-20210928141233731" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210928141233731.png"></a></p>
+<p><a href="#R-image-6cabc7ac45d88a583719a892571e2963" class="lightbox-link"><img alt="image-20210928141233731" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210928141233731.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-6cabc7ac45d88a583719a892571e2963"><img alt="image-20210928141233731" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20210928141233731.png"></a></p>
 <p>访问权限</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>AccessModes 是用来对 PV 进行访问模式的设置<span style="color:#960050;background-color:#1e0010">，</span>用于描述用户应用对存储资源的访问权限<span style="color:#960050;background-color:#1e0010">，</span>访问权限包括
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    ReadWriteOnce<span style="color:#960050;background-color:#1e0010">（</span>RWO<span style="color:#960050;background-color:#1e0010">）</span>单节点读写
@@ -795,8 +795,8 @@
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	Kubernetes 提供了一种StorageClass的资源对象<span style="color:#960050;background-color:#1e0010">：</span>在StorageClass的环境基础上<span style="color:#960050;background-color:#1e0010">，</span>它可以让我们用户将存储资源定义为某种类型的资源<span style="color:#960050;background-color:#1e0010">，</span>比如存储质量<span style="color:#960050;background-color:#1e0010">、</span>快速存储<span style="color:#960050;background-color:#1e0010">、</span>慢速存储等,然后自由的去申请合适的存储资源了<span style="color:#960050;background-color:#1e0010">。</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	StorageClass根据自由申请后端存储的类型<span style="color:#960050;background-color:#1e0010">，</span>有很多不同的实现方式<span style="color:#960050;background-color:#1e0010">，</span>在我们的试验环境中<span style="color:#960050;background-color:#1e0010">，</span>我们这里用nfs-client-provisioner的方式来演示StorageClass<span style="color:#960050;background-color:#1e0010">。</span></span></span></code></pre></div>
 <p>SC原理解读</p>
-<p><a href="#R-image-a52ca575cd4cf06ff8b64419369de22d" class="lightbox-link"><img alt="image-20220722104753612" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722104753612.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-a52ca575cd4cf06ff8b64419369de22d"><img alt="image-20220722104753612" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722104753612.png"></a></p>
+<p><a href="#R-image-e58eab885ecea289003d8823410c8565" class="lightbox-link"><img alt="image-20220722104753612" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722104753612.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-e58eab885ecea289003d8823410c8565"><img alt="image-20220722104753612" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722104753612.png"></a></p>
 <p>实践步骤</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ae81ff">1</span> 部署 SC的提供者环境
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#ae81ff">2</span> 设置 SC的存储属性
@@ -1028,26 +1028,26 @@
 <p><strong>直接下载镜像</strong></p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>docker pull willdockerhub/nfs-subdir-external-provisioner:v4.0.2</span></span></code></pre></div>
 <p>SC 流程示意图</p>
-<p><a href="#R-image-96e74aff3cbcede0b3f9b24556e2d795" class="lightbox-link"><img alt="image-20261127204840967" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20261127204840967.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-96e74aff3cbcede0b3f9b24556e2d795"><img alt="image-20261127204840967" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20261127204840967.png"></a></p>
-<p><a href="#R-image-35b4567627dc05cbdef6d909abe7f8ec" class="lightbox-link"><img alt="image-20261127205143880" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20261127205143880.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-35b4567627dc05cbdef6d909abe7f8ec"><img alt="image-20261127205143880" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20261127205143880.png"></a></p>
+<p><a href="#R-image-65270d4e7166edf59fb49b3947753831" class="lightbox-link"><img alt="image-20261127204840967" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20261127204840967.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-65270d4e7166edf59fb49b3947753831"><img alt="image-20261127204840967" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20261127204840967.png"></a></p>
+<p><a href="#R-image-507a5cf3923393ab556f66cba9dde23e" class="lightbox-link"><img alt="image-20261127205143880" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20261127205143880.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-507a5cf3923393ab556f66cba9dde23e"><img alt="image-20261127205143880" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20261127205143880.png"></a></p>
 <p><strong>nfs-subdir-external-provisioner 部署说明</strong></p>
-<div class="tab-panel" data-tab-group="R-tabs-916bff2f15f0b08f7f4e3f3f5197dd56">
+<div class="tab-panel" data-tab-group="R-tabs-95a0a62968d7f60c808f0fb7231621d7">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-4f7efb892ea4e6f9e3dc9355a4cb139f" aria-expanded="true"
+      aria-controls="R-tab-id-f1820a5430ccdfed40558d4d0bbc36a0" aria-expanded="true"
       data-tab-item="R-tab-84b011e88fec75c688ac653158dcd28f"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-916bff2f15f0b08f7f4e3f3f5197dd56','R-tab-84b011e88fec75c688ac653158dcd28f')"
+      onclick="switchTab('R-tabs-95a0a62968d7f60c808f0fb7231621d7','R-tab-84b011e88fec75c688ac653158dcd28f')"
     >
       <span class="tab-nav-text">权限绑定 rbac.yaml</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-4f7efb892ea4e6f9e3dc9355a4cb139f"
+      id="R-tab-id-f1820a5430ccdfed40558d4d0bbc36a0"
       data-tab-item="R-tab-84b011e88fec75c688ac653158dcd28f"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1117,21 +1117,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-7b51f1c24c7653efe62c8b370c60eb05">
+</div><div class="tab-panel" data-tab-group="R-tabs-9efc0069f8dd3e582ff94554f57ff9eb">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-d57e41a203af5afae3c002fc49ddfbb3" aria-expanded="true"
+      aria-controls="R-tab-id-f20ebe892230e2884a0392a5e9a889a2" aria-expanded="true"
       data-tab-item="R-tab-5d20499ffb6e972a9156df3ed8178f61"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-7b51f1c24c7653efe62c8b370c60eb05','R-tab-5d20499ffb6e972a9156df3ed8178f61')"
+      onclick="switchTab('R-tabs-9efc0069f8dd3e582ff94554f57ff9eb','R-tab-5d20499ffb6e972a9156df3ed8178f61')"
     >
       <span class="tab-nav-text">nfs-subdir-external-provisioner 部署</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-d57e41a203af5afae3c002fc49ddfbb3"
+      id="R-tab-id-f20ebe892230e2884a0392a5e9a889a2"
       data-tab-item="R-tab-5d20499ffb6e972a9156df3ed8178f61"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1179,21 +1179,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-f88ff6da28d2362f544293d0fe691161">
+</div><div class="tab-panel" data-tab-group="R-tabs-447a4785e2e524ebb596871204a78952">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-e279198b890ef5af3c2466921512b09c" aria-expanded="true"
+      aria-controls="R-tab-id-fdec7e1d31c8488a638095c828d18a92" aria-expanded="true"
       data-tab-item="R-tab-fdfe71fb1a9e4ecc47468ba2f012bebd"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-f88ff6da28d2362f544293d0fe691161','R-tab-fdfe71fb1a9e4ecc47468ba2f012bebd')"
+      onclick="switchTab('R-tabs-447a4785e2e524ebb596871204a78952','R-tab-fdfe71fb1a9e4ecc47468ba2f012bebd')"
     >
       <span class="tab-nav-text">创建SC</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-e279198b890ef5af3c2466921512b09c"
+      id="R-tab-id-fdec7e1d31c8488a638095c828d18a92"
       data-tab-item="R-tab-fdfe71fb1a9e4ecc47468ba2f012bebd"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1207,21 +1207,21 @@
       </div>
     </div>
   </div>
-</div><div class="tab-panel" data-tab-group="R-tabs-847f0a5308bf31667e9d4ea9b245be37">
+</div><div class="tab-panel" data-tab-group="R-tabs-4aa04c38bc6055953a8d28e1d116baf4">
   <div class="tab-nav">
     <div class="tab-nav-title">&#8203;</div>
     <button
-      aria-controls="R-tab-id-1a14eb081c232ed706821574fcdff9f6" aria-expanded="true"
+      aria-controls="R-tab-id-5ff2e848ba4a00861607bfddff3c33d9" aria-expanded="true"
       data-tab-item="R-tab-93289ea7255ee638948e3add5772963d"
       class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
-      onclick="switchTab('R-tabs-847f0a5308bf31667e9d4ea9b245be37','R-tab-93289ea7255ee638948e3add5772963d')"
+      onclick="switchTab('R-tabs-4aa04c38bc6055953a8d28e1d116baf4','R-tab-93289ea7255ee638948e3add5772963d')"
     >
       <span class="tab-nav-text">测试验证</span>
     </button>
   </div>
   <div class="tab-content-container">
     <div
-      id="R-tab-id-1a14eb081c232ed706821574fcdff9f6"
+      id="R-tab-id-5ff2e848ba4a00861607bfddff3c33d9"
       data-tab-item="R-tab-93289ea7255ee638948e3add5772963d"
       class="tab-content tab-panel-style cstyle initial active">
       <div class="tab-content-text">
@@ -1254,6 +1254,51 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nfs-sc-pvc</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>      <span style="color:#f92672">persistentVolumeClaim</span>:    <span style="color:#75715e"># 磁盘挂载使用 pvc</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>        <span style="color:#f92672">claimName</span>: <span style="color:#ae81ff">test-sc-pvc</span></span></span></code></pre></div>
+      </div>
+    </div>
+  </div>
+</div><div class="tab-panel" data-tab-group="R-tabs-f7a21676412c0a8edbb259ccf6169497">
+  <div class="tab-nav">
+    <div class="tab-nav-title">&#8203;</div>
+    <button
+      aria-controls="R-tab-id-80a6699c42c849495028a0951ce8c7ec" aria-expanded="true"
+      data-tab-item="R-tab-1e858c2bca53452d2dc301c821adb07d"
+      class="tab-nav-button tab-panel-style cstyle initial active" tabindex="-1"
+      onclick="switchTab('R-tabs-f7a21676412c0a8edbb259ccf6169497','R-tab-1e858c2bca53452d2dc301c821adb07d')"
+    >
+      <span class="tab-nav-text">完整工作流程</span>
+    </button>
+  </div>
+  <div class="tab-content-container">
+    <div
+      id="R-tab-id-80a6699c42c849495028a0951ce8c7ec"
+      data-tab-item="R-tab-1e858c2bca53452d2dc301c821adb07d"
+      class="tab-content tab-panel-style cstyle initial active">
+      <div class="tab-content-text">
+<div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>Deployment启动 provisioner 容器
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>         ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>读取 env 参数:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>  PROVISIONER_NAME <span style="color:#f92672">=</span> k8s-sigs.io/nfs-subdir-external-provisioner
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  NFS_SERVER <span style="color:#f92672">=</span> 10.0.0.18
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>  NFS_PATH <span style="color:#f92672">=</span> /data/nfs-share/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>         ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>Provisioner 注册到 API Server
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>         ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>用户创建 PVC<span style="color:#f92672">(</span>test-claim<span style="color:#f92672">)</span>，指定 storageClassName: nfs-client
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>         ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>StorageClass 中 provisioner 字段值与 PROVISIONER_NAME 匹配
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>         ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>Provisioner 收到事件
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>         ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>在 NFS_SERVER<span style="color:#f92672">(</span>10.0.0.18<span style="color:#f92672">)</span> 的 NFS_PATH<span style="color:#f92672">(</span>/data/nfs-share/<span style="color:#f92672">)</span> 下
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>创建子目录: default-test-claim-abc123
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>         ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>创建 PV，spec.nfs.server <span style="color:#f92672">=</span> NFS_SERVER <span style="color:#f92672">=</span> 10.0.0.18
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>         ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>PVC 绑定到 PV
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>         ↓
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>Pod 挂载 PVC → kubelet 通过 NFS_SERVER 连接到 10.0.0.18
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>              挂载 NFS_PATH/default-test-claim-abc123 到容器</span></span></code></pre></div>
       </div>
     </div>
   </div>
@@ -1360,8 +1405,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>	对于运行容器中的配置改变<span style="color:#960050;background-color:#1e0010">，</span>需要通过应用程序重载相关配置</span></span></code></pre></div>
 <p>k8s的配置管理</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	kubernetes作为分布式容器调度平台<span style="color:#960050;background-color:#1e0010">，</span>肯定会遇到同样的问题<span style="color:#960050;background-color:#1e0010">，</span>那么遇到这种问题后<span style="color:#960050;background-color:#1e0010">，</span>我们不可能把资源删除后<span style="color:#960050;background-color:#1e0010">，</span>重新修改一下<span style="color:#960050;background-color:#1e0010">，</span>然后在启动生成<span style="color:#960050;background-color:#1e0010">，</span>这种方法就太繁琐的<span style="color:#960050;background-color:#1e0010">。</span>kubernetes提供了对pod中容器应用的集中配置管理组件<span style="color:#960050;background-color:#1e0010">：</span>ConfigMap<span style="color:#960050;background-color:#1e0010">、</span>Secret<span style="color:#960050;background-color:#1e0010">、</span>downwardAPI<span style="color:#960050;background-color:#1e0010">。</span>通过这些组件来实现向pod中的容器中注入配置信息的机制<span style="color:#960050;background-color:#1e0010">。</span></span></span></code></pre></div>
-<p><a href="#R-image-de5af306902646e4638a9b87c15f0780" class="lightbox-link"><img alt="image-20220715012035435" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220715012035435.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-de5af306902646e4638a9b87c15f0780"><img alt="image-20220715012035435" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220715012035435.png"></a></p>
+<p><a href="#R-image-3c64c760d09bc6290ed2d2692aad5843" class="lightbox-link"><img alt="image-20220715012035435" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220715012035435.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-3c64c760d09bc6290ed2d2692aad5843"><img alt="image-20220715012035435" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220715012035435.png"></a></p>
 <p><strong>简单实践</strong></p>
 <p>Configmap</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	Configmap是k8s集群中非常重要的一种配置管理资源对象<span style="color:#960050;background-color:#1e0010">。</span>借助于ConfigMap API向pod中的容器中注入配置信息的机制<span style="color:#960050;background-color:#1e0010">。</span>ConfigMap不仅仅可以保存单个属性<span style="color:#960050;background-color:#1e0010">，</span>也可以用来保存整个配置文件或者JSON二进制文件<span style="color:#960050;background-color:#1e0010">。</span>
@@ -1476,8 +1521,8 @@
 <p>这一节，我们从 案例解读、简单实践、小结 三个方面来学习。</p>
 <p><strong>案例解读</strong></p>
 <p>简介</p>
-<p><a href="#R-image-da7a69631be69339e416ee3a028e5b21" class="lightbox-link"><img alt="image-20220722134406964" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722134406964.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-da7a69631be69339e416ee3a028e5b21"><img alt="image-20220722134406964" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722134406964.png"></a></p>
+<p><a href="#R-image-4a08ba868bdd4f4c4b940deb7dfea0be" class="lightbox-link"><img alt="image-20220722134406964" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722134406964.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-4a08ba868bdd4f4c4b940deb7dfea0be"><img alt="image-20220722134406964" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/image-20220722134406964.png"></a></p>
 <p><strong>简单实践</strong></p>
 <p>资源对象</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>准备资源清单文件
@@ -1789,8 +1834,8 @@
 <p>简介</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	我们知道<span style="color:#960050;background-color:#1e0010">，</span>http协议是无状态的<span style="color:#960050;background-color:#1e0010">，</span>而http应用是有状态的<span style="color:#960050;background-color:#1e0010">。</span>所谓的无状态指的是 -- 每次的请求都是独立的<span style="color:#960050;background-color:#1e0010">，</span>它的执行情况和结果与前面的请求和之后的请求是无直接关系的<span style="color:#960050;background-color:#1e0010">，</span>它不会受前面的请求应答情况直接影响<span style="color:#960050;background-color:#1e0010">，</span>也不会直接影响后面的请求应答情况<span style="color:#960050;background-color:#1e0010">。</span>也就是说<span style="color:#960050;background-color:#1e0010">，</span>对于http协议本身的请求-应答模式来说它是独立的<span style="color:#960050;background-color:#1e0010">，</span>彼此之间没有关联关系<span style="color:#960050;background-color:#1e0010">。</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	而我们使用的web程序是需要有大量的业务逻辑相互关联才可以实现最终的目标<span style="color:#960050;background-color:#1e0010">，</span>也就是说基于http协议的web应用程序是有状态的<span style="color:#960050;background-color:#1e0010">。</span>只不过这个状态是需要借助于其他的机制来实现<span style="color:#960050;background-color:#1e0010">，</span>比如 cookies<span style="color:#960050;background-color:#1e0010">、</span>session<span style="color:#960050;background-color:#1e0010">、</span>token以及其他辅助的机制<span style="color:#960050;background-color:#1e0010">。</span></span></span></code></pre></div>
-<p><a href="#R-image-7985d91f0d158ea82f562fe35f4e611e" class="lightbox-link"><img alt="1633265444273" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/1633265444273.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-7985d91f0d158ea82f562fe35f4e611e"><img alt="1633265444273" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/1633265444273.png"></a></p>
+<p><a href="#R-image-e5576e6de84b16539f48de7db156db22" class="lightbox-link"><img alt="1633265444273" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/1633265444273.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-e5576e6de84b16539f48de7db156db22"><img alt="1633265444273" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/1633265444273.png"></a></p>
 <p>场景需求</p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>生产中<span style="color:#960050;background-color:#1e0010">，</span>一些中间件业务集群<span style="color:#960050;background-color:#1e0010">，</span>比如MySQL集群<span style="color:#960050;background-color:#1e0010">、</span>MongoDB集群<span style="color:#960050;background-color:#1e0010">、</span>Zookeeper集群等<span style="color:#960050;background-color:#1e0010">，</span>这些应用集群有一下特点<span style="color:#960050;background-color:#1e0010">：</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	<span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">、</span>每个节点都有固定的身份ID<span style="color:#960050;background-color:#1e0010">，</span>集群成员通过身份ID进行通信
@@ -1806,8 +1851,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	- 每个Pod都有稳定<span style="color:#960050;background-color:#1e0010">、</span>唯一的网络标识<span style="color:#960050;background-color:#1e0010">，</span>彼此间可以通信
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	- StatefulSet控制的Pod副本启动<span style="color:#960050;background-color:#1e0010">、</span>扩展<span style="color:#960050;background-color:#1e0010">、</span>删除<span style="color:#960050;background-color:#1e0010">、</span>更新等操作都是有顺序的<span style="color:#960050;background-color:#1e0010">。</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>	- StatefulSet里的Pod采用独立的持久化存储卷<span style="color:#960050;background-color:#1e0010">，</span>存储状态数据</span></span></code></pre></div>
-<p><a href="#R-image-4b456ff55b08c5a2eebd0375e6ca717e" class="lightbox-link"><img alt="1633268019733" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/1633268019733.png" style="height: auto;width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-4b456ff55b08c5a2eebd0375e6ca717e"><img alt="1633268019733" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/1633268019733.png"></a></p>
+<p><a href="#R-image-cf1aa06e1798d104b11adb3fe5c958c9" class="lightbox-link"><img alt="1633268019733" class="lazy lightbox figure-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/1633268019733.png" style="height: auto;width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-cf1aa06e1798d104b11adb3fe5c958c9"><img alt="1633268019733" class="lazy lightbox lightbox-image" loading="lazy" src="/%E6%8A%80%E6%9C%AF%E6%8A%80%E8%83%BD/kubernetes/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/06-k8s%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86/image/1633268019733.png"></a></p>
 <div class="highlight actionbar-wrapper" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	Headless service会给一个StatufulSet控制的Pod提供一个唯一的DNS域名来作为每个成员的网络标识，集群内部成员之间使用域名通信。
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>DNS域名格式：
@@ -2000,9 +2045,9 @@
         }
       }, JSON.parse("{}") );
     </script>
-    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1795787596"></script>
-    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1795787596" defer></script>
-    <script src="/js/theme.min.js?1795787596" defer></script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1795787786"></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1795787786" defer></script>
+    <script src="/js/theme.min.js?1795787786" defer></script>
 
 <style>
     .highlight {
